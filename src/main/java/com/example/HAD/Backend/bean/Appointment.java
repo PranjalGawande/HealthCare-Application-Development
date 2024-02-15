@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.sql.Time;
 import java.util.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

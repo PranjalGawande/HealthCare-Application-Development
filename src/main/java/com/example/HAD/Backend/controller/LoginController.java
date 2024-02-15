@@ -2,6 +2,7 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.bean.Doctor;
 import com.example.HAD.Backend.bean.Login;
+import com.example.HAD.Backend.bean.Receptionist;
 import com.example.HAD.Backend.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,13 @@ public class LoginController {
     private DoctorController doctorController;
 
     @Autowired
+    private ReceptioninstController receptioninstController;
+
+    @Autowired
     private LoginService loginService;
 
     @PostMapping("/doctor")
-    public ResponseEntity<Doctor> login(@RequestBody Login login) {
+    public ResponseEntity<Doctor> loginDoctor(@RequestBody Login login) {
 
         if ( login == null || login.getEmail() == null || login.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -37,8 +41,32 @@ public class LoginController {
             if (doctorDetails == null ) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
+            else {
+                return ResponseEntity.ok().body(doctorDetails);
+            }
+        }
+    }
 
-            return ResponseEntity.ok().body(doctorDetails);
+    @PostMapping("/receptionist")
+    public ResponseEntity<Receptionist> loginReceptionist(@RequestBody Login login) {
+
+        if ( login == null || login.getEmail() == null || login.getPassword() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Login loggedIn = loginService.RecpLogin(login);
+
+        if(loggedIn == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        else {
+            Receptionist receptionistDetail = receptioninstController.getReceptionistDetails(loggedIn.getEmail());
+            if (receptionistDetail == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            else {
+                return ResponseEntity.ok().body(receptionistDetail);
+            }
         }
     }
 }

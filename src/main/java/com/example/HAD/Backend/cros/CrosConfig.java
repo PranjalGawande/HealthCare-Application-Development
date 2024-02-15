@@ -14,5 +14,4 @@ public class CrosConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Specify allowed methods
                 .allowedHeaders("*"); // Specify allowed headers
     }
-
 }

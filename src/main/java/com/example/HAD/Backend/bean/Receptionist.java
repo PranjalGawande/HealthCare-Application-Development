@@ -32,8 +32,9 @@ public class Receptionist {
     @Column(nullable = false)
     private String gender;
 
-    @Column(name = "email")
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "email", referencedColumnName = "email")
+    private Login login;
 
     @Column(name = "ABHA_ID")
     private String abhaId;

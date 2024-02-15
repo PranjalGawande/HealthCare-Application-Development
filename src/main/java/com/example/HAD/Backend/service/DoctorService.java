@@ -13,7 +13,6 @@ public class DoctorService {
 
     public Doctor getDoctorDetailsByEmail(String email) {
 
-
         return doctorRepository.findByLoginEmail(email);
     }
 }

@@ -44,7 +44,6 @@ public class Doctor {
     @Column
     private Integer experience;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "appointmentId")
+    @OneToMany(mappedBy = "doctor",cascade = CascadeType.ALL)
     private List<Appointment> appointments = new ArrayList<>();
 }

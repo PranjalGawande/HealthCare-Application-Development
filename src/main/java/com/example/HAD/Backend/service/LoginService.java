@@ -15,4 +15,8 @@ public class LoginService {
     public Login docLogin(Login login) {
         return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
     }
+
+    public Login RecpLogin(Login login) {
+        return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
+    }
 }
