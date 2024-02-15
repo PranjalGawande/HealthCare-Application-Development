@@ -18,8 +18,8 @@ public class Login {
     @Column(name = "userId")
     private Integer userId;
 
-    @Column
-    private String userName;
+    @Column(unique = true, nullable = false)
+    private String email;
 
     @Column
     private String password;

@@ -34,8 +34,9 @@ public class Doctor {
     @Column(nullable = false)
     private String gender;
 
-    @Column(name = "email")
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "email", referencedColumnName = "email")
+    private Login login;
 
     @Column(name = "speciality")
     private String speciality;
@@ -46,5 +47,4 @@ public class Doctor {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "appointmentId")
     private List<Appointment> appointments = new ArrayList<>();
-
 }
