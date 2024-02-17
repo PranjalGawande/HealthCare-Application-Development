@@ -27,3 +27,4 @@ public class Login {
     @Column
     private String role;
 }
+

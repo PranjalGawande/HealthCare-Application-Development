@@ -12,13 +12,13 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "receptionist")
-public class Receptionist {
+@Table(name = "staff")
+public class Staff {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "receptionistId")
-    private Integer receptionistId;
+    @Column(name = "staffId")
+    private Integer staffId;
 
     @Column(nullable = false)
     private String name;
@@ -38,4 +38,7 @@ public class Receptionist {
 
     @Column(name = "ABHA_ID")
     private String abhaId;
+
+    @Column(name = "role")
+    private String role;
 }

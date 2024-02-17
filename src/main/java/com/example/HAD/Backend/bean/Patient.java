@@ -1,4 +1,5 @@
 package com.example.HAD.Backend.bean;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,6 +44,11 @@ public class Patient {
     @Column
     private String abhaId;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")
     private List<Appointment> appointments = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<MedicalRecords> medicalRecords = new ArrayList<>();
 }

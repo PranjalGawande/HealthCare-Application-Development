@@ -1,6 +1,5 @@
 package com.example.HAD.Backend.service;
 
-import com.example.HAD.Backend.bean.Doctor;
 import com.example.HAD.Backend.bean.Login;
 import com.example.HAD.Backend.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,15 @@ public class LoginService {
         return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
     }
 
-    public Login RecpLogin(Login login) {
+    public Login StaffLogin(Login login) {
         return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
+    }
+
+    public Login AdminLogin(Login login) {
+        return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
+    }
+
+    public void addLogin(Login login) {
+        loginRepository.save(login);
     }
 }

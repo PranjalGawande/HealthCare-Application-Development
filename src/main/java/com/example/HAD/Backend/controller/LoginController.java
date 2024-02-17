@@ -2,7 +2,9 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.bean.Doctor;
 import com.example.HAD.Backend.bean.Login;
-import com.example.HAD.Backend.bean.Receptionist;
+import com.example.HAD.Backend.bean.Staff;
+import com.example.HAD.Backend.dto.DoctorDTO;
+import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,54 +21,69 @@ public class LoginController {
     private DoctorController doctorController;
 
     @Autowired
-    private ReceptioninstController receptioninstController;
+    private StaffController staffController;
 
     @Autowired
     private LoginService loginService;
 
-    @PostMapping("/doctor")
-    public ResponseEntity<Doctor> loginDoctor(@RequestBody Login login) {
-
-        if ( login == null || login.getEmail() == null || login.getPassword() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    @GetMapping("/doctor")
+    public ResponseEntity<DoctorDTO> loginDoctor(@RequestBody Login login) {
+        if (login == null || login.getEmail() == null || login.getPassword() == null) {
+            return ResponseEntity.badRequest().build();
         }
 
         Login loggedIn = loginService.docLogin(login);
 
-        if(loggedIn == null)
+        if (loggedIn == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        else
-        {
+        } else {
             Doctor doctorDetails = doctorController.getDoctorDetails(loggedIn.getEmail());
-            if (doctorDetails == null ) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-            else {
-                return ResponseEntity.ok().body(doctorDetails);
+            if (doctorDetails == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                DoctorDTO doctorDTO = new DoctorDTO(doctorDetails);
+                return ResponseEntity.ok(doctorDTO);
             }
         }
     }
 
-    @PostMapping("/receptionist")
-    public ResponseEntity<Receptionist> loginReceptionist(@RequestBody Login login) {
-
+    @GetMapping("/staff")
+    public ResponseEntity<StaffDTO> loginstaff(@RequestBody Login login) {
         if ( login == null || login.getEmail() == null || login.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        Login loggedIn = loginService.RecpLogin(login);
+        Login loggedIn = loginService.StaffLogin(login);
 
         if(loggedIn == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         else {
-            Receptionist receptionistDetail = receptioninstController.getReceptionistDetails(loggedIn.getEmail());
-            if (receptionistDetail == null) {
+            Staff staffDetail = staffController.getStaffDetails(login.getEmail());
+            if (staffDetail == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
             else {
-                return ResponseEntity.ok().body(receptionistDetail);
+                StaffDTO staffDTO = new StaffDTO(staffDetail);
+                return ResponseEntity.ok().body(staffDTO);
             }
         }
     }
+
+    @GetMapping("/admin")
+    public ResponseEntity<String> loginAdmin(@RequestBody Login login) {
+        if ( login == null || login.getEmail() == null || login.getPassword() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Login loggedIn = loginService.AdminLogin(login);
+
+        if(loggedIn == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        else {
+            return ResponseEntity.ok().body("Logged In Successfully");
+        }
+    }
 }
+
