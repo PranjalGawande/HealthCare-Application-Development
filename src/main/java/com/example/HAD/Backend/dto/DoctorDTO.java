@@ -21,6 +21,8 @@ public class DoctorDTO {
     private String gender;
     private String speciality;
     private Integer experience;
+    private String email;
+    private String mobileNo;
     private List<AppointmentDTO> appointmentsList = new ArrayList<AppointmentDTO>();
 
     public DoctorDTO(Doctor doctor) {
@@ -30,6 +32,7 @@ public class DoctorDTO {
         this.gender = doctor.getGender();
         this.speciality = doctor.getSpeciality();
         this.experience = doctor.getExperience();
+        this.mobileNo = doctor.getMobileNo();
 
         for (Appointment appointment : doctor.getAppointments()) {
             this.appointmentsList.add(new AppointmentDTO(appointment));

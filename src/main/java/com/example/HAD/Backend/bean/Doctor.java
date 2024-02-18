@@ -1,4 +1,5 @@
 package com.example.HAD.Backend.bean;
+import com.example.HAD.Backend.dto.DoctorDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,4 +53,13 @@ public class Doctor {
     @JsonIgnore
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<MedicalRecords> medicalRecords = new ArrayList<>();
+
+    public Doctor(DoctorDTO doctorDTO) {
+        this.name = doctorDTO.getName();
+        this.dob = doctorDTO.getDob();
+        this.gender = doctorDTO.getGender();
+        this.mobileNo = doctorDTO.getMobileNo();
+        this.speciality = doctorDTO.getSpeciality();
+        this.experience = doctorDTO.getExperience();
+    }
 }

@@ -26,4 +26,8 @@ public class LoginService {
     public void addLogin(Login login) {
         loginRepository.save(login);
     }
+
+    public Login getLoginByEmail(String email) {
+        return loginRepository.findByEmail(email);
+    }
 }

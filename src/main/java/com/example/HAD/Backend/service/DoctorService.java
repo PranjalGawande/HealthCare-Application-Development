@@ -15,4 +15,8 @@ public class DoctorService {
 
         return doctorRepository.findByLoginEmail(email);
     }
+
+    public void addDoctor(Doctor doctor) {
+        doctorRepository.save(doctor);
+    }
 }

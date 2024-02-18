@@ -14,4 +14,8 @@ public class StaffService {
     public Staff getStaffDetails(String email) {
         return staffRepository.findByLoginEmail(email);
     }
+
+    public void addStaff(Staff staff) {
+        staffRepository.save(staff);
+    }
 }

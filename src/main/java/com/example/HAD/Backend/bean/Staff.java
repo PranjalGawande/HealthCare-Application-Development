@@ -1,9 +1,12 @@
 package com.example.HAD.Backend.bean;
+import com.example.HAD.Backend.dto.StaffDTO;
+import com.example.HAD.Backend.service.LoginService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -32,7 +35,7 @@ public class Staff {
     @Column(nullable = false)
     private String gender;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email", referencedColumnName = "email")
     private Login login;
 
@@ -41,4 +44,13 @@ public class Staff {
 
     @Column(name = "role")
     private String role;
+
+    public Staff(StaffDTO staffDTO) {
+        this.name = staffDTO.getName();
+        this.dob = staffDTO.getDob();
+        this.gender = staffDTO.getGender();
+        this.abhaId = staffDTO.getAbhaId();
+        this.role = staffDTO.getRole();
+        this.mobileNo = staffDTO.getMobileNo();
+    }
 }
