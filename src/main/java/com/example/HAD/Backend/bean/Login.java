@@ -27,4 +27,3 @@ public class Login {
     @Column(nullable = false)
     private String role;
 }
-

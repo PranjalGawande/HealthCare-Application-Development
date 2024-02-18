@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PatientService {
+
     @Autowired
     private PatientRepository patientRepository;
 
     public Patient getPatientById(Integer patientId) {
-
         return  patientRepository.findPatientByPatientId(patientId);
     }
 }

@@ -12,7 +12,6 @@ public class DoctorService {
     private DoctorRepository doctorRepository;
 
     public Doctor getDoctorDetailsByEmail(String email) {
-
         return doctorRepository.findByLoginEmail(email);
     }
 
