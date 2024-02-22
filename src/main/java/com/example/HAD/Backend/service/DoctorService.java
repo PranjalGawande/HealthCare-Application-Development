@@ -22,4 +22,8 @@ public class DoctorService {
     public Doctor findDoctorById(Integer doctorId) {
         return doctorRepository.findDoctorById(doctorId);
     }
+
+    public void updateDoctor(Doctor doctor) {
+        doctorRepository.updateDoctor(doctor.getDoctorId(), doctor.getSpeciality(), doctor.getMobileNo(), doctor.getExperience());
+    }
 }

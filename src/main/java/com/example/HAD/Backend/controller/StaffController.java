@@ -160,4 +160,19 @@ public class StaffController {
 
         return ResponseEntity.ok().body(staffListDTOS);
     }
+
+    @PostMapping("/updateDoctor")
+    public ResponseEntity<String> updateDoctor(@RequestBody DoctorDTO doctorDTO) {
+        if(!staff.getRole().equals("admin")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Doctor doctor = doctorService.findDoctorById(doctorDTO.getDoctorId());
+        doctor.setSpeciality(doctorDTO.getSpeciality());
+        doctor.setExperience(doctorDTO.getExperience());
+        doctor.setMobileNo(doctorDTO.getMobileNo());
+
+        doctorService.updateDoctor(doctor);
+        return ResponseEntity.ok().body("Successfully updated Doctor Details");
+    }
 }

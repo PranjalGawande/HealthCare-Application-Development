@@ -33,6 +33,7 @@ public class DoctorDTO {
         this.speciality = doctor.getSpeciality();
         this.experience = doctor.getExperience();
         this.mobileNo = doctor.getMobileNo();
+        this.email = doctor.getLogin().getEmail();
 
         for (Appointment appointment : doctor.getAppointments()) {
             this.appointmentsList.add(new AppointmentDTO(appointment));
