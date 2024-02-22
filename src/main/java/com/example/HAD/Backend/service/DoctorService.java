@@ -18,4 +18,8 @@ public class DoctorService {
     public void addDoctor(Doctor doctor) {
         doctorRepository.save(doctor);
     }
+
+    public Doctor findDoctorById(Integer doctorId) {
+        return doctorRepository.findDoctorById(doctorId);
+    }
 }

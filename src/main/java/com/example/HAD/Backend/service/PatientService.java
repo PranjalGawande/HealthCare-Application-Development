@@ -14,4 +14,12 @@ public class PatientService {
     public Patient getPatientById(Integer patientId) {
         return  patientRepository.findPatientByPatientId(patientId);
     }
+
+    public void addPatient(Patient patient) {
+        patientRepository.save(patient);
+    }
+
+    public Patient findPatientById(Integer patientId) {
+        return patientRepository.findPatientByPatientId(patientId);
+    }
 }

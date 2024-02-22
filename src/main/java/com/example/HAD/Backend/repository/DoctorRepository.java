@@ -11,4 +11,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
     @Query("SELECT d FROM Doctor d WHERE d.login.email = :email")
     Doctor findByLoginEmail(@Param("email") String email);
+
+    @Query("SELECT d from Doctor d WHERE d.doctorId = :doctorId")
+    Doctor findDoctorById(@Param("doctorId") Integer doctorId);
 }
