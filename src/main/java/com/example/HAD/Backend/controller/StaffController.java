@@ -108,4 +108,30 @@ public class StaffController {
         appointmentService.addAppointment(appointment);
         return ResponseEntity.ok().body("Successfully created a new Appointment");
     }
+
+    @PostMapping("/deactivateStaff/{email}")
+    public ResponseEntity<String> deactivateStaff(@PathVariable("email") String email) {
+        if(!staff.getRole().equals("admin")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Login login = loginService.getLoginByEmail(email);
+        login.setStatus(false);
+
+        loginService.setLogin(login);
+        return ResponseEntity.ok().body("Successfully Deactivated Staff Account");
+    }
+
+    @PostMapping("/activateStaff/{email}")
+    public ResponseEntity<String> activateStaff(@PathVariable("email") String email) {
+        if(!staff.getRole().equals("admin")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Login login = loginService.getLoginByEmail(email);
+        login.setStatus(true);
+
+        loginService.setLogin(login);
+        return ResponseEntity.ok().body("Successfully Activated Staff Account");
+    }
 }

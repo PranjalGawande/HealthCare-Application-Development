@@ -30,4 +30,8 @@ public class LoginService {
     public Login getLoginByEmail(String email) {
         return loginRepository.findByEmail(email);
     }
+
+    public void setLogin(Login login) {
+        loginRepository.updateLoginDetail(login.getUserId(), login.getEmail());
+    }
 }
