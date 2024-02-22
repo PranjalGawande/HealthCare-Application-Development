@@ -2,12 +2,16 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.bean.*;
 import com.example.HAD.Backend.dto.DoctorDTO;
+import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
+import com.example.HAD.Backend.dto.StaffListDTO;
 import com.example.HAD.Backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:9191")
@@ -133,5 +137,27 @@ public class StaffController {
 
         loginService.setLogin(login);
         return ResponseEntity.ok().body("Successfully Activated Staff Account");
+    }
+
+    @GetMapping("/doctorList")
+    public ResponseEntity<List<DoctorListDTO>> doctorList() {
+        if(!staff.getRole().equals("admin")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        List<DoctorListDTO> doctorListDTOS = loginService.getDoctorList();
+
+        return ResponseEntity.ok().body(doctorListDTOS);
+    }
+
+    @GetMapping("/StaffList")
+    public ResponseEntity<List<StaffListDTO>> staffList() {
+        if(!staff.getRole().equals("admin")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        List<StaffListDTO> staffListDTOS = loginService.getStaffList();
+
+        return ResponseEntity.ok().body(staffListDTOS);
     }
 }

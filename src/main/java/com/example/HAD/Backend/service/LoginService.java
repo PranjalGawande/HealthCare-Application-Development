@@ -1,9 +1,14 @@
 package com.example.HAD.Backend.service;
 
+import com.example.HAD.Backend.bean.Doctor;
 import com.example.HAD.Backend.bean.Login;
+import com.example.HAD.Backend.dto.DoctorListDTO;
+import com.example.HAD.Backend.dto.StaffListDTO;
 import com.example.HAD.Backend.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class LoginService {
@@ -33,5 +38,13 @@ public class LoginService {
 
     public void setLogin(Login login) {
         loginRepository.updateLoginDetail(login.getUserId(), login.getEmail());
+    }
+
+    public List<DoctorListDTO> getDoctorList() {
+        return loginRepository.getDoctors();
+    }
+
+    public List<StaffListDTO> getStaffList() {
+        return loginRepository.getStaffs();
     }
 }
