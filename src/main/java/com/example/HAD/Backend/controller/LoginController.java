@@ -34,12 +34,12 @@ public class LoginController {
 
         Login loggedIn = loginService.docLogin(login);
 
-        if (loggedIn == null) {
+        if (loggedIn == null || !loggedIn.getStatus()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
             Doctor doctorDetails = doctorController.getDoctorDetails(loggedIn.getEmail());
             if (doctorDetails == null) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             } else {
                 DoctorDTO doctorDTO = new DoctorDTO(doctorDetails);
                 return ResponseEntity.ok(doctorDTO);
@@ -55,7 +55,7 @@ public class LoginController {
 
         Login loggedIn = loginService.StaffLogin(login);
 
-        if(loggedIn == null) {
+        if(loggedIn == null || !loggedIn.getStatus()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         else {

@@ -26,4 +26,7 @@ public class Login {
 
     @Column(nullable = false)
     private String role;
+
+    @Column(nullable = false)
+    private Boolean status;
 }

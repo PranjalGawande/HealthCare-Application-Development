@@ -8,6 +8,7 @@ import com.example.HAD.Backend.service.DoctorService;
 import com.example.HAD.Backend.service.MedicalRecordsService;
 import com.example.HAD.Backend.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @RequestMapping("/doctor")
 public class DoctorController {
 
-    private Integer doctorId;
+    private Doctor doctor;
 
     @Autowired
     private DoctorService doctorService;
@@ -31,8 +32,7 @@ public class DoctorController {
     private MedicalRecordsService medicalRecordsService;
 
     public Doctor getDoctorDetails(String email) {
-        Doctor doctor = doctorService.getDoctorDetailsByEmail(email);
-        doctorId = doctor.getDoctorId();
+        doctor = doctorService.getDoctorDetailsByEmail(email);
         return doctor;
     }
 
@@ -44,7 +44,7 @@ public class DoctorController {
 
     @GetMapping("/record/{patientId}")
     public ResponseEntity<List<MedicalRecordsDTO>> addPatientConsultationHistory(@PathVariable("patientId") Integer patientId) {
-        List<MedicalRecords> medicalRecords = medicalRecordsService.getPatientMedicalHistory(doctorId, patientId);
+        List<MedicalRecords> medicalRecords = medicalRecordsService.getPatientMedicalHistory(doctor.getDoctorId(), patientId);
 
         List<MedicalRecordsDTO> medicalRecordsDTO = new ArrayList<>();
         for (MedicalRecords record: medicalRecords) {
@@ -57,5 +57,27 @@ public class DoctorController {
         else {
             return ResponseEntity.ok().body(medicalRecordsDTO);
         }
+    }
+
+    @PostMapping("/{patientId}/addPatientRecord")
+    public ResponseEntity<String> addPatientConsultationRecord(@RequestBody MedicalRecords request, @PathVariable("patientId") Integer patientId) {
+        if (request == null || doctor == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unable to add this Record");
+        }
+
+        MedicalRecords medicalRecords = new MedicalRecords();
+
+        Patient patient = patientService.getPatientById(patientId);
+        medicalRecords.setPatient(patient);
+        medicalRecords.setDoctor(doctor);
+
+        medicalRecords.setMedicine(request.getMedicine());
+        medicalRecords.setPulse(request.getPulse());
+        medicalRecords.setBloodPressure(request.getBloodPressure());
+        medicalRecords.setOxygenLevel(request.getOxygenLevel());
+        medicalRecords.setSymptoms(request.getSymptoms());
+
+        medicalRecordsService.addPatientConsultation(medicalRecords);
+        return ResponseEntity.ok().body("Medical Records added successfully");
     }
 }

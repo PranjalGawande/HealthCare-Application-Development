@@ -17,4 +17,8 @@ public class MedicalRecordsService {
         List<MedicalRecords> medicalRecords = medicalRecordsRepository.getPatientHistory(doctorId, patientId);
         return medicalRecords;
     }
+
+    public void addPatientConsultation(MedicalRecords medicalRecords) {
+        medicalRecordsRepository.save(medicalRecords);
+    }
 }
