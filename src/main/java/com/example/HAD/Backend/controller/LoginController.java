@@ -82,7 +82,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         else {
-
+            Staff staffDetail = staffController.getStaffDetails(login.getEmail());
             return ResponseEntity.ok().body("Logged In Successfully");
         }
     }

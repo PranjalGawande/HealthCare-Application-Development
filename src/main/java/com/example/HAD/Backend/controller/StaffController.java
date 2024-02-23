@@ -150,7 +150,7 @@ public class StaffController {
         return ResponseEntity.ok().body(doctorListDTOS);
     }
 
-    @GetMapping("/StaffList")
+    @GetMapping("/staffList")
     public ResponseEntity<List<StaffListDTO>> staffList() {
         if(!staff.getRole().equals("admin")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -167,7 +167,7 @@ public class StaffController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        Doctor doctor = doctorService.findDoctorById(doctorDTO.getDoctorId());
+        Doctor doctor = doctorService.getDoctorDetailsByEmail(doctorDTO.getEmail());
         doctor.setSpeciality(doctorDTO.getSpeciality());
         doctor.setExperience(doctorDTO.getExperience());
         doctor.setMobileNo(doctorDTO.getMobileNo());
