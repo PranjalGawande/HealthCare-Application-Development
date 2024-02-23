@@ -19,7 +19,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/add-doctor" element={<AddDoctorForm />} />
-            <Route path="/admin/add-receptionist" element={<AddStaffForm />} />
+            <Route path="/admin/add-staff" element={<AddStaffForm />} />
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
         </Routes>

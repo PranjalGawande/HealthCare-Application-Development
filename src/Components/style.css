@@ -1,0 +1,40 @@
+.navbar {
+    height: 80px;
+}
+
+.playfair-display {
+    font-family: "Playfair Display", serif;
+    font-size: xx-large;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.background {
+    margin-top: 5%;
+}
+
+.glass-background{
+
+    height: 700px;
+    width: 600px;
+    background: linear-gradient(135deg, rgba(224, 224, 224, 0.761), rgb(169, 169, 169));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border:1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.text-login {
+    font-size: 100px;
+    font-weight: 500;
+    font-family:Arial, Helvetica, sans-serif;
+    color: #000000;
+}
+
+.form-label {
+    font-size: 30px;
+    font-weight: bold;
+    font-family:Arial, Helvetica, sans-serif;
+    color: #000000;
+}
