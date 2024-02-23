@@ -8,6 +8,7 @@ import DoctorDashboard from './Components/DoctorDashboard';
 import ReceptionistDashboard from './Components/ReceptionistDashboard';
 import AddDoctorForm from './Components/AddDoctorForm';
 import AddStaffForm from './Components/AddStaffForm';
+import ViewDoctors from './Components/ViewDoctors';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/admin/add-staff" element={<AddStaffForm />} />
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
+            <Route path="/staff/doctorList" element={<ReceptionistDashboard />} />
         </Routes>
     </Router>
     </div>
