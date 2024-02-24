@@ -143,18 +143,126 @@
 
 
 
+// import React, { useState } from "react";
+// import axios from "axios"; 
+// import TextField from '@mui/material/TextField';
+// import MenuItem from '@mui/material/MenuItem';
+// import { useNavigate } from 'react-router-dom'
+
+// const LoginForm = () => {
+//   let navigate=useNavigate()
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [role, setRole] = useState("");
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await axios.get(`http://localhost:9191/login/${role}`, { email, password });
+//       console.log("Response submitted:", response.data); // Print response to console
+//       // Redirect user to dashboard or perform other actions based on the response
+//       if (role === "doctor") {
+//         navigate("/doctor"); // Navigate to doctor dashboard
+//       } else if (role === "staff") {
+//         navigate("/staff"); // Navigate to staff dashboard
+//       } else if (role === "admin") {
+//         navigate("/admin"); // Navigate to admin dashboard
+//       } else {
+//         // Handle invalid role
+//       }
+//     } catch (error) {
+//       console.error("Login failed:", error);
+//       // Handle login failure, display error message, etc.
+//     }
+//   };
+
+//   const handleRoleChange = (e) => {
+//     const selectedRole = e.target.value;
+//     setRole(selectedRole);
+//   };
+
+//   return (
+//     <div className= "background" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
+//       <div className='flex h:[100vh] justifycontent:center'>
+//         <div>------------------------</div>
+//         <h2 > ENTER DETAILS </h2>
+//         <div>------------------------</div>
+//       </div>
+//       <form style={{ width: '25%', marginTop: '2rem' }} onSubmit={handleSubmit}>
+//         <TextField
+//           id="email"
+//           label="Email"
+//           variant="outlined"
+//           size="medium"
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//           style={{ marginBottom: '2rem', width: '100%' }}
+//         />
+//         <TextField
+//           id="password"
+//           label="Password"
+//           variant="outlined"
+//           size="medium"
+//           type="password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//           style={{ marginBottom: '2rem', width: '100%' }}
+//         />
+//         <TextField
+//           id="role"
+//           select
+//           label="Role"
+//           variant="outlined"
+//           size="medium"
+//           value={role}
+//           onChange={handleRoleChange}
+//           style={{ marginBottom: '2rem', width: '100%' }}
+//         >
+//           <MenuItem value="doctor">Doctor</MenuItem>
+//           <MenuItem value="staff">Staff</MenuItem>
+//           <MenuItem value="admin">Admin</MenuItem>
+//         </TextField>
+//         <button type="submit" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-8 py-3 text-center me-2 mb-2">Login</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default LoginForm;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 import React, { useState } from "react";
-import axios from "axios"; // Import Axios library
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios"; 
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
-  let navigate=useNavigate()
+  let navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
@@ -162,15 +270,18 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`http://localhost:9191/login/${role}`);
+      const response = await axios.post(`http://localhost:9191/login/${role}`, {
+        email: email,
+        password: password
+      });
       console.log("User Logged In:", response.data);
-      // Redirect user to dashboard or perform other actions based on the response
-      if (role === "staff") {
+      // Redirect user to appropriate dashboard or perform other actions based on the response
+      if (role === "doctor") {
+        navigate("/doctor"); // Navigate to doctor dashboard
+      } else if (role === "staff") {
+        navigate("/staff"); // Navigate to staff dashboard
+      } else if (role === "admin") {
         navigate("/admin"); // Navigate to admin dashboard
-      } else if (role === "receptionist") {
-        navigate("/receptionist"); // Navigate to receptionist dashboard
-      } else if (role === "doctor") {
-        navigate("/doctor"); // Navigate to lab technician dashboard
       } else {
         // Handle invalid role
       }
@@ -181,14 +292,11 @@ const LoginForm = () => {
   };
 
   const handleRoleChange = (e) => {
-    const selectedRole = e.target.value;
-    setRole(selectedRole);
-    // Automatically submit the form when a role is selected
-    handleSubmit(e);
+    setRole(e.target.value);
   };
 
   return (
-    <div className= "background" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
+    <div className="background" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
       <div className='flex h:[100vh] justifycontent:center'>
         <div>------------------------</div>
         <h2 > ENTER DETAILS </h2>
@@ -224,8 +332,8 @@ const LoginForm = () => {
           onChange={handleRoleChange}
           style={{ marginBottom: '2rem', width: '100%' }}
         >
-          <MenuItem value="staff">Admin</MenuItem>
-          <MenuItem value="receptionist">Receptionist</MenuItem>
+          <MenuItem value="admin">Admin</MenuItem>
+          <MenuItem value="staff">Receptionist</MenuItem>
           <MenuItem value="doctor">Doctor</MenuItem>
         </TextField>
         <button type="submit" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-8 py-3 text-center me-2 mb-2">Login</button>
