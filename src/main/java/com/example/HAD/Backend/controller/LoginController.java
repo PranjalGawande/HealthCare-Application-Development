@@ -70,7 +70,8 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/admin")
+//    @GetMapping("/admin")
+    @PostMapping("/admin")
     public ResponseEntity<String> loginAdmin(@RequestBody Login login) {
         if ( login == null || login.getEmail() == null || login.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
