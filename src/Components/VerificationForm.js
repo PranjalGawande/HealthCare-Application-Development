@@ -1,7 +1,7 @@
 import React from 'react'
 import FormVeri from './FormV'
 
-export const VerificationForm = () => {
+const VerificationForm = () => {
   return (
     <div className='flex justify-center items-center'>
       <div className='flex justify-center items-center mt-10 ml-20 pl-10 pr-10 pt-20' >
@@ -13,3 +13,5 @@ export const VerificationForm = () => {
     </div>
   )
 }
+
+export default VerificationForm;

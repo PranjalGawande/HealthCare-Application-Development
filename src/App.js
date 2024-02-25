@@ -9,6 +9,11 @@ import ReceptionistDashboard from './Components/ReceptionistDashboard';
 import AddDoctorForm from './Components/AddDoctorForm';
 import AddStaffForm from './Components/AddStaffForm';
 import ViewDoctors from './Components/ViewDoctors';
+import HospitalFormLayout from './Components/HospitalFormLayout';
+import VerificationForm from './Components/VerificationForm';
+import { DoctorAppointment } from './Components/DoctorAppointment';
+import { ConsultationForm } from './Components/ConsultationForm';
+import { PatientHistory } from './Components/PatientHistory';
 
 function App() {
 
@@ -24,6 +29,11 @@ function App() {
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
             <Route path="/staff/doctorList" element={<ReceptionistDashboard />} />
+            <Route path="/abhaCreation" element={<HospitalFormLayout />} />
+            <Route path="/abhaVerification" element={<VerificationForm />} />
+            <Route path="/doctorAppointment" element={<DoctorAppointment />} />
+            <Route path="/consultationForm" element={<ConsultationForm />} />
+            <Route path="/patientHistory" element={<PatientHistory />} />
         </Routes>
     </Router>
     </div>

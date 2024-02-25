@@ -279,7 +279,7 @@ const LoginForm = () => {
       if (role === "doctor") {
         navigate("/doctor"); // Navigate to doctor dashboard
       } else if (role === "staff") {
-        navigate("/staff"); // Navigate to staff dashboard
+        navigate("/receptionist"); // Navigate to staff dashboard
       } else if (role === "admin") {
         navigate("/admin"); // Navigate to admin dashboard
       } else {
