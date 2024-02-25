@@ -1,6 +1,5 @@
 package com.example.HAD.Backend.repository;
 
-import com.example.HAD.Backend.bean.Doctor;
 import com.example.HAD.Backend.bean.Login;
 import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.dto.StaffListDTO;
@@ -15,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Integer> {
-
+    @Query("SELECT l from Login l WHERE l.email = :email AND l.password = :password")
     Login findByEmailAndPassword(String email, String password);
 
     @Query("SELECT l from Login l WHERE l.email = :email")

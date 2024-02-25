@@ -26,8 +26,7 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-//    @GetMapping("/doctor")
-@PostMapping("/doctor")
+    @PostMapping("/doctor")
     public ResponseEntity<DoctorDTO> loginDoctor(@RequestBody Login login) {
         if (login == null || login.getEmail() == null || login.getPassword() == null) {
             return ResponseEntity.badRequest().build();
@@ -48,7 +47,6 @@ public class LoginController {
         }
     }
 
-//    @GetMapping("/staff")
     @PostMapping("/staff")
     public ResponseEntity<StaffDTO> loginstaff(@RequestBody Login login) {
         if ( login == null || login.getEmail() == null || login.getPassword() == null) {
@@ -72,7 +70,6 @@ public class LoginController {
         }
     }
 
-//    @GetMapping("/admin")
     @PostMapping("/admin")
     public ResponseEntity<String> loginAdmin(@RequestBody Login login) {
         if ( login == null || login.getEmail() == null || login.getPassword() == null) {
