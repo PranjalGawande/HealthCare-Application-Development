@@ -29,7 +29,7 @@ public class LoginController {
     @PostMapping("/doctor")
     public ResponseEntity<DoctorDTO> loginDoctor(@RequestBody Login login) {
         if (login == null || login.getEmail() == null || login.getPassword() == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         Login loggedIn = loginService.docLogin(login);
