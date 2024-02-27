@@ -8,7 +8,7 @@ const ViewDoctors = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("/api/doctors"); // Assuming endpoint for fetching doctors is /api/doctors
+        const response = await axios.get("http://localhost:9191/staff/doctorList"); // Assuming endpoint for fetching doctors is /api/doctors
         setDoctors(response.data);
         setLoading(false);
       } catch (error) {

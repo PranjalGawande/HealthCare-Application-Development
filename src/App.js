@@ -28,7 +28,7 @@ function App() {
             <Route path="/admin/add-staff" element={<AddStaffForm />} />
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
-            <Route path="/staff/doctorList" element={<ReceptionistDashboard />} />
+            <Route path="/admin/view-doctor-info" element={<ViewDoctors />} />
             <Route path="/abhaCreation" element={<HospitalFormLayout />} />
             <Route path="/abhaVerification" element={<VerificationForm />} />
             <Route path="/doctorAppointment" element={<DoctorAppointment />} />
