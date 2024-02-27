@@ -1,26 +1,33 @@
 import React, {useState} from 'react'
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-	
-import { Select } from '@material-ui/core';
+import Select from '@mui/material/Select';
+// import { Select } from '@material-ui/core';
 import axios from 'axios';
 
 
-export const ADForm = () => {
+export const ADForm = (email) => {
 
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        name: '',
         gender: '',
         experience: '',
         speciality: '',
         address: '',
         dob: '',
-        phone: ''
+        phone: '',
+        email: email
       });
     
+      // const handleChange = (event) => {
+      //   setFormData({ ...formData, [event.target.id]: event.target.value });
+      // };
+
       const handleChange = (event) => {
-        setFormData({ ...formData, [event.target.id]: event.target.value });
+        const {id, value} = event.target;
+        console.log("Field ID:", id);
+        console.log("Field Value:", value);
+        setFormData({ ...formData, [id]: value});
       };
     
       const handleSubmit = async (event) => {
@@ -49,19 +56,11 @@ export const ADForm = () => {
       <form style={{ width: '50%', marginTop: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <TextField
-            id="first-name"
-            label="First name"
+            id="name"
+            label="Name"
             variant="outlined"
             size="small"
-            style={{ marginBottom: '2rem', width: '48%' }}
-            onChange={handleChange}
-          />
-          <TextField
-            id="last-name"
-            label="Last name"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: '2rem', width: '48%' }}
+            style={{ marginBottom: '2rem', width: '100%' }}
             onChange={handleChange}
           />
         </div>
