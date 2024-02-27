@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+	
+import { Select } from '@material-ui/core';
 import axios from 'axios';
 
 
@@ -64,7 +66,7 @@ export const ADForm = () => {
           />
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <TextField
+          {/* <TextField
             id="gender"
             select
             label="Gender"
@@ -76,7 +78,19 @@ export const ADForm = () => {
             <MenuItem value="male">Male</MenuItem>
             <MenuItem value="female">Female</MenuItem>
             <MenuItem value="other">Other</MenuItem>
-          </TextField>
+          </TextField> */}
+          <Select
+          id="gender"
+          value={formData.gender}
+          onChange={handleChange}
+          variant="outlined"
+          size="small"
+          sx={{ marginTop: 35, width: 250 }}
+        >
+          <MenuItem value="male">Male</MenuItem>
+          <MenuItem value="female">Female</MenuItem>
+          <MenuItem value="other">Other</MenuItem>
+        </Select>
           <TextField
             id="experience"
             label="Experience"
