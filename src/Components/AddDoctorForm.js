@@ -29,9 +29,11 @@ import Navbar from './Navbar';
 
 const AddDoctorForm = () => {
     const [loginSuccess, setLoginSuccess] = useState(false);
+    const [email, setEmail] = useState('');
 
     // Function to handle successful submission of login credentials
-    const handleLoginSuccess = () => {
+    const handleLoginSuccess = (email) => {
+      setEmail(email);
         setLoginSuccess(true);
     };
 
@@ -44,7 +46,7 @@ const AddDoctorForm = () => {
                 </div>
                 <div className='flex justify-center items-center mt-20 pt-10' >
                     {!loginSuccess && <AddLoginCred onSuccess={handleLoginSuccess}  />}
-                    {loginSuccess && <ADForm />}
+                    {loginSuccess && <ADForm email={email}/>}
                 </div>
             </div>
         </div>

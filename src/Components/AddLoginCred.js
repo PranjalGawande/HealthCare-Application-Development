@@ -185,7 +185,7 @@ const AddLoginCred = ({ onSuccess }) => {
       );
       console.log("Response from addLogin backend:", response.data);
   
-      onSuccess();
+      onSuccess(formData.email);
   
     } catch (error) {
       console.error("Error:", error);
