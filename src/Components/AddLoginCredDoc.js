@@ -162,7 +162,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 
-const AddLoginCred = ({ onSuccess }) => {
+const AddLoginCredDoc = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -196,7 +196,7 @@ const AddLoginCred = ({ onSuccess }) => {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div className="flex">
             <div>------------------------</div>
-            <h2> ENTER DETAILS </h2>
+            <h2> Enter Login Credentials </h2>
             <div>------------------------</div>
           </div>
           <form style={{ width: "50%", marginTop: "2rem" }} onSubmit={handleSubmit}>
@@ -230,4 +230,4 @@ const AddLoginCred = ({ onSuccess }) => {
       );
 };
 
-export default AddLoginCred;
+export default AddLoginCredDoc;

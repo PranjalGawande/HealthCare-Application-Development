@@ -14,6 +14,7 @@ import VerificationForm from './Components/VerificationForm';
 import DoctorAppointment from './Components/DoctorAppointment';
 import ConsultationForm from './Components/ConsultationForm';
 import { PatientHistory } from './Components/PatientHistory';
+import ViewStaff from './Components/ViewStaff';
 
 function App() {
 
@@ -29,11 +30,11 @@ function App() {
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
             <Route path="/admin/view-doctor-info" element={<ViewDoctors />} />
+            <Route path="/admin/view-receptionist-info" element={<ViewStaff />} />
             <Route path="/abhaCreation" element={<HospitalFormLayout />} />
             <Route path="/abhaVerification" element={<VerificationForm />} />
             <Route path="/doctorAppointment" element={<DoctorAppointment />} />
             <Route path="/consultationForm" element={<ConsultationForm />} />
-
             <Route path="/patientHistory" element={<PatientHistory />} />
         </Routes>
     </Router>

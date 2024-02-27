@@ -22,25 +22,25 @@ const ViewDoctors = () => {
 
   return (
     <div>
-      <h2>Doctor List</h2>
+      <h2 className="list-heading">Doctor List</h2>
       {loading ? (
         <div>Loading...</div>
       ) : (
         <table className="table shadow">
           <thead>
             <tr>
-              <th scope="col">ID</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
+              {/* <th scope="col">ID</th> */}
+              <th scope="col">Name</th>
+              <th scope="col">E-mail</th>
               <th scope="col">Speciality</th>
             </tr>
           </thead>
           <tbody>
             {doctors.map((doctor) => (
-              <tr key={doctor.id}>
-                <td>{doctor.id}</td>
-                <td>{doctor.firstName}</td>
-                <td>{doctor.lastName}</td>
+              <tr>
+                {/* <td>{doctor.id}</td> */}
+                <td>{doctor.name}</td>
+                <td>{doctor.email}</td>
                 <td>{doctor.speciality}</td>
               </tr>
             ))}

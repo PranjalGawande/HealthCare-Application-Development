@@ -24,7 +24,7 @@
 
 import React, { useState } from 'react';
 import { ADForm } from './ADForm';
-import AddLoginCred from './AddLoginCred';
+import AddLoginCredDoc from './AddLoginCredDoc';
 import Navbar from './Navbar';
 
 const AddDoctorForm = () => {
@@ -34,7 +34,7 @@ const AddDoctorForm = () => {
     // Function to handle successful submission of login credentials
     const handleLoginSuccess = (email) => {
       setEmail(email);
-        setLoginSuccess(true);
+      setLoginSuccess(true);
     };
 
     return (
@@ -45,7 +45,7 @@ const AddDoctorForm = () => {
                     <h1 className='font-bold text-6xl'>ADD NEW<br></br>DOCTOR</h1>
                 </div>
                 <div className='flex justify-center items-center mt-20 pt-10' >
-                    {!loginSuccess && <AddLoginCred onSuccess={handleLoginSuccess}  />}
+                    {!loginSuccess && <AddLoginCredDoc onSuccess={handleLoginSuccess}  />}
                     {loginSuccess && <ADForm email={email}/>}
                 </div>
             </div>
