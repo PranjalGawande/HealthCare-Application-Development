@@ -28,7 +28,7 @@ export const ADForm = () => {
           // Log formData before sending it to the backend
           console.log('Form Data:', formData);
 
-          const response = await axios.post('/api/add-doctor', formData);
+          const response = await axios.post('http://localhost:9191/admin/add-doctor', formData);
           console.log('Response from backend:', response.data);
           // Optionally handle success response
         } catch (error) {
