@@ -111,9 +111,11 @@ export const ADForm = () => {
         <TextField
           id="dob"
           label="Date of Birth"
+          type="date"
           variant="outlined"
           size="small"
           style={{ marginBottom: '2rem', width: '100%' }}
+          value={formData.dob}
           onChange={handleChange}
         />
         <TextField

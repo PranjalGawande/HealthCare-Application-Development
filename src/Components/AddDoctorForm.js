@@ -43,7 +43,7 @@ const AddDoctorForm = () => {
                     <h1 className='font-bold text-6xl'>ADD NEW<br></br>DOCTOR</h1>
                 </div>
                 <div className='flex justify-center items-center mt-20 pt-10' >
-                    {!loginSuccess && <AddLoginCred onSuccess={handleLoginSuccess} />}
+                    {!loginSuccess && <AddLoginCred onSuccess={handleLoginSuccess}  />}
                     {loginSuccess && <ADForm />}
                 </div>
             </div>
