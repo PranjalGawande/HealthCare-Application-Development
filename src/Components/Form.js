@@ -10,7 +10,7 @@ const AddressForm = () => {
       <h2 > ENTER DETAILS </h2>
       <div>------------------------</div>
       </div>
-      <form style={{ width: '50%', marginTop: '2rem' }}>
+      <form style={{ width: '40%', marginTop: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <TextField
             id="first-name"
@@ -51,6 +51,13 @@ const AddressForm = () => {
         <TextField
           id="phone"
           label="Phone"
+          variant="outlined"
+          size="small"
+          style={{ marginBottom: '2rem', width: '100%' }}
+        />
+        <TextField
+          id="abhaid"
+          label="Abha Id"
           variant="outlined"
           size="small"
           style={{ marginBottom: '2rem', width: '100%' }}
