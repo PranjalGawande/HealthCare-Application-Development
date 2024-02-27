@@ -43,17 +43,18 @@ public class StaffController {
 
     @PostMapping("/addLogin")
     public ResponseEntity<String> addLoginDetails(@RequestBody Login login) {
-        if (!staff.getRole().equals("admin")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if (staff == null || !staff.getRole().equals("admin")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid staff or role");
         }
 
         loginService.addLogin(login);
         return ResponseEntity.ok().body("Login Details added Successfully");
     }
 
+
     @PostMapping("/addDoctor")
     public ResponseEntity<String> addDoctorDetails(@RequestBody DoctorDTO doctorDTO) {
-        if(!staff.getRole().equals("admin")) {
+        if(staff == null || !staff.getRole().equals("admin")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
@@ -71,7 +72,7 @@ public class StaffController {
 
     @PostMapping("/addStaff")
     public ResponseEntity<String> addStaffdetails(@RequestBody StaffDTO staffDTO) {
-        if(!staff.getRole().equals("admin")) {
+        if(staff == null || !staff.getRole().equals("admin")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 

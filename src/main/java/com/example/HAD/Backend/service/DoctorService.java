@@ -26,4 +26,5 @@ public class DoctorService {
     public void updateDoctor(Doctor doctor) {
         doctorRepository.updateDoctor(doctor.getDoctorId(), doctor.getSpeciality(), doctor.getMobileNo(), doctor.getExperience());
     }
+
 }
