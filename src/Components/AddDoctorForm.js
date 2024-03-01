@@ -26,12 +26,22 @@ import React, { useState } from 'react';
 import { ADForm } from './ADForm';
 import AddLoginCredDoc from './AddLoginCredDoc';
 import Navbar from './Navbar';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AddDoctorForm = () => {
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [email, setEmail] = useState('');
+    let navigate = useNavigate();
 
-    // Function to handle successful submission of login credentials
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          // Redirect to login page if token doesn't exist
+          navigate("/");
+        }
+      }, []);
+
     const handleLoginSuccess = (email) => {
       setEmail(email);
       setLoginSuccess(true);

@@ -28,12 +28,21 @@ import React, { useState } from 'react';
 import { ASForm } from './ASForm';
 import AddLoginCredRec from './AddLoginCredRec';
 import Navbar from './Navbar';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AddStaffForm = () => {
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [email, setEmail] = useState('');
+    let navigate = useNavigate();
 
-    // Function to handle successful submission of login credentials
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/");
+        }
+      }, []);
+
     const handleLoginSuccess = (email) => {
       setEmail(email);
       setLoginSuccess(true);

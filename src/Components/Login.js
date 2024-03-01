@@ -260,6 +260,7 @@ import axios from "axios";
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid';
 
 const LoginForm = () => {
   let navigate = useNavigate();
@@ -270,24 +271,24 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = uuidv4();
       const response = await axios.post(`http://localhost:9191/login/${role}`, {
         email: email,
         password: password
       });
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
       console.log("User Logged In:", response.data);
-      // Redirect user to appropriate dashboard or perform other actions based on the response
+
       if (role === "doctor") {
-        navigate("/doctor"); // Navigate to doctor dashboard
+        navigate("/doctor"); 
       } else if (role === "staff") {
-        navigate("/receptionist"); // Navigate to staff dashboard
+        navigate("/receptionist"); 
       } else if (role === "admin") {
-        navigate("/admin"); // Navigate to admin dashboard
-      } else {
-        // Handle invalid role
+        navigate("/admin"); 
       }
     } catch (error) {
       console.error("Login failed:", error);
-      // Handle login failure, display error message, etc.
     }
   };
 

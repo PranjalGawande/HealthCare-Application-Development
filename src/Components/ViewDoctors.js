@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ViewDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // Redirect to login page if token doesn't exist
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("http://localhost:9191/staff/doctorList"); // Assuming endpoint for fetching doctors is /api/doctors
+        const response = await axios.get(
+          "http://localhost:9191/staff/doctorList"
+        ); // Assuming endpoint for fetching doctors is /api/doctors
         setDoctors(response.data);
         setLoading(false);
       } catch (error) {

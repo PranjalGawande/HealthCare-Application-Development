@@ -11,11 +11,20 @@
 
 
 import React from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import doctorImage from '../assets/doctor.png'; 
 
 export default function DoctorDashboard() {
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // Redirect to login page if token doesn't exist
+      navigate("/");
+    }
+  }, []);
+ 
 
   const handleConsultationForm = () => {
     // Navigate to the Abha ID Creation page

@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Table from 'react-bootstrap/Table';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ViewStaff = () => {
   const [staff, setStaff] = useState([]);
   const [loading, setLoading] = useState(true);
+  let navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          // Redirect to login page if token doesn't exist
+          navigate("/");
+        }
+      }, []);
 
   useEffect(() => {
     const fetchStaff = async () => {
