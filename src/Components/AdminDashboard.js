@@ -18,7 +18,7 @@ const AdminDashboard = () => {
       <div className="h-full flex justify-center items-center mt-20">
         <div className="flex justify-evenly items-center gap-40 mt-20 border-amber-300 border-solid ">
           <div className="border border-gray p-5 rounded-md bg-slate-200">
-            <img src={admin} className="w-64 h-64"></img>
+            <img src={admin} className=""></img>
           </div>
           <div className="flex flex-col gap-5 ">
             <NavLink
