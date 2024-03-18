@@ -36,7 +36,7 @@ public class LoginController {
             return ResponseEntity.badRequest().build();
         }
 
-        Login loggedIn = loginService.docLogin(login);
+        Login loggedIn = loginService.userLogin(login);
 
         if (loggedIn == null || !loggedIn.getStatus()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -57,7 +57,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        Login loggedIn = loginService.receptionistLogin(login);
+        Login loggedIn = loginService.userLogin(login);
 
         if(loggedIn == null || !loggedIn.getStatus()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -80,7 +80,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        Login loggedIn = loginService.AdminLogin(login);
+        Login loggedIn = loginService.userLogin(login);
 
         if(loggedIn == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

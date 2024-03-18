@@ -27,7 +27,7 @@ public class Admin {
     @Column(nullable = false, length = 10, unique = true)
     private String mobileNo;
 
-    @Column(nullable = false)
+    @Column
     private Date dob;
 
     @Column(nullable = false)
