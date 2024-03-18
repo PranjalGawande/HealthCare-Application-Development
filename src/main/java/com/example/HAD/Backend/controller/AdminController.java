@@ -2,7 +2,6 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.bean.*;
 import com.example.HAD.Backend.dto.DoctorDTO;
-import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.dto.StaffListDTO;
 import com.example.HAD.Backend.service.*;
@@ -11,19 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:9191")
-@RequestMapping("/staff")
-public class StaffController {
+@RequestMapping("/admin")
+public class AdminController {
 
-    private Boolean userAdmin = false;
-
-    private Staff staff;
+    private Admin staff;
 
     @Autowired
-    private StaffService staffService;
+    private AdminService adminService;
 
     @Autowired
     private LoginService loginService;
@@ -32,12 +30,10 @@ public class StaffController {
     private DoctorService doctorService;
 
     @Autowired
-    private PatientService patientService;
+    private ReceptionistService receptionistService;
 
-    @Autowired
-    private AppointmentService appointmentService;
-    public Staff getStaffDetails(String email) {
-        staff = staffService.getStaffDetails(email);
+    public Admin getAdminDetails(String email) {
+        staff = adminService.getAdminDetails(email);
         return staff;
     }
 
@@ -69,8 +65,8 @@ public class StaffController {
         return ResponseEntity.ok().body("Doctor Record Added Successfully");
     }
 
-    @PostMapping("/addStaff")
-    public ResponseEntity<String> addStaffdetails(@RequestBody StaffDTO staffDTO) {
+    @PostMapping("/addAdmin")
+    public ResponseEntity<String> addAdminDetails(@RequestBody StaffDTO staffDTO) {
         if(!staff.getRole().equals("admin")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -80,37 +76,30 @@ public class StaffController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login details not found for the provided email.");
         }
 
-        Staff staff = new Staff(staffDTO);
-        staff.setLogin(login);
+        Admin admin = new Admin(staffDTO);
+        admin.setLogin(login);
 
-        staffService.addStaff(staff);
-        return ResponseEntity.ok().body("Staff Record Added Successfully");
+        adminService.addAdmin(admin);
+        return ResponseEntity.ok().body("Admin Record Added Successfully");
     }
 
-    @PostMapping("/addPatient")
-    public ResponseEntity<String> addPatientDetails(@RequestBody Patient patient) {
-        if(!staff.getRole().equals("receptionist")) {
+    @PostMapping("/addReceptionist")
+    public ResponseEntity<String> addReceptionistDetails(@RequestBody StaffDTO staffDTO) {
+        if(!staff.getRole().equals("admin")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        patientService.addPatient(patient);
-        return ResponseEntity.ok().body("Successfully added New Patient Record");
-    }
-
-    @PostMapping("/addAppointment/{patientId}/{doctorId}")
-    public ResponseEntity<String> addAppointment(@PathVariable("patientId") Integer patientId, @PathVariable("doctorId") Integer doctorId, @RequestBody Appointment appointment) {
-        if (!staff.getRole().equals("receptionist")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        Login login = loginService.getLoginByEmail(staffDTO.getEmail());
+        if (login == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login details not found for the provided email.");
         }
 
-        Doctor doctor = doctorService.findDoctorById(doctorId);
-        appointment.setDoctor(doctor);
 
-        Patient patient = patientService.findPatientById(patientId);
-        appointment.setPatient(patient);
+        Receptionist receptionist = new Receptionist(staffDTO);
+        receptionist.setLogin(login);
 
-        appointmentService.addAppointment(appointment);
-        return ResponseEntity.ok().body("Successfully created a new Appointment");
+        receptionistService.addReceptionist(receptionist);
+        return ResponseEntity.ok().body("Receptionist Record Added Successfully");
     }
 
     @PostMapping("/deactivateStaff/{email}")
@@ -139,24 +128,18 @@ public class StaffController {
         return ResponseEntity.ok().body("Successfully Activated Staff Account");
     }
 
-    @GetMapping("/doctorList")
-    public ResponseEntity<List<DoctorListDTO>> doctorList() {
-        if(!staff.getRole().equals("admin")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
-        List<DoctorListDTO> doctorListDTOS = loginService.getDoctorList();
-
-        return ResponseEntity.ok().body(doctorListDTOS);
-    }
-
     @GetMapping("/staffList")
     public ResponseEntity<List<StaffListDTO>> staffList() {
         if(!staff.getRole().equals("admin")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        List<StaffListDTO> staffListDTOS = loginService.getStaffList();
+        List<StaffListDTO> adminListDTOS = adminService.getAdminList();
+        List<StaffListDTO> receptionistListDTOS = receptionistService.getRecetionistList();
+
+        List<StaffListDTO> staffListDTOS = new ArrayList<>();
+        staffListDTOS.addAll(adminListDTOS);
+        staffListDTOS.addAll(receptionistListDTOS);
 
         return ResponseEntity.ok().body(staffListDTOS);
     }
@@ -174,5 +157,18 @@ public class StaffController {
 
         doctorService.updateDoctor(doctor);
         return ResponseEntity.ok().body("Successfully updated Doctor Details");
+    }
+
+    @PostMapping("/updateReceptionist")
+    public ResponseEntity<String> updateReceptionist(@RequestBody StaffDTO staffDTO) {
+        if(!staff.getRole().equals("admin")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Receptionist receptionist = receptionistService.getReceptionistDetails(staffDTO.getEmail());
+        receptionist.setMobileNo(staffDTO.getMobileNo());
+
+        receptionistService.updateReceptionist(receptionist);
+        return ResponseEntity.ok().body("Successfully updated Receptionist Details");
     }
 }

@@ -2,7 +2,8 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.bean.Doctor;
 import com.example.HAD.Backend.bean.Login;
-import com.example.HAD.Backend.bean.Staff;
+import com.example.HAD.Backend.bean.Admin;
+import com.example.HAD.Backend.bean.Receptionist;
 import com.example.HAD.Backend.dto.DoctorDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.service.LoginService;
@@ -21,10 +22,13 @@ public class LoginController {
     private DoctorController doctorController;
 
     @Autowired
-    private StaffController staffController;
+    private AdminController adminController;
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private ReceptionistController receptionistController;
 
     @GetMapping("/doctor")
     public ResponseEntity<DoctorDTO> loginDoctor(@RequestBody Login login) {
@@ -47,24 +51,24 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/staff")
-    public ResponseEntity<StaffDTO> loginstaff(@RequestBody Login login) {
+    @GetMapping("/receptionist")
+    public ResponseEntity<StaffDTO> loginReceptionist(@RequestBody Login login) {
         if ( login == null || login.getEmail() == null || login.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        Login loggedIn = loginService.StaffLogin(login);
+        Login loggedIn = loginService.receptionistLogin(login);
 
         if(loggedIn == null || !loggedIn.getStatus()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         else {
-            Staff staffDetail = staffController.getStaffDetails(login.getEmail());
-            if (staffDetail == null) {
+            Receptionist receptionistDetail = receptionistController.getReceptionistDetails(login.getEmail());
+            if (receptionistDetail == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
             else {
-                StaffDTO staffDTO = new StaffDTO(staffDetail);
+                StaffDTO staffDTO = new StaffDTO(receptionistDetail);
                 return ResponseEntity.ok().body(staffDTO);
             }
         }
@@ -82,7 +86,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         else {
-            Staff staffDetail = staffController.getStaffDetails(login.getEmail());
+            Admin staffDetail = adminController.getAdminDetails(login.getEmail());
             return ResponseEntity.ok().body("Logged In Successfully");
         }
     }

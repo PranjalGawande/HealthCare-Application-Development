@@ -25,12 +25,4 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     @Modifying
     @Query("UPDATE Login l SET l.email = :email WHERE l.userId = :id")
     void updateLoginDetail(@Param("id") Integer id, @Param("email") String email);
-
-    @Query("SELECT new com.example.HAD.Backend.dto.DoctorListDTO(d.name, l.email, d.speciality) " +
-            "FROM Doctor d JOIN d.login l")
-    List<DoctorListDTO> getDoctors();
-
-    @Query("SELECT new com.example.HAD.Backend.dto.StaffListDTO(s.name, l.email, l.role) " +
-            "FROM Staff s JOIN s.login l")
-    List<StaffListDTO> getStaffs();
 }

@@ -20,7 +20,7 @@ public class LoginService {
         return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
     }
 
-    public Login StaffLogin(Login login) {
+    public Login receptionistLogin(Login login) {
         return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
     }
 
@@ -38,13 +38,5 @@ public class LoginService {
 
     public void setLogin(Login login) {
         loginRepository.updateLoginDetail(login.getUserId(), login.getEmail());
-    }
-
-    public List<DoctorListDTO> getDoctorList() {
-        return loginRepository.getDoctors();
-    }
-
-    public List<StaffListDTO> getStaffList() {
-        return loginRepository.getStaffs();
     }
 }

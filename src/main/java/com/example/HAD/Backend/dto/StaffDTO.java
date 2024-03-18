@@ -1,10 +1,7 @@
 package com.example.HAD.Backend.dto;
 
-import com.example.HAD.Backend.bean.Login;
-import com.example.HAD.Backend.bean.Staff;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import com.example.HAD.Backend.bean.Admin;
+import com.example.HAD.Backend.bean.Receptionist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +23,19 @@ public class StaffDTO {
     private String role;
     private String email;
 
-    public StaffDTO(Staff staff) {
-        this.staffId = staff.getStaffId();
+    public StaffDTO(Admin staff) {
+        this.staffId = staff.getAdminId();
+        this.dob = staff.getDob();
+        this.name = staff.getName();
+        this.mobileNo = staff.getMobileNo();
+        this.gender = staff.getGender();
+        this.abhaId = staff.getAbhaId();
+        this.role = staff.getRole();
+        this.email = staff.getLogin().getEmail();
+    }
+
+    public StaffDTO(Receptionist staff) {
+        this.staffId = staff.getReceptionistId();
         this.dob = staff.getDob();
         this.name = staff.getName();
         this.mobileNo = staff.getMobileNo();

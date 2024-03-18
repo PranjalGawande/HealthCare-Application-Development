@@ -1,12 +1,10 @@
 package com.example.HAD.Backend.bean;
 import com.example.HAD.Backend.dto.StaffDTO;
-import com.example.HAD.Backend.service.LoginService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -15,13 +13,13 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "staff")
-public class Staff {
+@Table(name = "admin")
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staffId")
-    private Integer staffId;
+    @Column(name = "adminId")
+    private Integer adminId;
 
     @Column(nullable = false)
     private String name;
@@ -45,7 +43,7 @@ public class Staff {
     @Column(name = "role")
     private String role;
 
-    public Staff(StaffDTO staffDTO) {
+    public Admin(StaffDTO staffDTO) {
         this.name = staffDTO.getName();
         this.dob = staffDTO.getDob();
         this.gender = staffDTO.getGender();
