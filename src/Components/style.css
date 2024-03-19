@@ -10,6 +10,11 @@
     font-style: normal;
 }
 
+.main-background {
+    padding-bottom: 5px;
+    background-color: #f8faef;
+}
+
 .background {
     display: flex;
     align-items: center;

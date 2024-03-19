@@ -71,7 +71,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import loginImage from "../assets/login-page.jpg";
+import loginImage from "../assets/loginPage.jpg";
 
 const LoginForm = () => {
   let navigate = useNavigate();
@@ -108,7 +108,8 @@ const LoginForm = () => {
   };
 
   return (
-    // <div className="background" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}>
+    <div className="main-background">
+    {/* // <div className="background" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}> */}
     <div className="container background d-flex align-items-center">
       <div className="login-image">
       <img src={loginImage} alt="login" />
@@ -159,6 +160,7 @@ const LoginForm = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };
