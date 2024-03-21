@@ -1,6 +1,6 @@
 package com.example.HAD.Backend.dto;
 
-import com.example.HAD.Backend.bean.MedicalRecords;
+import com.example.HAD.Backend.entities.MedicalRecords;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

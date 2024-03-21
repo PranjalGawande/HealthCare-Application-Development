@@ -1,27 +1,25 @@
-package com.example.HAD.Backend.bean;
+package com.example.HAD.Backend.entities;
+
 import com.example.HAD.Backend.dto.StaffDTO;
-import com.example.HAD.Backend.service.LoginService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import java.util.Calendar;
 
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Entity
-@Table(name = "staff")
-public class Staff {
-
+@Table(name = "receptionist")
+public class Receptionist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staffId")
-    private Integer staffId;
+    @Column(name = "receptionistId")
+    private Integer receptionistId;
 
     @Column(nullable = false)
     private String name;
@@ -30,7 +28,7 @@ public class Staff {
     private String mobileNo;
 
     @Column(nullable = false)
-    private Date dob;
+    private Calendar dob;
 
     @Column(nullable = false)
     private String gender;
@@ -42,10 +40,10 @@ public class Staff {
     @Column(name = "ABHA_ID")
     private String abhaId;
 
-    @Column(name = "role")
-    private String role;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
-    public Staff(StaffDTO staffDTO) {
+    public Receptionist(StaffDTO staffDTO) {
         this.name = staffDTO.getName();
         this.dob = staffDTO.getDob();
         this.gender = staffDTO.getGender();

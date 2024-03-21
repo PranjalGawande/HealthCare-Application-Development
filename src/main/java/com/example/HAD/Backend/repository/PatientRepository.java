@@ -1,6 +1,6 @@
 package com.example.HAD.Backend.repository;
 
-import com.example.HAD.Backend.bean.Patient;
+import com.example.HAD.Backend.entities.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

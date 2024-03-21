@@ -1,14 +1,13 @@
 package com.example.HAD.Backend.service;
 
-import com.example.HAD.Backend.bean.Doctor;
-import com.example.HAD.Backend.bean.Login;
-import com.example.HAD.Backend.dto.DoctorListDTO;
-import com.example.HAD.Backend.dto.StaffListDTO;
+
+import com.example.HAD.Backend.entities.Login;
 import com.example.HAD.Backend.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class LoginService {
@@ -16,19 +15,31 @@ public class LoginService {
     @Autowired
     private LoginRepository loginRepository;
 
-    public Login docLogin(Login login) {
-        return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public Login StaffLogin(Login login) {
-        return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
-    }
+    @Autowired
+    private JwtService jwtService;
 
-    public Login AdminLogin(Login login) {
-        return loginRepository.findByEmailAndPassword(login.getEmail(), login.getPassword());
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    public String authenticate(Login request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        Login login = loginRepository.findByEmail(request.getEmail());
+        String token = jwtService.generateToken(login);
+
+        return token;
     }
 
     public void addLogin(Login login) {
+        login.setPassword(passwordEncoder.encode(login.getPassword()));
         loginRepository.save(login);
     }
 
@@ -37,14 +48,6 @@ public class LoginService {
     }
 
     public void setLogin(Login login) {
-        loginRepository.updateLoginDetail(login.getUserId(), login.getEmail());
-    }
-
-    public List<DoctorListDTO> getDoctorList() {
-        return loginRepository.getDoctors();
-    }
-
-    public List<StaffListDTO> getStaffList() {
-        return loginRepository.getStaffs();
+        loginRepository.updateLoginStatus(login.getUserId(), login.getStatus());
     }
 }

@@ -1,6 +1,5 @@
 package com.example.HAD.Backend.dto;
 
-import com.example.HAD.Backend.bean.Doctor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

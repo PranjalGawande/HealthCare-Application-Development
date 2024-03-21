@@ -1,4 +1,4 @@
-package com.example.HAD.Backend.bean;
+package com.example.HAD.Backend.entities;
 import com.example.HAD.Backend.dto.DoctorDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @AllArgsConstructor
@@ -31,7 +31,7 @@ public class Doctor {
     private String mobileNo;
 
     @Column(nullable = false)
-    private Date dob;
+    private Calendar dob;
 
     @Column(nullable = false)
     private String gender;
