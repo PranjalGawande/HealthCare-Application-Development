@@ -78,24 +78,30 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [token, setToken] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = uuidv4();
-      const response = await axios.post(`http://localhost:9191/login/${role}`, {
+      // const token = uuidv4();
+      const response = await axios.post(`http://localhost:9191/login/admin`, {
         email: email,
         password: password,
-      });
+    });
+      const responseData = response.data; // Accessing the data returned by the backend
+      const token = responseData.token; // Assuming the backend returns a token
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
-      console.log("User Logged In:", response.data);
+      console.log("User Logged In:", responseData);
+      // localStorage.setItem("token", token);
+      // localStorage.setItem("role", role);
+      // console.log("User Logged In:", response.data);
 
       if (role === "doctor") {
         navigate("/doctor");
       } else if (role === "staff") {
         navigate("/receptionist");
-      } else if (role === "admin") {
+      } else if (role === "ADMIN") {
         navigate("/admin");
       }
     } catch (error) {
@@ -147,7 +153,7 @@ const LoginForm = () => {
               onChange={handleRoleChange}
               style={{ marginBottom: "2rem", width: "100%" }}
             >
-              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="ADMIN">Admin</MenuItem>
               <MenuItem value="staff">Receptionist</MenuItem>
               <MenuItem value="doctor">Doctor</MenuItem>
             </TextField>

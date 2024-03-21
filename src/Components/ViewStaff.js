@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Table from 'react-bootstrap/Table';
+import Table from "react-bootstrap/Table";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -8,18 +8,26 @@ const ViewStaff = () => {
   const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          // Redirect to login page if token doesn't exist
-          navigate("/");
-        }
-      }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // Redirect to login page if token doesn't exist
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     const fetchStaff = async () => {
       try {
-        const response = await axios.get("http://localhost:9191/staff/staffList"); // Assuming endpoint for fetching doctors is /api/doctors
+        const response = await axios.get("http://localhost:9191/admin/staffList",
+          {
+            headers: headers,
+          }
+        );
         setStaff(response.data);
         setLoading(false);
       } catch (error) {
@@ -38,15 +46,15 @@ const ViewStaff = () => {
         <div>Loading...</div>
       ) : (
         <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">E-mail</th>
-                    <th scope="col">Role</th>
-                </tr>
-            </thead>
-      {/* <tbody> */}
-      <tbody>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">E-mail</th>
+              <th scope="col">Role</th>
+            </tr>
+          </thead>
+          {/* <tbody> */}
+          <tbody>
             {staff.map((staff) => (
               <tr>
                 {/* <td>{doctor.id}</td> */}
@@ -56,7 +64,7 @@ const ViewStaff = () => {
               </tr>
             ))}
           </tbody>
-        {/* <tr>
+          {/* <tr>
           <td>1</td>
           <td>Mark</td>
           <td>Otto</td>
@@ -73,8 +81,8 @@ const ViewStaff = () => {
           <td colSpan={2}>Larry the Bird</td>
           <td>@twitter</td>
             </tr> */}
-      {/* </tbody> */}
-    </Table>
+          {/* </tbody> */}
+        </Table>
         // <div className="d-flex justify-content-around">
         // <table className="table shadow mt-5 ">
         //   <thead>

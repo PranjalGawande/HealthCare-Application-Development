@@ -12,7 +12,7 @@ export default function Navbar() {
 
   const handleHome = () => {
     localStorage.getItem("role");
-    if (localStorage.getItem("role") === "admin") {
+    if (localStorage.getItem("role") === "ADMIN") {
       navigate("/admin");
     } 
     else if (localStorage.getItem("role") === "doctor") {

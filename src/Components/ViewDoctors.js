@@ -16,11 +16,18 @@ const ViewDoctors = () => {
   }, []);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     const fetchDoctors = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:9191/staff/doctorList"
-        ); // Assuming endpoint for fetching doctors is /api/doctors
+          "http://localhost:9191/receptionist/doctorList", 
+          {
+            headers: headers,
+          }
+        ); 
         setDoctors(response.data);
         setLoading(false);
       } catch (error) {
