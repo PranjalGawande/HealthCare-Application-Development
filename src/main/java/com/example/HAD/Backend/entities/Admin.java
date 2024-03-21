@@ -1,4 +1,4 @@
-package com.example.HAD.Backend.bean;
+package com.example.HAD.Backend.entities;
 import com.example.HAD.Backend.dto.StaffDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.util.Calendar;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +29,7 @@ public class Admin {
     private String mobileNo;
 
     @Column
-    private Date dob;
+    private Calendar dob;
 
     @Column(nullable = false)
     private String gender;
@@ -40,8 +41,8 @@ public class Admin {
     @Column(name = "ABHA_ID")
     private String abhaId;
 
-    @Column(name = "role")
-    private String role;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
     public Admin(StaffDTO staffDTO) {
         this.name = staffDTO.getName();

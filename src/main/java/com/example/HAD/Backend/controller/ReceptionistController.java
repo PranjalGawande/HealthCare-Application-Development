@@ -1,10 +1,9 @@
 package com.example.HAD.Backend.controller;
 
-import com.example.HAD.Backend.bean.*;
+import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +35,9 @@ public class ReceptionistController {
 
     @PostMapping("/addPatient")
     public ResponseEntity<String> addPatientDetails(@RequestBody Patient patient) {
-        if(!receptionist.getRole().equals("receptionist")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+//        if(!receptionist.getRole().equals("receptionist")) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
 
         patientService.addPatient(patient);
         return ResponseEntity.ok().body("Successfully added New Patient Record");
@@ -46,9 +45,9 @@ public class ReceptionistController {
 
     @PostMapping("/addAppointment/{patientId}/{doctorId}")
     public ResponseEntity<String> addAppointment(@PathVariable("patientId") Integer patientId, @PathVariable("doctorId") Integer doctorId, @RequestBody Appointment appointment) {
-        if (!receptionist.getRole().equals("receptionist")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+//        if (!receptionist.getRole().equals("receptionist")) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
 
         Doctor doctor = doctorService.findDoctorById(doctorId);
         appointment.setDoctor(doctor);
@@ -62,9 +61,9 @@ public class ReceptionistController {
 
     @GetMapping("/doctorList")
     public ResponseEntity<List<DoctorListDTO>> doctorList() {
-        if(!receptionist.getRole().equals("receptionist")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+//        if(!receptionist.getRole().equals("receptionist")) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
 
         List<DoctorListDTO> doctorListDTOS = doctorService.getDoctorList();
         return ResponseEntity.ok().body(doctorListDTOS);

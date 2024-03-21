@@ -1,6 +1,6 @@
 package com.example.HAD.Backend.service;
 
-import com.example.HAD.Backend.bean.Doctor;
+import com.example.HAD.Backend.entities.Doctor;
 import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;

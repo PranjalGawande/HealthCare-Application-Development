@@ -1,8 +1,8 @@
 package com.example.HAD.Backend.controller;
 
-import com.example.HAD.Backend.bean.Doctor;
-import com.example.HAD.Backend.bean.MedicalRecords;
-import com.example.HAD.Backend.bean.Patient;
+import com.example.HAD.Backend.entities.Doctor;
+import com.example.HAD.Backend.entities.MedicalRecords;
+import com.example.HAD.Backend.entities.Patient;
 import com.example.HAD.Backend.dto.MedicalRecordsDTO;
 import com.example.HAD.Backend.service.DoctorService;
 import com.example.HAD.Backend.service.MedicalRecordsService;
@@ -42,7 +42,7 @@ public class DoctorController {
         return ResponseEntity.ok().body(patient);
     }
 
-    @GetMapping("/record/{patientId}")
+    @GetMapping("/history/{patientId}")
     public ResponseEntity<List<MedicalRecordsDTO>> addPatientConsultationHistory(@PathVariable("patientId") Integer patientId) {
         List<MedicalRecords> medicalRecords = medicalRecordsService.getPatientMedicalHistory(doctor.getDoctorId(), patientId);
 

@@ -1,6 +1,6 @@
 package com.example.HAD.Backend.service;
 
-import com.example.HAD.Backend.bean.Patient;
+import com.example.HAD.Backend.entities.Patient;
 import com.example.HAD.Backend.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

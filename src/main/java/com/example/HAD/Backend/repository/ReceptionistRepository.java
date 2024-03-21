@@ -1,6 +1,6 @@
 package com.example.HAD.Backend.repository;
 
-import com.example.HAD.Backend.bean.Receptionist;
+import com.example.HAD.Backend.entities.Receptionist;
 import com.example.HAD.Backend.dto.StaffListDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

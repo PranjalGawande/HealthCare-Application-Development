@@ -1,7 +1,6 @@
 package com.example.HAD.Backend.service;
 
-
-import com.example.HAD.Backend.bean.Receptionist;
+import com.example.HAD.Backend.entities.Receptionist;
 import com.example.HAD.Backend.dto.StaffListDTO;
 import com.example.HAD.Backend.repository.ReceptionistRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.example.HAD.Backend.service;
 
-import com.example.HAD.Backend.bean.Admin;
+import com.example.HAD.Backend.entities.Admin;
 import com.example.HAD.Backend.dto.StaffListDTO;
 import com.example.HAD.Backend.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.example.HAD.Backend.repository;
 
-import com.example.HAD.Backend.bean.Admin;
+import com.example.HAD.Backend.entities.Admin;
 import com.example.HAD.Backend.dto.StaffListDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

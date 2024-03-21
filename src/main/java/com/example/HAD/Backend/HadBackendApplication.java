@@ -1,8 +1,9 @@
 package com.example.HAD.Backend;
 
 
-import com.example.HAD.Backend.bean.Admin;
-import com.example.HAD.Backend.bean.Login;
+import com.example.HAD.Backend.entities.Admin;
+import com.example.HAD.Backend.entities.Login;
+import com.example.HAD.Backend.entities.Role;
 import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.service.AdminService;
 import com.example.HAD.Backend.service.LoginService;
@@ -12,9 +13,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
-import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.Date;
+
+import java.util.Calendar;
+
 
 @SpringBootApplication
 public class HadBackendApplication {
@@ -25,43 +27,41 @@ public class HadBackendApplication {
 
 	@Component
 	class AdminInitializer implements CommandLineRunner {
-		private final LoginService loginService;
-		private final AdminService adminService;
 
 		@Autowired
-		public AdminInitializer(LoginService loginService, AdminService adminService) {
-			this.loginService = loginService;
-			this.adminService = adminService;
-		}
+		private LoginService loginService;
+
+		@Autowired
+		private AdminService adminService;
 
 		@Transactional
 		public void run(String... args) throws Exception {
 
-			Login login = loginService.getLoginByRole();
+			if(!adminService.getAdminList().isEmpty()) return;
 
-			if (login == null) {
-				Login staff = new Login();
-				staff.setEmail("hari@gmail.com");
-				staff.setPassword("Hari");
-				staff.setRole("superAdmin");
-				staff.setStatus(true);
+			Login staff = new Login();
+			staff.setEmail("hari@gmail.com");
+			staff.setPassword("Hari");
+			staff.setRole(Role.ADMIN);
+			staff.setStatus(true);
 
-				loginService.addLogin(staff);
+			loginService.addLogin(staff);
 
-				StaffDTO staffDetail = new StaffDTO();
-				staffDetail.setAbhaId("dfsjfvo3435");
-				staffDetail.setDob(new Date(1992, 8, 15));
-				staffDetail.setGender("Male");
-				staffDetail.setRole("superAdmin");
-				staffDetail.setName("Hari Prasad");
-				staffDetail.setMobileNo("9108888993");
-				staffDetail.setEmail("hari@gmail.com");
+			StaffDTO staffDetail = new StaffDTO();
+			staffDetail.setAbhaId("dfsjfvo3435");
+			Calendar dob = Calendar.getInstance();
+			dob.set(1992, 8, 15);
+			staffDetail.setDob(dob);
+			staffDetail.setGender("Male");
+			staffDetail.setRole(Role.ADMIN);
+			staffDetail.setName("Hari Prasad");
+			staffDetail.setMobileNo("9108888993");
+			staffDetail.setEmail("hari@gmail.com");
 
-				Admin admin = new Admin(staffDetail);
-				admin.setLogin(staff);
+			Admin admin = new Admin(staffDetail);
+			admin.setLogin(staff);
 
-				adminService.addAdmin(admin);
-			}
+			adminService.addAdmin(admin);
 		}
 	}
 }

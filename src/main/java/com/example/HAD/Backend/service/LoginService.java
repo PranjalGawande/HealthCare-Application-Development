@@ -1,10 +1,12 @@
 package com.example.HAD.Backend.service;
 
 
-import com.example.HAD.Backend.bean.Login;
+import com.example.HAD.Backend.entities.Login;
 import com.example.HAD.Backend.repository.LoginRepository;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,21 +15,31 @@ public class LoginService {
     @Autowired
     private LoginRepository loginRepository;
 
-    public Login userLogin(Login login) {
-        Login record = loginRepository.findByEmail(login.getEmail());
-        if (record != null) {
-            boolean validate = BCrypt.checkpw(login.getPassword(), record.getPassword());
-            if (!validate) {
-                record = null;
-            }
-        }
-        return record;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    public String authenticate(Login request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        Login login = loginRepository.findByEmail(request.getEmail());
+        String token = jwtService.generateToken(login);
+
+        return token;
     }
 
     public void addLogin(Login login) {
-        String hashed = BCrypt.hashpw(login.getPassword(), BCrypt.gensalt());
-        login.setPassword(hashed);
-
+        login.setPassword(passwordEncoder.encode(login.getPassword()));
         loginRepository.save(login);
     }
 
@@ -36,11 +48,6 @@ public class LoginService {
     }
 
     public void setLogin(Login login) {
-        loginRepository.updateLoginDetail(login.getUserId(), login.getEmail());
-    }
-
-    public Login getLoginByRole() {
-        String role = "superAdmin";
-        return loginRepository.findByRole(role);
+        loginRepository.updateLoginStatus(login.getUserId(), login.getStatus());
     }
 }

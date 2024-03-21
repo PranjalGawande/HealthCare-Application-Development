@@ -1,4 +1,4 @@
-package com.example.HAD.Backend.bean;
+package com.example.HAD.Backend.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

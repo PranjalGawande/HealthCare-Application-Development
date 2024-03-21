@@ -1,4 +1,4 @@
-package com.example.HAD.Backend.cros;
+package com.example.HAD.Backend.configuration;
 
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

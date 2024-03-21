@@ -1,4 +1,4 @@
-package com.example.HAD.Backend.bean;
+package com.example.HAD.Backend.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Time;
-import java.util.Date;
+import java.util.Calendar;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +27,7 @@ public class Appointment {
     private Integer tokenNo;
 
     @Column(nullable = false)
-    private Date date;
+    private Calendar date;
 
     @Column(nullable = false)
     private Time time;
