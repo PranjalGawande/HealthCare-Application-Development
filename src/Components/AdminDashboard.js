@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import { NavLink } from "react-router-dom";
 
 const AdminDashboard = () => {
+  const adminName = localStorage.getItem("name");
   let navigate = useNavigate();
   useEffect(() => {
+    
     const token = localStorage.getItem("token");
     if (!token) {
       // Redirect to login page if token doesn't exist
@@ -17,8 +19,9 @@ const AdminDashboard = () => {
     <div>
       <div className="h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
-          <div className="">
-            <img src={admin} className="admin-image"></img>
+          <div className="image-container">
+            <img src={admin} className="admin-image"/>
+            <div className="dashboard-name">{adminName}</div>
           </div>
           <div className="flex flex-col gap-5 ">
             

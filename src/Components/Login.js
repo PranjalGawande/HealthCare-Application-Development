@@ -85,12 +85,18 @@ const LoginForm = () => {
     try {
       // const token = uuidv4();
       const lowercaseRole = role.toLowerCase();
-      const response = await axios.post(`http://localhost:9191/login/${lowercaseRole}`, {
-        email: email,
-        password: password,
-    });
+      const response = await axios.post(
+        `http://localhost:9191/login/${lowercaseRole}`,
+        {
+          email: email,
+          password: password,
+        }
+      );
       const responseData = response.data; // Accessing the data returned by the backend
       const token = responseData.token; // Assuming the backend returns a token
+      const name = responseData.name;
+      
+      localStorage.setItem("name", name);
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
       console.log("User Logged In:", responseData);
@@ -116,58 +122,60 @@ const LoginForm = () => {
 
   return (
     <div className="main-background">
-    {/* // <div className="background" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}> */}
-    <div className="container background d-flex align-items-center">
-      <div className="login-image">
-      <img src={loginImage} alt="login" />
-      </div>
-      <div className="container glass-background">
-        <label className="text-login fw-bold text-center">LOGIN DETAILS</label>
-        <div className="login-form mx-5">
-          <form className="" onSubmit={handleSubmit}>
-            <TextField
-              id="email"
-              label="Email"
-              variant="outlined"
-              size="medium"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{ marginBottom: "2rem", width: "100%" }}
-            />
-            <TextField
-              id="password"
-              label="Password"
-              variant="outlined"
-              size="medium"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{ marginBottom: "2rem", width: "100%" }}
-            />
-            <TextField
-              id="role"
-              select
-              label="Role"
-              variant="outlined"
-              size="medium"
-              value={role}
-              onChange={handleRoleChange}
-              style={{ marginBottom: "2rem", width: "100%" }}
-            >
-              <MenuItem value="ADMIN">Admin</MenuItem>
-              <MenuItem value="Receptionist">Receptionist</MenuItem>
-              <MenuItem value="DOCTOR">Doctor</MenuItem>
-            </TextField>
-            <button
-              type="submit"
-              className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-8 py-3 text-center me-2 mb-2"
-            >
-              Login
-            </button>
-          </form>
+      {/* // <div className="background" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}> */}
+      <div className="container background d-flex align-items-center">
+        <div className="login-image">
+          <img src={loginImage} alt="login" />
+        </div>
+        <div className="container glass-background">
+          <label className="text-login fw-bold text-center">
+            LOGIN DETAILS
+          </label>
+          <div className="login-form mx-5">
+            <form className="" onSubmit={handleSubmit}>
+              <TextField
+                id="email"
+                label="Email"
+                variant="outlined"
+                size="medium"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={{ marginBottom: "2rem", width: "100%" }}
+              />
+              <TextField
+                id="password"
+                label="Password"
+                variant="outlined"
+                size="medium"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ marginBottom: "2rem", width: "100%" }}
+              />
+              <TextField
+                id="role"
+                select
+                label="Role"
+                variant="outlined"
+                size="medium"
+                value={role}
+                onChange={handleRoleChange}
+                style={{ marginBottom: "2rem", width: "100%" }}
+              >
+                <MenuItem value="ADMIN">Admin</MenuItem>
+                <MenuItem value="Receptionist">Receptionist</MenuItem>
+                <MenuItem value="DOCTOR">Doctor</MenuItem>
+              </TextField>
+              <button
+                type="submit"
+                className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-8 py-3 text-center me-2 mb-2"
+              >
+                Login
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

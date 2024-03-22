@@ -43,6 +43,22 @@
     /* margin-top: -50px; */
 }
 
+.image-container {
+    position: relative;
+    text-align: center;
+    color: rgb(3, 3, 3);
+}
+
+.dashboard-name {
+    position: absolute;
+    top: 670px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    font-weight: 500;
+    color: #0f3c53;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
 
 .admin-image {
     height: 900px;
@@ -105,7 +121,7 @@
     /* box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); */
     /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); */
     /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     /* transition: all 0.3s ease 0s; */
     transition: background-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
     cursor: pointer;
@@ -122,3 +138,22 @@
   .button:active {
     transform: translateY(-1px);
   }
+
+  .navbtn {
+    padding: .5em 1.5em;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .navbtn:hover  {
+    background-color: #22d3ee;
+    box-shadow: 0px 15px 20px rgba(12, 78, 84, 0.495);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+  
+
