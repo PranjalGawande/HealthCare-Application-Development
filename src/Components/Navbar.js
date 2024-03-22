@@ -27,14 +27,17 @@ export default function Navbar() {
 
   return (
     <nav
-      className="navbar navbar-expand-lg bg-dark border-bottom border-body"
+      // className="navbar navbar-expand-lg bg-dark border-bottom border-body"
+      // data-bs-theme="dark"
+
+      className="navbar navbar-expand-lg text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 border-bottom border-body"
       data-bs-theme="dark"
     >
       <div className="container-fluid">
         {token && (
           <button
             type="button"
-            class="btn btn-primary bg-primary bg-gradient  btn-lg text-white"
+            class="btn btn-info bg-secondary bg-gradient btn-lg text-white"
             onClick={handleHome}
           >
             HOME
@@ -50,7 +53,7 @@ export default function Navbar() {
         {token && (
           <button
             type="button"
-            class="btn btn-danger bg-danger bg-gradient btn-lg text-white"
+            class="btn btn-info bg-secondary bg-gradient btn-lg text-white"
             onClick={handleLogout}
           >
             LOGOUT
