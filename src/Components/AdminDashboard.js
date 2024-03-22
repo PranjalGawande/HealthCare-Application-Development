@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import admin from "../assets/ADMIN.png";
+import admin from "../assets/AdminPage.jpg";
 import { useNavigate } from 'react-router-dom'
 import { NavLink } from "react-router-dom";
 
@@ -15,9 +15,9 @@ const AdminDashboard = () => {
   }, []);
   return (
     <div>
-      <div className="h-full flex justify-center items-center mt-20">
-        <div className="flex justify-evenly items-center gap-40 mt-20 border-amber-300 border-solid ">
-          <div className="border border-gray p-5 rounded-md bg-slate-200">
+      <div className="h-full flex justify-center items-center ">
+        <div className="flex justify-evenly items-center gap-40 border-amber-300 border-solid ">
+          <div className="">
             <img src={admin} className=""></img>
           </div>
           <div className="flex flex-col gap-5 ">
