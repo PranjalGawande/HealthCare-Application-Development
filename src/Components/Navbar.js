@@ -37,7 +37,7 @@ export default function Navbar() {
         {token && (
           <button
             type="button"
-            className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:from-gray-700  hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
+            className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
             onClick={handleHome}
           >
             HOME
@@ -53,7 +53,7 @@ export default function Navbar() {
         {token && (
           <button
             type="button"
-            class="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:from-gray-700 transition-colors duration-900 btn-lg text-white"
+            className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
             onClick={handleLogout}
           >
             LOGOUT
