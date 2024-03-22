@@ -12,7 +12,7 @@ export const ASForm = (email) => {
   const [formData, setformData] = useState({
     name: "",
     gender: "",
-    role: "receptionist",
+    role: "Receptionist",
     dob: "",
     mobileNo: "",
     email: email.email
@@ -34,6 +34,10 @@ export const ASForm = (email) => {
   };
 
   const handleSubmit = async (event) => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     event.preventDefault(); // Prevent default form submission behavior
 
     try {
@@ -42,8 +46,9 @@ export const ASForm = (email) => {
 
       // Send formData to the backend
       const response = await axios.post(
-        "http://localhost:9191/staff/addStaff",
-        formData
+        "http://localhost:9191/admin/addReceptionist",
+        formData,
+        {headers: headers}
       );
       console.log("Response from backend:", response.data);
       alert("Staff added successfully");

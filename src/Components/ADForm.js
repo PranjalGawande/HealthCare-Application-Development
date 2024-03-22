@@ -5,7 +5,6 @@
 // // import { Select } from '@material-ui/core';
 // import axios from 'axios';
 
-
 // export const ADForm = (email) => {
 
 //     const [formData, setFormData] = useState({
@@ -18,7 +17,7 @@
 //         phone: '',
 //         email: email
 //       });
-    
+
 //       // const handleChange = (event) => {
 //       //   setFormData({ ...formData, [event.target.id]: event.target.value });
 //       // };
@@ -29,10 +28,10 @@
 //         console.log("Field Value:", value);
 //         setFormData({ ...formData, [id]: value});
 //       };
-    
+
 //       const handleSubmit = async (event) => {
 //         event.preventDefault(); // Prevent default form submission behavior
-    
+
 //         try {
 //           // Log formData before sending it to the backend
 //           console.log('Form Data:', formData);
@@ -145,10 +144,6 @@
 //   );
 // }
 
-
-
-
-
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
@@ -169,14 +164,14 @@ export const ADForm = ({ email }) => {
     address: "",
     dob: "",
     mobileNo: "",
-    email: email
+    email: email,
   });
 
   const handleTextFieldChange = (event) => {
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value });
   };
-  
+
   const handleChangeGender = (event) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -195,16 +190,21 @@ export const ADForm = ({ email }) => {
     event.preventDefault(); // Prevent default form submission behavior
 
     try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
       // Log formData before sending it to the backend
       console.log("Form Data:", formData);
 
       const response = await axios.post(
-        "http://localhost:9191/staff/addDoctor",
-        formData
+        "http://localhost:9191/admin/addDoctor",
+        formData, 
+        { headers: headers}
       );
       console.log("Response from backend:", response.data);
       alert("Doctor added successfully");
-      navigate("/admin")
+      navigate("/admin");
       // Optionally handle success response
     } catch (error) {
       console.error("Error:", error);
@@ -231,16 +231,15 @@ export const ADForm = ({ email }) => {
             style={{ marginBottom: "2rem", width: "100%" }}
             onChange={handleTextFieldChange}
           />
-          </div>
-          <TextField
-            id="experience"
-            label="Experience"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: "2rem", width: "100%" }}
-            onChange={handleTextFieldChange}
-          />
-        
+        </div>
+        <TextField
+          id="experience"
+          label="Experience"
+          variant="outlined"
+          size="small"
+          style={{ marginBottom: "2rem", width: "100%" }}
+          onChange={handleTextFieldChange}
+        />
 
         <FormControl fullWidth>
           <InputLabel>Gender</InputLabel>
@@ -259,8 +258,6 @@ export const ADForm = ({ email }) => {
           </Select>
         </FormControl>
 
-
-
         <FormControl fullWidth>
           <InputLabel>Speciality</InputLabel>
           <Select
@@ -278,11 +275,6 @@ export const ADForm = ({ email }) => {
           </Select>
         </FormControl>
 
-
-
-
-      
-        
         <TextField
           id="address"
           label="Address"

@@ -166,7 +166,7 @@ const AddLoginCredDoc = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "doctor",
+    role: "DOCTOR",
     status: true,
   });
 
@@ -176,12 +176,17 @@ const AddLoginCredDoc = ({ onSuccess }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
   
     try {
       console.log("Form Data:", formData);
   
-      const response = await axios.post('http://localhost:9191/staff/addLogin',
-        formData
+      const response = await axios.post('http://localhost:9191/admin/addLogin',
+        formData,
+        { headers: headers }
       );
       console.log("Response from addLogin backend:", response.data);
   

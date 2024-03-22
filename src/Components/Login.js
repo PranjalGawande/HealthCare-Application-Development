@@ -78,13 +78,14 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // const token = uuidv4();
-      const response = await axios.post(`http://localhost:9191/login/admin`, {
+      const lowercaseRole = role.toLowerCase();
+      const response = await axios.post(`http://localhost:9191/login/${lowercaseRole}`, {
         email: email,
         password: password,
     });
@@ -97,9 +98,9 @@ const LoginForm = () => {
       // localStorage.setItem("role", role);
       // console.log("User Logged In:", response.data);
 
-      if (role === "doctor") {
+      if (role === "DOCTOR") {
         navigate("/doctor");
-      } else if (role === "staff") {
+      } else if (role === "Receptionist") {
         navigate("/receptionist");
       } else if (role === "ADMIN") {
         navigate("/admin");
@@ -154,8 +155,8 @@ const LoginForm = () => {
               style={{ marginBottom: "2rem", width: "100%" }}
             >
               <MenuItem value="ADMIN">Admin</MenuItem>
-              <MenuItem value="staff">Receptionist</MenuItem>
-              <MenuItem value="doctor">Doctor</MenuItem>
+              <MenuItem value="Receptionist">Receptionist</MenuItem>
+              <MenuItem value="DOCTOR">Doctor</MenuItem>
             </TextField>
             <button
               type="submit"

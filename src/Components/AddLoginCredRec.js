@@ -8,7 +8,7 @@ const AddLoginCredRec = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "receptionist",
+    role: "Receptionist",
     status: true,
   });
 
@@ -18,12 +18,16 @@ const AddLoginCredRec = ({ onSuccess }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
     try {
       console.log("Form Data:", formData);
   
-      const response = await axios.post('http://localhost:9191/staff/addLogin',
-        formData
+      const response = await axios.post('http://localhost:9191/admin/addLogin',
+        formData, 
+        { headers: headers}
       );
       console.log("Response from addLogin backend:", response.data);
   
