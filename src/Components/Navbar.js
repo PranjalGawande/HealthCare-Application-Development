@@ -30,7 +30,7 @@ export default function Navbar() {
       // className="navbar navbar-expand-lg bg-dark border-bottom border-body"
       // data-bs-theme="dark"
 
-      className="navbar navbar-expand-lg text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 border-bottom border-body"
+      className="navbar navbar-expand-lg text-white bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-800 border-bottom border-body"
       data-bs-theme="dark"
     >
       <div className="container-fluid">
