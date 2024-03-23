@@ -15,6 +15,8 @@ import DoctorAppointment from './Components/DoctorAppointment';
 import ConsultationForm from './Components/ConsultationForm';
 import { PatientHistory } from './Components/PatientHistory';
 import ViewStaff from './Components/ViewStaff';
+import AddAdminForm from './Components/AddAdminForm';
+
 
 function App() {
 
@@ -27,6 +29,7 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/add-doctor" element={<AddDoctorForm />} />
             <Route path="/admin/add-staff" element={<AddStaffForm />} />
+            <Route path="/admin/add-admin" element={<AddAdminForm/>} />
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
             <Route path="/admin/view-doctor-info" element={<ViewDoctors />} />
