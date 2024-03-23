@@ -199,8 +199,8 @@ export const ADForm = ({ email }) => {
 
       const response = await axios.post(
         "http://localhost:9191/admin/addDoctor",
-        formData, 
-        { headers: headers}
+        formData,
+        { headers: headers }
       );
       console.log("Response from backend:", response.data);
       alert("Doctor added successfully");
@@ -214,58 +214,90 @@ export const ADForm = ({ email }) => {
 
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: '2rem'}}
     >
       <div className="flex">
-        <div>------------------------</div>
-        <h2> ENTER DETAILS </h2>
-        <div>------------------------</div>
+        <label className="text-login fw-bold text-center ">
+          ADD DOCTOR <br></br> DETAILS
+        </label>
       </div>
-      <form style={{ width: "50%", marginTop: "2rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <TextField
-            id="name"
-            label="Name"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: "2rem", width: "100%" }}
-            onChange={handleTextFieldChange}
-          />
-        </div>
+      <form style={{ width: "90%" }}>
         <TextField
-          id="experience"
-          label="Experience"
+          id="name"
+          label="Name"
           variant="outlined"
           size="small"
           style={{ marginBottom: "2rem", width: "100%" }}
           onChange={handleTextFieldChange}
         />
 
-        <FormControl fullWidth>
-          <InputLabel>Gender</InputLabel>
-          <Select
-            value={formData.gender}
-            name="gender"
-            labelId="gender-label"
-            id="gender"
-            label="Gender"
+        <div style={{ display: "flex", justifyContent: "space-between", gap: "2rem"}}>
+          <TextField
+            id="mobileNo"
+            label="MobileNo"
+            variant="outlined"
+            size="small"
             style={{ marginBottom: "2rem", width: "100%" }}
-            onChange={handleChangeGender}
-          >
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
-          </Select>
-        </FormControl>
+            onChange={handleTextFieldChange}
+          />
 
+          <FormControl fullWidth>
+            <InputLabel style={{marginTop: "-2px", width: "100%",height: "20%",  display: 'flex', alignItems: 'center'}}>Gender</InputLabel>
+            <Select
+              value={formData.gender}
+              name="gender"
+              labelId="gender-label"
+              id="gender"
+              label="Gender"
+              size="small"
+              style={{width: "100%" }}
+              onChange={handleChangeGender}
+            >
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+              <MenuItem value="other">Other</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", gap: "2rem"}}>
+        <TextField
+          id="dob"
+          label="Date of Birth"
+          type="date"
+          variant="outlined"
+          size="small"
+          style={{ marginBottom: "2rem", width: "50%" }}
+          value={formData.dob}
+          onChange={handleTextFieldChange}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{
+            // Specify the format for the date input
+            max: '2000-12-31', // YYYY-MM-DD format
+            min: '1900-01-01', // YYYY-MM-DD format
+          }}
+        />
+
+          <TextField
+            id="experience"
+            label="Experience"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: "2rem", width: "50%" }}
+            onChange={handleTextFieldChange}
+          />
+        </div>
         <FormControl fullWidth>
-          <InputLabel>Speciality</InputLabel>
+          <InputLabel style={{marginTop: "-2px", width: "100%",height: "20%",  display: 'flex', alignItems: 'center'}}>Speciality</InputLabel>
           <Select
             value={formData.speciality}
             name="speciality"
             labelId="speciality-label"
             id="speciality"
             label="Speciality"
+            size="small"
             style={{ marginBottom: "2rem", width: "100%" }}
             onChange={handleChangeSpeciality}
           >
@@ -283,31 +315,12 @@ export const ADForm = ({ email }) => {
           style={{ marginBottom: "2rem", width: "100%" }}
           onChange={handleTextFieldChange}
         />
-        <TextField
-          id="dob"
-          label="Date of Birth"
-          type="date"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: "2rem", width: "100%" }}
-          value={formData.dob}
-          onChange={handleTextFieldChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          id="mobileNo"
-          label="MobileNo"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: "2rem", width: "100%" }}
-          onChange={handleTextFieldChange}
-        />
+
         <button
           type="button"
           onClick={handleSubmit}
-          className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          className="button w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          style={{marginBottom: '-100px', marginTop: '1rem', width: "100%", height: '12%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
         >
           Register
         </button>

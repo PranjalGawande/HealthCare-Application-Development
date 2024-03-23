@@ -121,7 +121,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="main-background">
+    <div className="container-fluid main-background">
       {/* // <div className="background" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent:'center'}}> */}
       <div className="container background d-flex align-items-center">
         <div className="login-image">
