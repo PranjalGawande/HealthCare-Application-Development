@@ -136,7 +136,7 @@ const ViewDoctors = () => {
         Authorization: `Bearer ${token}`,
       };
       await axios.post(
-        `http://localhost:9191/activateStaff/${email}`,
+        `http://localhost:9191/admin/activateStaff/${email}`,
         null,
         { headers: headers }
       );
@@ -160,7 +160,7 @@ const ViewDoctors = () => {
         Authorization: `Bearer ${token}`,
       };
       await axios.post(
-        `http://localhost:9191/deactivateStaff/${email}`,
+        `http://localhost:9191/admin/deactivateStaff/${email}`,
         null,
         { headers: headers }
       );
