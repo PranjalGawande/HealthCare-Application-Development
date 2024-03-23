@@ -14,4 +14,5 @@ public class StaffListDTO {
     private String name;
     private String email;
     private Role role;
+    private boolean status;
 }
