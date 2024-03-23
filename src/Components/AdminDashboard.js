@@ -7,6 +7,12 @@ import { NavLink } from "react-router-dom";
 const AdminDashboard = () => {
   const adminName = localStorage.getItem("name");
   let navigate = useNavigate();
+  const determineFontSize = () => {
+    if (adminName.length > 14) {
+      return '2rem'; // Decrease font size if more than 5 words
+    }
+    return '3rem'; // Default font size
+  };
   useEffect(() => {
     
     const token = localStorage.getItem("token");
@@ -21,7 +27,7 @@ const AdminDashboard = () => {
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
           <div className="image-container">
             <img src={admin} className="admin-image"/>
-            <div className="dashboard-name">{adminName}</div>
+            <div className="dashboard-name" style={{ fontSize: determineFontSize() }}>{adminName}</div>
           </div>
           <div className="flex flex-col gap-5 ">
             

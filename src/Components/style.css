@@ -64,9 +64,11 @@
   font-size: 3rem;
   font-weight: bolder;
   color: #0f3c53;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
-
 
 
 .admin-image {

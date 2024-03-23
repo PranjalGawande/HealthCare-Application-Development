@@ -36,6 +36,7 @@ const AddStaffForm = () => {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [email, setEmail] = useState('');
   let navigate = useNavigate();
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -55,7 +56,7 @@ const AddStaffForm = () => {
           <div className="flex justify-center items-center">
             <div className="image-container">
               <img src={admin} className="admin-image" />
-              <div className="dashboard-name">ADD RECEPTIONIST</div>
+              <div className="dashboard-name" style={{fontSize: '2rem'}}>ADD RECEPTIONIST</div>
             </div>
         </div>
         <div className='flex justify-center items-center mt-20 pt-10' >
