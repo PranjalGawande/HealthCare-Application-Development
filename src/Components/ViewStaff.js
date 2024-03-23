@@ -16,28 +16,7 @@ const ViewStaff = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //   };
-  //   const fetchStaff = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:9191/admin/staffList",
-  //         {
-  //           headers: headers,
-  //         }
-  //       );
-  //       setStaff(response.data);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error("Error fetching staff:", error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchStaff();
-  // }, []);
+  
 
 
 
@@ -65,7 +44,55 @@ const ViewStaff = () => {
     fetchStaff();
   }, []);
   
+  const handleActivateDoctor = async (email) => {
+    try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      await axios.post(
+        `http://localhost:9191/admin/activateStaff/${email}`,
+        null,
+        { headers: headers }
+      );
+      // Refresh doctor list after activation
+      const response = await axios.get(
+        "http://localhost:9191/admin/staffList",
+        {
+          headers: headers,
+        }
+      );
+      const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
+      setStaff(receptionists);
+    } catch (error) {
+      console.error("Error activating doctor:", error);
+    }
+  };
 
+  const handleDeactivateDoctor = async (email) => {
+    try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      await axios.post(
+        `http://localhost:9191/admin/deactivateStaff/${email}`,
+        null,
+        { headers: headers }
+      );
+      // Refresh doctor list after deactivation
+      const response = await axios.get(
+        "http://localhost:9191/admin/staffList",
+        {
+          headers: headers,
+        }
+      );
+      const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
+      setStaff(receptionists);
+    } catch (error) {
+      console.error("Error deactivating doctor:", error);
+    }
+  };
   return (
     <div>
       <h2 className="list-heading">Receptionists List</h2>
@@ -78,60 +105,46 @@ const ViewStaff = () => {
               <th scope="col">Name</th>
               <th scope="col">E-mail</th>
               <th scope="col">Role</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
-          {/* <tbody> */}
+         
           <tbody>
             {staff.map((staff) => (
-              <tr>
-                {/* <td>{doctor.id}</td> */}
+              <tr key={staff.id}>
+               
                 <td>{staff.name}</td>
                 <td>{staff.email}</td>
                 <td>{staff.role}</td>
+                <td>
+                  {staff.status ? (
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDeactivateDoctor(staff.email)}
+                    >
+                      Deactivate
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-success"
+                      onClick={() => handleActivateDoctor(staff.email)}
+                    >
+                      Activate
+                    </button>
+                  )}
+                  {/* <button
+                    className="btn btn-primary"
+                    onClick={() => handleEditDoctor(doctor.id)}
+                  >
+                    Edit
+                  </button> */}
+                </td>
               </tr>
             ))}
           </tbody>
-          {/* <tr>
-          <td>1</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td colSpan={2}>Larry the Bird</td>
-          <td>@twitter</td>
-            </tr> */}
-          {/* </tbody> */}
+    
         </Table>
-        // <div className="d-flex justify-content-around">
-        // <table className="table shadow mt-5 ">
-        //   <thead>
-        //     <tr>
-        //       {/* <th scope="col">ID</th> */}
-        //       <th scope="col">Name</th>
-        //       <th scope="col">E-mail</th>
-        //       <th scope="col">Rolr</th>
-        //     </tr>
-        //   </thead>
-        //   <tbody>
-        //     {staff.map((staff) => (
-        //       <tr>
-        //         {/* <td>{doctor.id}</td> */}
-        //         <td>{staff.name}</td>
-        //         <td>{staff.email}</td>
-        //         <td>{staff.role}</td>
-        //       </tr>
-        //     ))}
-        //   </tbody>
-        // </table>
-        // </div>
+       
       )}
     </div>
   );
