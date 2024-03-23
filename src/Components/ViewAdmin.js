@@ -3,7 +3,7 @@ import Table from "react-bootstrap/Table";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const ViewStaff = () => {
+const ViewAdmin = () => {
   const [staff, setStaff] = useState([]);
   const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
@@ -53,8 +53,8 @@ const ViewStaff = () => {
           headers: headers,
         });
         // Filter the staff list to include only receptionists
-        const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
-        setStaff(receptionists);
+        const admins = response.data.filter(staff => staff.role === 'ADMIN');
+        setStaff(admins);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching staff:", error);
@@ -68,7 +68,7 @@ const ViewStaff = () => {
 
   return (
     <div>
-      <h2 className="list-heading">Receptionists List</h2>
+      <h2 className="list-heading">Admins List</h2>
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -137,4 +137,4 @@ const ViewStaff = () => {
   );
 };
 
-export default ViewStaff;
+export default ViewAdmin;

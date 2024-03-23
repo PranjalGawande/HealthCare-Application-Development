@@ -16,7 +16,7 @@ import ConsultationForm from './Components/ConsultationForm';
 import { PatientHistory } from './Components/PatientHistory';
 import ViewStaff from './Components/ViewStaff';
 import AddAdminForm from './Components/AddAdminForm';
-
+import ViewAdmin from './Components/ViewAdmin';
 
 function App() {
 
@@ -34,6 +34,7 @@ function App() {
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
             <Route path="/admin/view-doctor-info" element={<ViewDoctors />} />
             <Route path="/admin/view-receptionist-info" element={<ViewStaff />} />
+            <Route path="/admin/view-admin-info" element={<ViewAdmin />} />
             <Route path="/abhaCreation" element={<HospitalFormLayout />} />
             <Route path="/abhaVerification" element={<VerificationForm />} />
             <Route path="/doctorAppointment" element={<DoctorAppointment />} />
