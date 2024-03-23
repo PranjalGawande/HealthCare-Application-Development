@@ -27,7 +27,7 @@ public class LoginController {
     @Autowired
     private DoctorController doctorController;
 
-    @GetMapping("/admin")
+    @PostMapping("/admin")
     public ResponseEntity<StaffDTO> authenticateAdmin(@RequestBody Login request) {
         String token = loginService.authenticate(request);
         Login login = loginService.getLoginByEmail(request.getEmail());
@@ -41,7 +41,7 @@ public class LoginController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @GetMapping("/receptionist")
+    @PostMapping("/receptionist")
     public ResponseEntity<StaffDTO> authenticateReceptionist(@RequestBody Login request) {
         String token = loginService.authenticate(request);
         Login login = loginService.getLoginByEmail(request.getEmail());
@@ -55,7 +55,7 @@ public class LoginController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @GetMapping("/doctor")
+    @PostMapping("/doctor")
     public ResponseEntity<DoctorDTO> authenticateDoctor(@RequestBody Login request) {
         String token = loginService.authenticate(request);
         Login login = loginService.getLoginByEmail(request.getEmail());

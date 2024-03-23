@@ -13,4 +13,5 @@ public class DoctorListDTO {
     private String name;
     private String email;
     private String speciality;
+    private boolean status;
 }
