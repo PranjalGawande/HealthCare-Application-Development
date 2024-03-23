@@ -67,11 +67,7 @@
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-@media (max-height: 73px) {
-  .dashboard-name {
-      font-size: 2rem; 
-  }
-}
+
 
 .admin-image {
   height: 900px;

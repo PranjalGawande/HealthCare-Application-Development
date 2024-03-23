@@ -39,40 +39,47 @@ const AddLoginCredRec = ({ onSuccess }) => {
   };
 
   return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <div className="flex">
-            <div>------------------------</div>
-            <h2> Enter Login Credentials </h2>
-            <div>------------------------</div>
-          </div>
-          <form style={{ width: "50%", marginTop: "2rem" }} onSubmit={handleSubmit}>
-            <div style={{ marginBottom: "1rem", width: "100%" }}>
-              <TextField
-                id="email"
-                label="Email"
-                variant="outlined"
-                size="small"
-                onChange={handleChange}
-                fullWidth
-              />
-            </div>
-            <div style={{ marginBottom: "1rem", width: "100%" }}>
-              <TextField
-                id="password"
-                label="Password"
-                variant="outlined"
-                size="small"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                fullWidth
-              />
-            </div>
-            <button type="submit" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-              Submit
-            </button>
-          </form>
-        </div>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div className="flex">
+    <label className="text-login fw-bold text-center ">
+      ADD LOGIN <br></br> CREDENTIALS
+    </label>
+    </div>
+    <form style={{ width: "100%", marginTop: "2rem" }} onSubmit={handleSubmit}>
+      <div style={{ width: "100%", marginBottom: "1rem" }}>
+        <TextField
+          id="email"
+          label="Email"
+          variant="outlined"
+          size="medium"
+          onChange={handleChange}
+          fullWidth
+        />
+      </div>
+      <div style={{ width: "100%" }}>
+        <TextField
+          id="password"
+          label="Password"
+          variant="outlined"
+          size="medium"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          fullWidth
+        />
+      </div>
+      <button
+        to="/admin/add-doctor"
+        className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        style={{marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+      >
+        Submit
+      </button>
+      {/* <button type="submit" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
+        Submit
+      </button> */}
+    </form>
+  </div>
       );
 };
 

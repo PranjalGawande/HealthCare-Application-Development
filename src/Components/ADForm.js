@@ -289,6 +289,14 @@ export const ADForm = ({ email }) => {
             onChange={handleTextFieldChange}
           />
         </div>
+        <TextField
+          id="address"
+          label="Address"
+          variant="outlined"
+          size="small"
+          style={{ marginBottom: "2rem", width: "100%" }}
+          onChange={handleTextFieldChange}
+        />
         <FormControl fullWidth>
           <InputLabel style={{marginTop: "-2px", width: "100%",height: "20%",  display: 'flex', alignItems: 'center'}}>Speciality</InputLabel>
           <Select
@@ -307,14 +315,7 @@ export const ADForm = ({ email }) => {
           </Select>
         </FormControl>
 
-        <TextField
-          id="address"
-          label="Address"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: "2rem", width: "100%" }}
-          onChange={handleTextFieldChange}
-        />
+        
 
         <button
           type="button"
