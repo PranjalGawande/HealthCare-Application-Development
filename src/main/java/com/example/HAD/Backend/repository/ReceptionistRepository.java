@@ -17,7 +17,7 @@ public interface ReceptionistRepository extends JpaRepository<Receptionist, Inte
     @Query("SELECT r FROM Receptionist r WHERE r.login.email= :email")
     Receptionist findByEmail(@Param("email") String email);
 
-    @Query("SELECT new com.example.HAD.Backend.dto.StaffListDTO(r.name, l.email, l.role) " +
+    @Query("SELECT new com.example.HAD.Backend.dto.StaffListDTO(r.name, l.email, l.role, l.status) " +
             "FROM Receptionist r JOIN r.login l")
     List<StaffListDTO> getReceptionists();
 

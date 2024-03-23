@@ -15,7 +15,7 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
     @Query("SELECT s FROM Admin s WHERE s.login.email = :email")
     Admin findByLoginEmail(@Param("email") String email);
 
-    @Query("SELECT new com.example.HAD.Backend.dto.StaffListDTO(s.name, l.email, l.role) " +
+    @Query("SELECT new com.example.HAD.Backend.dto.StaffListDTO(s.name, l.email, l.role, l.status) " +
             "FROM Admin s JOIN s.login l")
     List<StaffListDTO> getAdmins();
 }
