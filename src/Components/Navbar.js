@@ -197,18 +197,6 @@ export default function Navbar() {
     setDropdownOpen(!dropdownOpen);
   };
    
-  // const handleViewDetails = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const response = await axios.get("http://localhost:9191/admin/adminDetails", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //     // Handle the response here, for example, console.log(response.data)
-  //   } catch (error) {
-  //     console.error("Error fetching admin details:", error);
-  //   }
-  // };
-
 
 
   const handleViewDetails = async () => {
@@ -227,6 +215,22 @@ export default function Navbar() {
       console.error("Error fetching admin details:", error);
     }
   };
+
+  const handleChangePassword = async () => {
+    // try {
+    //   const token = localStorage.getItem("token");
+    //   const response = await axios.post("http://localhost:9191/admin/changePassword", { newPassword }, {
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+    //   // console.log(response);
+    //   navigate("/admin/admin-password-change");
+    // } catch (error) {
+    //   console.error("Error changing password:", error);
+    // }
+
+    navigate("/admin/admin-password-change");
+  };
+  
   
 
 
@@ -274,7 +278,10 @@ export default function Navbar() {
                 </button>
               </li>
               <li>
-                <button className="dropdown-item" type="button">
+                <button 
+                className="dropdown-item" 
+                type="button"
+                onClick={handleChangePassword}>
                   Change Password
                 </button>
               </li>
