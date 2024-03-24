@@ -17,6 +17,7 @@ import { PatientHistory } from './Components/PatientHistory';
 import ViewStaff from './Components/ViewStaff';
 import AddAdminForm from './Components/AddAdminForm';
 import ViewAdmin from './Components/ViewAdmin';
+import { ViewAdminDetails } from './Components/ViewAdminDetails';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/add-doctor" element={<AddDoctorForm />} />
             <Route path="/admin/add-staff" element={<AddStaffForm />} />
+            <Route path="/admin/admin-details" element={<ViewAdminDetails/>}/>
             <Route path="/admin/add-admin" element={<AddAdminForm/>} />
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
