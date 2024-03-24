@@ -23,10 +23,9 @@ public class DoctorDTO {
     private Integer experience;
     private String email;
     private String mobileNo;
-    private String token;
     private List<AppointmentDTO> appointmentsList = new ArrayList<AppointmentDTO>();
 
-    public DoctorDTO(Doctor doctor, String token) {
+    public DoctorDTO(Doctor doctor) {
         this.doctorId = doctor.getDoctorId();
         this.name = doctor.getName();
         this.dob = doctor.getDob();
@@ -35,7 +34,7 @@ public class DoctorDTO {
         this.experience = doctor.getExperience();
         this.mobileNo = doctor.getMobileNo();
         this.email = doctor.getLogin().getEmail();
-        this.token = token;
+
 
         for (Appointment appointment : doctor.getAppointments()) {
             this.appointmentsList.add(new AppointmentDTO(appointment));

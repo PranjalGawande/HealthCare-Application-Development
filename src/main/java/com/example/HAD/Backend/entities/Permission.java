@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum Permission {
 
-    ADMIN_GET("admin_get"),
-    ADMIN_POST("admin_post"),
-    DOCTOR_GET("doctor_get"),
-    DOCTOR_POST("doctor_post"),
-    RECEPTIONIST_GET("receptionist_get"),
-    RECEPTIONIST_POST("receptionist_post")
+    ADMIN_GET("admin:get"),
+    ADMIN_POST("admin:post"),
+    DOCTOR_GET("doctor:get"),
+    DOCTOR_POST("doctor:post"),
+    RECEPTIONIST_GET("receptionist:get"),
+    RECEPTIONIST_POST("receptionist:post")
     ;
 
     private String permission;

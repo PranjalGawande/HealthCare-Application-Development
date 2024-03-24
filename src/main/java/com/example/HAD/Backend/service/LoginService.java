@@ -50,4 +50,16 @@ public class LoginService {
     public void setLogin(Login login) {
         loginRepository.updateLoginStatus(login.getUserId(), login.getStatus());
     }
+
+    public void updateLogin(String email, String password) {
+        password = passwordEncoder.encode(password);
+        loginRepository.updatePassword(email, password);
+    }
+
+    public boolean verifyCurrentPassword(String userName, String oldPassword) {
+        Login login = getLoginByEmail(userName);
+
+        String storedPassword = login.getPassword();
+        return passwordEncoder.matches(oldPassword, storedPassword);
+    }
 }

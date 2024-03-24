@@ -13,12 +13,15 @@ public class MedicalRecordsService {
     @Autowired
     private MedicalRecordsRepository medicalRecordsRepository;
 
-    public List<MedicalRecords> getPatientMedicalHistory(Integer doctorId, Integer patientId) {
-        List<MedicalRecords> medicalRecords = medicalRecordsRepository.getPatientHistory(doctorId, patientId);
-        return medicalRecords;
+    public List<MedicalRecords> getPatientMedicalHistory(String email, Integer patientId) {
+        return medicalRecordsRepository.getPatientHistory(email, patientId);
     }
 
     public void addPatientConsultation(MedicalRecords medicalRecords) {
         medicalRecordsRepository.save(medicalRecords);
+    }
+
+    public List<MedicalRecords> getPatientHistory(Integer patientId) {
+        return medicalRecordsRepository.getPatientMedicalHistory(patientId);
     }
 }

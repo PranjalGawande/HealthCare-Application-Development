@@ -2,6 +2,7 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.dto.DoctorDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
+import com.example.HAD.Backend.dto.Token;
 import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,44 +29,20 @@ public class LoginController {
     private DoctorController doctorController;
 
     @PostMapping("/admin")
-    public ResponseEntity<StaffDTO> authenticateAdmin(@RequestBody Login request) {
-        String token = loginService.authenticate(request);
-        Login login = loginService.getLoginByEmail(request.getEmail());
-
-        if(login.getRole().equals(Role.ADMIN)) {
-            Admin admin = adminController.getAdminDetails(request.getEmail());
-            StaffDTO staff = new StaffDTO(admin, token);
-            return ResponseEntity.ok(staff);
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    public ResponseEntity<Token> authenticateAdmin(@RequestBody Login request) {
+        Token token = new Token(loginService.authenticate(request));
+        return ResponseEntity.ok().body(token);
     }
 
     @PostMapping("/receptionist")
-    public ResponseEntity<StaffDTO> authenticateReceptionist(@RequestBody Login request) {
-        String token = loginService.authenticate(request);
-        Login login = loginService.getLoginByEmail(request.getEmail());
-
-        if(login.getRole().equals(Role.Receptionist)) {
-            Receptionist receptionist = receptionistController.getReceptionistDetails(request.getEmail());
-            StaffDTO staff = new StaffDTO(receptionist, token);
-            return ResponseEntity.ok(staff);
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    public ResponseEntity<Token> authenticateReceptionist(@RequestBody Login request) {
+        Token token = new Token(loginService.authenticate(request));
+        return ResponseEntity.ok().body(token);
     }
 
     @PostMapping("/doctor")
-    public ResponseEntity<DoctorDTO> authenticateDoctor(@RequestBody Login request) {
-        String token = loginService.authenticate(request);
-        Login login = loginService.getLoginByEmail(request.getEmail());
-
-        if(login.getRole().equals(Role.DOCTOR)) {
-            Doctor doctor = doctorController.getDoctorDetails(request.getEmail());
-            DoctorDTO doctorDTO = new DoctorDTO(doctor , token);
-            return ResponseEntity.ok(doctorDTO);
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    public ResponseEntity<Token> authenticateDoctor(@RequestBody Login request) {
+        Token token = new Token(loginService.authenticate(request));
+        return ResponseEntity.ok().body(token);
     }
 }

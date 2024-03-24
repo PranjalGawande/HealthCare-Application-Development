@@ -18,6 +18,8 @@ public enum Role {
             Set.of(
                     ADMIN_GET,
                     ADMIN_POST,
+                    DOCTOR_GET,
+                    DOCTOR_POST,
                     RECEPTIONIST_GET,
                     RECEPTIONIST_POST
             )
@@ -41,7 +43,7 @@ public enum Role {
     public List<SimpleGrantedAuthority> getUserAuthorties() {
         var authorities = new java.util.ArrayList<>(getPermissions()
                 .stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.name()))
+                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .toList());
 
         authorities.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
