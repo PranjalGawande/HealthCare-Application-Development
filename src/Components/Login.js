@@ -94,15 +94,40 @@ const LoginForm = () => {
       );
       const responseData = response.data; // Accessing the data returned by the backend
       const token = responseData.token; // Assuming the backend returns a token
-      const name = responseData.name;
-      
-      localStorage.setItem("name", name);
+      // const name = responseData.name;
+
+      // localStorage.setItem("name", name);
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
-      console.log("User Logged In:", responseData);
+      // console.log("User Logged In:", responseData);
       // localStorage.setItem("token", token);
       // localStorage.setItem("role", role);
       // console.log("User Logged In:", response.data);
+
+      let DetailsEndpoint;
+      if (role === "ADMIN") {
+        DetailsEndpoint = "http://localhost:9191/admin/adminDetails";
+      } else if(role === "DOCTOR") {
+        DetailsEndpoint = "http://localhost:9191/doctor/doctorDetails"; // Adjust the endpoint accordingly
+      }
+      else if(role === "Receptionist") {
+        DetailsEndpoint = "http://localhost:9191/receptionist/receptionistDetails"; // Adjust the endpoint accordingly
+      }
+
+
+      const DetailsResponse = await axios.get(DetailsEndpoint, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      // Extract admin name from the response
+      const Name = DetailsResponse.data.name;
+  
+      // Store admin name in local storage or state for later use
+      localStorage.setItem("Name", Name);
+    
+
 
       if (role === "DOCTOR") {
         navigate("/doctor");

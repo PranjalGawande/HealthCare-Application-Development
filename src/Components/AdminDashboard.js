@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { NavLink } from "react-router-dom";
 
 const AdminDashboard = () => {
-  const adminName = localStorage.getItem("name");
+  const adminName = localStorage.getItem("Name");
   let navigate = useNavigate();
   const determineFontSize = () => {
     if (adminName.length > 14) {
