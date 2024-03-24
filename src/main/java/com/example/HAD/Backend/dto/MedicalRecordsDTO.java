@@ -18,6 +18,7 @@ public class MedicalRecordsDTO {
     private Integer oxygenLevel;
     private Integer pulse;
     private String symptoms;
+    private Integer doctorId;
     private List<String> medicine;
 
     public MedicalRecordsDTO(MedicalRecords medicalRecords) {
@@ -27,5 +28,6 @@ public class MedicalRecordsDTO {
         this.pulse = medicalRecords.getPulse();
         this.symptoms = medicalRecords.getSymptoms();
         this.medicine = medicalRecords.getMedicine();
+        this.doctorId = medicalRecords.getDoctor().getDoctorId();
     }
 }

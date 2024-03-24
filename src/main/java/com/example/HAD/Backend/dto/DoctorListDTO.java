@@ -1,5 +1,6 @@
 package com.example.HAD.Backend.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class DoctorListDTO {
+    private Integer doctorId;
     private String name;
     private String email;
     private String speciality;

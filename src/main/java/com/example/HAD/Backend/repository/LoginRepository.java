@@ -20,4 +20,9 @@ public interface LoginRepository extends JpaRepository<Login, Integer> {
     @Modifying
     @Query("UPDATE Login l SET l.status = :status WHERE l.userId = :id")
     void updateLoginStatus(@Param("id") Integer id, @Param("status") boolean status);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Login l SET l.password = :password WHERE l.email = :email")
+    void updatePassword(@Param("email") String email, @Param("password") String password);
 }
