@@ -95,6 +95,7 @@ const LoginForm = () => {
       const responseData = response.data; // Accessing the data returned by the backend
       const token = responseData.token; // Assuming the backend returns a token
       // const name = responseData.name;
+      console.log("User Logged In:", responseData);
 
       // localStorage.setItem("name", name);
       localStorage.setItem("token", token);
@@ -105,28 +106,58 @@ const LoginForm = () => {
       // console.log("User Logged In:", response.data);
 
       let DetailsEndpoint;
+      let DetailsResponse;
       if (role === "ADMIN") {
-        DetailsEndpoint = "http://localhost:9191/admin/adminDetails";
-      } else if(role === "DOCTOR") {
-        DetailsEndpoint = "http://localhost:9191/doctor/doctorDetails"; // Adjust the endpoint accordingly
+        DetailsResponse = await axios.get("http://localhost:9191/admin/adminDetails", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+
+        });
       }
-      else if(role === "Receptionist") {
-        DetailsEndpoint = "http://localhost:9191/receptionist/receptionistDetails"; // Adjust the endpoint accordingly
+      else if (role === "DOCTOR") {
+        const formData = {};
+
+        DetailsResponse = await axios.post("http://localhost:9191/doctor/doctorDetails",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+
+          });
+      }
+      else if (role === "Receptionist") {
+        const formData = {};
+
+        DetailsResponse = await axios.post("http://localhost:9191/receptionist/receptionistDetails",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+
+          });
       }
 
+      // const formData = {};
 
-      const DetailsResponse = await axios.get(DetailsEndpoint, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      // const DetailsResponse = await axios.post(DetailsEndpoint,
+      //   formData,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     }
+
+      //   });
+
       // Extract admin name from the response
       const Name = DetailsResponse.data.name;
-  
+      console.log("Name:", Name);
+
       // Store admin name in local storage or state for later use
       localStorage.setItem("Name", Name);
-    
+
 
 
       if (role === "DOCTOR") {

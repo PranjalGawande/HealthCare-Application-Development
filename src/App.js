@@ -19,6 +19,7 @@ import AddAdminForm from './Components/AddAdminForm';
 import ViewAdmin from './Components/ViewAdmin';
 import { ViewAdminDetails } from './Components/ViewAdminDetails';
 import { AdminPasswordChange } from './Components/AdminPasswordChange';
+import { ViewDoctorDetails } from './Components/ViewDoctorDetails';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/admin/add-staff" element={<AddStaffForm />} />
             <Route path="/admin/admin-details" element={<ViewAdminDetails/>}/>
             <Route path="/admin/add-admin" element={<AddAdminForm/>} />
+            <Route path="/admin/view-doctor-details" element={<ViewDoctorDetails />} />
             <Route path="/admin/admin-password-change" element={<AdminPasswordChange/>} />
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />

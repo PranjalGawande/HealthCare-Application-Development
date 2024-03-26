@@ -90,6 +90,9 @@ import { useNavigate } from "react-router-dom";
 const ViewDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
+  // const [formData, setFormData] = useState({
+  //   email: "",
+  // });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -115,6 +118,8 @@ const ViewDoctors = () => {
         );
         setDoctors(response.data);
         setLoading(false);
+        // const doctorEmails = response.data.map(doctor => doctor.email);
+        // console.log("Doctor Emails:", doctorEmails);
       } catch (error) {
         console.error("Error fetching doctors:", error);
         setLoading(false);
@@ -179,24 +184,32 @@ const ViewDoctors = () => {
 
   const handleViewDoctorDetails = async (email) => {
     try {
-      const token = localStorage.getItem('token');
+      const token2 = localStorage.getItem('token');
+      const headers = {
+        Authorization: `Bearer ${token2}`,
+      };
+      // const response = await axios.get(
+      //   'http://localhost:9191/doctor/doctorDetails',
+      //   { email },
+      //   { headers: headers }
+      // );
+      const formData = { email: email };
+      // console.log('Form Data:', formData);
       
-      const response = await axios.get(
-        'http://localhost:9191/doctor/doctorDetails',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          data: JSON.stringify({ email })
-        }
+      const response = await axios.post(
+        "http://localhost:9191/doctor/doctorDetails",
+        formData,
+        { headers: headers }
       );
+      
 
       const doctorDetails = response.data;
-      console.log('Doctor details:', doctorDetails);
+      // console.log('Doctor details:', doctorDetails);
       // Navigate to view doctor details page with doctor details
-      navigate('/view-doctor-details', { state: { doctor: doctorDetails } }); 
+      navigate('/admin/view-doctor-details', { state: { doctor: doctorDetails } });
 
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error fetching doctor details:', error);
     }
   };
@@ -211,6 +224,7 @@ const ViewDoctors = () => {
           <thead>
             <tr>
               {/* <th scope="col">ID</th> */}
+              <th scope="col">Doctor ID</th>
               <th scope="col">Name</th>
               <th scope="col">E-mail</th>
               <th scope="col">Speciality</th>
@@ -220,12 +234,12 @@ const ViewDoctors = () => {
           <tbody>
             {doctors.map((doctor) => (
               <tr key={doctor.id}>
-                {/* <td>{doctor.id}</td> */}
+                <td>{doctor.doctorId}</td>
                 <td>{doctor.name}</td>
                 <td>{doctor.email}</td>
                 <td>{doctor.speciality}</td>
                 <td>
-                  {  
+                  {
                     <button
                       className="btn btn-outline-info text-black"
                       onClick={() => handleViewDoctorDetails(doctor.email)}
