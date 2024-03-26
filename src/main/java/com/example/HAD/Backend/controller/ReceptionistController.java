@@ -40,8 +40,8 @@ public class ReceptionistController {
     @Autowired
     private LoginService loginService;
 
-    @GetMapping("/receptionistDetails")
-    @PreAuthorize("hasAuthority('receptionist:get')")
+    @PostMapping("/receptionistDetails")
+    @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<StaffDTO> getReceptionistDetail(
             @RequestBody ExtraDTO extraDTO,
             @AuthenticationPrincipal UserDetails userDetails) {

@@ -40,8 +40,8 @@ public class DoctorController {
     @Autowired
     private LoginService loginService;
 
-    @GetMapping("/doctorDetails")
-    @PreAuthorize("hasAnyAuthority('doctor:get')")
+    @PostMapping("/doctorDetails")
+    @PreAuthorize("hasAnyAuthority('doctor:post')")
     public ResponseEntity<DoctorDTO> getDoctorDetails(@RequestBody ExtraDTO extraDTO,
                                                       @AuthenticationPrincipal UserDetails userDetails) {
         Doctor doctor;
