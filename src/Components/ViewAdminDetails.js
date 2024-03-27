@@ -2,10 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useNavigate,useLocation } from "react-router-dom";
 import axios from "axios";
 
+
 export const ViewAdminDetails = () => {
   const [adminDetails, setAdminDetails] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [newPassword, setNewPassword] = useState("");
+
+   const handleChangePassword = async () => {
+    try {
+      navigate("/admin/admin-password-change");
+    } catch (error) {
+      console.error("Error changing password:", error);
+    }
+
+    navigate("/admin/admin-password-change");
+  };
 
   useEffect(() => {
     if (location.state && location.state.adminDetails) {
@@ -29,6 +41,12 @@ export const ViewAdminDetails = () => {
           <p className="mb-2">Gender: {adminDetails.gender}</p>
           <p className="mb-2">Abha ID: {adminDetails.abhaId}</p>
           <p className="mb-2">Email: {adminDetails.email}</p>
+          <br />
+          <div className="mt-3">
+            {/* Add buttons with respective functionalities */}
+            <button className="btn btn-primary me-2" onClick={handleChangePassword}>Change Password</button>
+            
+          </div>
         </div>
       )}
     </div>

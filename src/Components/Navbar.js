@@ -175,7 +175,6 @@ import axios from "axios";
 
 export default function Navbar() {
   let navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
