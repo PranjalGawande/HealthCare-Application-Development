@@ -19,9 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin("http://localhost:9191")
@@ -124,15 +122,21 @@ public class DoctorController {
 
         boolean isRequestNotNull = true;
         Field[] fields = MedicalRecords.class.getDeclaredFields();
+
+        Set<String> variables = new HashSet<>();
+        variables.add("bloodPressure");
+        variables.add("oxygenLevel");
+        variables.add("pulse");
+        variables.add("symptoms");
+
         for ( Field field : fields) {
             field.setAccessible(true);
-            if(field.getName().equals("medicine")) {
-                List<?> medicineList = (List<?>) field.get(request);
-                if(medicineList == null) continue;
-            }
-            if(field.get(request) == null) {
-                isRequestNotNull = false;
-                break;
+            if (variables.contains(field.getName())) {
+                Object value = field.get(request);
+                if (value == null) {
+                    isRequestNotNull = false;
+                    break;
+                }
             }
         }
 

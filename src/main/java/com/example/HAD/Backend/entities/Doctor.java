@@ -47,7 +47,7 @@ public class Doctor {
     @Column
     private Integer experience;
 
-    @Column(name = "token_no", columnDefinition = "Number default '1'")
+    @Column(name = "token_no", columnDefinition = "Integer default 1")
     private Integer tokenNo;
 
     @Column(name = "token_max")
