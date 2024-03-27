@@ -20,7 +20,7 @@ export const ViewDoctorDetails = () => {
 
   const handleChangePassword = () => {
     // Navigate to the change password page
-    navigate('/admin/admin-doctor-password-change');
+    navigate('/admin/admin-doctor-password-change', { state: { doctor: doctorDetails } });
   };
 
   const handleActivateDoctor = async (email) => {

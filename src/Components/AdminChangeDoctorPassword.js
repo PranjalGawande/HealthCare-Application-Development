@@ -77,34 +77,50 @@
 
 
 import React, { useState } from 'react';
+import { useLocation } from "react-router-dom";
 import axios from 'axios'; // Import axios for making HTTP requests
 
 export const AdminChangeDoctorPassword = () => {
-  const [email, setEmail] = useState(""); // State for email input field
+  const location = useLocation();
+  const email = location.state.doctor.email;
+  // const [email, setEmail] = useState(""); // State for email input field
   const [newPassword, setNewPassword] = useState(""); // State for new password input field
   const [error, setError] = useState(null); // State to store error message
   const [success, setSuccess] = useState(false); // State to indicate successful password change
+
+
+
+  // const [formData, setFormData] = useState({
+  //   email: email,
+  //   newpassword: newPassword
+  // });
+
+
+
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const formData = { email: email };
+      const formData = { 
+        email: email,
+        newPassword: newPassword
+       };
       // Send email and new password to backend
       const response = await axios.post(
         "http://localhost:9191/doctor/changePassword",
         formData,
-        {
-          newPassword: newPassword,
-        },
+        // {
+        //   newPassword: newPassword,
+        // },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       setSuccess(true); // Set success state to true upon successful password change
       // Clear form fields
-      setEmail("");
-      setNewPassword("");
+      // setEmail("");
+      // setNewPassword("");
     } catch (error) {
       setError(error.response.data.message); // Set error state if password change fails
     }
