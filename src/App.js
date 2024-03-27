@@ -22,6 +22,10 @@ import { AdminPasswordChange } from './Components/AdminPasswordChange';
 import { ViewDoctorDetails } from './Components/ViewDoctorDetails';
 import { AdminChangeDoctorPassword } from './Components/AdminChangeDoctorPassword';
 import { AdminUpdateDoctorDetails } from './Components/AdminUpdateDoctorDetails';
+import { AdminChangeReceptionistPassword } from './Components/AdminChangeReceptionistPassword';
+import { AdminUpdateReceptionistDetails } from './Components/AdminUpdateReceptionistDetails';
+// import AdminUpdateReceptionistDetails
+import { ViewReceptionistDetails } from './Components/ViewReceptionistDetails';
 
 function App() {
 
@@ -40,6 +44,9 @@ function App() {
             <Route path="/admin/admin-password-change" element={<AdminPasswordChange/>} />
             <Route path="/admin/admin-doctor-password-change" element={<AdminChangeDoctorPassword/>} />
             <Route path="/admin/admin-doctor-details-update" element={<AdminUpdateDoctorDetails/>} />
+            <Route path="/admin/admin-receptionist-details-update" element={<AdminUpdateReceptionistDetails/>} />
+            <Route path="/admin/admin-receptionist-password-change" element={<AdminChangeReceptionistPassword/>} />
+            <Route path="/admin/view-receptionist-details" element={<ViewReceptionistDetails/>} />
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
             <Route path="/admin/view-doctor-info" element={<ViewDoctors />} />

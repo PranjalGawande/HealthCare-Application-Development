@@ -102,13 +102,14 @@ const ViewStaff = () => {
       };
       const formData = { email: email };
       const response = await axios.post(
-        "http://localhost:9191/admin/staffDetails",
+        "http://localhost:9191/receptionist/receptionistDetails",
         formData,
         { headers: headers }
       );
-      console.log("Staff details:", response.data);
+      // console.log("Staff details:", response.data);
+      const staffDetails = response.data;
       // Redirect to staff details page
-      navigate("/staffDetails", { state: response.data });
+      navigate("/admin/view-receptionist-details", { state: { staff: staffDetails } });
     }
     catch (error) {
       console.error("Error viewing staff details:", error);
