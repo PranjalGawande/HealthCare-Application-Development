@@ -13,6 +13,7 @@ const AdminDashboard = () => {
     }
     return '3rem'; // Default font size
   };
+  
   useEffect(() => {
     
     const token = localStorage.getItem("token");
