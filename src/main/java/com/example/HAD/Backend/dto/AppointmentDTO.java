@@ -14,13 +14,13 @@ import java.util.Calendar;
 @Setter
 @Getter
 public class AppointmentDTO {
-    private Integer appointmentId;
+    private Integer tokenNo;
     private Calendar date;
     private Time time;
     private String reasonForVisit;
 
     public AppointmentDTO(Appointment appointment) {
-        this.appointmentId = appointment.getAppointmentId();
+        this.tokenNo = appointment.getTokenNo();
         this.date = appointment.getDate();
         this.time = appointment.getTime();
         this.reasonForVisit = appointment.getReasonForVisit();

@@ -2,7 +2,9 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.dto.DoctorDTO;
 import com.example.HAD.Backend.dto.ExtraDTO;
+import com.example.HAD.Backend.entities.Appointment;
 import com.example.HAD.Backend.entities.Doctor;
+import com.example.HAD.Backend.entities.Login;
 import com.example.HAD.Backend.entities.MedicalRecords;
 import com.example.HAD.Backend.entities.Patient;
 import com.example.HAD.Backend.dto.MedicalRecordsDTO;
@@ -16,8 +18,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:9191")
@@ -33,6 +37,9 @@ public class DoctorController {
 
     @Autowired
     private MedicalRecordsService medicalRecordsService;
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Autowired
     private JwtService jwtService;
@@ -62,6 +69,7 @@ public class DoctorController {
     @PreAuthorize("hasAuthority('doctor:get')")
     public ResponseEntity<List<MedicalRecordsDTO>> PatientConsultationHistory(
             @PathVariable("patientId") Integer patientId,
+            @RequestHeader("Authorization") String token,
             @AuthenticationPrincipal UserDetails userDetails) {
         List<MedicalRecords> medicalRecords;
 
@@ -70,7 +78,12 @@ public class DoctorController {
            medicalRecords = medicalRecordsService.getPatientHistory(patientId);
         }
         else {
-            medicalRecords = medicalRecordsService.getPatientMedicalHistory(userDetails.getUsername(), patientId);
+            Doctor doctor = doctorService.getDoctorDetailsByEmail(userDetails.getUsername());
+            // In case of doctor, treat patientId as tokenNo
+            Optional<Appointment> appointmentValue = appointmentService.getAppointmentBytokenNo(doctor.getDoctorId(), patientId);
+            Appointment appointment = appointmentValue.orElseThrow(()-> new RuntimeException("Unable to find the given Token Number"));
+
+            medicalRecords = medicalRecordsService.getPatientMedicalHistory(userDetails.getUsername(), appointment.getPatient().getPatientId());
         }
 
         List<MedicalRecordsDTO> medicalRecordsDTO = new ArrayList<>();
@@ -86,43 +99,60 @@ public class DoctorController {
         }
     }
 
-    @PostMapping("/addPatientRecord/{patientId}")
+    @PostMapping("/addPatientRecord/{tokenNo}")
     @PreAuthorize("hasAuthority('doctor:post')")
     public ResponseEntity<String> addPatientConsultationRecord(
             @RequestBody MedicalRecords request,
-            @PathVariable("patientId") Integer patientId,
+            @PathVariable Integer tokenNo,
             @RequestHeader("Authorization") String token,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal UserDetails userDetails) throws IllegalAccessException {
 
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin cannot add medical records");
         }
 
-        if (request == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unable to add this Record");
-        }
-
         if(token.startsWith("Bearer ")) token = token.substring(7);
         String email = jwtService.extractEmail(token);
 
         Doctor doctor = doctorService.getDoctorDetailsByEmail(email);
-        if(doctor == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor record not found");
+
+        Optional<Appointment> appointmentValue = appointmentService.getAppointmentBytokenNo(doctor.getDoctorId(), tokenNo);
+        Appointment appointment = appointmentValue.orElseThrow(()-> new RuntimeException("Appointment with given Id cannot be found"));
+
+        Patient patient = patientService.getPatientById(appointment.getPatient().getPatientId());
+
+        boolean isRequestNotNull = true;
+        Field[] fields = MedicalRecords.class.getDeclaredFields();
+        for ( Field field : fields) {
+            field.setAccessible(true);
+            if(field.getName().equals("medicine")) {
+                List<?> medicineList = (List<?>) field.get(request);
+                if(medicineList == null) continue;
+            }
+            if(field.get(request) == null) {
+                isRequestNotNull = false;
+                break;
+            }
         }
 
-        MedicalRecords medicalRecords = new MedicalRecords();
-        Patient patient = patientService.getPatientById(patientId);
-        medicalRecords.setPatient(patient);
-        medicalRecords.setDoctor(doctor);
-        medicalRecords.setMedicine(request.getMedicine());
-        medicalRecords.setPulse(request.getPulse());
-        medicalRecords.setBloodPressure(request.getBloodPressure());
-        medicalRecords.setOxygenLevel(request.getOxygenLevel());
-        medicalRecords.setSymptoms(request.getSymptoms());
+        if (isRequestNotNull) {
+            MedicalRecords medicalRecords = new MedicalRecords();
+            medicalRecords.setPatient(patient);
+            medicalRecords.setDoctor(doctor);
+            medicalRecords.setMedicine(request.getMedicine());
+            medicalRecords.setPulse(request.getPulse());
+            medicalRecords.setBloodPressure(request.getBloodPressure());
+            medicalRecords.setOxygenLevel(request.getOxygenLevel());
+            medicalRecords.setSymptoms(request.getSymptoms());
 
-        medicalRecordsService.addPatientConsultation(medicalRecords);
-        return ResponseEntity.ok().body("Medical Records added successfully");
+            appointmentService.updateAppointment(appointment.getAppointmentId(), "done");
+            medicalRecordsService.addPatientConsultation(medicalRecords);
+            return ResponseEntity.ok().body("Medical Records added successfully");
+        } else {
+            appointmentService.updateAppointment(appointment.getAppointmentId(), "absent");
+            return ResponseEntity.ok().body("Patient was absent");
+        }
     }
 
     @PostMapping("/updateDoctor")
@@ -144,6 +174,7 @@ public class DoctorController {
         if(doctor.getSpeciality() != null) doctor.setSpeciality(doctorDTO.getSpeciality());
         if(doctor.getExperience() != null) doctor.setExperience(doctorDTO.getExperience());
         if(doctor.getMobileNo() != null)   doctor.setMobileNo(doctorDTO.getMobileNo());
+        if(doctor.getTokenMax() != null) doctor.setTokenMax(doctorDTO.getTokenMax());
 
         doctorService.updateDoctor(doctor);
         return ResponseEntity.ok().body("Successfully updated Doctor Details");
@@ -155,6 +186,11 @@ public class DoctorController {
 
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
+            Login login = loginService.getLoginByEmail(extraDTO.getEmail());
+            if(login == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Doctor found with given Email");
+            }
+
             loginService.updateLogin(extraDTO.getEmail(), extraDTO.getNewPassword());
         }
         else {

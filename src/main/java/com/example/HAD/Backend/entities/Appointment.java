@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.sql.Time;
 import java.util.Calendar;
@@ -34,6 +35,9 @@ public class Appointment {
 
     @Column(nullable = false)
     private String reasonForVisit;
+
+    @Column(columnDefinition = "VARCHAR(255) NOT NULL DEFAULT 'pending'")
+    private String status;
 
     @ManyToOne
     @JsonIgnore

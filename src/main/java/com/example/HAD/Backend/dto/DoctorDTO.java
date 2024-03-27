@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +24,8 @@ public class DoctorDTO {
     private Integer experience;
     private String email;
     private String mobileNo;
+    private Integer tokenMax;
+    private Boolean status;
     private List<AppointmentDTO> appointmentsList = new ArrayList<AppointmentDTO>();
 
     public DoctorDTO(Doctor doctor) {
@@ -34,10 +37,13 @@ public class DoctorDTO {
         this.experience = doctor.getExperience();
         this.mobileNo = doctor.getMobileNo();
         this.email = doctor.getLogin().getEmail();
-
+        this.tokenMax = doctor.getTokenMax();
+        this.status = doctor.getLogin().getStatus();
 
         for (Appointment appointment : doctor.getAppointments()) {
-            this.appointmentsList.add(new AppointmentDTO(appointment));
+            if("pending".equals(appointment.getStatus())) {
+                this.appointmentsList.add(new AppointmentDTO(appointment));
+            }
         }
     }
 }

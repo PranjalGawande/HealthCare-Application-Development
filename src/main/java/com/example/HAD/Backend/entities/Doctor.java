@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -46,6 +47,12 @@ public class Doctor {
     @Column
     private Integer experience;
 
+    @Column(name = "token_no", columnDefinition = "Number default '1'")
+    private Integer tokenNo;
+
+    @Column(name = "token_max")
+    private Integer tokenMax;
+
     @JsonIgnore
     @OneToMany(mappedBy = "doctor",cascade = CascadeType.ALL)
     private List<Appointment> appointments = new ArrayList<>();
@@ -61,5 +68,23 @@ public class Doctor {
         this.mobileNo = doctorDTO.getMobileNo();
         this.speciality = doctorDTO.getSpeciality();
         this.experience = doctorDTO.getExperience();
+        this.tokenMax = doctorDTO.getTokenMax();
+    }
+
+    @PrePersist
+    public void PrePersist(){
+        if(this.tokenNo == null) this.tokenNo = 1;
+    }
+
+    public Integer generateToken() {
+        if(Objects.equals(tokenNo, tokenMax+1)) {
+            tokenNo = 0;
+            return 0;
+        }
+        else return tokenNo++;
+    }
+
+    public void tokenReset() {
+        this.tokenNo = 1;
     }
 }

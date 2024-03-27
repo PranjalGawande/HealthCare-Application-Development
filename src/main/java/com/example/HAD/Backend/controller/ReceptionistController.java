@@ -73,15 +73,34 @@ public class ReceptionistController {
 
     @PostMapping("/addAppointment/patientId/{patientId}/doctorId/{doctorId}")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> addAppointment(@PathVariable("patientId") Integer patientId, @PathVariable("doctorId") Integer doctorId, @RequestBody Appointment appointment) {
+    public ResponseEntity<String> addAppointment(
+            @PathVariable("patientId") Integer patientId,
+            @PathVariable("doctorId") Integer doctorId,
+            @RequestBody Appointment appointment) {
         Doctor doctor = doctorService.findDoctorById(doctorId);
         appointment.setDoctor(doctor);
+        int tokenNo = doctor.generateToken();
+        if (tokenNo == 0) {
+            return ResponseEntity.ok().body("Doctor appointment is full for today");
+        }
+        appointment.setTokenNo(tokenNo);
 
         Patient patient = patientService.findPatientById(patientId);
+        if(patient == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No patient with given Patient Id");
+        }
         appointment.setPatient(patient);
 
         appointmentService.addAppointment(appointment);
-        return ResponseEntity.ok().body("Successfully created a new Appointment");
+        return ResponseEntity.ok().body("Successfully created a new Appointment. Appointment No: "+ appointment.getTokenNo());
+    }
+
+    @PostMapping("/resetDoctorTokenNo/{doctorId}")
+    @PreAuthorize("hasAuthority('receptionist:post')")
+    public ResponseEntity<String> resetDoctorTokenNo(@PathVariable Integer doctorId) {
+        Doctor doctor = doctorService.findDoctorById(doctorId);
+        doctor.tokenReset();
+        return ResponseEntity.ok().body("Doctor Token Number reset successfully");
     }
 
     @GetMapping("/doctorList")
@@ -122,6 +141,10 @@ public class ReceptionistController {
 
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
+            Login login = loginService.getLoginByEmail(extraDTO.getEmail());
+            if(login == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Receptionist found with given Email");
+            }
             loginService.updateLogin(extraDTO.getEmail(), extraDTO.getNewPassword());
         }
         else {
