@@ -89,11 +89,12 @@ export const AdminChangeDoctorPassword = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      const formData = { email: email };
       // Send email and new password to backend
       const response = await axios.post(
         "http://localhost:9191/doctor/changePassword",
+        formData,
         {
-          email: email,
           newPassword: newPassword,
         },
         {
@@ -113,7 +114,7 @@ export const AdminChangeDoctorPassword = () => {
     <div>
       <h1>Change Password</h1>
       <form onSubmit={handleChangePassword}>
-        <div>
+        {/* <div>
           <label htmlFor="email">Email:</label>
           <input
             type="email"
@@ -121,7 +122,7 @@ export const AdminChangeDoctorPassword = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)} // Update email state on change
           />
-        </div>
+        </div> */}
         <div>
           <label htmlFor="newPassword">New Password:</label>
           <input
