@@ -184,6 +184,18 @@
   transform: translateY(-2px);
 }
 
+.profile-btn {
+  /* height: 50px; */
+  padding: .5em 1.5em;
+  font-size: 30px;
+  border: none;
+  border-radius: 10px;
+  transition: background-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
+  cursor: pointer;
+  outline: none;
+
+}
+
 .login-cred {
   width: 600px;
   margin-top: -110px;

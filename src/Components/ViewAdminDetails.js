@@ -1,31 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import axios from "axios";
 
 export const ViewAdminDetails = () => {
   const [adminDetails, setAdminDetails] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    // Function to fetch admin details if not received from props
-    const fetchAdminDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:9191/admin/adminDetails", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setAdminDetails(response.data);
-      } catch (error) {
-        console.error("Error fetching admin details:", error);
-      }
-    };
-
-    // Check if admin details are received as props
-    // If not, fetch them using the handler
-    if (!adminDetails) {
-      fetchAdminDetails();
+    if (location.state && location.state.adminDetails) {
+      setAdminDetails(location.state.adminDetails);
+    } else {
+      // Handle the case where doctor details are not available
+      navigate('/error'); // Redirect to error page or handle accordingly
     }
-  }, [adminDetails]); // Re-fetch admin details if adminDetails state changes
+  }, [location.state, navigate]); // Re-fetch admin details if adminDetails state changes
 
   return (
     <div className="container glass-background mt-5">

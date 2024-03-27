@@ -105,7 +105,6 @@ const LoginForm = () => {
       // localStorage.setItem("role", role);
       // console.log("User Logged In:", response.data);
 
-      let DetailsEndpoint;
       let DetailsResponse;
       if (role === "ADMIN") {
         DetailsResponse = await axios.get("http://localhost:9191/admin/adminDetails", {

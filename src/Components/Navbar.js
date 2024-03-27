@@ -169,7 +169,7 @@
 
 import React, { useState } from "react";
 import "./style.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import axios from "axios";
 
@@ -193,21 +193,61 @@ export default function Navbar() {
     }
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
-   
+  // const toggleDropdown = () => {
+  //   setDropdownOpen(!dropdownOpen);
+  // };
 
 
+  let DetailsResponse;
   const handleViewDetails = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:9191/admin/adminDetails", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const role = localStorage.getItem("role");
+
+      if (role === "ADMIN") {
+        DetailsResponse = await axios.get("http://localhost:9191/admin/adminDetails", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+
+        });
+      navigate("/admin/admin-details", { state: { adminDetails: DetailsResponse.data } });
+
+      }
+      else if (role === "DOCTOR") {
+        const formData = {};
+
+        DetailsResponse = await axios.post("http://localhost:9191/doctor/doctorDetails",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+
+          });
+          navigate("/admin/view-doctor-details", { state: { doctor: DetailsResponse.data } });
+
+
+      }
+      else if (role === "Receptionist") {
+        const formData = {};
+
+        DetailsResponse = await axios.post("http://localhost:9191/receptionist/receptionistDetails",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+
+          });
+          navigate("/admin/admin-details", { state: { receptionistDetails: DetailsResponse.data } });
+
+      }
+      // const response = await axios.get("http://localhost:9191/admin/adminDetails", {
+      //   headers: { Authorization: `Bearer ${token}` },
+      // });
       // Assuming the response contains admin details
       // You can pass the admin details as state to the route
-      navigate("/admin/admin-details", { state: { adminDetails: response.data } });
 
       // console.log(response.data);
 
@@ -216,7 +256,7 @@ export default function Navbar() {
     }
   };
 
-  const handleChangePassword = async () => {
+  // const handleChangePassword = async () => {
     // try {
     //   const token = localStorage.getItem("token");
     //   const response = await axios.post("http://localhost:9191/admin/changePassword", { newPassword }, {
@@ -228,10 +268,10 @@ export default function Navbar() {
     //   console.error("Error changing password:", error);
     // }
 
-    navigate("/admin/admin-password-change");
-  };
-  
-  
+  //   navigate("/admin/admin-password-change");
+  // };
+
+
 
 
 
@@ -260,45 +300,70 @@ export default function Navbar() {
         </div>
 
         {token && (
-          <div className="dropdown">
-            <button
-              className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white dropdown-toggle"
-              onClick={toggleDropdown}
-            >
-              <CgProfile />
-            </button>
-            <ul className={`dropdown-menu ${dropdownOpen ? "show" : ""}`}>
-              <li>
-                <button
-                  className="dropdown-item"
-                  type="button"
-                  onClick={handleViewDetails}
-                >
-                  View Details
-                </button>
-              </li>
-              <li>
-                <button 
-                className="dropdown-item" 
-                type="button"
-                onClick={handleChangePassword}>
-                  Change Password
-                </button>
-              </li>
-              <li>
-                <hr className="dropdown-divider" />
-              </li>
-              <li>
-                <button
-                  className="dropdown-item"
-                  type="button"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </li>
-            </ul>
-          </div>
+          <button
+            type="button"
+            className="profile-btn btn btn-lg text-white"
+            onClick={handleViewDetails}
+          >
+            <CgProfile />
+          </button>
+        )}
+
+        {/* {token && (
+          <Link to="/admin/admin-details"
+            className="profile-btn text-white"
+          >
+            <CgProfile />
+          </Link>
+        )} */}
+
+        {token && (
+          <button
+            type="button"
+            className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
+            onClick={handleLogout}
+          >
+            LOGOUT
+          </button>
+          // <div className="dropdown">
+          //   <button
+          //     className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white dropdown-toggle"
+          //     onClick={toggleDropdown}
+          //   >
+          //     <CgProfile />
+          //   </button>
+          //   <ul className={`dropdown-menu ${dropdownOpen ? "show" : ""}`}>
+          //     <li>
+          //       <button
+          //         className="dropdown-item"
+          //         type="button"
+          //         onClick={handleViewDetails}
+          //       >
+          //         View Details
+          //       </button>
+          //     </li>
+          //     <li>
+          //       <button 
+          //       className="dropdown-item" 
+          //       type="button"
+          //       onClick={handleChangePassword}>
+          //         Change Password
+          //       </button>
+          //     </li>
+          //     <li>
+          //       <hr className="dropdown-divider" />
+          //     </li>
+          //     <li>
+          //       <button
+          //         className="dropdown-item"
+          //         type="button"
+          //         onClick={handleLogout}
+          //       >
+          //         Logout
+          //       </button>
+          //     </li>
+          //   </ul>
+          // </div>
         )}
       </div>
     </nav>
