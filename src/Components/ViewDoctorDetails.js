@@ -25,13 +25,19 @@ export const ViewDoctorDetails = () => {
 
   const handleActivateDoctor = async (email) => {
     try {
+    if (!doctorDetails || !doctorDetails.email) {
+      console.error("Doctor details or email not available.");
+      return;
+    }
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      await axios.post(
-        `http://localhost:9191/admin/activateStaff/${email}`,
-        null,
+
+      const formData = { email: email };
+      const response = await axios.post(
+        `http://localhost:9191/admin/activateStaff`,
+        formData,
         { headers: headers }
       );
       // Refresh doctor list after activation
@@ -41,52 +47,32 @@ export const ViewDoctorDetails = () => {
       //     headers: headers,
       //   }
       // );
-      // setDoctors(response.data);
+      setDoctorDetails(prevDoctorDetails => ({
+        ...prevDoctorDetails,
+        status: true // Assuming response.data.status contains the updated status
+      }));
     } catch (error) {
       console.error("Error activating doctor:", error);
     }
   };
 
-  // const handleDeactivateDoctor = async (email) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const headers = {
-  //       Authorization: `Bearer ${token}`,
-  //     };
-  //     await axios.post(
-  //       `http://localhost:9191/admin/deactivateStaff/${email}`,
-  //       null,
-  //       { headers: headers }
-  //     );
-  //     // Refresh doctor list after deactivation
-  //     // const response = await axios.get(
-  //     //   "http://localhost:9191/receptionist/doctorList",
-  //     //   {
-  //     //     headers: headers,
-  //     //   }
-  //     // );
-  //     // setDoctors(response.data);
-  //   } catch (error) {
-  //     console.error("Error deactivating doctor:", error);
-  //   }
-  // };
 
-
-  const handleDeactivateDoctor = async () => {
+  const handleDeactivateDoctor = async (email) => {
     try {
       if (!doctorDetails || !doctorDetails.email) {
         console.error("Doctor details or email not available.");
         return;
       }
-  
+
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-  
-      await axios.post(
-        `http://localhost:9191/admin/deactivateStaff/${doctorDetails.email}`,
-        null,
+
+      const formData = { email: email };
+      const response = await axios.post(
+        `http://localhost:9191/admin/deActivateStaff`,
+        formData,
         { headers: headers }
       );
       // Refresh doctor list after deactivation
@@ -96,12 +82,16 @@ export const ViewDoctorDetails = () => {
       //     headers: headers,
       //   }
       // );
-      // setDoctors(response.data);
-    } catch (error) {
+      setDoctorDetails(prevDoctorDetails => ({
+        ...prevDoctorDetails,
+        status: false // Assuming response.data.status contains the updated status
+      }));
+    }
+    catch (error) {
       console.error("Error deactivating doctor:", error);
     }
   };
-  
+
 
 
 
@@ -114,8 +104,9 @@ export const ViewDoctorDetails = () => {
       // Handle the case where doctor details are not available
       navigate('/error'); // Redirect to error page or handle accordingly
     }
-    console.log(doctorDetails);
+    // console.log("doctorDetails",doctorDetails);
   }, [location.state, navigate]);
+  console.log("doctorDetails", doctorDetails);
   // const [doctorDetails, setDoctorDetails] = useState(props.doctor);
   // console.log("props", props.doctor);
 
@@ -204,16 +195,16 @@ export const ViewDoctorDetails = () => {
           <p className="mb-2">Speciality: {doctorDetails.speciality}</p>
           <p className="mb-2">Experience: {doctorDetails.experience} years</p>
           <p className="mb-2">Email: {doctorDetails.email}</p>
-          <p className="mb-2">Status: {doctorDetails.status}</p>
+          <p className="mb-2">Status: {doctorDetails.status ? 'Active' : 'Inactive'}</p>
           <br />
           <div className="mt-3">
             {/* Add buttons with respective functionalities */}
             <button className="btn btn-primary me-2" onClick={handleUpdateDetails}>Update Details</button>
             <button className="btn btn-primary me-2" onClick={handleChangePassword}>Change Password</button>
-            {doctorDetails.status === 1 ? (
-              <button className="btn btn-danger me-2" onClick={handleDeactivateDoctor}>Deactivate</button>
+            {doctorDetails.status === true ? (
+              <button className="btn btn-danger me-2" onClick={() => handleDeactivateDoctor(doctorDetails.email)}>Deactivate</button>
             ) : (
-              <button className="btn btn-success me-2" onClick={handleActivateDoctor}>Activate</button>
+              <button className="btn btn-success me-2" onClick={() => handleActivateDoctor(doctorDetails.email)}>Activate</button>
             )}
           </div>
         </div>
