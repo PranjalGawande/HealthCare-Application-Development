@@ -44,55 +44,77 @@ const ViewStaff = () => {
     fetchStaff();
   }, []);
   
-  const handleActivateDoctor = async (email) => {
-    try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      await axios.post(
-        `http://localhost:9191/admin/activateStaff/${email}`,
-        null,
-        { headers: headers }
-      );
-      // Refresh doctor list after activation
-      const response = await axios.get(
-        "http://localhost:9191/admin/staffList",
-        {
-          headers: headers,
-        }
-      );
-      const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
-      setStaff(receptionists);
-    } catch (error) {
-      console.error("Error activating doctor:", error);
-    }
-  };
+  // const handleActivateDoctor = async (email) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const headers = {
+  //       Authorization: `Bearer ${token}`,
+  //     };
+  //     await axios.post(
+  //       `http://localhost:9191/admin/activateStaff/${email}`,
+  //       null,
+  //       { headers: headers }
+  //     );
+  //     // Refresh doctor list after activation
+  //     const response = await axios.get(
+  //       "http://localhost:9191/admin/staffList",
+  //       {
+  //         headers: headers,
+  //       }
+  //     );
+  //     const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
+  //     setStaff(receptionists);
+  //   } catch (error) {
+  //     console.error("Error activating doctor:", error);
+  //   }
+  // };
 
-  const handleDeactivateDoctor = async (email) => {
+  // const handleDeactivateDoctor = async (email) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const headers = {
+  //       Authorization: `Bearer ${token}`,
+  //     };
+  //     await axios.post(
+  //       `http://localhost:9191/admin/deactivateStaff/${email}`,
+  //       null,
+  //       { headers: headers }
+  //     );
+  //     // Refresh doctor list after deactivation
+  //     const response = await axios.get(
+  //       "http://localhost:9191/admin/staffList",
+  //       {
+  //         headers: headers,
+  //       }
+  //     );
+  //     const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
+  //     setStaff(receptionists);
+  //   } catch (error) {
+  //     console.error("Error deactivating doctor:", error);
+  //   }
+  // };
+
+  const handleViewStaffDetails = async (email) => {
     try {
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      await axios.post(
-        `http://localhost:9191/admin/deactivateStaff/${email}`,
-        null,
+      const formData = { email: email };
+      const response = await axios.post(
+        "http://localhost:9191/admin/staffDetails",
+        formData,
         { headers: headers }
       );
-      // Refresh doctor list after deactivation
-      const response = await axios.get(
-        "http://localhost:9191/admin/staffList",
-        {
-          headers: headers,
-        }
-      );
-      const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
-      setStaff(receptionists);
-    } catch (error) {
-      console.error("Error deactivating doctor:", error);
+      console.log("Staff details:", response.data);
+      // Redirect to staff details page
+      navigate("/staffDetails", { state: response.data });
     }
-  };
+    catch (error) {
+      console.error("Error viewing staff details:", error);
+    }
+  }
+  
   return (
     <div>
       <h2 className="list-heading">Receptionists List</h2>
@@ -117,27 +139,14 @@ const ViewStaff = () => {
                 <td>{staff.email}</td>
                 <td>{staff.role}</td>
                 <td>
-                  {staff.status ? (
+                  {
                     <button
-                      className="btn btn-danger"
-                      onClick={() => handleDeactivateDoctor(staff.email)}
+                      className="btn btn-outline-info text-black"
+                      onClick={() => handleViewStaffDetails(staff.email)}
                     >
-                      Deactivate
+                      View Details
                     </button>
-                  ) : (
-                    <button
-                      className="btn btn-success"
-                      onClick={() => handleActivateDoctor(staff.email)}
-                    >
-                      Activate
-                    </button>
-                  )}
-                  {/* <button
-                    className="btn btn-primary"
-                    onClick={() => handleEditDoctor(doctor.id)}
-                  >
-                    Edit
-                  </button> */}
+                  }
                 </td>
               </tr>
             ))}

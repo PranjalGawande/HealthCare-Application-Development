@@ -15,7 +15,7 @@ export const ViewDoctorDetails = () => {
 
   const handleUpdateDetails = () => {
     // Navigate to the update details page
-    navigate('/admin/admin-doctor-details-update');
+    navigate('/admin/admin-doctor-details-update', { state: { doctor: doctorDetails } });
   };
 
   const handleChangePassword = () => {

@@ -224,17 +224,17 @@ const ViewDoctors = () => {
           <thead>
             <tr>
               {/* <th scope="col">ID</th> */}
-              <th scope="col">Doctor ID</th>
+              {/* <th scope="col">Doctor ID</th> */}
               <th scope="col">Name</th>
               <th scope="col">E-mail</th>
               <th scope="col">Speciality</th>
-              <th scope="col">Action</th> {/* New column for actions */}
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
             {doctors.map((doctor) => (
               <tr key={doctor.id}>
-                <td>{doctor.doctorId}</td>
+                {/* <td>{doctor.doctorId}</td> */}
                 <td>{doctor.name}</td>
                 <td>{doctor.email}</td>
                 <td>{doctor.speciality}</td>
@@ -247,12 +247,6 @@ const ViewDoctors = () => {
                       View Details
                     </button>
                   }
-                  {/* <button
-                    className="btn btn-primary"
-                    onClick={() => handleEditDoctor(doctor.id)}
-                  >
-                    Edit
-                  </button> */}
                 </td>
               </tr>
             ))}
