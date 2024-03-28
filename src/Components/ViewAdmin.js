@@ -72,7 +72,7 @@ const ViewAdmin = () => {
   
 
   return (
-    <div>
+    <div className="container mt-10">
       <h2 className="list-heading">Admins List</h2>
       {loading ? (
         <div>Loading...</div>
