@@ -12,7 +12,8 @@ import ViewDoctors from './Components/ViewDoctors';
 import HospitalFormLayout from './Components/HospitalFormLayout';
 import VerificationForm from './Components/VerificationForm';
 import DoctorAppointment from './Components/DoctorAppointment';
-import ConsultationForm from './Components/ConsultationForm';
+// import ConsultationForm from './Components/ConsultationForm';
+import CNForm from './Components/CNForm';
 import { PatientHistory } from './Components/PatientHistory';
 import ViewStaff from './Components/ViewStaff';
 import AddAdminForm from './Components/AddAdminForm';
@@ -57,7 +58,7 @@ function App() {
             <Route path="/abhaCreation" element={<HospitalFormLayout />} />
             <Route path="/abhaVerification" element={<VerificationForm />} />
             {/* <Route path="/doctorAppointment" element={<DoctorAppointment />} /> */}
-            <Route path="/consultationForm" element={<ConsultationForm />} />
+            <Route path="/doctor/consultation-form" element={<CNForm />} />
             <Route path="/patientHistory" element={<PatientHistory />} />
         </Routes>
     </Router>

@@ -2,9 +2,13 @@ import React from 'react'
 import CNForm from './CNForm';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+
 
 const ConsultationForm = () => {
   let navigate = useNavigate();
+  const location = useLocation();
+
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -20,7 +24,7 @@ const ConsultationForm = () => {
          <h1 className='font-bold text-6xl'>CONSULTATION<br></br>FORM</h1>
       </div>
       <div className='flex justify-center items-center mt-20 pt-10' >
-        <CNForm/>
+        <CNForm />
       </div>
     </div>
   )
