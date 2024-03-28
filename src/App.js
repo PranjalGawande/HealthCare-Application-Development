@@ -26,6 +26,7 @@ import { AdminChangeReceptionistPassword } from './Components/AdminChangeRecepti
 import { AdminUpdateReceptionistDetails } from './Components/AdminUpdateReceptionistDetails';
 // import AdminUpdateReceptionistDetails
 import { ViewReceptionistDetails } from './Components/ViewReceptionistDetails';
+import { ViewAppointments } from './Components/ViewAppointments';
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
             <Route path="/admin/admin-receptionist-details-update" element={<AdminUpdateReceptionistDetails/>} />
             <Route path="/admin/admin-receptionist-password-change" element={<AdminChangeReceptionistPassword/>} />
             <Route path="/admin/view-receptionist-details" element={<ViewReceptionistDetails/>} />
+            <Route path='/doctor/view-appointments' element={<ViewAppointments />} />
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/receptionist" element={<ReceptionistDashboard />} />
             <Route path="/admin/view-doctor-info" element={<ViewDoctors />} />
@@ -54,7 +56,7 @@ function App() {
             <Route path="/admin/view-admin-info" element={<ViewAdmin />} />
             <Route path="/abhaCreation" element={<HospitalFormLayout />} />
             <Route path="/abhaVerification" element={<VerificationForm />} />
-            <Route path="/doctorAppointment" element={<DoctorAppointment />} />
+            {/* <Route path="/doctorAppointment" element={<DoctorAppointment />} /> */}
             <Route path="/consultationForm" element={<ConsultationForm />} />
             <Route path="/patientHistory" element={<PatientHistory />} />
         </Routes>

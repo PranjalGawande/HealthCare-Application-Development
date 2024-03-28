@@ -14,6 +14,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import doctorImage from '../assets/DoctorPage.png'; 
+import { NavLink } from 'react-router-dom';
 
 export default function DoctorDashboard() {
   const doctorName = localStorage.getItem('Name');
@@ -52,16 +53,20 @@ export default function DoctorDashboard() {
 
   return (
     <div className='main-background-doctor'>
-      <div className="h-full flex justify-center items-center ">
+      <div className=" background h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
         <div className="image-container" >
             <img src={doctorImage} className="admin-image"/>
             <div className="dashboard-name-doctor" style={{ fontSize: determineFontSize() }}>{doctorName}</div>
           </div>
           <div className='flex flex-col gap-5 '>
-            <button type="button" onClick={handleConsultationForm} className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">CONSULTATION FORM</button>
-            <button type="button" onClick={handlePatientHistory} className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">PATIENT'S MEDICAL HISTORY</button>
-            {/* <button type="button" onClick={handleDoctorsAppointment} className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">DOCTOR'S APPOINTMENT</button> */}
+          <NavLink
+              to="/doctor/view-appointments"
+              className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              style={{textAlign: 'center', fontSize: '30px', fontWeight: 'bold'}}
+            >
+              VIEW APPOINTMENTS
+            </NavLink>
           </div>
         </div>
       </div>

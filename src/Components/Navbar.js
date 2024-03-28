@@ -185,9 +185,9 @@ export default function Navbar() {
     const role = localStorage.getItem("role");
     if (role === "ADMIN") {
       navigate("/admin");
-    } else if (role === "doctor") {
+    } else if (role === "DOCTOR") {
       navigate("/doctor");
-    } else if (role === "staff") {
+    } else if (role === "Receptionist") {
       navigate("/receptionist");
     }
   };
