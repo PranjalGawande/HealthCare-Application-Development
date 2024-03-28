@@ -41,40 +41,6 @@ export const ViewAdminDetails = () => {
     }, [location.state, navigate]); // Re-fetch admin details if adminDetails state changes
 
     return (
-        // <div className="container mt-5">
-        //   <div className="container profile glass-background mt-5">
-        //     <div className="profile-page">
-        //       <div>
-        //         <label className="text-login fw-bold text-center">
-        //           ADMIN DETAILS
-        //         </label>
-        //       </div>
-
-        //       <div>
-        //         {adminDetails && (
-        //           <div>
-        //             <p className="mb-2">Name: {adminDetails.name}</p>
-        //             <p className="mb-2">Date of Birth: {new Date(adminDetails.dob).toLocaleDateString()}</p>
-        //             <p className="mb-2">Mobile No: {adminDetails.mobileNo}</p>
-        //             <p className="mb-2">Gender: {adminDetails.gender}</p>
-        //             <p className="mb-2">Abha ID: {adminDetails.abhaId}</p>
-        //             <p className="mb-2">Email: {adminDetails.email}</p>
-        //             <br />
-        //             <div className="mt-3">
-        //               {/* Add buttons with respective functionalities */}
-        //               <button className="btn btn-primary me-2" onClick={handleChangePassword}>Change Password</button>
-
-        //             </div>
-        //           </div>
-        //         )}
-        //       </div>
-        //     </div>
-        //   </div>
-        // </div>
-
-
-
-
         <div class="page-content page-container" id="page-content">
             <div class="padding">
                 <div class="row container d-flex justify-content-center">
