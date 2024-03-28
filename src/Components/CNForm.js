@@ -320,7 +320,12 @@ const CNForm = ({ patientId, doctorId }) => {
 
   const fetchPatientHistory = async (appToken) => {
     try {
-      const response = await axios.get(`http://localhost:9191/doctor/history/${appToken}`);
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.get(`http://localhost:9191/doctor/history/${appToken}`,
+      { headers: headers });
       console.log(response);
       setPatientHistory(response.data);
     } catch (error) {
