@@ -285,6 +285,7 @@ export const ViewAppointments = () => {
       { headers: headers}
       );
 
+      console.log('response', response);
       // If successful, fetch updated doctor details
       if (response.status === 200) {
         fetchDoctorDetails();

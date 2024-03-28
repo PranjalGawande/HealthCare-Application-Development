@@ -302,10 +302,32 @@ const CNForm = ({ patientId, doctorId }) => {
     if (location.state && location.state.appToken) {
       setAppToken(location.state.appToken);
     } else {
+      console.log("No token found");
       // Handle the case where doctor details are not available
-      navigate('/error'); // Redirect to error page or handle accordingly
+      // navigate('/error'); // Redirect to error page or handle accordingly
     }
   }, [location.state, navigate]);
+
+  const handleMedicineChange = (index, field, value) => {
+    const updatedMedicine = [...formData.medicine];
+    updatedMedicine[index] = value;
+    setFormData({ ...formData, medicine: updatedMedicine });
+  };
+
+
+  const addMedicine = () => {
+    setFormData({
+      ...formData,
+      medicine: [...formData.medicine, ''],
+    });
+  };
+
+  // Function to remove a medicine entry
+  const removeMedicine = (index) => {
+    const updatedMedicine = [...formData.medicine];
+    updatedMedicine.splice(index, 1);
+    setFormData({ ...formData, medicine: updatedMedicine });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -336,7 +358,7 @@ const CNForm = ({ patientId, doctorId }) => {
         throw new Error('Failed to submit consultation form');
       }
       else {
-        console.log("response error: ", response);
+        console.log("response: ", response);
       }
 
       // Handle success
@@ -399,15 +421,30 @@ const CNForm = ({ patientId, doctorId }) => {
             value={formData.pulse}
             onChange={handleChange}
           />
-          <TextField
+          {/* <TextField
             id="medicine"
             label="Medicine"
             variant="outlined"
             size="small"
             style={{ marginBottom: '1rem', width: '100%' }}
             value={formData.medicine}
-            onChange={handleChange}
-          />
+            onChange={handleMedicineChange}
+          /> */}
+
+          <h2>Medicine</h2>
+          {formData.medicine.map((medicineName, index) => (
+            <div key={index}>
+              <input
+                type="text"
+                value={medicineName}
+                onChange={(e) => handleMedicineChange(index, e.target.value)}
+                placeholder="Medicine Name"
+              />
+              <button type="button" onClick={() => removeMedicine(index)}>Remove</button>
+            </div>
+          ))}
+          <button type="button" onClick={addMedicine}>Add Medicine</button>
+          {/* <button type="submit">Submit</button> */}
 
         </form>
         <button type="submit">Submit</button>
