@@ -1,11 +1,13 @@
 
-import React, { useState } from 'react';
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios'; // Import axios for making HTTP requests
 
 export const AdminChangeReceptionistPassword = () => {
   const location = useLocation();
-  const email = location.state.staff.email;
+  const navigate = useNavigate();
+  const staff = location.state?.staff; // Using optional chaining to handle null value
+  const email = staff?.email
   // const [email, setEmail] = useState(""); // State for email input field
   const [newPassword, setNewPassword] = useState(""); // State for new password input field
   const [error, setError] = useState(null); // State to store error message
@@ -18,7 +20,18 @@ export const AdminChangeReceptionistPassword = () => {
 //   //   newpassword: newPassword
 //   // });
 
-
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  if (!token) {
+    // Redirect to login page if token doesn't exist
+    navigate("/");
+  }
+  if (role !== "ADMIN") {
+    navigate("/");
+    localStorage.clear();
+  }
+}, []);
 
 
   const handleChangePassword = async (e) => {

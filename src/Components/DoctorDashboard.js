@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 // import React from 'react'
 
 // const DoctorDashboard = () => {
@@ -18,19 +19,26 @@ import { NavLink } from 'react-router-dom';
 
 export default function DoctorDashboard() {
   const doctorName = localStorage.getItem('Name');
+  // const location = useLocation();
   const navigate = useNavigate();
 
+
   const determineFontSize = () => {
-    if (doctorName.length > 14) {
+    if (doctorName && doctorName.length > 14) {
       return '2rem'; // Decrease font size if more than 5 words
     }
     return '3rem'; // Default font size
   };
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
     if (!token) {
       // Redirect to login page if token doesn't exist
       navigate("/");
+    }
+    if (role !== "DOCTOR") {
+      navigate("/");
+      localStorage.clear();
     }
   }, []);
  
@@ -41,10 +49,10 @@ export default function DoctorDashboard() {
     navigate('/consultationForm');
   };
 
-  const handlePatientHistory = () => {
-    // Navigate to the Abha ID Verification page
-    navigate('/patientHistory');
-  };
+  // const handlePatientHistory = () => {
+  //   // Navigate to the Abha ID Verification page
+  //   navigate('/patientHistory');
+  // };
 
   // const handleDoctorsAppointment = () => {
   //   // Navigate to the Doctor's Appointment page

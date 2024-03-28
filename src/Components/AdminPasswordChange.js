@@ -68,14 +68,29 @@
 
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const AdminPasswordChange = () => {
+  const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    if (!token) {
+      navigate("/");
+    }
+    if (role !== "ADMIN") {
+      navigate("/");
+      localStorage.clear();
+    }
+  }, []);
 
   const handleChangePassword = async (e) => {
     e.preventDefault();

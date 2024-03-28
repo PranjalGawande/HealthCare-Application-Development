@@ -98,6 +98,16 @@ export const ViewReceptionistDetails = () => {
 
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    if (!token) {
+      navigate('/');
+    }
+    if (role !== 'ADMIN' || role !== 'RECEPTIONIST') {
+      navigate('/');
+      localStorage.clear();
+    }
+
     if (location.state && location.state.staff) {
       setStaffDetails(location.state.staff);
     } else {

@@ -40,8 +40,13 @@ const AddStaffForm = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
     if (!token) {
       navigate("/");
+    }
+    if (role !== "ADMIN") {
+      navigate("/");
+      localStorage.clear();
     }
   }, []);
 

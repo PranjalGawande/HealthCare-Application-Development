@@ -1,27 +1,31 @@
 import React from "react";
 import { useEffect } from "react";
 import admin from "../assets/AdminPage.jpg";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { NavLink } from "react-router-dom";
 
 const AdminDashboard = () => {
   const adminName = localStorage.getItem("Name");
   let navigate = useNavigate();
+  const location = useLocation();
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    if (!token) {
+      navigate("/");
+    }
+    if (role !== "ADMIN") {
+      navigate("/");
+      localStorage.clear();
+    }
+  }, []);
   const determineFontSize = () => {
-    if (adminName.length > 14) {
+    if (adminName && adminName.length > 14) {
       return '2rem'; // Decrease font size if more than 5 words
     }
     return '3rem'; // Default font size
   };
-  
-  useEffect(() => {
-    
-    const token = localStorage.getItem("token");
-    if (!token) {
-      // Redirect to login page if token doesn't exist
-      navigate("/");
-    }
-  }, []);
   return (
     <div>
       <div className="h-full flex justify-center items-center ">

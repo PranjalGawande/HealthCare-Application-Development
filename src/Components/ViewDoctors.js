@@ -97,9 +97,15 @@ const ViewDoctors = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
     if (!token) {
       // Redirect to login page if token doesn't exist
       navigate("/");
+    }
+    if (role !== "ADMIN") {
+      // Redirect to home page if user is not an admin
+      navigate("/");
+      localStorage.clear();
     }
   }, []);
 

@@ -1,17 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const AdminUpdateReceptionistDetails = () => {
   const location = useLocation();
-  const staffDetails = location.state.staff;
+  const navigate = useNavigate();
+  const staffDetails = location.state?.staff;
 //   // console.log('Doctor details:', doctorDetails);
-  const email = staffDetails.email; // State for doctor's email
+  const email = staffDetails?.email; // State for doctor's email
 //   const [newSpeciality, setNewSpeciality] = useState(doctorDetails.speciality); // State for new speciality input field
-  const [newMobileNo, setNewMobileNo] = useState(staffDetails.mobileNo); // State for new mobile number input field
+  const [newMobileNo, setNewMobileNo] = useState(staffDetails?.mobileNo); // State for new mobile number input field
 //   const [newExperience, setNewExperience] = useState(doctorDetails.experience); // State for new experience input field
   const [error, setError] = useState(null); // State to store error message
   const [success, setSuccess] = useState(false); // State to indicate successful doctor details update
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    // if (!doctorDetails) {
+    //   navigate("/");
+    // }
+    if (!token) {
+      navigate("/");
+    }
+    if (role !== "ADMIN") {
+      navigate("/");
+      localStorage.clear();
+    }
+  }, []);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

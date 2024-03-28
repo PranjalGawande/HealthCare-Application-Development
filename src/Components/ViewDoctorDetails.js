@@ -98,6 +98,16 @@ export const ViewDoctorDetails = () => {
 
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    if (!token) {
+      navigate("/");
+    }
+    if (role !== "ADMIN" || role !== "DOCTOR") {
+      navigate("/");
+      localStorage.clear();
+    }
+
     if (location.state && location.state.doctor) {
       setDoctorDetails(location.state.doctor);
     } else {

@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const AdminUpdateDoctorDetails = () => {
   const location = useLocation();
-  const doctorDetails = location.state.doctor;
-  // console.log('Doctor details:', doctorDetails);
-  const email = doctorDetails.email; // State for doctor's email
-  const [newSpeciality, setNewSpeciality] = useState(doctorDetails.speciality); // State for new speciality input field
-  const [newMobileNo, setNewMobileNo] = useState(doctorDetails.mobileNo); // State for new mobile number input field
-  const [newExperience, setNewExperience] = useState(doctorDetails.experience); // State for new experience input field
+  const navigate = useNavigate();
+  const doctorDetails = location.state?.doctor; // Using optional chaining to handle null value
+  const email = doctorDetails?.email;
+  // const doctorDetails = location.state?.doctor;
+  // // console.log('Doctor details:', doctorDetails);
+  // const email = doctorDetails?.email; // State for doctor's email
+  const [newSpeciality, setNewSpeciality] = useState(doctorDetails?.speciality); // State for new speciality input field
+  const [newMobileNo, setNewMobileNo] = useState(doctorDetails?.mobileNo); // State for new mobile number input field
+  const [newExperience, setNewExperience] = useState(doctorDetails?.experience); // State for new experience input field
   const [error, setError] = useState(null); // State to store error message
   const [success, setSuccess] = useState(false); // State to indicate successful doctor details update
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    // if (!doctorDetails) {
+    //   navigate("/");
+    // }
+    if (!token) {
+      navigate("/");
+    }
+    if (role !== "ADMIN") {
+      navigate("/");
+      localStorage.clear();
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

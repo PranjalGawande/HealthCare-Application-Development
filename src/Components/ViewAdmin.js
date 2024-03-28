@@ -10,9 +10,14 @@ const ViewAdmin = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
     if (!token) {
       // Redirect to login page if token doesn't exist
       navigate("/");
+    }
+    if (role !== "ADMIN") {
+      navigate("/");
+      localStorage.clear();
     }
   }, []);
 

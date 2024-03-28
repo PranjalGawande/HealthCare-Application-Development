@@ -9,9 +9,14 @@ export default function ReceptionistDashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
     if (!token) {
       // Redirect to login page if token doesn't exist
       navigate("/");
+    }
+    if (role !== "RECEPTIONIST") {
+      navigate("/");
+      localStorage.clear();
     }
   }, []);
 
