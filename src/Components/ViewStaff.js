@@ -122,12 +122,12 @@ const ViewStaff = () => {
   }
   
   return (
-    <div>
-      <h2 className="list-heading">Receptionists List</h2>
+    <div className="container mt-10">
+      {/* <h2 className="list-heading">Receptionists List</h2> */}
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <Table striped bordered hover>
+        <table className="table table-hover" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
               <th scope="col">Name</th>
@@ -158,7 +158,7 @@ const ViewStaff = () => {
             ))}
           </tbody>
     
-        </Table>
+        </table>
        
       )}
     </div>

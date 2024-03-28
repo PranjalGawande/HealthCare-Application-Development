@@ -77,7 +77,7 @@ const ViewAdmin = () => {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <Table striped bordered hover>
+        <table className="table table-hover">
           <thead>
             <tr>
               <th scope="col">Name</th>
@@ -114,7 +114,7 @@ const ViewAdmin = () => {
           <td>@twitter</td>
             </tr> */}
           {/* </tbody> */}
-        </Table>
+        </table>
         // <div className="d-flex justify-content-around">
         // <table className="table shadow mt-5 ">
         //   <thead>

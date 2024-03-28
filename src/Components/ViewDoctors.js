@@ -23,11 +23,11 @@
 //     const fetchDoctors = async () => {
 //       try {
 //         const response = await axios.get(
-//           "http://localhost:9191/receptionist/doctorList", 
+//           "http://localhost:9191/receptionist/doctorList",
 //           {
 //             headers: headers,
 //           }
-//         ); 
+//         );
 //         setDoctors(response.data);
 //         setLoading(false);
 //       } catch (error) {
@@ -72,20 +72,10 @@
 
 // export default ViewDoctors;
 
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Table from "react-bootstrap/Table";
 
 const ViewDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -190,7 +180,7 @@ const ViewDoctors = () => {
 
   const handleViewDoctorDetails = async (email) => {
     try {
-      const token2 = localStorage.getItem('token');
+      const token2 = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token2}`,
       };
@@ -201,36 +191,35 @@ const ViewDoctors = () => {
       // );
       const formData = { email: email };
       // console.log('Form Data:', formData);
-      
+
       const response = await axios.post(
         "http://localhost:9191/doctor/doctorDetails",
         formData,
         { headers: headers }
       );
-      
 
       const doctorDetails = response.data;
       // console.log('Doctor details:', doctorDetails);
       // Navigate to view doctor details page with doctor details
-      navigate('/admin/view-doctor-details', { state: { doctor: doctorDetails } });
-
-    } 
-    catch (error) {
-      console.error('Error fetching doctor details:', error);
+      navigate("/admin/view-doctor-details", {
+        state: { doctor: doctorDetails },
+      });
+    } catch (error) {
+      console.error("Error fetching doctor details:", error);
     }
   };
 
   return (
-    <div>
-      <h2 className="list-heading">Doctor List</h2>
+    <div className="container mt-10">
+      {/* <h1 className="list-heading" >Doctor List</h1> */}
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <table className="table shadow">
+        
+
+         <table className="table table-hover" cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
-              {/* <th scope="col">ID</th> */}
-              {/* <th scope="col">Doctor ID</th> */}
               <th scope="col">Name</th>
               <th scope="col">E-mail</th>
               <th scope="col">Speciality</th>
@@ -240,7 +229,6 @@ const ViewDoctors = () => {
           <tbody>
             {doctors.map((doctor) => (
               <tr key={doctor.id}>
-                {/* <td>{doctor.doctorId}</td> */}
                 <td>{doctor.name}</td>
                 <td>{doctor.email}</td>
                 <td>{doctor.speciality}</td>

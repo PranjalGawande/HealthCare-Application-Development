@@ -311,10 +311,10 @@ export const ViewAppointments = () => {
   const leastTokenAppointment = sortedAppointments?.[0];
 
   return (
-    <div>
+    <div className="container mt-10">
       <h1>Doctor Appointments</h1>
       <div>
-        <table>
+        <table className="table table-hover">
           <thead>
             <tr>
               <th>Token No</th>
