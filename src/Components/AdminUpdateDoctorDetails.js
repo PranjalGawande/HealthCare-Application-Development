@@ -26,7 +26,7 @@ export const AdminUpdateDoctorDetails = () => {
     if (!token) {
       navigate("/");
     }
-    if (role !== "ADMIN") {
+    if (role === "Receptionist") {
       navigate("/");
       localStorage.clear();
     }
