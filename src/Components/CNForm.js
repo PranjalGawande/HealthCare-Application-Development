@@ -272,11 +272,15 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
+import { PatientHistoryPopup } from './PatientHistoryPopup';
+
 
 const CNForm = ({ patientId, doctorId }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [appToken, setAppToken] = useState(null);
+  const [patientHistory, setPatientHistory] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
 
   // const appointToken = location.state?.appToken || null; // Check if appToken exists in the location state
   console.log("Apptoken: ", appToken);
@@ -307,6 +311,22 @@ const CNForm = ({ patientId, doctorId }) => {
       // navigate('/error'); // Redirect to error page or handle accordingly
     }
   }, [location.state, navigate]);
+
+  useEffect(() => {
+    if (appToken) {
+      fetchPatientHistory(appToken);
+    }
+  }, [appToken]);
+
+  const fetchPatientHistory = async (appToken) => {
+    try {
+      const response = await axios.get(`http://localhost:9191/doctor/history/${appToken}`);
+      console.log(response);
+      setPatientHistory(response.data);
+    } catch (error) {
+      console.error('Error fetching patient history:', error.message);
+    }
+  };
 
   const handleMedicineChange = (index, field, value) => {
     const updatedMedicine = [...formData.medicine];
@@ -370,6 +390,7 @@ const CNForm = ({ patientId, doctorId }) => {
 
   const handleViewPatientHistory = () => {
     // Logic to view patient history
+    setShowPopup(true);
   };
 
   const handleRequestConsent = () => {
@@ -447,12 +468,20 @@ const CNForm = ({ patientId, doctorId }) => {
           {/* <button type="submit">Submit</button> */}
 
         </form>
-        <button type="submit">Submit</button>
+        <button className="btn btn-success me-2" type="submit">Submit</button>
       </form>
       <div style={{ marginTop: '1rem' }}>
-        <button onClick={handleViewPatientHistory}>View Patient History</button>
-        <button onClick={handleRequestConsent}>Request Consent</button>
+        <button className="btn btn-primary me-2" onClick={handleViewPatientHistory}>View Patient History</button>
+        <button className="btn btn-primary me-2" onClick={handleRequestConsent}>Request Consent</button>
       </div>
+      {showPopup && (
+        <PatientHistoryPopup
+          title="Patient History"
+          onClose={() => setShowPopup(false)}
+          patientHistory={patientHistory} // Pass patient history data to the Popup component
+        />
+      )}
+
     </div>
   );
 };
