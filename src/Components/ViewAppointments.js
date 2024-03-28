@@ -239,8 +239,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
-
 import axios from 'axios';
 
 export const ViewAppointments = () => {
@@ -300,7 +298,7 @@ export const ViewAppointments = () => {
 
   const handleStartConsultation = async (appointment) => {
     // Logic to start consultation for the appointment with the least token number
-    navigate('/doctor/consultation-form',{ state: { appToken: appointment.tokenNo } });
+    navigate('/doctor/consultation-form', { state: { appToken: appointment.tokenNo } });
 
   };
 

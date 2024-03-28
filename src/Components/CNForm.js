@@ -162,11 +162,11 @@
 //           Authorization: `Bearer ${token}`,
 //         },
 //       });
-  
+
 //       if (response.status !== 200) {
 //         throw new Error('Failed to submit consultation form');
 //       }
-  
+
 //       // Handle success
 //       console.log('Consultation form submitted successfully');
 //     } catch (error) {
@@ -268,15 +268,19 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CNForm = ({ patientId, doctorId }) => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const appointToken = location.state?.appToken || null; // Check if appToken exists in the location state
-  console.log("apptoken: ",appointToken);
+  const [appToken, setAppToken] = useState(null);
+
+  // const appointToken = location.state?.appToken || null; // Check if appToken exists in the location state
+  console.log("Apptoken: ", appToken);
+
   const [formData, setFormData] = useState({
     symptoms: '', // Default symptoms
     bloodPressure: '', // Default blood pressure
@@ -290,27 +294,49 @@ const CNForm = ({ patientId, doctorId }) => {
       ...formData,
       [e.target.id]: e.target.value,
     });
+    console.log("formdata: ", formData);
+    console.log("appToken: ", appToken);
   };
+
+  useEffect(() => {
+    if (location.state && location.state.appToken) {
+      setAppToken(location.state.appToken);
+    } else {
+      // Handle the case where doctor details are not available
+      navigate('/error'); // Redirect to error page or handle accordingly
+    }
+  }, [location.state, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      if (!appointToken) {
+      if (!appToken) {
         // Handle the case when appToken is not available
         console.error('Appointment token not found');
         return;
       }
-      
-      const token = localStorage.getItem('token');
-      const response = await axios.post(`http://localhost:9191/doctor/addPatientRecord/${appointToken}`, formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      console.log("formdata: ", formData);
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      // const formData = { email: email };
+      // const response = await axios.post(
+      //   `http://localhost:9191/admin/deActivateStaff`,
+      //   formData,
+      //   { headers: headers }
+      // );
+      const response = await axios.post(`http://localhost:9191/doctor/addPatientRecord/${appToken}`,
+        formData,
+        { headers: headers }
+      );
 
       if (response.status !== 200) {
         throw new Error('Failed to submit consultation form');
+      }
+      else {
+        console.log("response error: ", response);
       }
 
       // Handle success
@@ -336,55 +362,54 @@ const CNForm = ({ patientId, doctorId }) => {
         <div>------------------------</div>
       </div>
       <form style={{ width: '50%', marginTop: '2rem' }} onSubmit={handleSubmit}>
-        {/* Input fields */}
-        //       <form style={{ width: '50%', marginTop: '2rem' }} onSubmit={handleSubmit}>
-        <TextField
-          id="symptoms"
-          label="Symptoms"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: '1rem', width: '100%' }}
-          value={formData.symptoms}
-          onChange={handleChange}
-        />
-        <TextField
-          id="bloodPressure"
-          label="Blood Pressure"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: '1rem', width: '100%' }}
-          value={formData.bloodPressure}
-          onChange={handleChange}
-        />
-        <TextField
-          id="oxygenLevel"
-          label="Oxygen Level"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: '1rem', width: '100%' }}
-          value={formData.oxygenLevel}
-          onChange={handleChange}
-        />
-        <TextField
-          id="pulse"
-          label="Pulse"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: '1rem', width: '100%' }}
-          value={formData.pulse}
-          onChange={handleChange}
-        />
-        <TextField
-          id="medicine"
-          label="Medicine"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: '1rem', width: '100%' }}
-          value={formData.medicine}
-          onChange={handleChange}
-        />
-  
-</form>
+        <form>
+          <TextField
+            id="symptoms"
+            label="Symptoms"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: '1rem', width: '100%' }}
+            value={formData.symptoms}
+            onChange={handleChange}
+          />
+          <TextField
+            id="bloodPressure"
+            label="Blood Pressure"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: '1rem', width: '100%' }}
+            value={formData.bloodPressure}
+            onChange={handleChange}
+          />
+          <TextField
+            id="oxygenLevel"
+            label="Oxygen Level"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: '1rem', width: '100%' }}
+            value={formData.oxygenLevel}
+            onChange={handleChange}
+          />
+          <TextField
+            id="pulse"
+            label="Pulse"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: '1rem', width: '100%' }}
+            value={formData.pulse}
+            onChange={handleChange}
+          />
+          <TextField
+            id="medicine"
+            label="Medicine"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: '1rem', width: '100%' }}
+            value={formData.medicine}
+            onChange={handleChange}
+          />
+
+        </form>
         <button type="submit">Submit</button>
       </form>
       <div style={{ marginTop: '1rem' }}>
