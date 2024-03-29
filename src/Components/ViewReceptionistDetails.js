@@ -103,7 +103,7 @@ export const ViewReceptionistDetails = () => {
     if (!token) {
       navigate('/');
     }
-    if (role !== 'ADMIN' || role !== 'RECEPTIONIST') {
+    if (role === "DOCTOR") {
       navigate('/');
       localStorage.clear();
     }

@@ -31,7 +31,7 @@ export const ViewAdminDetails = () => {
             localStorage.clear();
         }
 
-        
+
         if (location.state && location.state.adminDetails) {
             setAdminDetails(location.state.adminDetails);
         } else {
@@ -44,17 +44,17 @@ export const ViewAdminDetails = () => {
         <div class="profile-page " id="page-content">
             <div class="container padding">
                 <div class="row container d-flex justify-content-around"
-                
-            style={{height: '200px'}}>
+
+                    style={{ height: '500px' }}>
                     <div class="col-xl-6 col-md-12">
                         <div class="card user-card-full">
                             <div class="row m-l-0 m-r-0">
                                 <div class="col-sm-4 bg-c-lite-green user-profile">
                                     <div class="card-block text-center text-white">
-                                        <div class="m-b-25">
+                                        {/* <div class="m-b-25">
                                             <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image" />
-                                        </div>
-                                        <h6 class="f-w-600">Hembo Tingor</h6>
+                                        </div> */}
+                                        <h6 class=" profile-name">Hembo Tingor</h6>
                                         <p>Web Designer</p>
                                         <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                                     </div>
