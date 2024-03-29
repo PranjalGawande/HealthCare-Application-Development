@@ -31,7 +31,6 @@ const AddDoctorForm = () => {
 
   return (
     <div>
-      {/* <Navbar></Navbar> */}
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
