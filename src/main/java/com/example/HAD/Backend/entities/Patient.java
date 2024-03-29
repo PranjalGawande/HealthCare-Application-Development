@@ -1,5 +1,4 @@
 package com.example.HAD.Backend.entities;
-import com.example.HAD.Backend.dto.PatientDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
