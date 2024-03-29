@@ -242,7 +242,9 @@
 
 }
 
-
+.offcanvas-zoom-backdrop {
+  zoom: 140%;
+}
 
 
 

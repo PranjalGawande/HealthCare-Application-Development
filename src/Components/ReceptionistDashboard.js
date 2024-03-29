@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import receptionist from '../assets/receptionist_11833579-removebg-preview.png'; 
+import toast, { Toaster } from "react-hot-toast";
 
 
 export default function ReceptionistDashboard() {
@@ -10,13 +11,20 @@ export default function ReceptionistDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const Name = localStorage.getItem("Name");
     if (!token) {
       // Redirect to login page if token doesn't exist
       navigate("/");
     }
-    if (role !== "RECEPTIONIST") {
+    if (role === "DOCTOR" || role === "ADMIN") {
       navigate("/");
       localStorage.clear();
+    }
+
+    const loggedIn = localStorage.getItem("loggedIn");
+    if (loggedIn === "true") {
+      toast.success(`Welcome, ${Name}`);
+      localStorage.removeItem("loggedIn"); // Clear the flag after displaying the toast
     }
   }, []);
 
@@ -38,6 +46,7 @@ export default function ReceptionistDashboard() {
 
   return (
     <div>
+      <Toaster />
       <div className="h-full flex justify-center items-center mt-20">
         <div className='flex justify-evenly items-center gap-40 mt-20 border-amber-300 border-solid '>
           <div className='border border-gray p-5 rounded-md bg-slate-200'>

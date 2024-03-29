@@ -1,70 +1,3 @@
-// import React, { useState } from "react";
-// // import 'bootstrap/dist/css/bootstrap.min.css';
-// import TextField from '@mui/material/TextField';
-// import MenuItem from '@mui/material/MenuItem';
-
-// const LoginForm = () => {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [role, setRole] = useState("");
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     console.log("User Logged In:", { email, password, role });
-//   };
-
-//   const handleRoleChange = (e) => {
-//     setRole(e.target.value);
-//   };
-
-//   return (
-//     // <div className="container background d-flex align-items-center">
-//     //   <div className="container glass-background ">
-//     //     <label className="text-login fw-bold text-center">LOGIN</label>
-
-//     //     <form>
-//     //       <div className="mb-3 mt-5 mx-5">
-//     //         <p htmlFor="exampleInputEmail1" className="form-label text-start">
-//     //           Email
-//     //         </p>
-//     //         <input
-//     //           type="email"
-//     //           className="form-control"
-//     //           id="exampleInputEmail1"
-//     //           aria-describedby="emailHelp"
-//     //         />
-//     //       </div>
-//     //       <div className="mb-3 mt-5 mx-5">
-//     //         <p htmlFor="exampleInputPassword1" className="form-label text-start">
-//     //           Password
-//     //         </p>
-//     //         <input
-//     //           type="password"
-//     //           className="form-control"
-//     //           id="exampleInputPassword1"
-//     //         />
-//     //       </div>
-//     //       <div className="mb-3 mt-5 mx-5">
-//     //         <p htmlFor="exampleInputPassword1" className="form-label text-start">
-//     //           Role
-//     //         </p>
-//     //         <select
-//     //           className="form-select"
-//     //           aria-label="Default select example"
-//     //           onChange={handleRoleChange}
-//     //         >
-//     //           <option value="admin">Admin</option>
-//     //           <option value="doctor">Doctor</option>
-//     //           <option value="receptionist">Receptionist</option>
-//     //         </select>
-//     //       </div>
-//     //       <button type="submit" className="btn btn-primary btn-lg">
-//     //         Login
-//     //       </button>
-//     //     </form>
-//     //   </div>
-//     // </div>
-
 import React, { useState } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
@@ -73,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import loginImage from "../assets/loginPage.jpg";
 import { colors } from "@mui/material";
+import toast, {Toaster} from "react-hot-toast";
 
 const LoginForm = () => {
   let navigate = useNavigate();
@@ -101,6 +35,7 @@ const LoginForm = () => {
       // localStorage.setItem("name", name);
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
+      localStorage.setItem("loggedIn", "true");
       // console.log("User Logged In:", responseData);
       // localStorage.setItem("token", token);
       // localStorage.setItem("role", role);
@@ -158,7 +93,7 @@ const LoginForm = () => {
       // Store admin name in local storage or state for later use
       localStorage.setItem("Name", Name);
 
-
+      // toast.success("Login Successful");
 
       if (role === "DOCTOR") {
         navigate("/doctor");
@@ -171,6 +106,8 @@ const LoginForm = () => {
       console.error("Login failed:", error);
     }
   };
+
+  const notify = () => toast('Here is your toast.');
 
   const handleRoleChange = (e) => {
     setRole(e.target.value);
@@ -227,7 +164,7 @@ const LoginForm = () => {
                 className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-8 py-3 text-center me-2 mb-2"
               >
                 Login
-              </button>
+              </button>              
             </form>
           </div>
         </div>

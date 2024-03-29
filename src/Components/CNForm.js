@@ -325,7 +325,7 @@ const CNForm = ({ patientId, doctorId }) => {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.get(`http://localhost:9191/doctor/history/${appToken}`,
-      { headers: headers });
+        { headers: headers });
       console.log(response);
       setPatientHistory(response.data);
     } catch (error) {
@@ -476,16 +476,36 @@ const CNForm = ({ patientId, doctorId }) => {
         <button className="btn btn-success me-2" type="submit">Submit</button>
       </form>
       <div style={{ marginTop: '1rem' }}>
-        <button className="btn btn-primary me-2" onClick={handleViewPatientHistory}>View Patient History</button>
+        {/* <button className="btn btn-primary me-2" onClick={handleViewPatientHistory}>View Patient History</button> */}
         <button className="btn btn-primary me-2" onClick={handleRequestConsent}>Request Consent</button>
       </div>
-      {showPopup && (
+      {
         <PatientHistoryPopup
           title="Patient History"
           onClose={() => setShowPopup(false)}
           patientHistory={patientHistory} // Pass patient history data to the Popup component
         />
-      )}
+      }
+      {/* <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">View Patient History</button>
+
+      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Patient History</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            {patientHistory.map(record => (
+              <div key={record.recordId} className="record">
+                <h3>Record ID: {record.recordId}</h3>
+                <p><strong>Blood Pressure:</strong> {record.bloodPressure}</p>
+                <p><strong>Oxygen Level:</strong> {record.oxygenLevel}</p>
+                <p><strong>Pulse:</strong> {record.pulse}</p>
+                <p><strong>Symptoms:</strong> {record.symptoms}</p>
+                <p><strong>Medicine:</strong> {record.medicine.join(', ')}</p>
+              </div>
+            ))}
+        </div>
+      </div> */}
 
     </div>
   );

@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import doctorImage from '../assets/DoctorPage.png'; 
 import { NavLink } from 'react-router-dom';
+import { toast, Toaster } from 'react-hot-toast';
 
 export default function DoctorDashboard() {
   const doctorName = localStorage.getItem('Name');
@@ -40,6 +41,13 @@ export default function DoctorDashboard() {
       navigate("/");
       localStorage.clear();
     }
+
+    const loggedIn = localStorage.getItem("loggedIn");
+    if (loggedIn === "true") {
+      toast.success(`Welcome, ${doctorName}`);
+      localStorage.removeItem("loggedIn"); // Clear the flag after displaying the toast
+    }
+
   }, []);
  
 
@@ -61,6 +69,7 @@ export default function DoctorDashboard() {
 
   return (
     <div className='main-background-doctor'>
+      <Toaster />
       <div className=" background h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
         <div className="image-container" >
