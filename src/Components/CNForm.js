@@ -273,6 +273,8 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 import { PatientHistoryPopup } from './PatientHistoryPopup';
+// import TextField from "@mui/material/TextField";
+import doctorImage from '../assets/DoctorPage.png';
 
 
 const CNForm = ({ patientId, doctorId }) => {
@@ -403,14 +405,37 @@ const CNForm = ({ patientId, doctorId }) => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div className='flex'>
-        <div>------------------------</div>
-        <h2>PATIENT CONSULTATION FORM</h2>
-        <div>------------------------</div>
+    <div>
+      <div className="flex flex-wrap justify-center items-center">
+
+     
+        <div className="flex justify-center items-center">
+          <div className="image-container">
+            <img src={doctorImage} className="admin-image" />
+            <div className="dashboard-name-doctor" style={{ fontSize: "xx-large" }}>
+            CONSULTATION FORM
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center items-center mt-20 pt-10">
+  <div className="container glass-background login-cred">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: "2rem",
+        height: "80vh", // Set height to 80% of viewport height
+        overflowY: "auto", // Enable vertical scrolling
+      }}
+    >
+      <div className="flex">
+        <label className="text-login fw-bold text-center ">
+          Consultation Form
+        </label>
       </div>
-      <form style={{ width: '50%', marginTop: '2rem' }} onSubmit={handleSubmit}>
-        <form>
+      <form onSubmit={handleSubmit}>
+        <div>
           <TextField
             id="symptoms"
             label="Symptoms"
@@ -420,95 +445,376 @@ const CNForm = ({ patientId, doctorId }) => {
             value={formData.symptoms}
             onChange={handleChange}
           />
-          <TextField
-            id="bloodPressure"
-            label="Blood Pressure"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: '1rem', width: '100%' }}
-            value={formData.bloodPressure}
-            onChange={handleChange}
-          />
-          <TextField
-            id="oxygenLevel"
-            label="Oxygen Level"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: '1rem', width: '100%' }}
-            value={formData.oxygenLevel}
-            onChange={handleChange}
-          />
-          <TextField
-            id="pulse"
-            label="Pulse"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: '1rem', width: '100%' }}
-            value={formData.pulse}
-            onChange={handleChange}
-          />
-          {/* <TextField
-            id="medicine"
-            label="Medicine"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: '1rem', width: '100%' }}
-            value={formData.medicine}
-            onChange={handleMedicineChange}
-          /> */}
+        </div>
+         <div>
+ {/* <label htmlFor="newMobileNo">New Mobile No:</label> */}
+ <TextField
+  id="bloodPressure"
+label="Blood Pressure"
+variant="outlined"
+size="small"
+style={{ marginBottom: '1rem', width: '100%' }}
+value={formData.bloodPressure}
+onChange={handleChange}
+/>
+</div>
+<div>
+<TextField
+id="oxygenLevel"
+label="Oxygen Level"
+variant="outlined"
+size="small"
+style={{ marginBottom: '1rem', width: '100%' }}
+value={formData.oxygenLevel}
+onChange={handleChange}
+/>
+</div>
+<div>
+<TextField
+id="pulse"
+label="Pulse"
+variant="outlined"
+size="small"
+style={{ marginBottom: '1rem', width: '100%' }}
+value={formData.pulse}
+onChange={handleChange}
+/>
+ </div>
 
-          <h2>Medicine</h2>
+        <div>
           {formData.medicine.map((medicineName, index) => (
             <div key={index}>
-              <input
+              <TextField
                 type="text"
                 value={medicineName}
                 onChange={(e) => handleMedicineChange(index, e.target.value)}
                 placeholder="Medicine Name"
               />
-              <button type="button" onClick={() => removeMedicine(index)}>Remove</button>
+              <button type="button" className="button" onClick={() => removeMedicine(index)}>Remove</button>
             </div>
           ))}
-          <button type="button" onClick={addMedicine}>Add Medicine</button>
-          {/* <button type="submit">Submit</button> */}
-
-        </form>
-        <button className="btn btn-success me-2" type="submit">Submit</button>
+        </div>
+        <button
+          onClick={addMedicine}
+          type="button"
+          className="button"
+          style={{ marginTop: '2rem', width: "100%" }}
+        >
+          Add Medicine
+        </button>
       </form>
       <div style={{ marginTop: '1rem' }}>
-        {/* <button className="btn btn-primary me-2" onClick={handleViewPatientHistory}>View Patient History</button> */}
-        <button className="btn btn-primary me-2" onClick={handleRequestConsent}>Request Consent</button>
+        <button
+          type="button"
+          className="button"
+          style={{ marginTop: '2rem', width: "100%" }}
+          onClick={handleRequestConsent}
+        >
+          Request Consent
+        </button>
       </div>
       {
         <PatientHistoryPopup
           title="Patient History"
           onClose={() => setShowPopup(false)}
-          patientHistory={patientHistory} // Pass patient history data to the Popup component
+          patientHistory={patientHistory}
         />
       }
-      {/* <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">View Patient History</button>
+    </div>
+  </div>
+</div>
 
-      <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Patient History</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            {patientHistory.map(record => (
-              <div key={record.recordId} className="record">
-                <h3>Record ID: {record.recordId}</h3>
-                <p><strong>Blood Pressure:</strong> {record.bloodPressure}</p>
-                <p><strong>Oxygen Level:</strong> {record.oxygenLevel}</p>
-                <p><strong>Pulse:</strong> {record.pulse}</p>
-                <p><strong>Symptoms:</strong> {record.symptoms}</p>
-                <p><strong>Medicine:</strong> {record.medicine.join(', ')}</p>
-              </div>
-            ))}
-        </div>
-      </div> */}
 
     </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
   );
 };
 
 export default CNForm;
+
+
+
+
+
+
+
+// <div className="flex justify-center items-center mt-20 pt-10">
+// <div className="container glass-background login-cred">
+  
+// <div
+// style={{
+// display: "flex",
+// flexDirection: "column",
+// alignItems: "center",
+// paddingTop: "2rem",
+// }}
+// >
+// <div className="flex">
+// <label className="text-login fw-bold text-center ">
+// Consultation Form
+// </label>
+// </div>
+// <form onSubmit={handleSubmit}>
+// <div>
+// {/* <label htmlFor="email">Email:</label> */}
+// <TextField
+//   id="symptoms"
+// label="Symptoms"
+// variant="outlined"
+// size="small"
+// style={{ marginBottom: '1rem', width: '100%' }}
+// value={formData.symptoms}
+// onChange={handleChange}
+// />
+// </div>
+// <div>
+// {/* <label htmlFor="newMobileNo">New Mobile No:</label> */}
+// <TextField
+//   id="bloodPressure"
+// label="Blood Pressure"
+// variant="outlined"
+// size="small"
+// style={{ marginBottom: '1rem', width: '100%' }}
+// value={formData.bloodPressure}
+// onChange={handleChange}
+// />
+// </div>
+// <div>
+// <TextField
+// id="oxygenLevel"
+// label="Oxygen Level"
+// variant="outlined"
+// size="small"
+// style={{ marginBottom: '1rem', width: '100%' }}
+// value={formData.oxygenLevel}
+// onChange={handleChange}
+// />
+// </div>
+// <div>
+// <TextField
+// id="pulse"
+// label="Pulse"
+// variant="outlined"
+// size="small"
+// style={{ marginBottom: '1rem', width: '100%' }}
+// value={formData.pulse}
+// onChange={handleChange}
+// />
+// </div>
+
+// {/* <h2>Medicine</h2> */}
+// {formData.medicine.map((medicineName, index) => (
+// <div key={index}>
+// <TextField
+// type="text"
+// value={medicineName}
+// onChange={(e) => handleMedicineChange(index, e.target.value)}
+// placeholder="Medicine Name"
+// />
+// <button type="button" className="btn btn-danger me-2" onClick={() => removeMedicine(index)}>Remove</button>
+// </div>
+// ))}
+
+
+// {/* Display success message if doctor details update is successful */}
+// <button
+// onClick={addMedicine}
+// type="submit"
+// className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+//     style={{marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+// >
+// Add Medicine
+// </button>
+// </form>
+// <div style={{ marginTop: '1rem' }}>
+// {/* <button className="btn btn-primary me-2" onClick={handleViewPatientHistory}>View Patient History</button> */}
+// <button type="submit"
+// className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+//     style={{marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+// onClick={handleRequestConsent}>Request Consent</button>
+// </div>
+// {
+// <PatientHistoryPopup
+// title="Patient History"
+// onClose={() => setShowPopup(false)}
+// patientHistory={patientHistory} // Pass patient history data to the Popup component
+// />
+// }
+// </div>
+// </div>
+// </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+// <div className='flex'>
+//   <div>------------------------</div>
+//   <h2>PATIENT CONSULTATION FORM</h2>
+//   <div>------------------------</div>
+// </div>
+// <form style={{ width: '50%', marginTop: '2rem' }} onSubmit={handleSubmit}>
+//   <form>
+//     <TextField
+//       id="symptoms"
+//       label="Symptoms"
+//       variant="outlined"
+//       size="small"
+//       style={{ marginBottom: '1rem', width: '100%' }}
+//       value={formData.symptoms}
+//       onChange={handleChange}
+//     />
+//     <TextField
+//       id="bloodPressure"
+//       label="Blood Pressure"
+//       variant="outlined"
+//       size="small"
+//       style={{ marginBottom: '1rem', width: '100%' }}
+//       value={formData.bloodPressure}
+//       onChange={handleChange}
+//     />
+//     <TextField
+//       id="oxygenLevel"
+//       label="Oxygen Level"
+//       variant="outlined"
+//       size="small"
+//       style={{ marginBottom: '1rem', width: '100%' }}
+//       value={formData.oxygenLevel}
+//       onChange={handleChange}
+//     />
+//     <TextField
+//       id="pulse"
+//       label="Pulse"
+//       variant="outlined"
+//       size="small"
+//       style={{ marginBottom: '1rem', width: '100%' }}
+//       value={formData.pulse}
+//       onChange={handleChange}
+//     />
+//     <h2>Medicine</h2>
+//     {formData.medicine.map((medicineName, index) => (
+//       <div key={index}>
+//         <input
+//           type="text"
+//           value={medicineName}
+//           onChange={(e) => handleMedicineChange(index, e.target.value)}
+//           placeholder="Medicine Name"
+//         />
+//         <button type="button" onClick={() => removeMedicine(index)}>Remove</button>
+//       </div>
+//     ))}
+//     <button type="button" onClick={addMedicine}>Add Medicine</button>
+//     {/* <button type="submit">Submit</button> */}
+//   </form>
+//   <button className="btn btn-success me-2" type="submit">Submit</button>
+// </form>
+// <div style={{ marginTop: '1rem' }}>
+//   {/* <button className="btn btn-primary me-2" onClick={handleViewPatientHistory}>View Patient History</button> */}
+//   <button className="btn btn-primary me-2" onClick={handleRequestConsent}>Request Consent</button>
+// </div>
+// {
+//   <PatientHistoryPopup
+//     title="Patient History"
+//     onClose={() => setShowPopup(false)}
+//     patientHistory={patientHistory} // Pass patient history data to the Popup component
+//   />
+// }
+// </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// {error && <p style={{ color: "red" }}></p>}{" "}
+//         {/* Display error message if present */}
+//         {success && (
+//           <p style={{ color: "green" }}>
+//             Receptionist details updated successfully!
+//           </p>
+//         )}{" "}

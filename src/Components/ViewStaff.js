@@ -21,11 +21,6 @@ const ViewStaff = () => {
     }
   }, []);
 
-  
-
-
-
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     const headers = {
@@ -49,56 +44,6 @@ const ViewStaff = () => {
     fetchStaff();
   }, []);
   
-  // const handleActivateDoctor = async (email) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const headers = {
-  //       Authorization: `Bearer ${token}`,
-  //     };
-  //     await axios.post(
-  //       `http://localhost:9191/admin/activateStaff/${email}`,
-  //       null,
-  //       { headers: headers }
-  //     );
-  //     // Refresh doctor list after activation
-  //     const response = await axios.get(
-  //       "http://localhost:9191/admin/staffList",
-  //       {
-  //         headers: headers,
-  //       }
-  //     );
-  //     const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
-  //     setStaff(receptionists);
-  //   } catch (error) {
-  //     console.error("Error activating doctor:", error);
-  //   }
-  // };
-
-  // const handleDeactivateDoctor = async (email) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const headers = {
-  //       Authorization: `Bearer ${token}`,
-  //     };
-  //     await axios.post(
-  //       `http://localhost:9191/admin/deactivateStaff/${email}`,
-  //       null,
-  //       { headers: headers }
-  //     );
-  //     // Refresh doctor list after deactivation
-  //     const response = await axios.get(
-  //       "http://localhost:9191/admin/staffList",
-  //       {
-  //         headers: headers,
-  //       }
-  //     );
-  //     const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
-  //     setStaff(receptionists);
-  //   } catch (error) {
-  //     console.error("Error deactivating doctor:", error);
-  //   }
-  // };
-
   const handleViewStaffDetails = async (email) => {
     try {
       const token = localStorage.getItem("token");
