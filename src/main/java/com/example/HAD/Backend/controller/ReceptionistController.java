@@ -313,14 +313,6 @@ public class ReceptionistController {
         return ResponseEntity.ok().body("Successfully created a new Appointment. Appointment No: "+ appointment.getTokenNo());
     }
 
-    @PostMapping("/resetDoctorTokenNo/{doctorId}")
-    @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> resetDoctorTokenNo(@PathVariable Integer doctorId) {
-        Doctor doctor = doctorService.findDoctorById(doctorId);
-        doctor.tokenReset();
-        return ResponseEntity.ok().body("Doctor Token Number reset successfully");
-    }
-
     @GetMapping("/doctorList")
     @PreAuthorize("hasAnyAuthority('receptionist:get', 'admin:get')")
     public ResponseEntity<List<DoctorListDTO>> doctorList() {
