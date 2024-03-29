@@ -41,9 +41,11 @@ export const ViewAdminDetails = () => {
     }, [location.state, navigate]); // Re-fetch admin details if adminDetails state changes
 
     return (
-        <div class="page-content page-container" id="page-content">
-            <div class="padding">
-                <div class="row container d-flex justify-content-center">
+        <div class="profile-page " id="page-content">
+            <div class="container padding">
+                <div class="row container d-flex justify-content-around"
+                
+            style={{height: '200px'}}>
                     <div class="col-xl-6 col-md-12">
                         <div class="card user-card-full">
                             <div class="row m-l-0 m-r-0">
