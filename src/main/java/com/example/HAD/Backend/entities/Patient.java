@@ -52,17 +52,4 @@ public class Patient {
     @JsonIgnore
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private List<MedicalRecords> medicalRecords = new ArrayList<>();
-
-    public Patient(PatientDTO patientDto) {
-        if (patientDto != null) {
-            this.patientId = patientDto.getPatientId();
-            this.name = patientDto.getName();
-            this.mobileNo = patientDto.getMobileNo();
-            this.dob = patientDto.getDob();
-            this.gender = patientDto.getGender();
-            this.bloodGroup = patientDto.getBloodGroup();
-            this.address = patientDto.getAddress();
-            this.abhaId = patientDto.getAbhaId();
-        }
-    }
 }
