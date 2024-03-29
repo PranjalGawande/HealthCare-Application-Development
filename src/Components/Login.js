@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import loginImage from "../assets/loginPage.jpg";
 import { colors } from "@mui/material";
-import toast, {Toaster} from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const LoginForm = () => {
   let navigate = useNavigate();
@@ -43,36 +43,38 @@ const LoginForm = () => {
 
       let DetailsResponse;
       if (role === "ADMIN") {
-        DetailsResponse = await axios.get("http://localhost:9191/admin/adminDetails", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-
-        });
-      }
-      else if (role === "DOCTOR") {
+        DetailsResponse = await axios.get(
+          "http://localhost:9191/admin/adminDetails",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } else if (role === "DOCTOR") {
         const formData = {};
 
-        DetailsResponse = await axios.post("http://localhost:9191/doctor/doctorDetails",
+        DetailsResponse = await axios.post(
+          "http://localhost:9191/doctor/doctorDetails",
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-            }
-
-          });
-      }
-      else if (role === "Receptionist") {
+            },
+          }
+        );
+      } else if (role === "Receptionist") {
         const formData = {};
 
-        DetailsResponse = await axios.post("http://localhost:9191/receptionist/receptionistDetails",
+        DetailsResponse = await axios.post(
+          "http://localhost:9191/receptionist/receptionistDetails",
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-            }
-
-          });
+            },
+          }
+        );
       }
 
       // const formData = {};
@@ -107,7 +109,7 @@ const LoginForm = () => {
     }
   };
 
-  const notify = () => toast('Here is your toast.');
+  const notify = () => toast("Here is your toast.");
 
   const handleRoleChange = (e) => {
     setRole(e.target.value);
@@ -161,10 +163,11 @@ const LoginForm = () => {
               </TextField>
               <button
                 type="submit"
-                className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-8 py-3 text-center me-2 mb-2"
+                className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              style={{marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
               >
                 Login
-              </button>              
+              </button>
             </form>
           </div>
         </div>

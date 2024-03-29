@@ -147,7 +147,9 @@ const ViewStaff = () => {
                 <td>
                   {
                     <button
-                      className="btn btn-outline-info text-black"
+                      // className="btn btn-outline-info text-black"
+                      type="button"
+                      className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-cyan-400 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
                       onClick={() => handleViewStaffDetails(staff.email)}
                     >
                       View Details

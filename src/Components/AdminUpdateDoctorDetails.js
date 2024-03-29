@@ -69,85 +69,101 @@ export const AdminUpdateDoctorDetails = () => {
   //   setformData({ ...formData, [id]: value });
   // };
 
-
   return (
     <div>
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
             <img src={admin} className="admin-image" />
-            <div className="dashboard-name" style={{ fontSize: 'xx-large' }}>UPDATE DOCTOR</div>
+            <div className="dashboard-name" style={{ fontSize: "xx-large" }}>
+              UPDATE DOCTOR
+            </div>
           </div>
         </div>
-        
+
         <div className="flex justify-center items-center mt-20 pt-10">
-        <div className="container glass-background login-cred">
-        <form onSubmit={handleSubmit}>
-               <div>
-                 {/* <label htmlFor="email">Email:</label> */}
-                 <TextField
-                  type="email"
-                  label="Email"
-                  id="email"
-                  value={doctorDetails.email}
-                  // onChange={(e) => setEmail(e.target.value)} // Update email state on change
-                  readOnly
-                  style={{ marginBottom: "2rem", width: "100%" }}
-                />
+          <div className="container glass-background login-cred">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                paddingTop: "2rem",
+              }}
+            >
+              <div className="flex">
+                <label className="text-login fw-bold text-center ">
+                  ADD DETAILS
+                </label>
               </div>
-              <div>
-                {/* <label htmlFor="newSpeciality">New Speciality:</label> */}
-                <TextField
-                  type="text"
-                  label="New Speciality"
-                  id="newSpeciality"
-                  value={newSpeciality}
-                  onChange={(e) => setNewSpeciality(e.target.value)} // Update new speciality state on change
-                  style={{ marginBottom: "2rem", width: "100%" }}
-                />
-              </div>
-              <div>
-                {/* <label htmlFor="newMobileNo">New Mobile No:</label> */}
-                <TextField
-                  type="text"
-                  label="New Mobile No"
-                  id="newMobileNo"
-                  value={newMobileNo}
-                  onChange={(e) => setNewMobileNo(e.target.value)} // Update new mobile number state on change
-                  style={{ marginBottom: "2rem", width: "100%" }}
-                />
-              </div>
-              <div>
-                {/* <label htmlFor="newExperience">New Experience:</label> */}
-                <TextField
-                  type="text"
-                  label="New Experience"
-                  id="newExperience"
-                  value={newExperience}
-                  onChange={(e) => setNewExperience(e.target.value)} // Update new experience state on change
-                  style={{ marginBottom: "2rem", width: "100%" }}
-                />
-              </div>
-              {error && <p style={{ color: "red" }}></p>}{" "}
-              {/* Display error message if present */}
-              {success && (
-                <p style={{ color: "green" }}>
-                  Doctor details updated successfully!
-                </p>
-              )}{" "}
-              {/* Display success message if doctor details update is successful */}
-              <button
-                type="submit"
-                className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-8 py-3 text-center me-2 mb-2"
-              >
-                Update Details
-              </button>
-            </form>
-        </div>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  {/* <label htmlFor="email">Email:</label> */}
+                  <TextField
+                    type="email"
+                    label="Email"
+                    id="email"
+                    value={doctorDetails.email}
+                    // onChange={(e) => setEmail(e.target.value)} // Update email state on change
+                    readOnly
+                    style={{ marginBottom: "2rem", width: "100%" }}
+                  />
+                </div>
+                <div>
+                  {/* <label htmlFor="newSpeciality">New Speciality:</label> */}
+                  <TextField
+                    type="text"
+                    label="New Speciality"
+                    id="newSpeciality"
+                    value={newSpeciality}
+                    onChange={(e) => setNewSpeciality(e.target.value)} // Update new speciality state on change
+                    style={{ marginBottom: "2rem", width: "100%" }}
+                  />
+                </div>
+                <div>
+                  {/* <label htmlFor="newMobileNo">New Mobile No:</label> */}
+                  <TextField
+                    type="text"
+                    label="New Mobile No"
+                    id="newMobileNo"
+                    value={newMobileNo}
+                    onChange={(e) => setNewMobileNo(e.target.value)} // Update new mobile number state on change
+                    style={{ marginBottom: "2rem", width: "100%" }}
+                  />
+                </div>
+                <div>
+                  {/* <label htmlFor="newExperience">New Experience:</label> */}
+                  <TextField
+                    type="text"
+                    label="New Experience"
+                    id="newExperience"
+                    value={newExperience}
+                    onChange={(e) => setNewExperience(e.target.value)} // Update new experience state on change
+                    style={{ marginBottom: "2rem", width: "100%" }}
+                  />
+                </div>
+                {error && <p style={{ color: "red" }}></p>}{" "}
+                {/* Display error message if present */}
+                {success && (
+                  <p style={{ color: "green" }}>
+                    Doctor details updated successfully!
+                  </p>
+                )}{" "}
+                {/* Display success message if doctor details update is successful */}
+                <button
+                  type="submit"
+                  className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              style={{marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+                >
+                  Update Details
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
   // return (
   //   <div className="container-fluid main-background-update">
   //     <div className="container background d-flex align-items-center">
