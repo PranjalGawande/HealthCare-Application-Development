@@ -19,7 +19,7 @@ public class PatientService {
         patientRepository.save(patient);
     }
 
-    public Patient findPatientById(Integer patientId) {
-        return patientRepository.findPatientByPatientId(patientId);
+    public Patient getPatientByAbhaId(String abhaId) {
+        return patientRepository.findPatientByAbhaId(abhaId);
     }
 }

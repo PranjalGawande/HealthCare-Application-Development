@@ -34,4 +34,7 @@ public class DoctorService {
         doctorRepository.updateDoctor(doctor.getDoctorId(), doctor.getSpeciality(), doctor.getMobileNo(), doctor.getExperience(), doctor.getTokenMax());
     }
 
+    public void updateDoctorAppointment(Integer doctorId, Integer tokenNo) {
+        doctorRepository.updateDoctorAppointmentNumber(doctorId, tokenNo);
+    }
 }

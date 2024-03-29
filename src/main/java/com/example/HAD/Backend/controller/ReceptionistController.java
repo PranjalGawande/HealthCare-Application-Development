@@ -278,28 +278,32 @@ public class ReceptionistController {
 
 
 
-    @GetMapping("/patient/{patientId}")
+    @GetMapping("/patientDetails")
     @PreAuthorize("hasAuthority('receptionist:get')")
-    public ResponseEntity<Patient> getPatientRecord(@PathVariable("patientId") Integer patientId) {
-        Patient patient = patientService.getPatientById(patientId);
+    public ResponseEntity<Patient> getPatientRecord(@RequestBody ExtraDTO extraDTO) {
+        Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
         return ResponseEntity.ok().body(patient);
     }
 
-    @PostMapping("/addAppointment/patientId/{patientId}/doctorId/{doctorId}")
+    @PostMapping("/addAppointment")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> addAppointment(
-            @PathVariable("patientId") Integer patientId,
-            @PathVariable("doctorId") Integer doctorId,
-            @RequestBody Appointment appointment) {
-        Doctor doctor = doctorService.findDoctorById(doctorId);
+    public ResponseEntity<String> addAppointment(@RequestBody ExtraDTO extraDTO) {
+        Appointment appointment = new Appointment();
+        appointment.setDate(extraDTO.getDate());
+        appointment.setTime(extraDTO.getTime());
+        appointment.setReasonForVisit(extraDTO.getReasonForVisit());
+        appointment.setStatus(extraDTO.getStatus());
+
+        Doctor doctor = doctorService.findDoctorById(extraDTO.getDoctorId());
         appointment.setDoctor(doctor);
+
         int tokenNo = doctor.generateToken();
         if (tokenNo == 0) {
             return ResponseEntity.ok().body("Doctor appointment is full for today");
         }
         appointment.setTokenNo(tokenNo);
 
-        Patient patient = patientService.findPatientById(patientId);
+        Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
         if(patient == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No patient with given Patient Id");
         }
@@ -375,5 +379,12 @@ public class ReceptionistController {
         }
 
         return ResponseEntity.ok("Password changed Successfully");
+    }
+
+    @GetMapping("/resetAppointment")
+    @PreAuthorize("hasAuthority('receptionist:get')")
+    public ResponseEntity<String> resetAppoinment(@RequestBody ExtraDTO extraDTO) {
+        doctorService.updateDoctorAppointment(extraDTO.getDoctorId(), 1);
+        return ResponseEntity.ok().body("Successfully reset the Token Number for given Doctor.");
     }
 }
