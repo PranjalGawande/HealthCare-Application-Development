@@ -1,7 +1,6 @@
 package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.dto.ExtraDTO;
-import com.example.HAD.Backend.dto.PatientDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.DoctorListDTO;
@@ -16,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,7 +120,7 @@ public class ReceptionistController {
 
     @PostMapping("/verifyAadhaarOtp")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<?> verifyAadhaarOtp(@RequestBody Map<String, String> otpData, HttpSession session) {
+    public ResponseEntity<String> verifyAadhaarOtp(@RequestBody Map<String, String> otpData, HttpSession session) {
         // Retrieve txnId and token from session
         String txnId = (String) session.getAttribute("txnId");
         String token = (String) session.getAttribute("token");
@@ -147,13 +147,15 @@ public class ReceptionistController {
 
                 session.setAttribute("txnId", newTxnID); // Update the session with the new txnId
 
-                return ResponseEntity.ok().body(verificationResult);
+                // Simplified response to indicate the next step
+                return ResponseEntity.ok("Aadhaar is verified now move on to next step");
             }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("An error occurred while processing the Aadhaar OTP verify request.");
         }
     }
+
 
     @PostMapping("/setAbdmMobileNumber")
     @PreAuthorize("hasAuthority('receptionist:post')")
@@ -247,12 +249,25 @@ public class ReceptionistController {
             if (response == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("AbhaID creation failed.");
             } else {
-                // Create a response map to only include txnId
+                // Extracting specific fields from the response
+                Map<String, Object> minimalResponse = new HashMap<>();
+                minimalResponse.put("healthIdNumber", response.get("healthIdNumber"));
+                minimalResponse.put("gender", response.get("gender"));
+                minimalResponse.put("yearOfBirth", response.get("yearOfBirth"));
+                minimalResponse.put("monthOfBirth", response.get("monthOfBirth"));
+                minimalResponse.put("dayOfBirth", response.get("dayOfBirth"));
+                minimalResponse.put("firstName", response.get("firstName"));
+                minimalResponse.put("lastName", response.get("lastName"));
+                minimalResponse.put("stateName", response.get("stateName"));
+                minimalResponse.put("districtName", response.get("districtName"));
+                minimalResponse.put("mobile", response.get("mobile"));
+                minimalResponse.put("profilePhoto", response.get("profilePhoto"));
+
+                // Update the session with the new txnId, if needed
                 String newTxnId = (String) response.get("txnId");
+                session.setAttribute("txnId", newTxnId);
 
-                session.setAttribute("txnId", newTxnId); // Update the session with the new txnId
-
-                return ResponseEntity.ok().body(response);
+                return ResponseEntity.ok().body(minimalResponse);
             }
         } catch (Exception e) {
             // Log the exception with a logger (e.g., SLF4J) instead of e.printStackTrace() for production code
@@ -260,6 +275,7 @@ public class ReceptionistController {
             return ResponseEntity.internalServerError().body("An error occurred while processing the Aadhaar OTP verify request.");
         }
     }
+
 
 
     @GetMapping("/patient/{patientId}")
