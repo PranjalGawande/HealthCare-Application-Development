@@ -203,9 +203,9 @@ export const ViewAdminDetails = () => {
                             <p className="mb-2 font-bold">Date of Birth: <span className="font-normal">{new Date(adminDetails.dob).toLocaleDateString()}</span></p>
                             <p className="mb-2 font-bold">Mobile No: <span className="font-normal">{adminDetails.mobileNo}</span></p>
                             <p className="mb-2 font-bold">Gender: <span className="font-normal">{adminDetails.gender}</span></p>
-                            <p className="mb-2 font-bold">Abha ID: <span className="font-normal">{adminDetails.abhaId}</span></p>
-                            <p className="mb-2 font-bold">Speciality: <span className="font-normal">{adminDetails.speciality}</span></p>
-                            <p className="mb-2 font-bold">Experience: <span className="font-normal">{adminDetails.experience} years</span></p>
+                            {/* <p className="mb-2 font-bold">Abha ID: <span className="font-normal">{adminDetails.abhaId}</span></p> */}
+                            {/* <p className="mb-2 font-bold">Speciality: <span className="font-normal">{adminDetails.speciality}</span></p> */}
+                            {/* <p className="mb-2 font-bold">Experience: <span className="font-normal">{adminDetails.experience} years</span></p> */}
                             <p className="mb-2 font-bold">Email: <span className="font-normal">{adminDetails.email}</span></p>
                             {/* <p className="mb-2 font-bold">Status: {adminDetails.status ? 'Active' : 'Inactive'}</p> */}
                             <br />

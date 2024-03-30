@@ -231,6 +231,20 @@
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+.dashboard-name-receptionist {
+  position: absolute;
+  top: 663px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: bolder;
+  color: #0f3c53;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 
 .main-background-doctor {
   /* margin-top: 5%; */

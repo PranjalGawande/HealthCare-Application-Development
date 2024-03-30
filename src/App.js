@@ -93,16 +93,16 @@ function App() {
           {/* <Route path="/abhaCreation" element={<HospitalFormLayout />} /> */}
           {/* <Route path="/abhaVerification" element={<VerificationForm />} /> */}
           {/* <Route path="/doctorAppointment" element={<DoctorAppointment />} /> */}
-          <Route path="/adhaar-abha-id-creation" element={<AdhaarAbhaIdCreation />} />
-          <Route path="/adhaar-otp-verification" element={<AdhaarOtpVerification />} />
-          <Route path="/abha-mobile-no" element={<AbhaMobileNo />} />
-          <Route path="/abha-new-mobile-no-verification" element={<NewAbhaNoOtpVerification />} />
-          <Route path="/health-id-adhaar" element={<HealthIdByAdhaar />} />
-          <Route path="/abha-id-display" element={<AbhaIdDisplay />} />
-          <Route path="/add-patient-details" element={<AddPatientDetails />} />
-          <Route path="/abha-verification" element={<AbhaIdVerification />} />
-          <Route path="/abha-otp-verification" element={<AbhaIdOtpVerification />} />
-          <Route path="/add-appointment" element={<AddAppointment />} />
+          <Route path="/receptionist/adhaar-abha-id-creation" element={<AdhaarAbhaIdCreation />} />
+          <Route path="/receptionist/adhaar-otp-verification" element={<AdhaarOtpVerification />} />
+          <Route path="/receptionist/abha-mobile-no" element={<AbhaMobileNo />} />
+          <Route path="/receptionist/abha-new-mobile-no-verification" element={<NewAbhaNoOtpVerification />} />
+          <Route path="/receptionist/health-id-adhaar" element={<HealthIdByAdhaar />} />
+          <Route path="/receptionist/abha-id-display" element={<AbhaIdDisplay />} />
+          <Route path="/receptionist/add-patient-details" element={<AddPatientDetails />} />
+          <Route path="/receptionist/abha-verification" element={<AbhaIdVerification />} />
+          <Route path="/receptionist/abha-otp-verification" element={<AbhaIdOtpVerification />} />
+          <Route path="/receptionist/add-appointment" element={<AddAppointment />} />
 
 
         </Routes>
