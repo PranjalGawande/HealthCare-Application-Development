@@ -29,6 +29,16 @@
   height: 90vh;
 }
 
+.background-appointment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  /* height: 100%; */
+  padding-top: 5%;
+  padding-bottom: 6.5%;
+}
+
 .glass-background {
 
   height: 700px;
