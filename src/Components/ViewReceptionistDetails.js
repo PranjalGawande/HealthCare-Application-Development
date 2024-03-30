@@ -242,7 +242,7 @@ export const ViewReceptionistDetails = () => {
       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
         <div className="image-container">
           <img src={recepImage} className="admin-image" />
-          <div className="dashboard-name" style={{ fontSize: determineFontSize() }}>{staffDetails.name}</div>
+          <div className="dashboard-name-receptionist" style={{ fontSize: determineFontSize() }}>{staffDetails.name}</div>
         </div>
         <div className="container glass-background mt-5">
           <label className="text-login fw-bold text-center">
