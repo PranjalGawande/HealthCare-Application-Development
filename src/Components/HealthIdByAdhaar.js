@@ -37,7 +37,7 @@ export const HealthIdByAdhaar = () => {
       }
       );
       console.log('Response:', response.data);
-      navigate('/receptionist/abha-id-display');
+      navigate('/receptionist/abha-id-display-and-add');
     } catch (error) {
       console.error('Error:', error);
     }

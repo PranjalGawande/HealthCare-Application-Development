@@ -30,14 +30,14 @@ import { ViewReceptionistDetails } from "./Components/ViewReceptionistDetails";
 import { ViewAppointments } from "./Components/ViewAppointments";
 import { AdhaarAbhaIdCreation } from "./Components/AdhaarAbhaIdCreation";
 import { AbhaIdVerification } from "./Components/AbhaIdVerification";
-import { AbhaIdDisplay } from "./Components/AbhaIdDisplay";
+import { AbhaIdDisplay, AbhaIdDisplayAndAdd } from "./Components/AbhaIdDisplayAndAdd";
 import { AbhaIdOtpVerification } from "./Components/AbhaIdOtpVerification";
 import { AdhaarOtpVerification } from "./Components/AdhaarOtpVerification";
 import { AbhaMobileNo } from "./Components/AbhaMobileNo";
 import { NewAbhaNoOtpVerification } from "./Components/NewAbhaNoOtpVerification";
 import { AddAppointment } from "./Components/AddAppointment";
 import { HealthIdByAdhaar } from "./Components/HealthIdByAdhaar";
-import { AddPatientDetails } from "./Components/AddPatientDetails";
+// import { AddPatientDetails } from "./Components/AddPatientDetails";
 
 function App() {
   return (
@@ -98,8 +98,8 @@ function App() {
           <Route path="/receptionist/abha-mobile-no" element={<AbhaMobileNo />} />
           <Route path="/receptionist/abha-new-mobile-no-verification" element={<NewAbhaNoOtpVerification />} />
           <Route path="/receptionist/health-id-adhaar" element={<HealthIdByAdhaar />} />
-          <Route path="/receptionist/abha-id-display" element={<AbhaIdDisplay />} />
-          <Route path="/receptionist/add-patient-details" element={<AddPatientDetails />} />
+          <Route path="/receptionist/abha-id-display-and-add" element={<AbhaIdDisplayAndAdd />} />
+          {/* <Route path="/receptionist/add-patient-details" element={<AddPatientDetails />} /> */}
           <Route path="/receptionist/abha-verification" element={<AbhaIdVerification />} />
           <Route path="/receptionist/abha-otp-verification" element={<AbhaIdOtpVerification />} />
           <Route path="/receptionist/add-appointment" element={<AddAppointment />} />
