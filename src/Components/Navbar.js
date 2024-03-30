@@ -239,7 +239,7 @@ export default function Navbar() {
             }
 
           });
-          navigate("/admin/admin-details", { state: { receptionistDetails: DetailsResponse.data } });
+          navigate("/admin/view-receptionist-details", { state: { staff: DetailsResponse.data } });
 
       }
       // const response = await axios.get("http://localhost:9191/admin/adminDetails", {
