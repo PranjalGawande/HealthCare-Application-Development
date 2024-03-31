@@ -99,15 +99,10 @@
 
 // export default CNForm;
 
-
-
-
 // import React, { useState } from 'react';
 // import TextField from '@mui/material/TextField';
 // import axios from 'axios';
 // import { useLocation } from "react-router-dom";
-
-
 
 // const CNForm = ({ patientId, doctorId }) => {
 
@@ -150,8 +145,6 @@
 //   //     console.error('Error submitting consultation form:', error.message);
 //   //   }
 //   // };
-
-
 
 //   const handleSubmit = async () => {
 //     try {
@@ -248,34 +241,13 @@
 
 // export default CNForm;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React, { useEffect, useState } from 'react';
-import TextField from '@mui/material/TextField';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import TextField from "@mui/material/TextField";
+import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { PatientHistoryPopup } from './PatientHistoryPopup';
+import { PatientHistoryPopup } from "./PatientHistoryPopup";
 // import TextField from "@mui/material/TextField";
-import doctorImage from '../assets/DoctorPage.png';
-
+import doctorImage from "../assets/DoctorPage.png";
 
 const CNForm = ({ patientId, doctorId }) => {
   const navigate = useNavigate();
@@ -288,10 +260,10 @@ const CNForm = ({ patientId, doctorId }) => {
   console.log("Apptoken: ", appToken);
 
   const [formData, setFormData] = useState({
-    symptoms: '', // Default symptoms
-    bloodPressure: '', // Default blood pressure
-    oxygenLevel: '', // Default oxygen level
-    pulse: '', // Default pulse
+    symptoms: "", // Default symptoms
+    bloodPressure: "", // Default blood pressure
+    oxygenLevel: "", // Default oxygen level
+    pulse: "", // Default pulse
     medicine: [], // Default medicine
   });
 
@@ -326,12 +298,14 @@ const CNForm = ({ patientId, doctorId }) => {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const response = await axios.get(`http://localhost:9191/doctor/history/${appToken}`,
-        { headers: headers });
+      const response = await axios.get(
+        `http://localhost:9191/doctor/history/${appToken}`,
+        { headers: headers }
+      );
       console.log(response);
       setPatientHistory(response.data);
     } catch (error) {
-      console.error('Error fetching patient history:', error.message);
+      console.error("Error fetching patient history:", error.message);
     }
   };
 
@@ -341,11 +315,10 @@ const CNForm = ({ patientId, doctorId }) => {
     setFormData({ ...formData, medicine: updatedMedicine });
   };
 
-
   const addMedicine = () => {
     setFormData({
       ...formData,
-      medicine: [...formData.medicine, ''],
+      medicine: [...formData.medicine, ""],
     });
   };
 
@@ -361,7 +334,7 @@ const CNForm = ({ patientId, doctorId }) => {
     try {
       if (!appToken) {
         // Handle the case when appToken is not available
-        console.error('Appointment token not found');
+        console.error("Appointment token not found");
         return;
       }
       console.log("formdata: ", formData);
@@ -376,22 +349,22 @@ const CNForm = ({ patientId, doctorId }) => {
       //   formData,
       //   { headers: headers }
       // );
-      const response = await axios.post(`http://localhost:9191/doctor/addPatientRecord/${appToken}`,
+      const response = await axios.post(
+        `http://localhost:9191/doctor/addPatientRecord/${appToken}`,
         formData,
         { headers: headers }
       );
 
       if (response.status !== 200) {
-        throw new Error('Failed to submit consultation form');
-      }
-      else {
+        throw new Error("Failed to submit consultation form");
+      } else {
         console.log("response: ", response);
       }
 
       // Handle success
-      console.log('Consultation form submitted successfully');
+      console.log("Consultation form submitted successfully");
     } catch (error) {
-      console.error('Error submitting consultation form:', error.message);
+      console.error("Error submitting consultation form:", error.message);
     }
   };
 
@@ -405,155 +378,156 @@ const CNForm = ({ patientId, doctorId }) => {
   };
 
   return (
-    <div>
-      <div className="flex flex-wrap justify-center items-center">
-
-     
+    <div className="">
+      <div className="background-appointment flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
             <img src={doctorImage} className="admin-image" />
-            <div className="dashboard-name-doctor" style={{ fontSize: "xx-large" }}>
-            CONSULTATION FORM
+            <div
+              className="dashboard-name-doctor"
+              style={{ fontSize: "40px" }}
+            >
+              CONSULTATION FORM
             </div>
           </div>
         </div>
         <div className="flex justify-center items-center mt-20 pt-10">
-  <div className="container glass-background login-cred">
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        paddingTop: "2rem",
-        height: "80vh", // Set height to 80% of viewport height
-        overflowY: "auto", // Enable vertical scrolling
-      }}
-    >
-      <div className="flex">
-        <label className="text-login fw-bold text-center ">
-          Consultation Form
-        </label>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <TextField
-            id="symptoms"
-            label="Symptoms"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: '1rem', width: '100%' }}
-            value={formData.symptoms}
-            onChange={handleChange}
-          />
-        </div>
-         <div>
- {/* <label htmlFor="newMobileNo">New Mobile No:</label> */}
- <TextField
-  id="bloodPressure"
-label="Blood Pressure"
-variant="outlined"
-size="small"
-style={{ marginBottom: '1rem', width: '100%' }}
-value={formData.bloodPressure}
-onChange={handleChange}
-/>
-</div>
-<div>
-<TextField
-id="oxygenLevel"
-label="Oxygen Level"
-variant="outlined"
-size="small"
-style={{ marginBottom: '1rem', width: '100%' }}
-value={formData.oxygenLevel}
-onChange={handleChange}
-/>
-</div>
-<div>
-<TextField
-id="pulse"
-label="Pulse"
-variant="outlined"
-size="small"
-style={{ marginBottom: '1rem', width: '100%' }}
-value={formData.pulse}
-onChange={handleChange}
-/>
- </div>
+          <div className="container glass-background login-cred" style={{ height: "auto", marginBottom: "2rem" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                paddingTop: "2rem",
+                width: "100%",
+                // height: "auto", // Set height to 80% of viewport height
+                overflowY: "auto", // Enable vertical scrolling
+              }}
+            >
+              <div className="flex">
+                <label className="fw-bold text-center mb-4">
+                  Consultation Form
+                </label>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <TextField
+                    id="symptoms"
+                    label="Symptoms"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "100%" }}
+                    value={formData.symptoms}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  {/* <label htmlFor="newMobileNo">New Mobile No:</label> */}
+                  <TextField
+                    id="bloodPressure"
+                    label="Blood Pressure"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "100%" }}
+                    value={formData.bloodPressure}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id="oxygenLevel"
+                    label="Oxygen Level"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "100%" }}
+                    value={formData.oxygenLevel}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id="pulse"
+                    label="Pulse"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "100%" }}
+                    value={formData.pulse}
+                    onChange={handleChange}
+                  />
+                </div>
 
-        <div>
-          {formData.medicine.map((medicineName, index) => (
-            <div key={index}>
-              <TextField
-                type="text"
-                value={medicineName}
-                onChange={(e) => handleMedicineChange(index, e.target.value)}
-                placeholder="Medicine Name"
-              />
-              <button type="button" className="button" onClick={() => removeMedicine(index)}>Remove</button>
+                <div>
+                  <div className="mb-2">
+                    <TextField
+                      type="text"
+                      value={formData.medicine[0]} // Display value of the first medicine
+                      onChange={(e) => handleMedicineChange(0, e.target.value)} // Use index 0 for default medicine
+                      style={{ marginBottom: "1rem", width: "100%" }}
+                      placeholder="Medicine Name"
+                    />
+                  </div>
+                  {/* Render additional medicine fields */}
+                  {formData.medicine.slice(1).map((medicineName, index) => (
+                    <div key={index} className="mb-2">
+                      <TextField
+                        type="text"
+                        value={medicineName}
+                        onChange={(e) => handleMedicineChange(index + 1, e.target.value)} // Increment index by 1 for additional medicines
+                        style={{ marginBottom: "1rem", width: "calc(100% - 90px)", marginRight: "10px" }}
+                        placeholder="Medicine Name"
+                      />
+                      <button
+                        type="button"
+                        className="button"
+                        onClick={() => removeMedicine(index + 1)} // Increment index by 1 for additional medicines
+                        style={{ height: "fit-content" }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+
+                  ))}
+                  {/* Button to add more medicines */}
+                  <button
+                    onClick={addMedicine}
+                    type="button"
+                    className="button"
+                    style={{ marginTop: "2rem", width: "100%" }}
+                  >
+                    Add Medicine
+                  </button>
+                </div>
+              </form>
+              <div style={{ marginTop: "1rem" }}>
+                <button
+                  type="button"
+                  className="button"
+                  style={{ marginTop: "2rem", width: "100%" }}
+                  onClick={handleRequestConsent}
+                >
+                  Request Consent
+                </button>
+              </div>
+              {
+                <PatientHistoryPopup
+                  title="Patient History"
+                  onClose={() => setShowPopup(false)}
+                  patientHistory={patientHistory}
+                />
+              }
             </div>
-          ))}
+          </div>
         </div>
-        <button
-          onClick={addMedicine}
-          type="button"
-          className="button"
-          style={{ marginTop: '2rem', width: "100%" }}
-        >
-          Add Medicine
-        </button>
-      </form>
-      <div style={{ marginTop: '1rem' }}>
-        <button
-          type="button"
-          className="button"
-          style={{ marginTop: '2rem', width: "100%" }}
-          onClick={handleRequestConsent}
-        >
-          Request Consent
-        </button>
       </div>
-      {
-        <PatientHistoryPopup
-          title="Patient History"
-          onClose={() => setShowPopup(false)}
-          patientHistory={patientHistory}
-        />
-      }
     </div>
-  </div>
-</div>
-
-
-    </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
   );
 };
 
 export default CNForm;
 
-
-
-
-
-
-
 // <div className="flex justify-center items-center mt-20 pt-10">
 // <div className="container glass-background login-cred">
-  
+
 // <div
 // style={{
 // display: "flex",
@@ -628,7 +602,6 @@ export default CNForm;
 // </div>
 // ))}
 
-
 // {/* Display success message if doctor details update is successful */}
 // <button
 // onClick={addMedicine}
@@ -656,61 +629,6 @@ export default CNForm;
 // </div>
 // </div>
 // </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 // <div className='flex'>
@@ -785,31 +703,6 @@ export default CNForm;
 //   />
 // }
 // </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // {error && <p style={{ color: "red" }}></p>}{" "}
 //         {/* Display error message if present */}
