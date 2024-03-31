@@ -69,7 +69,7 @@ export default function DoctorDashboard() {
 
   return (
     <div className='main-background-doctor'>
-      <Toaster />
+      {/* <Toaster /> */}
       <div className=" background h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
         <div className="image-container" >

@@ -37,11 +37,22 @@ import { AbhaMobileNo } from "./Components/AbhaMobileNo";
 import { NewAbhaNoOtpVerification } from "./Components/NewAbhaNoOtpVerification";
 import { AddAppointment } from "./Components/AddAppointment";
 import { HealthIdByAdhaar } from "./Components/HealthIdByAdhaar";
+import { Toaster } from "react-hot-toast";
 // import { AddPatientDetails } from "./Components/AddPatientDetails";
 
 function App() {
   return (
     <div className="App">
+      <Toaster
+        toastOptions={{
+          className: '',
+          style: {
+            border: '5px solid #0f3c53',
+            padding: '16px',
+            color: '#713200',
+          },
+        }}
+      />
       <Router>
         <Navbar />
         <Routes>
