@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios'; // Import axios for making HTTP requests
 import TextField from "@mui/material/TextField";
-import admin from "../assets/AdminPage.jpg";
+// import admin from "../assets/AdminPage.jpg";
+import receptionistImage from '../assets/ReceptionistPage.png';
+
 
 export const AdminChangeReceptionistPassword = () => {
   const location = useLocation();
@@ -67,8 +69,8 @@ useEffect(() => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={admin} className="admin-image" />
-            <div className="dashboard-name" style={{ fontSize: "xx-large" }}>
+            <img src={receptionistImage} className="admin-image" />
+            <div className="dashboard-name-receptionist" style={{ fontSize: "xx-large" }}>
               CHANGE PASSWORD
             </div>
           </div>

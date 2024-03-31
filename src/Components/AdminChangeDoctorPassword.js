@@ -3,10 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import admin from "../assets/AdminPage.jpg";
 import axios from "axios"; // Import axios for making HTTP requests
+import doctorImage from "../assets/DoctorPage.png";
 
 export const AdminChangeDoctorPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // const [role, setRole] = useState("");
+
   const doctor = location.state?.doctor; // Using optional chaining to handle null value
   const email = doctor?.email;
   // const [email, setEmail] = useState(""); // State for email input field
@@ -31,6 +35,10 @@ export const AdminChangeDoctorPassword = () => {
       localStorage.clear();
     }
   }, []);
+
+
+  // localStorage.setItem("role", role);
+
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -65,8 +73,11 @@ export const AdminChangeDoctorPassword = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={admin} className="admin-image" />
-            <div className="dashboard-name" style={{ fontSize: "xx-large" }}>
+            <img
+            // src={role === "DOCTOR" ? doctorImage : admin} 
+            src={doctorImage} 
+            className="admin-image" />
+            <div className="dashboard-name-doctor" style={{ fontSize: "xx-large" }}>
               CHANGE PASSWORD
             </div>
           </div>
