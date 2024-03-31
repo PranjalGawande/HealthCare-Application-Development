@@ -30,7 +30,7 @@ import { ViewReceptionistDetails } from "./Components/ViewReceptionistDetails";
 import { ViewAppointments } from "./Components/ViewAppointments";
 import { AdhaarAbhaIdCreation } from "./Components/AdhaarAbhaIdCreation";
 import { AbhaIdVerification } from "./Components/AbhaIdVerification";
-import { AbhaIdDisplay, AbhaIdDisplayAndAdd } from "./Components/AbhaIdDisplayAndAdd";
+import { AbhaIdDisplay, AbhaIdDisplayAndAdd } from "./Components/AddPatient";
 import { AbhaIdOtpVerification } from "./Components/AbhaIdOtpVerification";
 import { AdhaarOtpVerification } from "./Components/AdhaarOtpVerification";
 import { AbhaMobileNo } from "./Components/AbhaMobileNo";
