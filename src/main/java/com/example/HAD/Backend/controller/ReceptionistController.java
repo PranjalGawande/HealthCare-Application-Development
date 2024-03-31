@@ -5,6 +5,7 @@ import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,7 +79,7 @@ public class ReceptionistController {
 
     @PostMapping("/generateAadhaarOtp")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> generateAadhaarOtp(@RequestBody Map<String, String> aadhaarData, HttpSession session) {
+    public ResponseEntity<String> generateAadhaarOtp(@RequestBody Map<String, String> aadhaarData, HttpSession session, HttpServletRequest request) {
         if(aadhaarData == null || !aadhaarService.isValidAadhaarNumber(aadhaarData.get("aadhaarNumber"))) {
             return ResponseEntity.badRequest().body("Invalid or missing Aadhaar Number.");
         }
@@ -110,6 +111,12 @@ public class ReceptionistController {
             session.setAttribute("token", token);
             session.setAttribute("publicKeyStr", publicKeyStr);
 
+            // Print the values to the console
+            System.out.println("Session object: " + session);
+            System.out.println("txnId: " + session.getAttribute("txnId"));
+            System.out.println("token: " + session.getAttribute("token"));
+            System.out.println("publicKeyStr: " + session.getAttribute("publicKeyStr"));
+
             // Inform the frontend that the OTP was sent
             return ResponseEntity.ok("OTP has been sent to the registered mobile number.");
         } catch (Exception e) {
@@ -120,11 +127,17 @@ public class ReceptionistController {
 
     @PostMapping("/verifyAadhaarOtp")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> verifyAadhaarOtp(@RequestBody Map<String, String> otpData, HttpSession session) {
+    public ResponseEntity<?> verifyAadhaarOtp(@RequestBody Map<String, String> otpData, HttpSession session, HttpServletRequest request) {
         // Retrieve txnId and token from session
-        String txnId = (String) session.getAttribute("txnId");
-        String token = (String) session.getAttribute("token");
-        String publicKeyStr = (String) session.getAttribute("publicKeyStr");
+        String txnId = (String) request.getSession().getAttribute("txnId");
+        String token = (String) request.getSession().getAttribute("token");
+        String publicKeyStr = (String) request.getSession().getAttribute("publicKeyStr");
+
+        // Print the values to the console
+        System.out.println("Session object: " + request.getSession());
+        System.out.println("txnId: " + txnId);
+        System.out.println("token: " + token);
+        System.out.println("publicKeyStr: " + publicKeyStr);
 
         if (txnId == null || token == null || publicKeyStr == null || otpData == null) {
             return ResponseEntity.badRequest().body("Session expired or invalid. Please regenerate OTP.");

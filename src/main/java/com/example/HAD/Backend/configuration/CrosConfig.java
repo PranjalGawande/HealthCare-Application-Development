@@ -12,6 +12,7 @@ public class CrosConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000")// All endpoints
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Specify allowed methods
-                .allowedHeaders("*"); // Specify allowed headers
+                .allowedHeaders("*") // Specify allowed headers
+                .allowCredentials(true);
     }
 }
