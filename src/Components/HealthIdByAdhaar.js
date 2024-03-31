@@ -1,25 +1,13 @@
-// import React from 'react'
-
-// export const HealthIdByAdhaar = () => {
-//   return (
-//     <div>HealthIdByAdhaar</div>
-//   )
-// }
-
-
-
-
-
-
-
 import React from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 // import TextField from "@mui/material/TextField";
 
 export const HealthIdByAdhaar = () => {
 //   const [aadhaarNo, setAadhaarNo] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +25,7 @@ export const HealthIdByAdhaar = () => {
       }
       );
       console.log('Response:', response.data);
-      navigate('/receptionist/abha-id-display-and-add');
+      navigate('/receptionist/abha-id-display-and-add', { state: response.data });
     } catch (error) {
       console.error('Error:', error);
     }
