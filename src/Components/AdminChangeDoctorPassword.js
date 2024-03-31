@@ -26,7 +26,7 @@ export const AdminChangeDoctorPassword = () => {
       // Redirect to login page if token doesn't exist
       navigate("/");
     }
-    if (role !== "ADMIN") {
+    if (role === "Reciptionist") {
       navigate("/");
       localStorage.clear();
     }

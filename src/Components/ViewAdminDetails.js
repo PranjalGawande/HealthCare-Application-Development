@@ -211,7 +211,7 @@ export const ViewAdminDetails = () => {
                             <br />
                             <div className="mt-3">
                                 {/* Add buttons with respective functionalities */}
-                                <button className="btn btn-primary me-2" onClick={handleUpdateDetails}>Update Details</button>
+                                {/* <button className="btn btn-primary me-2" onClick={handleUpdateDetails}>Update Details</button> */}
                                 <button className="btn btn-primary me-2" onClick={handleChangePassword}>Change Password</button>
 
                             </div>
