@@ -30,6 +30,8 @@ export const AdhaarOtpVerification = () => {
         otp: aadhaarOtp
        };
        console.log('FormData:', formData);
+       axios.defaults.withCredentials = true;
+       
       const response = await axios.post("http://localhost:9191/receptionist/verifyAadhaarOtp", 
       formData,
       {

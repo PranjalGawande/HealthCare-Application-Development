@@ -82,6 +82,7 @@ export const AdhaarAbhaIdCreation = () => {
       const formData = { 
         aadhaarNumber: aadhaarNo
        };
+       axios.defaults.withCredentials = true;
       const response = await axios.post("http://localhost:9191/receptionist/generateAadhaarOtp", 
       formData,
       {
