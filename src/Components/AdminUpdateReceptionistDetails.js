@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
-import admin from "../assets/AdminPage.jpg";
+// import admin from "../assets/AdminPage.jpg";
+import receptionistImage from '../assets/ReceptionistPage.png';
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const AdminUpdateReceptionistDetails = () => {
@@ -70,8 +71,8 @@ export const AdminUpdateReceptionistDetails = () => {
      
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={admin} className="admin-image" />
-            <div className="dashboard-name" style={{ fontSize: "xx-large" }}>
+            <img src={receptionistImage} className="admin-image" />
+            <div className="dashboard-name-receptionist" style={{ fontSize: "xx-large" }}>
               UPDATE RECEPTIONIST
             </div>
           </div>

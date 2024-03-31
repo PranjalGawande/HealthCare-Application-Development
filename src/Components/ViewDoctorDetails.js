@@ -183,14 +183,38 @@ export const ViewDoctorDetails = () => {
             <br />
             <div className="mt-3">
               {/* Add buttons with respective functionalities */}
-              <button className="btn btn-primary me-2" onClick={handleUpdateDetails}>Update Details</button>
-              <button className="btn btn-primary me-2" onClick={handleChangePassword}>Change Password</button>
+              <button 
+              // className="btn btn-primary me-2" 
+              type="submit"
+                  className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              style={{marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+              
+              onClick={handleUpdateDetails}>Update Details</button>
+              <button 
+              // className="btn btn-primary me-2" 
+              type="submit"
+                  className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              style={{marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+              
+              onClick={handleChangePassword}>Change Password</button>
               {role !== 'DOCTOR' && (
                 <>
                   {doctorDetails.status === true ? (
-                    <button className="btn btn-danger me-2" onClick={() => handleDeactivateDoctor(doctorDetails.email)}>Deactivate</button>
+                    <button 
+                    // className="btn btn-danger me-2" 
+                    type="submit"
+                  className="button text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              style={{marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+              
+                    onClick={() => handleDeactivateDoctor(doctorDetails.email)}>Deactivate</button>
                   ) : (
-                    <button className="btn btn-success me-2" onClick={() => handleActivateDoctor(doctorDetails.email)}>Activate</button>
+                    <button 
+                    // className="btn btn-success me-2" 
+                    type="submit"
+                  className="button text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              style={{marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+              
+                    onClick={() => handleActivateDoctor(doctorDetails.email)}>Activate</button>
                   )}
                 </>
               )}
