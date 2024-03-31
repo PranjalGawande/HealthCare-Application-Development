@@ -38,7 +38,7 @@ export const ViewDoctorDetails = () => {
 
       const formData = { email: email };
       const response = await axios.post(
-        `http://localhost:9191/admin/activatedoctor`,
+        `http://localhost:9191/admin/activateStaff`,
         formData,
         { headers: headers }
       );
@@ -67,7 +67,7 @@ export const ViewDoctorDetails = () => {
 
       const formData = { email: email };
       const response = await axios.post(
-        `http://localhost:9191/admin/deActivatedoctor`,
+        `http://localhost:9191/admin/deActivateStaff`,
         formData,
         { headers: headers }
       );
@@ -179,13 +179,13 @@ export const ViewDoctorDetails = () => {
             {/* <p className="mb-2 font-bold">Speciality: <span className="font-normal">{adminDetails.speciality}</span></p> */}
             {/* <p className="mb-2 font-bold">Experience: <span className="font-normal">{adminDetails.experience} years</span></p> */}
             <p className="mb-2 font-bold">Email: <span className="font-normal">{doctorDetails.email}</span></p>
-            {/* <p className="mb-2 font-bold">Status: {adminDetails.status ? 'Active' : 'Inactive'}</p> */}
+            <p className="mb-2 font-bold">Status: {doctorDetails.status ? 'Active' : 'Inactive'}</p>
             <br />
             <div className="mt-3">
               {/* Add buttons with respective functionalities */}
               <button className="btn btn-primary me-2" onClick={handleUpdateDetails}>Update Details</button>
               <button className="btn btn-primary me-2" onClick={handleChangePassword}>Change Password</button>
-              {role !== 'Receptionist' && (
+              {role !== 'DOCTOR' && (
                 <>
                   {doctorDetails.status === true ? (
                     <button className="btn btn-danger me-2" onClick={() => handleDeactivateDoctor(doctorDetails.email)}>Deactivate</button>

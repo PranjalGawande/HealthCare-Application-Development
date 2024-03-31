@@ -40,7 +40,7 @@ const AdminDashboard = () => {
   };
   return (
     <div>
-      <Toaster
+      {/* <Toaster
         toastOptions={{
           className: '',
           style: {
@@ -49,7 +49,7 @@ const AdminDashboard = () => {
             color: '#713200',
           },
         }}
-      />
+      /> */}
       <div className="h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
           <div className="image-container">

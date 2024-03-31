@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
-
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from 'react-hot-toast';
 
 export const ADForm = ({ email }) => {
   let navigate = useNavigate();
@@ -57,11 +57,15 @@ export const ADForm = ({ email }) => {
         { headers: headers }
       );
       console.log("Response from backend:", response.data);
-      alert("Doctor added successfully");
+      toast.success("Doctor added successfully");
+
+      setTimeout(() => {
       navigate("/admin");
+      }, 3000);
       // Optionally handle success response
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Failed to add doctor. Please try again.");
       // Optionally handle error
     }
   };
