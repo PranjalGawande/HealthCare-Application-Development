@@ -14,7 +14,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import doctorImage from '../assets/DoctorPage.png'; 
+import doctorImage from '../../assets/DoctorPage.png'; 
 import { NavLink } from 'react-router-dom';
 import { toast, Toaster } from 'react-hot-toast';
 

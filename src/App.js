@@ -4,39 +4,38 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Login from "./Components/Login";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
-import DoctorDashboard from "./Components/DoctorDashboard";
-import ReceptionistDashboard from "./Components/ReceptionistDashboard";
+import DoctorDashboard from "./Components/Doctor/DoctorDashboard";
+import ReceptionistDashboard from "./Components/Receptionist/ReceptionistDashboard";
 import AddDoctorForm from "./Components/Admin/AddDoctorForm";
 import AddStaffForm from "./Components/Admin/AddReceptionistForm";
 import ViewDoctors from "./Components/Admin/ViewDoctors";
-import HospitalFormLayout from "./Components/HospitalFormLayout";
-import VerificationForm from "./Components/VerificationForm";
-import DoctorAppointment from "./Components/DoctorAppointment";
-// import ConsultationForm from './Components/ConsultationForm';
-import CNForm from "./Components/CNForm";
-import { PatientHistory } from "./Components/PatientHistory";
+// import HospitalFormLayout from "./Components/HospitalFormLayout";
+// import VerificationForm from "./Components/VerificationForm";
+// import DoctorAppointment from "./Components/DoctorAppointment";
+import CNForm from "./Components/Doctor/CNForm";
+// import { PatientHistory } from "./Components/Doctor/PatientHistory";
 import ViewStaff from "./Components/Admin/ViewStaff";
 import AddAdminForm from "./Components/Admin/AddAdminForm";
 import ViewAdmin from "./Components/Admin/ViewAdmin";
 import { ViewAdminDetails } from "./Components/Admin/ViewAdminDetails";
 import { AdminPasswordChange } from "./Components/Admin/AdminPasswordChange";
-import { ViewDoctorDetails } from "./Components/ViewDoctorDetails";
+import { ViewDoctorDetails } from "./Components/Doctor/ViewDoctorDetails";
 import { AdminChangeDoctorPassword } from "./Components/Admin/AdminChangeDoctorPassword";
 import { AdminUpdateDoctorDetails } from "./Components/Admin/AdminUpdateDoctorDetails";
 import { AdminChangeReceptionistPassword } from "./Components/Admin/AdminChangeReceptionistPassword";
 import { AdminUpdateReceptionistDetails } from "./Components/Admin/AdminUpdateReceptionistDetails";
 // import AdminUpdateReceptionistDetails
-import { ViewReceptionistDetails } from "./Components/ViewReceptionistDetails";
-import { ViewAppointments } from "./Components/ViewAppointments";
-import { AdhaarAbhaIdCreation } from "./Components/AdhaarAbhaIdCreation";
-import { AbhaIdVerification } from "./Components/AbhaIdVerification";
-import { AbhaIdDisplay, AbhaIdDisplayAndAdd } from "./Components/AddPatient";
-import { AbhaIdOtpVerification } from "./Components/AbhaIdOtpVerification";
-import { AdhaarOtpVerification } from "./Components/AdhaarOtpVerification";
-import { AbhaMobileNo } from "./Components/AbhaMobileNo";
-import { NewAbhaNoOtpVerification } from "./Components/NewAbhaNoOtpVerification";
-import { AddAppointment } from "./Components/AddAppointment";
-import { HealthIdByAdhaar } from "./Components/HealthIdByAdhaar";
+import { ViewReceptionistDetails } from "./Components/Receptionist/ViewReceptionistDetails";
+import { ViewAppointments } from "./Components/Doctor/ViewAppointments";
+import { AdhaarAbhaIdCreation } from "./Components/Receptionist/AdhaarAbhaIdCreation";
+import { AbhaIdVerification } from "./Components/Receptionist/AbhaIdVerification";
+import { AbhaIdDisplay, AbhaIdDisplayAndAdd } from "./Components/Receptionist/AddPatient";
+import { AbhaIdOtpVerification } from "./Components/Receptionist/AbhaIdOtpVerification";
+import { AdhaarOtpVerification } from "./Components/Receptionist/AdhaarOtpVerification";
+import { AbhaMobileNo } from "./Components/Receptionist/AbhaMobileNo";
+import { NewAbhaNoOtpVerification } from "./Components/Receptionist/NewAbhaNoOtpVerification";
+import { AddAppointment } from "./Components/Receptionist/AddAppointment";
+import { HealthIdByAdhaar } from "./Components/Receptionist/HealthIdByAdhaar";
 import { Toaster } from "react-hot-toast";
 // import { AddPatientDetails } from "./Components/AddPatientDetails";
 
@@ -100,7 +99,7 @@ function App() {
           <Route path="/admin/view-receptionist-info" element={<ViewStaff />} />
           <Route path="/admin/view-admin-info" element={<ViewAdmin />} />
           <Route path="/doctor/consultation-form" element={<CNForm />} />
-          <Route path="/patientHistory" element={<PatientHistory />} />
+          {/* <Route path="/patientHistory" element={<PatientHistory />} /> */}
           {/* <Route path="/abhaCreation" element={<HospitalFormLayout />} /> */}
           {/* <Route path="/abhaVerification" element={<VerificationForm />} /> */}
           {/* <Route path="/doctorAppointment" element={<DoctorAppointment />} /> */}

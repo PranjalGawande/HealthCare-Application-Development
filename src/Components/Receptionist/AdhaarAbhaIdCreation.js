@@ -70,7 +70,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import { NavLink } from 'react-router-dom';
-import patientImage from '../assets/PatientPage.png';
+import patientImage from '../../assets/PatientPage.png';
 
 
 export const AdhaarAbhaIdCreation = () => {

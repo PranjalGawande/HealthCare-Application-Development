@@ -159,7 +159,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import patientImage from '../assets/PatientPage.png';
+import patientImage from '../../assets/PatientPage.png';
 
 export const AbhaIdDisplayAndAdd = () => {
   const location = useLocation();

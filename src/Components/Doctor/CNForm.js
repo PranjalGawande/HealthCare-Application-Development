@@ -247,7 +247,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PatientHistoryPopup } from "./PatientHistoryPopup";
 // import TextField from "@mui/material/TextField";
-import doctorImage from "../assets/DoctorPage.png";
+import doctorImage from "../../assets/DoctorPage.png";
 
 const CNForm = ({ patientId, doctorId }) => {
   const navigate = useNavigate();

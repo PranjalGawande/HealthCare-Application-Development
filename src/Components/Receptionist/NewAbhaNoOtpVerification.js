@@ -16,7 +16,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
-import patientImage from '../assets/PatientPage.png';
+import patientImage from '../../assets/PatientPage.png';
 
 export const NewAbhaNoOtpVerification = () => {
   const [abhaOtp, setAbhaOtp] = useState("");

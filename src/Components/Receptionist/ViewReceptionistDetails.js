@@ -4,7 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 // import { route } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import recepImage from '../assets/ReceptionistPage.png';
+import recepImage from '../../assets/ReceptionistPage.png';
 
 
 

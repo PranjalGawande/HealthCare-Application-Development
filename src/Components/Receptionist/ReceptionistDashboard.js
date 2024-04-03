@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import receptionistImage from '../assets/ReceptionistPage.png';
+import receptionistImage from '../../assets/ReceptionistPage.png';
 import toast, { Toaster } from "react-hot-toast";
 import { NavLink } from 'react-router-dom';
 

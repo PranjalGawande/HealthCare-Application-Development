@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
-import patientImage from '../assets/PatientPage.png';
+import patientImage from '../../assets/PatientPage.png';
 // import TextField from "@mui/material/TextField";
 
 export const HealthIdByAdhaar = () => {
