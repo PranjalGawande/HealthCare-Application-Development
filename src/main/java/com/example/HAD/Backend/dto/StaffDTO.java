@@ -22,6 +22,7 @@ public class StaffDTO {
     private String gender;
     private String abhaId;
     private Role role;
+    private boolean status;
     private String email;
 
     public StaffDTO(Admin staff) {
@@ -32,6 +33,7 @@ public class StaffDTO {
         this.gender = staff.getGender();
         this.abhaId = staff.getAbhaId();
         this.role = staff.getRole();
+        this.status = staff.getLogin().getStatus();
         this.email = staff.getLogin().getEmail();
     }
 
@@ -43,6 +45,7 @@ public class StaffDTO {
         this.gender = staff.getGender();
         this.abhaId = staff.getAbhaId();
         this.role = staff.getRole();
+        this.status = staff.getLogin().getStatus();
         this.email = staff.getLogin().getEmail();
     }
 }
