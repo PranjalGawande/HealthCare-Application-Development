@@ -3,6 +3,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import receptionistImage from "../../assets/ReceptionistPage.png";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export const AdminUpdateReceptionistDetails = () => {
   const location = useLocation();
@@ -42,6 +43,8 @@ export const AdminUpdateReceptionistDetails = () => {
         }
       );
       setSuccess(true);
+      toast.success("Doctor details updated successfully!", { duration: 3000 });
+
     } catch (error) {
       console.error("Error updating doctor details:", error);
       setError(error.response.data.message);
@@ -97,12 +100,12 @@ export const AdminUpdateReceptionistDetails = () => {
                     onChange={(e) => setNewMobileNo(e.target.value)}
                   />
                 </div>
-                {error && <p style={{ color: "red" }}></p>}{" "}
+                {/* {error && <p style={{ color: "red" }}></p>}{" "}
                 {success && (
                   <p style={{ color: "green" }}>
                     Receptionist details updated successfully!
                   </p>
-                )}{" "}
+                )}{" "} */}
                 <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"

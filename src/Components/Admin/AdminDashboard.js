@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import admin from "../../assets/AdminPage.jpg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast   from "react-hot-toast";
 
 const AdminDashboard = () => {
   const adminName = localStorage.getItem("Name");

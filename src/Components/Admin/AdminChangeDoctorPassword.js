@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import doctorImage from "../../assets/DoctorPage.png";
+import toast from "react-hot-toast";
+
 
 export const AdminChangeDoctorPassword = () => {
   const navigate = useNavigate();
@@ -42,6 +44,8 @@ export const AdminChangeDoctorPassword = () => {
         }
       );
       setSuccess(true);
+      toast.success("Doctor Password updated successfully!", { duration: 3000 });
+
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -87,12 +91,12 @@ export const AdminChangeDoctorPassword = () => {
                     onChange={(e) => setNewPassword(e.target.value)}
                   />
                 </div>
-                {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+                {/* {error && <p style={{ color: "red" }}>{error}</p>}{" "}
                 {success && (
                   <p style={{ color: "green" }}>
                     Password changed successfully!
                   </p>
-                )}{" "}
+                )}{" "} */}
                 <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
