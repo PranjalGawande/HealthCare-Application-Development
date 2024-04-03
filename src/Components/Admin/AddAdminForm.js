@@ -2,10 +2,10 @@ import React, { useState } from "react";
 // import { AAForm } from "./AAForm";
 import { AAForm } from "./AAForm";
 import AddLoginCredAdmin from "./AddLoginCredAdmin";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import admin from "../assets/AdminPage.jpg";
+import admin from "../../assets/AdminPage.jpg";
 
 const AddAdminForm = () => {
   const [loginSuccess, setLoginSuccess] = useState(false);

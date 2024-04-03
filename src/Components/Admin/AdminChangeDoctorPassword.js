@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import admin from "../assets/AdminPage.jpg";
+// import admin from "../assets/AdminPage.jpg";
 import axios from "axios"; // Import axios for making HTTP requests
-import doctorImage from "../assets/DoctorPage.png";
+import doctorImage from "../../assets/DoctorPage.png";
 
 export const AdminChangeDoctorPassword = () => {
   const navigate = useNavigate();

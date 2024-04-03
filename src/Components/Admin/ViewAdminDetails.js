@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import admin from "../assets/AdminPage.jpg";
+import admin from "../../assets/AdminPage.jpg";
 import { TextField } from "@mui/material";
 
 

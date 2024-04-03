@@ -71,7 +71,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import admin from "../assets/AdminPage.jpg";
+import admin from "../../assets/AdminPage.jpg";
 import TextField from "@mui/material/TextField";
 
 

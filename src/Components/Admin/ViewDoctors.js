@@ -75,7 +75,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Table from "react-bootstrap/Table";
+// import Table from "react-bootstrap/Table";
 
 const ViewDoctors = () => {
   const [doctors, setDoctors] = useState([]);

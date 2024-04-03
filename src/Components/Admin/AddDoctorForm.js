@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { ADForm } from "./ADForm";
 import AddLoginCredDoc from "./AddLoginCredDoc";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import admin from "../assets/AdminPage.jpg";
+import admin from "../../assets/AdminPage.jpg";
 
 const AddDoctorForm = () => {
   const [loginSuccess, setLoginSuccess] = useState(false);

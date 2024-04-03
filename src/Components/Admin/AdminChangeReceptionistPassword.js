@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios'; // Import axios for making HTTP requests
 import TextField from "@mui/material/TextField";
 // import admin from "../assets/AdminPage.jpg";
-import receptionistImage from '../assets/ReceptionistPage.png';
+import receptionistImage from '../../assets/ReceptionistPage.png';
 
 
 export const AdminChangeReceptionistPassword = () => {

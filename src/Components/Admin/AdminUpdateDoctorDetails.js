@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 // import admin from "../assets/AdminPage.jpg";
-import doctorImage from "../assets/DoctorPage.png";
+import doctorImage from "../../assets/DoctorPage.png";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const AdminUpdateDoctorDetails = () => {

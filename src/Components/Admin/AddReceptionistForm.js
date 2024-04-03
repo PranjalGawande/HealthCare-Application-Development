@@ -27,10 +27,10 @@
 import React, { useState } from 'react';
 import { ASForm } from './ASForm';
 import AddLoginCredRec from './AddLoginCredRec';
-import Navbar from './Navbar';
+import Navbar from '../Navbar';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import admin from '../assets/AdminPage.jpg';
+import admin from '../../assets/AdminPage.jpg';
 
 const AddStaffForm = () => {
   const [loginSuccess, setLoginSuccess] = useState(false);
