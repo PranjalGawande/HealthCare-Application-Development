@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from './Form'; // Import the AddressForm component
-import receptionist from '../assets/receptionist_11833579-removebg-preview.png';
+// import receptionist from '../assets/receptionist_11833579-removebg-preview.png';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
