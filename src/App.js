@@ -14,7 +14,7 @@ import ViewDoctors from "./Components/Admin/ViewDoctors";
 // import DoctorAppointment from "./Components/DoctorAppointment";
 import CNForm from "./Components/Doctor/CNForm";
 // import { PatientHistory } from "./Components/Doctor/PatientHistory";
-import ViewStaff from "./Components/Admin/ViewStaff";
+import ViewStaff from "./Components/Admin/ViewReceptionist";
 import AddAdminForm from "./Components/Admin/AddAdminForm";
 import ViewAdmin from "./Components/Admin/ViewAdmin";
 import { ViewAdminDetails } from "./Components/Admin/ViewAdminDetails";

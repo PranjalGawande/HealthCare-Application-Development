@@ -59,6 +59,7 @@ const ViewStaff = () => {
         { headers: headers }
       );
       const staffDetails = response.data;
+      console.log("viewform: ",staffDetails);
       navigate("/admin/view-receptionist-details", {
         state: { staff: staffDetails },
       });
