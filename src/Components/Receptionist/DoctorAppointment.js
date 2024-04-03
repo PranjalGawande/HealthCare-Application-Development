@@ -9,7 +9,6 @@ const DoctorAppointment = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) {
-          // Redirect to login page if token doesn't exist
           navigate("/");
         }
       }, []);

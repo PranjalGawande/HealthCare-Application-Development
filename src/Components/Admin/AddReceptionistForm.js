@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ASForm } from "./ASForm";
+import { ASForm } from "./ARForm";
 import AddLoginCredRec from "./AddLoginCredRec";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";

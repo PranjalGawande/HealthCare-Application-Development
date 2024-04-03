@@ -4,9 +4,9 @@ import TextField from '@mui/material/TextField';
 const DAForm = ({ patientId, doctorId }) => {
 
   const [formData, setFormData] = useState({
-    date: 'dd-mm-yy', // Default date
-    time: '00:00', // Default time
-    reasonForVisit: '', // Default reason for visit
+    date: 'dd-mm-yy',
+    time: '00:00',
+    reasonForVisit: '',
   });
 
   const handleChange = (e) => {

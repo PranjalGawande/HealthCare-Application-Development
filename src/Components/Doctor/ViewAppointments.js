@@ -8,8 +8,6 @@ export const ViewAppointments = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
-
   const fetchDoctorDetails = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -41,14 +39,12 @@ export const ViewAppointments = () => {
         Authorization: `Bearer ${token}`,
       };
       const AppformData = {};
-      // Send a request to mark the patient absent for this appointment
       const response = await axios.post(`http://localhost:9191/doctor/addPatientRecord/${appointment.tokenNo}`,
-      AppformData,
-      { headers: headers}
+        AppformData,
+        { headers: headers }
       );
 
       console.log('response', response);
-      // If successful, fetch updated doctor details
       if (response.status === 200) {
         fetchDoctorDetails();
       } else {
@@ -60,7 +56,6 @@ export const ViewAppointments = () => {
   };
 
   const handleStartConsultation = async (appointment) => {
-    // Logic to start consultation for the appointment with the least token number
     navigate('/doctor/consultation-form', { state: { appToken: appointment.tokenNo } });
 
   };

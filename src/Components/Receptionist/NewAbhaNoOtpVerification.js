@@ -1,17 +1,3 @@
-// import React from 'react'
-
-// export const NewAbhaNoOtpVerification = () => {
-//   return (
-//     <div>NewAbhaNoOtpVerification</div>
-//   )
-// }
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
