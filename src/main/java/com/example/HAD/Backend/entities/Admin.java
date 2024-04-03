@@ -38,9 +38,6 @@ public class Admin {
     @JoinColumn(name = "email", referencedColumnName = "email")
     private Login login;
 
-    @Column(name = "ABHA_ID")
-    private String abhaId;
-
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
@@ -48,7 +45,6 @@ public class Admin {
         this.name = staffDTO.getName();
         this.dob = staffDTO.getDob();
         this.gender = staffDTO.getGender();
-        this.abhaId = staffDTO.getAbhaId();
         this.role = staffDTO.getRole();
         this.mobileNo = staffDTO.getMobileNo();
     }

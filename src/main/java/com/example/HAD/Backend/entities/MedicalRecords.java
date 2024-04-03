@@ -1,4 +1,5 @@
 package com.example.HAD.Backend.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class MedicalRecords {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "recordId")
+    @Column(name = "record_id")
     private Integer recordId;
 
     @Column
@@ -32,11 +34,11 @@ public class MedicalRecords {
     @Column
     private String symptoms;
 
-    @ElementCollection
-    @CollectionTable(name = "medicine_list",
-                     joinColumns = @JoinColumn(name = "recordId"))
-    @Column(name = "medicine")
-    private List<String> medicine;
+    @Column
+    private String diagnosis;
+
+    @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Prescription> prescriptions;
 
     @ManyToOne
     @JoinColumn(name = "doctorId")

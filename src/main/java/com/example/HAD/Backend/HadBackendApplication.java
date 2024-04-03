@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 
 @SpringBootApplication
-public class HadBackendApplication {
+public class 	HadBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HadBackendApplication.class, args);
@@ -48,7 +48,6 @@ public class HadBackendApplication {
 			loginService.addLogin(staff);
 
 			StaffDTO staffDetail = new StaffDTO();
-			staffDetail.setAbhaId("dfsjfvo3435");
 			Calendar dob = Calendar.getInstance();
 			dob.set(1992, 8, 15);
 			staffDetail.setDob(dob);

@@ -2,11 +2,7 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.dto.DoctorDTO;
 import com.example.HAD.Backend.dto.ExtraDTO;
-import com.example.HAD.Backend.entities.Appointment;
-import com.example.HAD.Backend.entities.Doctor;
-import com.example.HAD.Backend.entities.Login;
-import com.example.HAD.Backend.entities.MedicalRecords;
-import com.example.HAD.Backend.entities.Patient;
+import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.MedicalRecordsDTO;
 import com.example.HAD.Backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +140,19 @@ public class DoctorController {
             MedicalRecords medicalRecords = new MedicalRecords();
             medicalRecords.setPatient(patient);
             medicalRecords.setDoctor(doctor);
-            medicalRecords.setMedicine(request.getMedicine());
+
+            List<Prescription> prescriptions = new ArrayList<>();
+            for (Prescription prescriptionData : request.getPrescriptions()) {
+                Prescription prescription = new Prescription();
+                prescription.setMedicalRecord(medicalRecords);
+                prescription.setMedicine(prescriptionData.getMedicine());
+                prescription.setDosage(prescriptionData.getDosage());
+                prescription.setFrequency(prescriptionData.getFrequency());
+                prescription.setDuration(prescriptionData.getDuration());
+                prescriptions.add(prescription);
+            }
+            medicalRecords.setPrescriptions(prescriptions);
+
             medicalRecords.setPulse(request.getPulse());
             medicalRecords.setBloodPressure(request.getBloodPressure());
             medicalRecords.setOxygenLevel(request.getOxygenLevel());

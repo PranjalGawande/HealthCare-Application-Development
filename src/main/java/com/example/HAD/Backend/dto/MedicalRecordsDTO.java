@@ -1,6 +1,7 @@
 package com.example.HAD.Backend.dto;
 
 import com.example.HAD.Backend.entities.MedicalRecords;
+import com.example.HAD.Backend.entities.Prescription;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class MedicalRecordsDTO {
     private String symptoms;
     private Integer doctorId;
     private Integer patientId;
-    private List<String> medicine;
+    private List<Prescription> prescriptions;
 
     public MedicalRecordsDTO(MedicalRecords medicalRecords) {
         this.recordId = medicalRecords.getRecordId();
@@ -28,7 +29,7 @@ public class MedicalRecordsDTO {
         this.oxygenLevel = medicalRecords.getOxygenLevel();
         this.pulse = medicalRecords.getPulse();
         this.symptoms = medicalRecords.getSymptoms();
-        this.medicine = medicalRecords.getMedicine();
+        this.prescriptions = medicalRecords.getPrescriptions();
         this.doctorId = medicalRecords.getDoctor().getDoctorId();
         this.patientId = medicalRecords.getPatient().getPatientId();
     }
