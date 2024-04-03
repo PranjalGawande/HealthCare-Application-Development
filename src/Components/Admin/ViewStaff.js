@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import Table from "react-bootstrap/Table";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +11,6 @@ const ViewStaff = () => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
     if (!token) {
-      // Redirect to login page if token doesn't exist
       navigate("/");
     }
     if (role !== "ADMIN") {
@@ -28,11 +26,15 @@ const ViewStaff = () => {
     };
     const fetchStaff = async () => {
       try {
-        const response = await axios.get("http://localhost:9191/admin/staffList", {
-          headers: headers,
-        });
-        // Filter the staff list to include only receptionists
-        const receptionists = response.data.filter(staff => staff.role === 'Receptionist');
+        const response = await axios.get(
+          "http://localhost:9191/admin/staffList",
+          {
+            headers: headers,
+          }
+        );
+        const receptionists = response.data.filter(
+          (staff) => staff.role === "Receptionist"
+        );
         setStaff(receptionists);
         setLoading(false);
       } catch (error) {
@@ -40,10 +42,10 @@ const ViewStaff = () => {
         setLoading(false);
       }
     };
-  
+
     fetchStaff();
   }, []);
-  
+
   const handleViewStaffDetails = async (email) => {
     try {
       const token = localStorage.getItem("token");
@@ -56,23 +58,26 @@ const ViewStaff = () => {
         formData,
         { headers: headers }
       );
-      // console.log("Staff details:", response.data);
       const staffDetails = response.data;
-      // Redirect to staff details page
-      navigate("/admin/view-receptionist-details", { state: { staff: staffDetails } });
-    }
-    catch (error) {
+      navigate("/admin/view-receptionist-details", {
+        state: { staff: staffDetails },
+      });
+    } catch (error) {
       console.error("Error viewing staff details:", error);
     }
-  }
-  
+  };
+
   return (
     <div className="container mt-10">
-      {/* <h2 className="list-heading">Receptionists List</h2> */}
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <table className="table table-hover" cellpadding="0" cellspacing="0" border="0">
+        <table
+          className="table table-hover"
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+        >
           <thead>
             <tr>
               <th scope="col">Name</th>
@@ -81,18 +86,16 @@ const ViewStaff = () => {
               <th scope="col">Actions</th>
             </tr>
           </thead>
-         
+
           <tbody>
             {staff.map((staff) => (
               <tr key={staff.id}>
-               
                 <td>{staff.name}</td>
                 <td>{staff.email}</td>
                 <td>{staff.role}</td>
                 <td>
                   {
                     <button
-                      // className="btn btn-outline-info text-black"
                       type="button"
                       className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-cyan-400 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
                       onClick={() => handleViewStaffDetails(staff.email)}
@@ -104,9 +107,7 @@ const ViewStaff = () => {
               </tr>
             ))}
           </tbody>
-    
         </table>
-       
       )}
     </div>
   );

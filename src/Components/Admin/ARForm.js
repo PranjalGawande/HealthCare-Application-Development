@@ -15,12 +15,9 @@ export const ASForm = (email) => {
     role: "Receptionist",
     dob: "",
     mobileNo: "",
-    email: email.email
+    email: email.email,
   });
 
-  // const handleChange = (event) => {
-  //   setFormData({ ...formData, [event.target.id]: event.target.value });
-  // };
   const handleTextFieldChange = (event) => {
     const { id, value } = event.target;
     setformData({ ...formData, [id]: value });
@@ -38,34 +35,35 @@ export const ASForm = (email) => {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
 
     try {
-      // Log formData before sending it to the backend
       console.log("Form Data:", formData);
 
-      // Send formData to the backend
       const response = await axios.post(
         "http://localhost:9191/admin/addReceptionist",
         formData,
-        {headers: headers}
+        { headers: headers }
       );
       console.log("Response from backend:", response.data);
       alert("Staff added successfully");
       navigate("/admin");
-      // Optionally handle success response
     } catch (error) {
       console.error("Error:", error);
-      // Optionally handle error
     }
   };
 
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: '2rem' }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: "2rem",
+      }}
     >
       <div className="flex">
-      <label className="text-login fw-bold text-center ">
+        <label className="text-login fw-bold text-center ">
           ADD ADMIN <br></br> DETAILS
         </label>
       </div>
@@ -124,7 +122,15 @@ export const ASForm = (email) => {
           type="button"
           onClick={handleSubmit}
           className="button w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          style={{marginBottom: '-100px', marginTop: '1rem', width: "100%", height: '12%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+          style={{
+            marginBottom: "-100px",
+            marginTop: "1rem",
+            width: "100%",
+            height: "12%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
           Register
         </button>

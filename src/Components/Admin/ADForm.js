@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useNavigate } from "react-router-dom";
-import { toast, Toaster } from 'react-hot-toast';
+import { toast, Toaster } from "react-hot-toast";
 
 export const ADForm = ({ email }) => {
   let navigate = useNavigate();
@@ -41,14 +41,14 @@ export const ADForm = ({ email }) => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
 
     try {
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      // Log formData before sending it to the backend
+
       console.log("Form Data:", formData);
 
       const response = await axios.post(
@@ -60,19 +60,22 @@ export const ADForm = ({ email }) => {
       toast.success("Doctor added successfully");
 
       setTimeout(() => {
-      navigate("/admin");
+        navigate("/admin");
       }, 3000);
-      // Optionally handle success response
     } catch (error) {
       console.error("Error:", error);
       toast.error("Failed to add doctor. Please try again.");
-      // Optionally handle error
     }
   };
 
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: '2rem'}}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: "2rem",
+      }}
     >
       <div className="flex">
         <label className="text-login fw-bold text-center ">
@@ -89,7 +92,13 @@ export const ADForm = ({ email }) => {
           onChange={handleTextFieldChange}
         />
 
-        <div style={{ display: "flex", justifyContent: "space-between", gap: "2rem"}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "2rem",
+          }}
+        >
           <TextField
             id="mobileNo"
             label="MobileNo"
@@ -100,7 +109,17 @@ export const ADForm = ({ email }) => {
           />
 
           <FormControl fullWidth>
-            <InputLabel style={{marginTop: "-2px", width: "100%",height: "20%",  display: 'flex', alignItems: 'center'}}>Gender</InputLabel>
+            <InputLabel
+              style={{
+                marginTop: "-2px",
+                width: "100%",
+                height: "20%",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              Gender
+            </InputLabel>
             <Select
               value={formData.gender}
               name="gender"
@@ -108,7 +127,7 @@ export const ADForm = ({ email }) => {
               id="gender"
               label="Gender"
               size="small"
-              style={{width: "100%" }}
+              style={{ width: "100%" }}
               onChange={handleChangeGender}
             >
               <MenuItem value="male">Male</MenuItem>
@@ -118,25 +137,30 @@ export const ADForm = ({ email }) => {
           </FormControl>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", gap: "2rem"}}>
-        <TextField
-          id="dob"
-          label="Date of Birth"
-          type="date"
-          variant="outlined"
-          size="small"
-          style={{ marginBottom: "2rem", width: "50%" }}
-          value={formData.dob}
-          onChange={handleTextFieldChange}
-          InputLabelProps={{
-            shrink: true,
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "2rem",
           }}
-          inputProps={{
-            // Specify the format for the date input
-            max: '2000-12-31', // YYYY-MM-DD format
-            min: '1900-01-01', // YYYY-MM-DD format
-          }}
-        />
+        >
+          <TextField
+            id="dob"
+            label="Date of Birth"
+            type="date"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: "2rem", width: "50%" }}
+            value={formData.dob}
+            onChange={handleTextFieldChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              max: "2000-12-31",
+              min: "1900-01-01",
+            }}
+          />
 
           <TextField
             id="experience"
@@ -156,7 +180,17 @@ export const ADForm = ({ email }) => {
           onChange={handleTextFieldChange}
         />
         <FormControl fullWidth>
-          <InputLabel style={{marginTop: "-2px", width: "100%",height: "20%",  display: 'flex', alignItems: 'center'}}>Speciality</InputLabel>
+          <InputLabel
+            style={{
+              marginTop: "-2px",
+              width: "100%",
+              height: "20%",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            Speciality
+          </InputLabel>
           <Select
             value={formData.speciality}
             name="speciality"
@@ -173,13 +207,19 @@ export const ADForm = ({ email }) => {
           </Select>
         </FormControl>
 
-        
-
         <button
           type="button"
           onClick={handleSubmit}
           className="button w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          style={{marginBottom: '-100px', marginTop: '1rem', width: "100%", height: '12%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+          style={{
+            marginBottom: "-100px",
+            marginTop: "1rem",
+            width: "100%",
+            height: "12%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
           Register
         </button>
