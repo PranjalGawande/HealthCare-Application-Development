@@ -101,6 +101,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
+import toast from "react-hot-toast";
 
 const AddLoginCredAdmin = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -117,15 +118,15 @@ const AddLoginCredAdmin = ({ onSuccess }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email)) {
+      toast.error("Invalid email format");
       console.error("Invalid email format");
       return;
     }
 
-    // Validating password length
     if (!formData.password || formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
       console.error("Password must be at least 6 characters long");
       return;
     }
@@ -147,6 +148,7 @@ const AddLoginCredAdmin = ({ onSuccess }) => {
 
       onSuccess(formData.email);
     } catch (error) {
+      toast.error("Email already exist");
       console.error("Error:", error);
     }
   };

@@ -15,35 +15,9 @@ const AddLoginCredDoc = ({ onSuccess }) => {
     setFormData({ ...formData, [event.target.id]: event.target.value });
   };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const token = localStorage.getItem("token");
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //   };
-
-  //   try {
-  //     console.log("Form Data:", formData);
-
-  //     const response = await axios.post(
-  //       "http://localhost:9191/admin/addLogin",
-  //       formData,
-  //       { headers: headers }
-  //     );
-  //     console.log("Response from addLogin backend:", response.data);
-
-  //     onSuccess(formData.email);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
-
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    // Validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email)) {
       console.error("Invalid email format");
@@ -51,7 +25,6 @@ const AddLoginCredDoc = ({ onSuccess }) => {
       return;
     }
   
-    // Validating password length
     if (!formData.password || formData.password.length < 6) {
       console.error("Password must be at least 6 characters long");
       toast.error("Password must be at least 6 characters long");

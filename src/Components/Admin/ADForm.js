@@ -304,12 +304,12 @@ export const ADForm = ({ email }) => {
     }));
   };
 
-  // const handleChangeSpeciality = (event) => {
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     [event.target.name]: event.target.value,
-  //   }));
-  // };
+  const handleChangeSpeciality = (event) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -323,6 +323,11 @@ export const ADForm = ({ email }) => {
     const mobileRegex = /^\d{10}$/;
     if (!formData.mobileNo || !mobileRegex.test(formData.mobileNo)) {
       toast.error("Invalid mobile number format. Please enter 10 digits.");
+      return;
+    }
+
+    if (!formData.name) {
+      toast.error("Name is required");
       return;
     }
 
@@ -357,7 +362,7 @@ export const ADForm = ({ email }) => {
       }, 3000);
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Failed to add doctor. Please try again.");
+      toast.error("Failed to add doctor!");
     }
   };
 
@@ -472,7 +477,7 @@ export const ADForm = ({ email }) => {
           style={{ marginBottom: "2rem", width: "100%" }}
           onChange={handleTextFieldChange}
         />
-        <FormControl fullWidth>
+        {/* <FormControl fullWidth>
           <TextField
             id="speciality"
             label="Speciality"
@@ -481,6 +486,41 @@ export const ADForm = ({ email }) => {
             style={{ marginBottom: "2rem", width: "100%" }}
             onChange={handleTextFieldChange}
           />
+        </FormControl> */}
+
+        <FormControl fullWidth>
+          <InputLabel
+            style={{
+              marginTop: "-2px",
+              width: "100%",
+              height: "20%",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            Speciality
+          </InputLabel>
+          <Select
+            value={formData.speciality}
+            name="speciality"
+            labelId="speciality-label"
+            id="speciality"
+            label="Speciality"
+            size="small"
+            style={{ marginBottom: "2rem", width: "100%" }}
+            onChange={handleChangeSpeciality}
+          >
+            <MenuItem value="General Physician">General Physician</MenuItem>
+            <MenuItem value="ENT Specialist">ENT Specialist</MenuItem>
+            <MenuItem value="Cardiologists">Cardiologists</MenuItem>
+            <MenuItem value="Dermatologists">Dermatologists</MenuItem>
+            <MenuItem value="Neurologist">Neurologist</MenuItem>
+            <MenuItem value="Gynecologist">Gynecologist</MenuItem>
+            <MenuItem value="Orthopedic">Orthopedic</MenuItem>
+            <MenuItem value="Psychiatrist">Psychiatrist</MenuItem>
+            <MenuItem value="Ophthalmologist">Ophthalmologist</MenuItem>
+            <MenuItem value="Dentist">Dentist</MenuItem>
+          </Select>
         </FormControl>
 
         <button

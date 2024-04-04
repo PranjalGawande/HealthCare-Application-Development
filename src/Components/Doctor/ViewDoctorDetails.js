@@ -102,7 +102,7 @@ export const ViewDoctorDetails = () => {
 
   const determineFontSize = () => {
     if (doctorDetails.name && doctorDetails.name.length > 14) {
-      return '2rem';
+      return '2.2rem';
     }
     return '3rem';
   };
@@ -111,11 +111,11 @@ export const ViewDoctorDetails = () => {
     <div className="h-full flex justify-center items-center ">
       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
         <div className="image-container">
-          <img src={doctorImage} className="admin-image" />
+          <img src={doctorImage} className="admin-image" alt="doctorImage"/>
           <div className="dashboard-name-doctor" style={{ fontSize: determineFontSize() }}>{doctorDetails.name}</div>
         </div>
         <div className="container glass-background mt-5">
-          <label className="text-login fw-bold text-center">
+          <label className="text-login profile-details fw-bold text-center mt-5">
             Profile Details
           </label>
           {doctorDetails && (
@@ -124,15 +124,17 @@ export const ViewDoctorDetails = () => {
               <p className="mb-2 font-bold">Date of Birth: <span className="font-normal">{new Date(doctorDetails.dob).toLocaleDateString()}</span></p>
               <p className="mb-2 font-bold">Mobile No: <span className="font-normal">{doctorDetails.mobileNo}</span></p>
               <p className="mb-2 font-bold">Gender: <span className="font-normal">{doctorDetails.gender}</span></p>
+              <p className="mb-2 font-bold">Speciality: <span className="font-normal">{doctorDetails.speciality}</span></p>
+              <p className="mb-2 font-bold">Experience: <span className="font-normal">{doctorDetails.experience}</span></p>
               <p className="mb-2 font-bold">Email: <span className="font-normal">{doctorDetails.email}</span></p>
-              <p className="mb-2 font-bold">Status: {doctorDetails.status ? 'Active' : 'Inactive'}</p>
+              <p className="mb-2 font-bold">Status: <span className="font-normal">{doctorDetails.status ? 'Active' : 'Inactive'}</span></p>
               <br />
-              <div className="mt-3">
+              <div className="mt-n1 mb-n5">
                 <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                  style={{ marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                  onClick={handleUpdateDetails}>Update Details</button>
+                  style={{ width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                  onClick={handleUpdateDetails}>Update DetailS</button>
                 <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
@@ -144,14 +146,14 @@ export const ViewDoctorDetails = () => {
                       <button
                         type="submit"
                         className="button text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        style={{ marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{marginBottom: '2rem',  marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
 
                         onClick={() => handleDeactivateDoctor(doctorDetails.email)}>Deactivate</button>
                     ) : (
                       <button
                         type="submit"
                         className="button text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        style={{ marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{marginBottom: '2rem', marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                         onClick={() => handleActivateDoctor(doctorDetails.email)}>Activate</button>
                     )}
                   </>

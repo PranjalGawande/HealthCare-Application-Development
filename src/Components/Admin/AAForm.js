@@ -154,6 +154,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export const AAForm = ({ email }) => {
   let navigate = useNavigate();
@@ -181,23 +182,26 @@ export const AAForm = ({ email }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email)) {
-      alert("Invalid email format");
+      toast.error("Invalid email format");
+      // alert("Invalid email format");
       return;
     }
 
-    // Validating mobile number
+    if (!formData.name) {
+      toast.error("Name is required");
+      return;
+    }
+
     const mobileRegex = /^\d{10}$/;
     if (!formData.mobileNo || !mobileRegex.test(formData.mobileNo)) {
-      alert("Invalid mobile number format. Please enter 10 digits.");
+      toast.error("Please enter 10 digits Mobile number.");
       return;
     }
 
-    // Validating date of birth
     if (!formData.dob) {
-      alert("Date of birth is required");
+      toast.error("Date of birth is required");
       return;
     }
 
@@ -214,10 +218,13 @@ export const AAForm = ({ email }) => {
         { headers: headers }
       );
       console.log("Response from backend:", response.data);
-      alert("Doctor added successfully");
-      navigate("/admin");
+      toast.success("Admin added successfully!");
+      setTimeout(() => {
+        navigate("/admin");
+      }, 3000);
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Failed to add admin!");
     }
   };
 
@@ -226,6 +233,7 @@ export const AAForm = ({ email }) => {
       style={{
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
         alignItems: "center",
         paddingTop: "2rem",
       }}
@@ -235,7 +243,7 @@ export const AAForm = ({ email }) => {
           ADD ADMIN <br></br> DETAILS
         </label>
       </div>
-      <form style={{ width: "80%", marginTop: "2rem" }}>
+      <form style={{ width: "100%" }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <TextField
             id="name"
@@ -247,61 +255,66 @@ export const AAForm = ({ email }) => {
           />
         </div>
 
-        <FormControl fullWidth>
-          <InputLabel>Gender</InputLabel>
-          <Select
-            value={formData.gender}
-            name="gender"
-            labelId="gender-label"
-            id="gender"
-            label="Gender"
+        <div style={{ marginBottom: "2rem" }}>
+          <FormControl fullWidth>
+            <InputLabel>Gender</InputLabel>
+            <Select
+              value={formData.gender}
+              name="gender"
+              labelId="gender-label"
+              id="gender"
+              label="Gender"
+              size="medium"
+              onChange={handleChangeGender}
+            >
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+              <MenuItem value="other">Other</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+
+          <TextField
+            id="dob"
+            label="Date of Birth"
+            type="date"
+            variant="outlined"
             size="medium"
             style={{ marginBottom: "2rem", width: "100%" }}
-            onChange={handleChangeGender}
+            value={formData.dob}
+            onChange={handleTextFieldChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              max: "2000-12-31",
+              min: "1900-01-01",
+            }}
+          />
+          <TextField
+            id="mobileNo"
+            label="MobileNo"
+            variant="outlined"
+            size="medium"
+            style={{ marginBottom: "2rem", width: "100%" }}
+            onChange={handleTextFieldChange}
+          />
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="button w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            style={{
+              marginBottom: "-100px",
+              marginTop: "1rem",
+              width: "100%",
+              height: "12%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
-          </Select>
-        </FormControl>
-
-        <TextField
-          id="dob"
-          label="Date of Birth"
-          type="date"
-          variant="outlined"
-          size="medium"
-          style={{ marginBottom: "2rem", width: "100%" }}
-          value={formData.dob}
-          onChange={handleTextFieldChange}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          id="mobileNo"
-          label="MobileNo"
-          variant="outlined"
-          size="medium"
-          style={{ marginBottom: "2rem", width: "100%" }}
-          onChange={handleTextFieldChange}
-        />
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="button w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          style={{
-            marginBottom: "-100px",
-            marginTop: "1rem",
-            width: "100%",
-            height: "12%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          Register
-        </button>
+            Register
+          </button>
       </form>
     </div>
   );

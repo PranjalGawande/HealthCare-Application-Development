@@ -13,8 +13,8 @@ export const AdminChangeDoctorPassword = () => {
   const doctor = location.state?.doctor;
   const email = doctor?.email;
   const [newPassword, setNewPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -26,16 +26,27 @@ export const AdminChangeDoctorPassword = () => {
       navigate("/");
       localStorage.clear();
     }
-  }, []);
+  });
+
+  
+  
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
+    if (!newPassword || newPassword.length < 6) {
+      console.error("Password must be at least 6 characters long");
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
+    const token = localStorage.getItem("token");
+    const formData = {
+      email: email,
+      newPassword: newPassword,
+    };
+
+
     try {
-      const token = localStorage.getItem("token");
-      const formData = {
-        email: email,
-        newPassword: newPassword,
-      };
+
       const response = await axios.post(
         "http://localhost:9191/doctor/changePassword",
         formData,
@@ -43,11 +54,12 @@ export const AdminChangeDoctorPassword = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setSuccess(true);
+      // setSuccess(true);
       toast.success("Doctor Password updated successfully!", { duration: 3000 });
 
     } catch (error) {
-      setError(error.response.data.message);
+      toast.error("Doctor Password updation failed!", { duration: 3000 });
+      // setError(error.response.data.message);
     }
   };
 
@@ -56,7 +68,7 @@ export const AdminChangeDoctorPassword = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={doctorImage} className="admin-image" />
+            <img src={doctorImage} className="admin-image" alt="doctorImage"/>
             <div
               className="dashboard-name-doctor"
               style={{ fontSize: "xx-large" }}

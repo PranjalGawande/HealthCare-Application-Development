@@ -20,7 +20,7 @@ const AddAdminForm = () => {
       navigate("/");
       localStorage.clear();
     }
-  }, []);
+  });
 
   const handleLoginSuccess = (email) => {
     setEmail(email);
@@ -32,7 +32,7 @@ const AddAdminForm = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={admin} className="admin-image" />
+            <img src={admin} className="admin-image" alt="adminImage"/>
             <div className="dashboard-name">ADD ADMIN</div>
           </div>
         </div>

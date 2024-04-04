@@ -14,8 +14,8 @@ export const AdminUpdateDoctorDetails = () => {
   const [newSpeciality, setNewSpeciality] = useState(doctorDetails?.speciality);
   const [newMobileNo, setNewMobileNo] = useState(doctorDetails?.mobileNo);
   const [newExperience, setNewExperience] = useState(doctorDetails?.experience);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -47,11 +47,17 @@ export const AdminUpdateDoctorDetails = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setSuccess(true);
-      toast.success("Doctor details updated successfully!", { duration: 3000 });
+      // setSuccess(true);
+        toast.success("Doctor details updated successfully!", { duration: 3000 });
+      // toast.success("Doctor details updated successfully!");
+      setTimeout(() => {
+        navigate("/admin/view-doctor-info");
+      }, 2000);
+      
     } catch (error) {
       console.error("Error updating doctor details:", error);
-      setError(error.response.data.message);
+      toast.error("Error updating doctor details!", { duration: 3000 });
+      // setError(error.response.data.message);
     }
   };
 
@@ -60,7 +66,7 @@ export const AdminUpdateDoctorDetails = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={doctorImage} className="admin-image" />
+            <img src={doctorImage} className="admin-image" alt="doctorImage"/>
             <div
               className="dashboard-name-doctor"
               style={{ fontSize: "50px" }}
@@ -126,7 +132,7 @@ export const AdminUpdateDoctorDetails = () => {
                     style={{ marginBottom: "2rem", width: "100%" }}
                   />
                 </div>
-                <button
+                {/* <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                   style={{
@@ -139,6 +145,13 @@ export const AdminUpdateDoctorDetails = () => {
                   }}
                 >
                   Update Details
+                </button> */}
+                <button
+                  type="submit"
+                  className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                  style={{ marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                >
+                  Update DetailS
                 </button>
               </form>
             </div>

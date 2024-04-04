@@ -20,7 +20,7 @@ const AddStaffForm = () => {
       navigate("/");
       localStorage.clear();
     }
-  }, []);
+  });
 
   const handleLoginSuccess = (email) => {
     setEmail(email);
@@ -32,8 +32,8 @@ const AddStaffForm = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={admin} className="admin-image" />
-            <div className="dashboard-name" style={{ fontSize: "2rem" }}>
+            <img src={admin} className="admin-image" alt="adminImage"/>
+            <div className="dashboard-name" style={{ fontSize: "2.2rem" }}>
               ADD RECEPTIONIST
             </div>
           </div>
