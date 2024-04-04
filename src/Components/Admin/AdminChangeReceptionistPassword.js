@@ -12,8 +12,8 @@ export const AdminChangeReceptionistPassword = () => {
   const staff = location.state?.staff;
   const email = staff?.email;
   const [newPassword, setNewPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,6 +29,11 @@ export const AdminChangeReceptionistPassword = () => {
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
+    if (!newPassword || newPassword.length < 6) {
+      console.error("Password must be at least 6 characters long");
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
       const formData = {
@@ -43,11 +48,12 @@ export const AdminChangeReceptionistPassword = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setSuccess(true);
+      // setSuccess(true);
       toast.success("Receptionist Password updated successfully!", { duration: 3000 });
 
     } catch (error) {
-      setError(error.response.data.message);
+      toast.error("Error updating password!", { duration: 3000 });
+      // setError(error.response.data.message);
     }
   };
 

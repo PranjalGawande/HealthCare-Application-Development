@@ -125,7 +125,7 @@ const CNForm = ({ patientId, doctorId }) => {
       <div className="background-appointment flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={doctorImage} className="admin-image" />
+            <img src={doctorImage} className="admin-image" alt="doctorImage"/>
             <div
               className="dashboard-name-doctor"
               style={{ fontSize: "40px" }}

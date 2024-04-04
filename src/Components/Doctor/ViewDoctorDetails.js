@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import doctorImage from "../../assets/DoctorPage.png";
+import toast from "react-hot-toast";
 
 export const ViewDoctorDetails = () => {
   const location = useLocation();
@@ -40,6 +41,7 @@ export const ViewDoctorDetails = () => {
         ...prevDoctorDetails,
         status: true
       }));
+      toast.success("Doctor activated successfully");
     } catch (error) {
       console.error("Error activating doctor:", error);
     }
@@ -69,16 +71,12 @@ export const ViewDoctorDetails = () => {
         ...prevDoctorDetails,
         status: false
       }));
+      toast.success("Doctor deactivated successfully");
     }
     catch (error) {
       console.error("Error deactivating doctor:", error);
     }
   };
-
-
-
-
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");

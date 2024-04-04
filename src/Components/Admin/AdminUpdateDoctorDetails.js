@@ -48,12 +48,12 @@ export const AdminUpdateDoctorDetails = () => {
         }
       );
       // setSuccess(true);
-        toast.success("Doctor details updated successfully!", { duration: 3000 });
+      toast.success("Doctor details updated successfully!", { duration: 3000 });
       // toast.success("Doctor details updated successfully!");
       setTimeout(() => {
         navigate("/admin/view-doctor-info");
       }, 2000);
-      
+
     } catch (error) {
       console.error("Error updating doctor details:", error);
       toast.error("Error updating doctor details!", { duration: 3000 });
@@ -66,7 +66,7 @@ export const AdminUpdateDoctorDetails = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={doctorImage} className="admin-image" alt="doctorImage"/>
+            <img src={doctorImage} className="admin-image" alt="doctorImage" />
             <div
               className="dashboard-name-doctor"
               style={{ fontSize: "50px" }}

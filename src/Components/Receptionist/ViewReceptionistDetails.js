@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import recepImage from '../../assets/ReceptionistPage.png';
+import toast from "react-hot-toast";
 
 export const ViewReceptionistDetails = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ export const ViewReceptionistDetails = () => {
         ...prevStaffDetails,
         status: true // Assuming response.data.status contains the updated status
       }));
+      toast.success("Receptionist activated successfully");
     } catch (error) {
       console.error("Error activating doctor:", error);
     }
@@ -66,6 +68,7 @@ export const ViewReceptionistDetails = () => {
         ...prevStaffDetails,
         status: false
       }));
+      toast.success("Receptionist deactivated successfully");
     }
     catch (error) {
       console.error("Error deactivating doctor:", error);
@@ -93,7 +96,7 @@ export const ViewReceptionistDetails = () => {
 
   const determineFontSize = () => {
     if (staffDetails.name && staffDetails.name.length > 14) {
-      return '2rem';
+      return '2.2rem';
     }
     return '3rem';
   };
@@ -102,11 +105,11 @@ export const ViewReceptionistDetails = () => {
     <div className="h-full flex justify-center items-center ">
       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
         <div className="image-container">
-          <img src={recepImage} className="admin-image" />
+          <img src={recepImage} className="admin-image" alt="recepImage"/>
           <div className="dashboard-name-receptionist" style={{ fontSize: determineFontSize() }}>{staffDetails.name}</div>
         </div>
         <div className="container glass-background mt-5">
-          <label className="text-login fw-bold text-center">
+          <label className="text-login profile-details fw-bold text-center mt-5">
             Profile Details
           </label>
           {staffDetails && (
@@ -122,7 +125,7 @@ export const ViewReceptionistDetails = () => {
                 <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                  style={{ marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                  style={{ width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
 
                   onClick={handleUpdateDetails}>Update Details</button>
                 <button
@@ -137,14 +140,14 @@ export const ViewReceptionistDetails = () => {
                       <button
                         type="submit"
                         className="button text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        style={{ marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{marginBottom: '2rem', marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
 
                         onClick={() => handleDeactivateDoctor(staffDetails.email)}>Deactivate</button>
                     ) : (
                       <button
                         type="submit"
                         className="button text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        style={{ marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{marginBottom: '2rem', marginTop: '2rem', width: "100%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
 
                         onClick={() => handleActivateDoctor(staffDetails.email)}>Activate</button>
                     )}

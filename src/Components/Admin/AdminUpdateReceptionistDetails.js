@@ -11,8 +11,8 @@ export const AdminUpdateReceptionistDetails = () => {
   const staffDetails = location.state?.staff;
   const email = staffDetails?.email;
   const [newMobileNo, setNewMobileNo] = useState(staffDetails?.mobileNo);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,6 +28,11 @@ export const AdminUpdateReceptionistDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!newMobileNo || newMobileNo.length < 10) {
+      console.error("Mobile number must be at least 10 characters long");
+      toast.error("Mobile number must be at least 10 characters long");
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
       const formData = {
@@ -42,12 +47,16 @@ export const AdminUpdateReceptionistDetails = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setSuccess(true);
-      toast.success("Doctor details updated successfully!", { duration: 3000 });
+      // setSuccess(true);
+      toast.success("Receptionist details updated successfully!", { duration: 3000 });
+      setTimeout(() => {
+        navigate("/admin/view-receptionist-info");
+      }, 2000);
 
     } catch (error) {
       console.error("Error updating doctor details:", error);
-      setError(error.response.data.message);
+      toast.error("Error updating receptionist details!", { duration: 3000 });
+      // setError(error.response.data.message);
     }
   };
 
@@ -56,7 +65,7 @@ export const AdminUpdateReceptionistDetails = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container">
-            <img src={receptionistImage} className="admin-image" />
+            <img src={receptionistImage} className="admin-image" alt="receptionistImage" />
             <div
               className="dashboard-name-receptionist"
               style={{ fontSize: "xx-large" }}
@@ -77,8 +86,8 @@ export const AdminUpdateReceptionistDetails = () => {
               }}
             >
               <div className="flex">
-                <label className="text-login fw-bold text-center ">
-                  Update Receptionist Details
+                <label className="text-login fw-bold text-center  mb-5">
+                  Update Details
                 </label>
               </div>
               <form onSubmit={handleSubmit}>
@@ -87,6 +96,8 @@ export const AdminUpdateReceptionistDetails = () => {
                     type="email"
                     label="Email"
                     id="email"
+                    size="large"
+                    style={{ width: "100%", marginBottom: "2rem" }}
                     value={staffDetails.email}
                     readOnly
                   />
@@ -96,6 +107,8 @@ export const AdminUpdateReceptionistDetails = () => {
                     type="text"
                     label="New Mobile No"
                     id="newMobileNo"
+                    size="large"
+                    style={{ width: "100%", marginBottom: "2rem" }}
                     value={newMobileNo}
                     onChange={(e) => setNewMobileNo(e.target.value)}
                   />
