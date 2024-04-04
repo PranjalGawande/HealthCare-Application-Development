@@ -213,7 +213,7 @@ const CNForm = ({ patientId, doctorId }) => {
                         type="text"
                         value={medicineName}
                         onChange={(e) => handleMedicineChange(index + 1, e.target.value)}
-                        style={{ marginBottom: "1rem", width: "calc(100% - 90px)", marginRight: "10px" }}
+                        style={{ marginBottom: "1rem", width: "100%", marginRight: "10px" }}
                         placeholder="Medicine Name"
                       />
                       <button

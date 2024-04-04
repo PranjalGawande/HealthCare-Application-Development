@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import patientImage from '../../assets/PatientPage.png';
+import toast from 'react-hot-toast';
 
 export const AbhaIdDisplayAndAdd = () => {
   const location = useLocation();
@@ -30,7 +31,7 @@ export const AbhaIdDisplayAndAdd = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      console.log("bc:", formData);
+      console.log("Formdata", formData);
       const response = await axios.post(
         "http://localhost:9191/receptionist/addPatient",
         formData,
@@ -39,8 +40,12 @@ export const AbhaIdDisplayAndAdd = () => {
         }
       );
       console.log('Response:', response.data);
-      navigate('/receptionist');
+      toast.success('Patient Added Successfully');
+      setTimeout(() => {
+        navigate('/receptionist');
+      }, 2000);
     } catch (error) {
+      toast.error('Error in Adding Patient');
       console.error('Error:', error);
     }
   };
