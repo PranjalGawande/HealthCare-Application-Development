@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -22,8 +23,11 @@ public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "doctorId")
+    @Column(name = "doctor_id")
     private Integer doctorId;
+
+    @Column(name = "doctor_license_no", nullable = false)
+    private String doctorLicenseNo;
 
     @Column(nullable = false)
     private String name;
@@ -32,7 +36,7 @@ public class Doctor {
     private String mobileNo;
 
     @Column(nullable = false)
-    private Calendar dob;
+    private LocalDate dob;
 
     @Column(nullable = false)
     private String gender;
@@ -57,10 +61,6 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor",cascade = CascadeType.ALL)
     private List<Appointment> appointments = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
-    private List<MedicalRecords> medicalRecords = new ArrayList<>();
-
     public Doctor(DoctorDTO doctorDTO) {
         this.name = doctorDTO.getName();
         this.dob = doctorDTO.getDob();
@@ -69,6 +69,7 @@ public class Doctor {
         this.speciality = doctorDTO.getSpeciality();
         this.experience = doctorDTO.getExperience();
         this.tokenMax = doctorDTO.getTokenMax();
+        this.doctorLicenseNo = doctorDTO.getDoctorLicenseNo();
     }
 
     @PrePersist

@@ -77,7 +77,7 @@ public class DoctorController {
             Optional<Appointment> appointmentValue = appointmentService.getAppointmentBytokenNo(doctor.getDoctorId(), patientId);
             Appointment appointment = appointmentValue.orElseThrow(()-> new RuntimeException("Unable to find the given Token Number"));
 
-            medicalRecords = medicalRecordsService.getPatientMedicalHistory(userDetails.getUsername(), appointment.getPatient().getPatientId());
+            medicalRecords = medicalRecordsService.getPatientMedicalHistory(doctor.getDoctorId(), appointment.getPatient().getPatientId());
         }
 
         List<MedicalRecordsDTO> medicalRecordsDTO = new ArrayList<>();
@@ -138,8 +138,7 @@ public class DoctorController {
 
         if (isRequestNotNull) {
             MedicalRecords medicalRecords = new MedicalRecords();
-            medicalRecords.setPatient(patient);
-            medicalRecords.setDoctor(doctor);
+            medicalRecords.setAppointment(appointment);
 
             List<Prescription> prescriptions = new ArrayList<>();
             for (Prescription prescriptionData : request.getPrescriptions()) {
@@ -157,6 +156,7 @@ public class DoctorController {
             medicalRecords.setBloodPressure(request.getBloodPressure());
             medicalRecords.setOxygenLevel(request.getOxygenLevel());
             medicalRecords.setSymptoms(request.getSymptoms());
+            medicalRecords.setDiagnosis(request.getDiagnosis());
 
             appointmentService.updateAppointment(appointment.getAppointmentId(), "done");
             medicalRecordsService.addPatientConsultation(medicalRecords);

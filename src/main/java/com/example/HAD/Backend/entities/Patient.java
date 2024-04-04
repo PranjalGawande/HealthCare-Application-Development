@@ -20,7 +20,7 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "patientId")
+    @Column(name = "patient_id")
     private Integer patientId;
 
     @Column(nullable = false)
@@ -47,8 +47,4 @@ public class Patient {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")
     private List<Appointment> appointments = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    private List<MedicalRecords> medicalRecords = new ArrayList<>();
 }

@@ -13,10 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
-
-
-import java.util.Calendar;
-
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class 	HadBackendApplication {
@@ -48,9 +45,10 @@ public class 	HadBackendApplication {
 			loginService.addLogin(staff);
 
 			StaffDTO staffDetail = new StaffDTO();
-			Calendar dob = Calendar.getInstance();
-			dob.set(1992, 8, 15);
-			staffDetail.setDob(dob);
+
+			LocalDate parsedDate = LocalDate.parse("1994-08-05");
+			staffDetail.setDob(parsedDate);
+
 			staffDetail.setGender("Male");
 			staffDetail.setRole(Role.ADMIN);
 			staffDetail.setName("Hari Prasad");

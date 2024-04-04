@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +18,11 @@ import java.util.Objects;
 public class DoctorDTO {
     private Integer doctorId;
     private String name;
-    private Calendar dob;
+    private LocalDate dob;
     private String gender;
     private String speciality;
     private Integer experience;
+    private String doctorLicenseNo;
     private String email;
     private String mobileNo;
     private Integer tokenMax;
@@ -39,6 +40,7 @@ public class DoctorDTO {
         this.email = doctor.getLogin().getEmail();
         this.tokenMax = doctor.getTokenMax();
         this.status = doctor.getLogin().getStatus();
+        this.doctorLicenseNo = doctor.getDoctorLicenseNo();
 
         for (Appointment appointment : doctor.getAppointments()) {
             if("pending".equals(appointment.getStatus())) {

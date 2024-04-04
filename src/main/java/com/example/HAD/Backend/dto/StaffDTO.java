@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +17,7 @@ import java.util.Calendar;
 public class StaffDTO {
     private Integer staffId;
     private String name;
-    private Calendar dob;
+    private LocalDate dob;
     private String mobileNo;
     private String gender;
     private Role role;

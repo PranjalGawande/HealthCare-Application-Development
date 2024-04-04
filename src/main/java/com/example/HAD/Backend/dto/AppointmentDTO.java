@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,8 +16,8 @@ import java.util.Calendar;
 @Getter
 public class AppointmentDTO {
     private Integer tokenNo;
-    private Calendar date;
-    private Time time;
+    private LocalDate date;
+    private LocalTime time;
     private String reasonForVisit;
 
     public AppointmentDTO(Appointment appointment) {

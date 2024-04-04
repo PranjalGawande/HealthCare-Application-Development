@@ -11,10 +11,11 @@ import java.util.List;
 @Repository
 public interface MedicalRecordsRepository extends JpaRepository<MedicalRecords, Integer> {
 
-    @Query("SELECT DISTINCT m FROM MedicalRecords m LEFT JOIN FETCH m.prescriptions p " +
-            "WHERE m.doctor.login.email = :email AND m.patient.patientId = :patientId")
-    List<MedicalRecords> getPatientHistory(@Param("email") String email, @Param("patientId") Integer patientId);
+    @Query("SELECT m FROM MedicalRecords m WHERE m.appointment.appointmentId IN " +
+            "(SELECT a.appointmentId FROM Appointment a WHERE a.doctor.doctorId =:doctorId AND a.patient.patientId =:patientId )")
+    List<MedicalRecords> getPatientHistory(@Param("doctorId") Integer doctorId, @Param("patientId") Integer patientId);
 
-    @Query("SELECT m FROM MedicalRecords m WHERE m.patient.patientId = :patientId")
+    @Query("SELECT m FROM MedicalRecords m WHERE m.appointment.appointmentId IN " +
+            "(SELECT a.appointmentId FROM Appointment a WHERE a.patient.patientId =:patientId)")
     List<MedicalRecords> getPatientMedicalHistory(Integer patientId);
 }

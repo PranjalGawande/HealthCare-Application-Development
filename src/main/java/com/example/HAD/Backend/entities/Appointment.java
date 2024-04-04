@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 
 
@@ -21,17 +23,17 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "appointmentId")
+    @Column(name = "appointment_id")
     private Integer appointmentId;
 
-    @Column(name = "tokenNo")
+    @Column(name = "token_no")
     private Integer tokenNo;
 
     @Column(nullable = false)
-    private Calendar date;
+    private LocalDate date;
 
     @Column(nullable = false)
-    private Time time;
+    private LocalTime time;
 
     @Column(nullable = false)
     private String reasonForVisit;
@@ -41,11 +43,11 @@ public class Appointment {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "patientId")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "doctorId")
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 }

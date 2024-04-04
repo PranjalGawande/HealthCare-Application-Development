@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 
@@ -29,7 +30,7 @@ public class Admin {
     private String mobileNo;
 
     @Column
-    private Calendar dob;
+    private LocalDate dob;
 
     @Column(nullable = false)
     private String gender;

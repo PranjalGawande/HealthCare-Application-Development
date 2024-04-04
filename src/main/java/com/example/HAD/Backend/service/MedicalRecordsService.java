@@ -13,8 +13,8 @@ public class MedicalRecordsService {
     @Autowired
     private MedicalRecordsRepository medicalRecordsRepository;
 
-    public List<MedicalRecords> getPatientMedicalHistory(String email, Integer tokenNo) {
-        return medicalRecordsRepository.getPatientHistory(email, tokenNo);
+    public List<MedicalRecords> getPatientMedicalHistory(Integer doctorId, Integer tokenNo) {
+        return medicalRecordsRepository.getPatientHistory(doctorId, tokenNo);
     }
 
     public void addPatientConsultation(MedicalRecords medicalRecords) {

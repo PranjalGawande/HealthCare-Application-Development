@@ -1,13 +1,12 @@
 package com.example.HAD.Backend.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Setter
 @Getter
@@ -21,8 +20,8 @@ public class ExtraDTO {
     String abhaId;
 
     //To create a new appointment
-    Calendar date;
-    Time time;
+    LocalDate date;
+    LocalTime time;
     String reasonForVisit;
     String status;
 

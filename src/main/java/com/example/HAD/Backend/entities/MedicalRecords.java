@@ -40,11 +40,7 @@ public class MedicalRecords {
     @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prescription> prescriptions;
 
-    @ManyToOne
-    @JoinColumn(name = "doctorId")
-    private Doctor doctor;
-
-    @ManyToOne
-    @JoinColumn(name = "patientId")
-    private Patient patient;
+    @OneToOne
+    @JoinColumn(name = "appointment_id", referencedColumnName = "appointment_id")
+    private Appointment appointment;
 }
