@@ -277,7 +277,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useNavigate } from "react-router-dom";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 export const ADForm = ({ email }) => {
   let navigate = useNavigate();
@@ -304,37 +304,33 @@ export const ADForm = ({ email }) => {
     }));
   };
 
-  const handleChangeSpeciality = (event) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  };
+  // const handleChangeSpeciality = (event) => {
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [event.target.name]: event.target.value,
+  //   }));
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email)) {
       toast.error("Invalid email format");
       return;
     }
 
-    // Validating mobile number
     const mobileRegex = /^\d{10}$/;
     if (!formData.mobileNo || !mobileRegex.test(formData.mobileNo)) {
       toast.error("Invalid mobile number format. Please enter 10 digits.");
       return;
     }
 
-    // Validating date of birth
     if (!formData.dob) {
       toast.error("Date of birth is required");
       return;
     }
 
-    // Validating experience
     if (!formData.experience || isNaN(formData.experience)) {
       toast.error("Experience must be a number");
       return;
@@ -370,6 +366,7 @@ export const ADForm = ({ email }) => {
       style={{
         display: "flex",
         flexDirection: "column",
+        justifyContent: "space-around",
         alignItems: "center",
         paddingTop: "2rem",
       }}
@@ -405,8 +402,17 @@ export const ADForm = ({ email }) => {
             onChange={handleTextFieldChange}
           />
 
-          <FormControl fullWidth>
-            <InputLabel>Gender</InputLabel>
+          <FormControl fullWidth style={{ width: "100%" }}>
+            <InputLabel
+              style={{
+                marginTop: "-2px",
+                width: "100%",
+                height: "20%",
+                display: "flex",
+                alignItems: "center",
+              }}>
+              Gender
+            </InputLabel>
             <Select
               value={formData.gender}
               name="gender"
@@ -467,21 +473,14 @@ export const ADForm = ({ email }) => {
           onChange={handleTextFieldChange}
         />
         <FormControl fullWidth>
-          <InputLabel>Speciality</InputLabel>
-          <Select
-            value={formData.speciality}
-            name="speciality"
-            labelId="speciality-label"
+          <TextField
             id="speciality"
             label="Speciality"
+            variant="outlined"
             size="small"
             style={{ marginBottom: "2rem", width: "100%" }}
-            onChange={handleChangeSpeciality}
-          >
-            <MenuItem value="Cardiology">Cardiology</MenuItem>
-            <MenuItem value="Dermatology">Dermatology</MenuItem>
-            <MenuItem value="Endocrinology">Endocrinology</MenuItem>
-          </Select>
+            onChange={handleTextFieldChange}
+          />
         </FormControl>
 
         <button
@@ -501,7 +500,6 @@ export const ADForm = ({ email }) => {
           Register
         </button>
       </form>
-      <Toaster />
     </div>
   );
 };

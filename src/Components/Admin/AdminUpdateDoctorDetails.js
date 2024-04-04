@@ -3,7 +3,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import doctorImage from "../../assets/DoctorPage.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import toast   from "react-hot-toast";
+import toast from "react-hot-toast";
 
 
 export const AdminUpdateDoctorDetails = () => {
@@ -63,7 +63,7 @@ export const AdminUpdateDoctorDetails = () => {
             <img src={doctorImage} className="admin-image" />
             <div
               className="dashboard-name-doctor"
-              style={{ fontSize: "xx-large" }}
+              style={{ fontSize: "50px" }}
             >
               UPDATE DOCTOR
             </div>
@@ -82,7 +82,7 @@ export const AdminUpdateDoctorDetails = () => {
             >
               <div className="flex">
                 <label className="text-login fw-bold text-center ">
-                  ADD DETAILS
+                  UPDATE DETAILS
                 </label>
               </div>
               <form onSubmit={handleSubmit}>
@@ -126,12 +126,6 @@ export const AdminUpdateDoctorDetails = () => {
                     style={{ marginBottom: "2rem", width: "100%" }}
                   />
                 </div>
-                {/* {error && <p style={{ color: "red" }}></p>}{" "}
-                {success && (
-                  <p style={{ color: "green" }}>
-                    Doctor details updated successfully!
-                  </p>
-                )}{" "} */}
                 <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"

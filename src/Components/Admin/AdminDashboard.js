@@ -37,9 +37,9 @@ const AdminDashboard = () => {
   return (
     <div>
       <div className="h-full flex justify-center items-center ">
-        <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
+        <div className="container flex flex-wrap admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
           <div className="image-container">
-            <img src={admin} className="admin-image" />
+            <img src={admin} className="admin-image" alt="adminImage"/>
             <div
               className="dashboard-name"
               style={{ fontSize: determineFontSize() }}

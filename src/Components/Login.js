@@ -80,6 +80,9 @@ const LoginForm = () => {
       }
     } catch (error) {
       console.error("Login failed:", error);
+      toast.error("Incorrect credentials.", {
+        duration: 3000,
+      });
     }
   };
 

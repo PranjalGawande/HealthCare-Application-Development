@@ -36,18 +36,19 @@ import { AbhaMobileNo } from "./Components/Receptionist/AbhaMobileNo";
 import { NewAbhaNoOtpVerification } from "./Components/Receptionist/NewAbhaNoOtpVerification";
 import { AddAppointment } from "./Components/Receptionist/AddAppointment";
 import { HealthIdByAdhaar } from "./Components/Receptionist/HealthIdByAdhaar";
-import { Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 // import { AddPatientDetails } from "./Components/AddPatientDetails";
 
 function App() {
+
   return (
     <div className="App">
       <Toaster
         toastOptions={{
           className: '',
           style: {
-            border: '5px solid #0f3c53',
             padding: '16px',
+            fontSize: '1.5rem',
             color: '#713200',
           },
         }}
