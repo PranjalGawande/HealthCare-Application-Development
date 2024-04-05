@@ -254,6 +254,16 @@ const CNForm = ({ patientId, doctorId }) => {
                   patientHistory={patientHistory}
                 />
               }
+              <div style={{ marginTop: "1rem" }}>
+                <button
+                  type="button"
+                  className="button"
+                  style={{ marginTop: "2rem", width: "100%" }}
+                  onClick={handleRequestConsent}
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
         </div>

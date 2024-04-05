@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import admin from "../../assets/AdminPage.jpg";
 import TextField from "@mui/material/TextField";
+import { toast } from "react-hot-toast";
 
 export const AdminPasswordChange = () => {
   const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  // const [error, setError] = useState(null);
+  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,6 +26,11 @@ export const AdminPasswordChange = () => {
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
+    // if (!newPassword || newPassword.length < 6) {
+    //   console.error("Password must be at least 6 characters long");
+    //   toast.error("Password must be at least 6 characters long");
+    //   return;
+    // }
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -37,11 +43,16 @@ export const AdminPasswordChange = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setSuccess(true);
+      // setSuccess(true);
+      toast.success("Password changed successfully!");
+      setTimeout(() => {
+        navigate("/admin")  
+      }, 2000);
       setOldPassword("");
       setNewPassword("");
     } catch (error) {
-      setError(error.response.data.message);
+      toast.error("Error changing password!");
+      // setError(error.response.data.message);
     }
   };
 
@@ -93,12 +104,12 @@ export const AdminPasswordChange = () => {
                     style={{ marginBottom: "2rem", width: "100%" }}
                   />
                 </div>
-                {error && <p style={{ color: "red" }}>{error}</p>}
+                {/* {error && <p style={{ color: "red" }}>{error}</p>}
                 {success && (
                   <p style={{ color: "green" }}>
                     Password changed successfully!
                   </p>
-                )}
+                )} */}
                 <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
