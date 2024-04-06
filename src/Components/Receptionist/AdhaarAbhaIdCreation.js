@@ -7,9 +7,11 @@ import patientImage from '../../assets/PatientPage.png';
 export const AdhaarAbhaIdCreation = () => {
   const [aadhaarNo, setAadhaarNo] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log(aadhaarNo);
     try {
       const token = localStorage.getItem("token");
@@ -27,7 +29,10 @@ export const AdhaarAbhaIdCreation = () => {
       navigate('/receptionist/adhaar-otp-verification');
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
+
   };
 
 
@@ -50,11 +55,23 @@ export const AdhaarAbhaIdCreation = () => {
             onChange={(e) => setAadhaarNo(e.target.value)}
             required
           />
-          <button
+          {/* <button
             type="submit"
             className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-            onClick={handleSubmit}>Submit</button>
+            onClick={handleSubmit}>Submit</button> */}
+
+          {loading ? (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+              <div class="loader"></div>
+            </div>
+          ) : (
+            <button
+              type="submit"
+              className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              onClick={handleSubmit}>Submit</button>
+          )}
         </div>
       </div>
     </div>

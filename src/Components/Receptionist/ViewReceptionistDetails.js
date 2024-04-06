@@ -10,7 +10,8 @@ export const ViewReceptionistDetails = () => {
   const navigate = useNavigate();
   const [staffDetails, setStaffDetails] = useState('');
   const role = localStorage.getItem("role");
-
+  const [loading, setLoading] = useState(false);
+  
   const handleUpdateDetails = () => {
     navigate('/admin/admin-receptionist-details-update', { state: { staff: staffDetails } });
   };
@@ -96,13 +97,18 @@ export const ViewReceptionistDetails = () => {
 
   const determineFontSize = () => {
     if (staffDetails.name && staffDetails.name.length > 14) {
-      return '2.2rem';
+      return '2rem';
     }
     return '3rem';
   };
 
   return (
     <div className="h-full flex justify-center items-center ">
+      {loading ? (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+              <div class="loader"></div>
+            </div>
+          ) : (
       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
         <div className="image-container">
           <img src={recepImage} className="admin-image" alt="recepImage"/>
@@ -158,6 +164,7 @@ export const ViewReceptionistDetails = () => {
           )}
         </div>
       </div>
+          )}
     </div>
   );
 };

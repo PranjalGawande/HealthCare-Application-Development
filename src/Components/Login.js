@@ -11,9 +11,11 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [loading, setLoading] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const lowercaseRole = role.toLowerCase();
       const response = await axios.post(
@@ -83,6 +85,8 @@ const LoginForm = () => {
       toast.error("Incorrect credentials.", {
         duration: 3000,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,6 +106,7 @@ const LoginForm = () => {
           </label>
           <div className="login-form mx-5">
             <form className="" onSubmit={handleSubmit}>
+              <div>
               <TextField
                 id="email"
                 label="Email"
@@ -135,13 +140,20 @@ const LoginForm = () => {
                 <MenuItem value="Receptionist">Receptionist</MenuItem>
                 <MenuItem value="DOCTOR">Doctor</MenuItem>
               </TextField>
-              <button
+              </div>
+              <div>
+              {loading ? (
+                <div style={{height: '20%',display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                  <div class="loader"></div>
+                </div>
+              ) : <button
                 type="submit"
                 className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                style={{ marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                style={{marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
               >
                 Login
-              </button>
+              </button>}
+              </div>
             </form>
           </div>
         </div>
