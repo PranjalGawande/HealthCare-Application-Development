@@ -38,6 +38,7 @@ import { AddAppointment } from "./Components/Receptionist/AddAppointment";
 import { HealthIdByAdhaar } from "./Components/Receptionist/HealthIdByAdhaar";
 import { toast, Toaster } from "react-hot-toast";
 // import { AddPatientDetails } from "./Components/AddPatientDetails";
+import { Analytics } from "./Components/Admin/Analytics";
 
 function App() {
 
@@ -63,6 +64,7 @@ function App() {
           <Route path="/admin/add-staff" element={<AddStaffForm />} />
           <Route path="/admin/admin-details" element={<ViewAdminDetails />} />
           <Route path="/admin/add-admin" element={<AddAdminForm />} />
+          <Route path="/admin/analytics" element= {<Analytics/>} />
           <Route
             path="/admin/view-doctor-details"
             element={<ViewDoctorDetails />}
