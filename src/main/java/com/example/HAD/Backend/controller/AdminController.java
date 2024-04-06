@@ -1,10 +1,7 @@
 package com.example.HAD.Backend.controller;
 
-import com.example.HAD.Backend.dto.ExtraDTO;
+import com.example.HAD.Backend.dto.*;
 import com.example.HAD.Backend.entities.*;
-import com.example.HAD.Backend.dto.DoctorDTO;
-import com.example.HAD.Backend.dto.StaffDTO;
-import com.example.HAD.Backend.dto.StaffListDTO;
 import com.example.HAD.Backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:9191")
@@ -35,6 +33,12 @@ public class AdminController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private PatientService PatientService;
+
+    @Autowired
+    private AnalyticsService analyticsService;
 
     @GetMapping("/adminDetails")
     @PreAuthorize("hasAuthority('admin:get')")
@@ -149,4 +153,45 @@ public class AdminController {
         loginService.updateLogin(userName, extraDTO.getNewPassword());
         return ResponseEntity.ok("Password changed Successfully");
     }
+
+    @GetMapping("/analytics")
+    @PreAuthorize("hasAuthority('admin:get')")
+    public ResponseEntity<AnalyticsDTO> getAnalyticsData() {
+        AnalyticsDTO analyticsData = analyticsService.generateAnalyticsData();
+        return ResponseEntity.ok().body(analyticsData);
+    }
+
+    @GetMapping("/doctorCountBySpeciality")
+    @PreAuthorize("hasAuthority('admin:get')")
+    public ResponseEntity<Map<String, Integer>> getDoctorCountBySpeciality() {
+        List<DoctorListDTO> doctorListDTOS = doctorService.getDoctorList();
+        Map<String, Integer> doctorCountBySpeciality = analyticsService.getDoctorCountBySpeciality(doctorListDTOS);
+        return ResponseEntity.ok().body(doctorCountBySpeciality);
+    }
+
+    @GetMapping("/patient-count-by-gender")
+    public ResponseEntity<Map<String, Long>> getPatientCountByGender() {
+        Map<String, Long> patientCountByGender = PatientService.getPatientCountByGender();
+        return ResponseEntity.ok(patientCountByGender);
+    }
+
+    @GetMapping("/patient-count-by-age-group")
+    public ResponseEntity<Map<String, Long>> getPatientCountByAgeGroup() {
+        Map<String, Long> patientCountByAgeGroup = PatientService.getPatientCountByAgeGroup();
+        return ResponseEntity.ok(patientCountByAgeGroup);
+    }
+
+
+    @GetMapping("/appointment-count-by-day")
+    public ResponseEntity<Map<String, Integer>> getAppointmentCountByDay() {
+        Map<String, Integer> appointmentCountByDay = analyticsService.getAppointmentCountByDay();
+        return ResponseEntity.ok(appointmentCountByDay);
+    }
+
+    @GetMapping("/patient-count-by-appointment-speciality")
+    public ResponseEntity<Map<String, Long>> getPatientCountByAppointmentSpeciality() {
+        Map<String, Long> patientCountByAppointmentSpeciality = analyticsService.getPatientCountByAppointmentSpeciality();
+        return ResponseEntity.ok(patientCountByAppointmentSpeciality);
+    }
+
 }

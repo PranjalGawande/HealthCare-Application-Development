@@ -33,4 +33,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     @Modifying
     @Query("UPDATE Doctor d SET d.tokenNo =:tokenNo WHERE d.doctorId =:doctorId")
     void updateDoctorAppointmentNumber(@Param("doctorId") Integer doctorId, @Param("tokenNo")Integer tokenNo);
+
+    @Query("SELECT COUNT(d) FROM Doctor d JOIN d.login l WHERE l.status = true")
+    long countActiveDoctors();
 }

@@ -25,4 +25,7 @@ public interface ReceptionistRepository extends JpaRepository<Receptionist, Inte
     @Modifying
     @Query("UPDATE Receptionist r SET r.mobileNo= :mobileNo WHERE r.login.email= :email")
     void updateReceptionist(@Param("mobileNo") String mobileNo, @Param("email") String email);
+
+    @Query("SELECT COUNT(r) FROM Receptionist r JOIN r.login l WHERE l.status = true")
+    long countActiveReceptionists();
 }

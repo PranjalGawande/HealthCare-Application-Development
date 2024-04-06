@@ -19,6 +19,7 @@ public class AppointmentDTO {
     private LocalDate date;
     private LocalTime time;
     private String reasonForVisit;
+    private String status;
 
     public AppointmentDTO(Appointment appointment) {
         this.tokenNo = appointment.getTokenNo();
@@ -26,4 +27,5 @@ public class AppointmentDTO {
         this.time = appointment.getTime();
         this.reasonForVisit = appointment.getReasonForVisit();
     }
+
 }
