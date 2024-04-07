@@ -5,17 +5,24 @@ import com.example.HAD.Backend.dto.ExtraDTO;
 import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.MedicalRecordsDTO;
 import com.example.HAD.Backend.service.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static java.util.UUID.randomUUID;
 
 @RestController
 @CrossOrigin("http://localhost:9191")
@@ -25,9 +32,6 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
-
-    @Autowired
-    private PatientService patientService;
 
     @Autowired
     private MedicalRecordsService medicalRecordsService;
@@ -40,6 +44,12 @@ public class DoctorController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private PatientService patientService;
+
+    @Autowired
+    private AbdmSessionService abdmSessionService;
 
     @PostMapping("/doctorDetails")
     @PreAuthorize("hasAnyAuthority('doctor:post')")
@@ -114,8 +124,6 @@ public class DoctorController {
         Optional<Appointment> appointmentValue = appointmentService.getAppointmentBytokenNo(doctor.getDoctorId(), tokenNo);
         Appointment appointment = appointmentValue.orElseThrow(()-> new RuntimeException("Appointment with given Id cannot be found"));
 
-        Patient patient = patientService.getPatientById(appointment.getPatient().getPatientId());
-
         boolean isRequestNotNull = true;
         Field[] fields = MedicalRecords.class.getDeclaredFields();
 
@@ -137,26 +145,7 @@ public class DoctorController {
         }
 
         if (isRequestNotNull) {
-            MedicalRecords medicalRecords = new MedicalRecords();
-            medicalRecords.setAppointment(appointment);
-
-            List<Prescription> prescriptions = new ArrayList<>();
-            for (Prescription prescriptionData : request.getPrescriptions()) {
-                Prescription prescription = new Prescription();
-                prescription.setMedicalRecord(medicalRecords);
-                prescription.setMedicine(prescriptionData.getMedicine());
-                prescription.setDosage(prescriptionData.getDosage());
-                prescription.setFrequency(prescriptionData.getFrequency());
-                prescription.setDuration(prescriptionData.getDuration());
-                prescriptions.add(prescription);
-            }
-            medicalRecords.setPrescriptions(prescriptions);
-
-            medicalRecords.setPulse(request.getPulse());
-            medicalRecords.setBloodPressure(request.getBloodPressure());
-            medicalRecords.setOxygenLevel(request.getOxygenLevel());
-            medicalRecords.setSymptoms(request.getSymptoms());
-            medicalRecords.setDiagnosis(request.getDiagnosis());
+            MedicalRecords medicalRecords = getMedicalRecords(request, appointment);
 
             appointmentService.updateAppointment(appointment.getAppointmentId(), "done");
             medicalRecordsService.addPatientConsultation(medicalRecords);
@@ -165,6 +154,30 @@ public class DoctorController {
             appointmentService.updateAppointment(appointment.getAppointmentId(), "absent");
             return ResponseEntity.ok().body("Patient was absent");
         }
+    }
+
+    private static MedicalRecords getMedicalRecords(MedicalRecords request, Appointment appointment) {
+        MedicalRecords medicalRecords = new MedicalRecords();
+        medicalRecords.setAppointment(appointment);
+
+        List<Prescription> prescriptions = new ArrayList<>();
+        for (Prescription prescriptionData : request.getPrescriptions()) {
+            Prescription prescription = new Prescription();
+            prescription.setMedicalRecord(medicalRecords);
+            prescription.setMedicine(prescriptionData.getMedicine());
+            prescription.setDosage(prescriptionData.getDosage());
+            prescription.setFrequency(prescriptionData.getFrequency());
+            prescription.setDuration(prescriptionData.getDuration());
+            prescriptions.add(prescription);
+        }
+        medicalRecords.setPrescriptions(prescriptions);
+
+        medicalRecords.setPulse(request.getPulse());
+        medicalRecords.setBloodPressure(request.getBloodPressure());
+        medicalRecords.setOxygenLevel(request.getOxygenLevel());
+        medicalRecords.setSymptoms(request.getSymptoms());
+        medicalRecords.setDiagnosis(request.getDiagnosis());
+        return medicalRecords;
     }
 
     @PostMapping("/updateDoctor")
@@ -219,5 +232,67 @@ public class DoctorController {
         }
 
         return ResponseEntity.ok("Password changed Successfully");
+    }
+
+    @PostMapping("/pushCareContext")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> addCareContext(@RequestBody ExtraDTO extraDTO) throws Exception {
+        // Retrieve patient details and authentication token
+        Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
+        String authToken = abdmSessionService.getToken();
+        if (authToken == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        // Generate UUID for requestId
+        String requestId = UUID.randomUUID().toString();
+
+        // Get current timestamp in ISO format
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        // Construct the JSON request
+        JSONObject request = new JSONObject();
+        request.put("requestId", requestId);
+        request.put("timestamp", timestamp);
+
+        // Construct the link object
+        JSONObject link = new JSONObject();
+        link.put("accessToken", patient.getAccessToken());
+
+        JSONObject patientJson = new JSONObject();
+        patientJson.put("referenceNumber", patient.getPatientId());
+        patientJson.put("display", patient.getName());
+
+        JSONArray careContexts = new JSONArray();
+
+        List<Appointment> appointments = appointmentService.getAppointmentList(patient.getPatientId());
+
+        for (Appointment appointment : appointments) {
+            JSONObject careContext = new JSONObject();
+            careContext.put("referenceNumber", appointment.getAppointmentId());
+            careContext.put("display", "Appointment for " + appointment.getReasonForVisit());
+            careContexts.put(careContext);
+        }
+
+        patientJson.put("careContexts", careContexts);
+        link.put("patient", patientJson);
+        request.put("link", link);
+
+        // Prepare headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authToken);
+        headers.set("X-CM-ID", "sbx");
+
+        // Send request to ABDM
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
+        ResponseEntity<String> response = restTemplate.exchange("https://dev.abdm.gov.in/gateway/v0.5/links/link/add-contexts", HttpMethod.POST, entity, String.class);
+
+        // Print the response (for debugging purposes)
+        System.out.println(response);
+
+        // Return the response
+        return ResponseEntity.ok().body("Successfully pushed care context details to PHR App");
     }
 }

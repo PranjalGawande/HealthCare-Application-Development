@@ -1,5 +1,6 @@
 package com.example.HAD.Backend.controller;
 
+import com.example.HAD.Backend.dto.DoctorDTO;
 import com.example.HAD.Backend.dto.ExtraDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.entities.*;
@@ -388,8 +389,11 @@ public class ReceptionistController {
 
     @GetMapping("/resetAppointment")
     @PreAuthorize("hasAuthority('receptionist:get')")
-    public ResponseEntity<String> resetAppoinment(@RequestBody ExtraDTO extraDTO) {
-        doctorService.updateDoctorAppointment(extraDTO.getDoctorId(), 1);
+    public ResponseEntity<String> resetAppointment() {
+        List<DoctorListDTO> doctors = doctorService.getDoctorList();
+        for (DoctorListDTO doctorListDTO : doctors) {
+            doctorService.updateDoctorAppointment(doctorListDTO.getDoctorId(), 1);
+        }
         return ResponseEntity.ok().body("Successfully reset the Token Number for given Doctor.");
     }
 }

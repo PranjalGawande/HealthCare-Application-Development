@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @AllArgsConstructor
@@ -30,7 +30,7 @@ public class Patient {
     private String mobileNo;
 
     @Column(nullable = false)
-    private Calendar dob;
+    private LocalDate dob;
 
     @Column(nullable = false)
     private String gender;
@@ -43,6 +43,9 @@ public class Patient {
 
     @Column
     private String abhaId;
+
+    @Column(name = "access_token", columnDefinition = "VARCHAR(800)")
+    private String accessToken;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")

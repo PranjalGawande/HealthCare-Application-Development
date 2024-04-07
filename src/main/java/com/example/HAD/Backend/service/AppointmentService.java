@@ -5,6 +5,7 @@ import com.example.HAD.Backend.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,5 +27,9 @@ public class AppointmentService {
 
     public Optional<Appointment> getAppointmentBytokenNo(Integer doctorId, Integer tokenNo) {
         return appointmentRepository.getAppointmentByToken(doctorId, tokenNo, "pending");
+    }
+
+    public List<Appointment> getAppointmentList(Integer patientId) {
+        return appointmentRepository.findAppointmentListByPatientAbhaId(patientId);
     }
 }

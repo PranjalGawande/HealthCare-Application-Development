@@ -24,6 +24,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     @Query("SELECT a FROM Appointment a WHERE a.doctor.doctorId =:doctorId AND a.tokenNo =:tokenNo AND a.status =:status")
     Optional<Appointment> getAppointmentByToken(@Param("doctorId") Integer doctorId,@Param("tokenNo") Integer tokenNo,@Param("status") String status);
 
+    @Query("SELECT a FROM Appointment a WHERE a.appointmentId IN " +
+            "(SELECT mr.appointment.appointmentId FROM MedicalRecords mr WHERE mr.appointment.patient.patientId=:patientId)")
+    List<Appointment> findAppointmentListByPatientAbhaId(@Param("patientId") Integer patientId);
+
     @Query("SELECT COUNT(a) FROM Appointment a WHERE a.doctor.doctorId = :doctorId")
     long countByDoctorId(@Param("doctorId") Integer doctorId);
     @Override

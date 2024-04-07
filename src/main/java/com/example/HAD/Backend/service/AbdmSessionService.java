@@ -29,7 +29,7 @@ public class AbdmSessionService {
     @Value("${gateway.clientSecret}")
     private String clientSecret;
 
-    @Value("${callback.url}")
+    @Value("https://webhook.site/499a8d51-9091-4c25-bfc3-d50be040ef0d")
     private String callbackUrl;
 
     private static final String PUBLIC_KEY_URL = "https://healthidsbx.abdm.gov.in/api/v2/auth/cert";

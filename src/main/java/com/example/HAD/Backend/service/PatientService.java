@@ -11,9 +11,6 @@ import java.util.Map;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class PatientService {
@@ -58,14 +55,9 @@ public class PatientService {
         return patientCountByAgeGroup;
     }
 
-    private int calculateAge(Calendar dateOfBirth) {
+    private int calculateAge(LocalDate dateOfBirth) {
         LocalDate currentDate = LocalDate.now();
-        LocalDate birthDate = LocalDate.of(
-                dateOfBirth.get(Calendar.YEAR),
-                dateOfBirth.get(Calendar.MONTH) + 1, // Calendar.MONTH is zero-based
-                dateOfBirth.get(Calendar.DAY_OF_MONTH)
-        );
-        return Period.between(birthDate, currentDate).getYears();
+        return Period.between(dateOfBirth, currentDate).getYears();
     }
 
     public Map<String, Long> getPatientCountByGender() {

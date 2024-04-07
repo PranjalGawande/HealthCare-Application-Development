@@ -22,6 +22,7 @@ public class MedicalRecordsDTO {
     private Integer doctorId;
     private Integer patientId;
     private String diagnosis;
+    private Boolean pushCareContext;
     private List<Prescription> prescriptions;
 
     public MedicalRecordsDTO(MedicalRecords medicalRecords) {

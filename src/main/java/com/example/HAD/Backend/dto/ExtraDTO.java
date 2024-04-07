@@ -25,7 +25,7 @@ public class ExtraDTO {
     String reasonForVisit;
     String status;
 
-    //To reset Doctor Appointment Id
+    //To reset Doctor Appointment ID
     Integer doctorId;
 
     //To change Password
