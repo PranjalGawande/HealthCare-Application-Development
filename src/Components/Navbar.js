@@ -23,6 +23,18 @@ export default function Navbar() {
     }
   };
 
+  const handleAnalytics = () => {
+    const role = localStorage.getItem("role");
+    if (role === "ADMIN") {
+      navigate("/admin/analytics");
+    }
+    // } else if (role === "DOCTOR") {
+    //   navigate("/doctor");
+    // } else if (role === "Receptionist") {
+    //   navigate("/receptionist");
+    // }
+  };
+
   let DetailsResponse;
   const handleViewDetails = async () => {
     try {
@@ -88,6 +100,17 @@ export default function Navbar() {
             onClick={handleHome}
           >
             HOME
+          </button>
+        )}
+
+
+        {token && (
+          <button
+            type="button"
+            className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white ml-4"
+            onClick={handleAnalytics}
+          >
+            ANALYTICS
           </button>
         )}
 
