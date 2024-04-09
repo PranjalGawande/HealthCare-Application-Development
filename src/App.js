@@ -117,6 +117,7 @@ function App() {
           <Route path="/receptionist/abha-verification" element={<AbhaIdVerification />} />
           <Route path="/receptionist/abha-otp-verification" element={<AbhaIdOtpVerification />} />
           <Route path="/receptionist/add-appointment" element={<AddAppointment />} />
+          <Route path="/admin/analytics" element={<Analytics />} />
 
 
         </Routes>
