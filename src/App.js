@@ -40,6 +40,9 @@ import { toast, Toaster } from "react-hot-toast";
 // import { AddPatientDetails } from "./Components/AddPatientDetails";
 import { Analytics } from "./Components/Admin/Analytics";
 import ReceptionistDashboard from "./Components/Receptionist/ReceptionistDashboard";
+import { ExistingPatientAbhaSearch } from "./Components/Receptionist/ExistingPatientAbhaSearch";
+import { ExistingPatientDetails } from "./Components/Receptionist/ExistingPatientDetails";
+
 
 function App() {
 
@@ -120,6 +123,8 @@ function App() {
           <Route path="/receptionist/abha-otp-verification" element={<AbhaIdOtpVerification />} />
           <Route path="/receptionist/add-appointment" element={<AddAppointment />} />
           <Route path="/admin/analytics" element={<Analytics />} />
+          <Route path="/receptionist/existing-patient-abha-search" element={<ExistingPatientAbhaSearch />} />
+          <Route path="/receptionist/existing-patient-details" element={<ExistingPatientDetails />} />
 
 
         </Routes>

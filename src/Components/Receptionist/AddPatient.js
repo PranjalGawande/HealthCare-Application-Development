@@ -44,7 +44,7 @@ export const AbhaIdDisplayAndAdd = () => {
       console.log('Response:', response.data);
       toast.success('Patient Added Successfully');
       setTimeout(() => {
-        navigate('/receptionist');
+        navigate('/receptionist/add-appointment');
       }, 2000);
     } catch (error) {
       toast.error('Error in Adding Patient');
