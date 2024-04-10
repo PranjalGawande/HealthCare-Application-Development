@@ -5,7 +5,7 @@ import Navbar from "./Components/Navbar";
 import Login from "./Components/Login";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
 import DoctorDashboard from "./Components/Doctor/DoctorDashboard";
-import ReceptionistDashboard from "./Components/Receptionist/ReceptionistDashboard";
+import ReceptionistNewPatientDashboard from "./Components/Receptionist/ReceptionistNewPatientDashboard";
 import AddDoctorForm from "./Components/Admin/AddDoctorForm";
 import AddStaffForm from "./Components/Admin/AddReceptionistForm";
 import ViewDoctors from "./Components/Admin/ViewDoctors";
@@ -39,6 +39,7 @@ import { HealthIdByAdhaar } from "./Components/Receptionist/HealthIdByAdhaar";
 import { toast, Toaster } from "react-hot-toast";
 // import { AddPatientDetails } from "./Components/AddPatientDetails";
 import { Analytics } from "./Components/Admin/Analytics";
+import ReceptionistDashboard from "./Components/Receptionist/ReceptionistDashboard";
 
 function App() {
 
@@ -98,6 +99,7 @@ function App() {
             element={<ViewAppointments />}
           />
           <Route path="/doctor" element={<DoctorDashboard />} />
+          <Route path="/receptionist/new-patient" element={<ReceptionistNewPatientDashboard />} />
           <Route path="/receptionist" element={<ReceptionistDashboard />} />
           <Route path="/admin/view-doctor-info" element={<ViewDoctors />} />
           <Route path="/admin/view-receptionist-info" element={<ViewStaff />} />
