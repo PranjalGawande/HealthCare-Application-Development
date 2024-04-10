@@ -3,10 +3,11 @@ import "./style.css";
 import { useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import axios from "axios";
+import { useState } from "react";
 
 export default function Navbar() {
   let navigate = useNavigate();
-
+  const role = localStorage.getItem("role");
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
@@ -28,11 +29,6 @@ export default function Navbar() {
     if (role === "ADMIN") {
       navigate("/admin/analytics");
     }
-    // } else if (role === "DOCTOR") {
-    //   navigate("/doctor");
-    // } else if (role === "Receptionist") {
-    //   navigate("/receptionist");
-    // }
   };
 
   let DetailsResponse;
@@ -89,7 +85,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="navbar navbar-expand-lg text-white bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-800 border-bottom border-body"
+      className="container-fluid navbar navbar-expand-lg text-white bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-800 border-bottom border-body"
       data-bs-theme="dark"
     >
       <div className="container-fluid">
@@ -104,7 +100,7 @@ export default function Navbar() {
         )}
 
 
-        {token && (
+        {token && role === "ADMIN" && (
           <button
             type="button"
             className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white ml-4"
@@ -143,3 +139,10 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
+
+
+
+
+
