@@ -5,6 +5,8 @@ import TextField from "@mui/material/TextField";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import patientImage from '../../assets/PatientPage.png';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 export const AddAppointment = () => {
   // const [time, setTime] = useState("");
@@ -18,7 +20,12 @@ export const AddAppointment = () => {
     // Fetch doctors list from API
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("http://localhost:9191/receptionist/doctorList");
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:9191/receptionist/doctorList", {
+          headers: { Authorization: `Bearer ${token}` }
+        },
+        );
+        console.log('Response:', response.data);
         setDoctors(response.data);
       } catch (error) {
         console.error('Error fetching doctors:', error);
@@ -67,7 +74,7 @@ export const AddAppointment = () => {
           <TextField
             id="abhaId"
             label="Abha ID"
-            value={reason}
+            value={abhaId}
             style={{ marginBottom: "2rem", width: "50%" }}
             onChange={(e) => setAbhaId(e.target.value)}
             required
@@ -93,6 +100,53 @@ export const AddAppointment = () => {
               <MenuItem key={doctor.id} value={doctor.id}>{doctor.name}</MenuItem>
             ))}
           </Select>
+          <Popup
+            trigger={<button className="button"> Open Modal </button>}
+            modal
+            nested
+          >
+            {close => (
+              <div className="modal">
+                <button className="close" onClick={close}>
+                  &times;
+                </button>
+                <div className="header"> Modal Title </div>
+                <div className="content">
+                  {' '}
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+                  Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+                  delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+                  <br />
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+                  commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+                  explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+                </div>
+                <div className="actions">
+                  <Popup
+                    trigger={<button className="button"> Trigger </button>}
+                    position="top center"
+                    nested
+                  >
+                    <span>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
+                      magni omnis delectus nemo, maxime molestiae dolorem numquam
+                      mollitia, voluptate ea, accusamus excepturi deleniti ratione
+                      sapiente! Laudantium, aperiam doloribus. Odit, aut.
+                    </span>
+                  </Popup>
+                  <button
+                    className="button"
+                    onClick={() => {
+                      console.log('modal closed ');
+                      close();
+                    }}
+                  >
+                    close modal
+                  </button>
+                </div>
+              </div>
+            )}
+          </Popup>
           <button
             type="submit"
             className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
