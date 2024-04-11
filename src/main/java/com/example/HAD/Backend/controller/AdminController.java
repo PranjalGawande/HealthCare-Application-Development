@@ -109,6 +109,9 @@ public class AdminController {
     @PreAuthorize("hasAuthority('admin:post')")
     public ResponseEntity<String> deactivateStaff(@RequestBody ExtraDTO extraDTO) {
         Login login = loginService.getLoginByEmail(extraDTO.getEmail());
+        if (login == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not found for provided email.");
+        }
         login.setStatus(false);
 
         loginService.setLogin(login);
@@ -119,6 +122,9 @@ public class AdminController {
     @PreAuthorize("hasAuthority('admin:post')")
     public ResponseEntity<String> activateStaff(@RequestBody ExtraDTO extraDTO) {
         Login login = loginService.getLoginByEmail(extraDTO.getEmail());
+        if (login == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not found for provided email.");
+        }
         login.setStatus(true);
 
         loginService.setLogin(login);

@@ -237,25 +237,20 @@ public class DoctorController {
     @PostMapping("/pushCareContext")
     @PreAuthorize("hasAuthority('doctor:post')")
     public ResponseEntity<String> addCareContext(@RequestBody ExtraDTO extraDTO) throws Exception {
-        // Retrieve patient details and authentication token
+
         Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
         String authToken = abdmSessionService.getToken();
         if (authToken == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        // Generate UUID for requestId
         String requestId = UUID.randomUUID().toString();
-
-        // Get current timestamp in ISO format
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-        // Construct the JSON request
         JSONObject request = new JSONObject();
         request.put("requestId", requestId);
         request.put("timestamp", timestamp);
 
-        // Construct the link object
         JSONObject link = new JSONObject();
         link.put("accessToken", patient.getAccessToken());
 
@@ -264,7 +259,6 @@ public class DoctorController {
         patientJson.put("display", patient.getName());
 
         JSONArray careContexts = new JSONArray();
-
         List<Appointment> appointments = appointmentService.getAppointmentList(patient.getPatientId());
 
         for (Appointment appointment : appointments) {
@@ -278,21 +272,16 @@ public class DoctorController {
         link.put("patient", patientJson);
         request.put("link", link);
 
-        // Prepare headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
         headers.set("X-CM-ID", "sbx");
 
-        // Send request to ABDM
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
         ResponseEntity<String> response = restTemplate.exchange("https://dev.abdm.gov.in/gateway/v0.5/links/link/add-contexts", HttpMethod.POST, entity, String.class);
 
-        // Print the response (for debugging purposes)
         System.out.println(response);
-
-        // Return the response
         return ResponseEntity.ok().body("Successfully pushed care context details to PHR App");
     }
 }

@@ -394,6 +394,6 @@ public class ReceptionistController {
         for (DoctorListDTO doctorListDTO : doctors) {
             doctorService.updateDoctorAppointment(doctorListDTO.getDoctorId(), 1);
         }
-        return ResponseEntity.ok().body("Successfully reset the Token Number for given Doctor.");
+        return ResponseEntity.ok().body("Successfully reset the Token Number for all Doctor.");
     }
 }

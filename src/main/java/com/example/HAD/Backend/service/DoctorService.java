@@ -35,6 +35,6 @@ public class DoctorService {
     }
 
     public void updateDoctorAppointment(Integer doctorId, Integer tokenNo) {
-        doctorRepository.updateDoctorAppointmentNumber(doctorId, tokenNo);
+        doctorRepository.updateDoctorAppointmentNumber(doctorId, tokenNo, 0);
     }
 }

@@ -31,8 +31,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Doctor d SET d.tokenNo =:tokenNo WHERE d.doctorId =:doctorId")
-    void updateDoctorAppointmentNumber(@Param("doctorId") Integer doctorId, @Param("tokenNo")Integer tokenNo);
+    @Query("UPDATE Doctor d SET d.tokenNo =:tokenNo WHERE d.doctorId =:doctorId AND d.tokenNo !=:zeroTokenNo")
+    void updateDoctorAppointmentNumber(@Param("doctorId") Integer doctorId, @Param("tokenNo")Integer tokenNo, @Param("zeroTokenNo") Integer zeroTokenNo);
 
     @Query("SELECT COUNT(d) FROM Doctor d JOIN d.login l WHERE l.status = true")
     long countActiveDoctors();

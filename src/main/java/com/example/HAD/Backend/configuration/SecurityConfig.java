@@ -32,11 +32,13 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("/login/**")
+                        req -> req.requestMatchers("/login/**","/v0.5/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
-                ).userDetailsService(loginDetailService)
+                )
+                .addFilterBefore(new CustomFilter(), UsernamePasswordAuthenticationFilter.class)
+                .userDetailsService(loginDetailService)
                 .sessionManagement(
                         session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
