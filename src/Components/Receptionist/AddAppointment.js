@@ -46,7 +46,7 @@ export const AddAppointment = () => {
         time: currentTime,
         reasonForVisit: reason,
         status: "pending",
-        abhaId: "",
+        abhaId: abhaId,
         doctorId: selectedDoctor
       };
       axios.defaults.withCredentials = true;
@@ -100,8 +100,10 @@ export const AddAppointment = () => {
               <MenuItem key={doctor.id} value={doctor.id}>{doctor.name}</MenuItem>
             ))}
           </Select>
+
+
           <Popup
-            trigger={<button className="button"> Open Modal </button>}
+            trigger={<button className="button">Select Doctor</button>}
             modal
             nested
           >
@@ -110,43 +112,26 @@ export const AddAppointment = () => {
                 <button className="close" onClick={close}>
                   &times;
                 </button>
-                <div className="header"> Modal Title </div>
+                <div className="header">Doctor List</div>
                 <div className="content">
-                  {' '}
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-                  Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-                  delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-                  <br />
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-                  commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-                  explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-                </div>
-                <div className="actions">
-                  <Popup
-                    trigger={<button className="button"> Trigger </button>}
-                    position="top center"
-                    nested
-                  >
-                    <span>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-                      magni omnis delectus nemo, maxime molestiae dolorem numquam
-                      mollitia, voluptate ea, accusamus excepturi deleniti ratione
-                      sapiente! Laudantium, aperiam doloribus. Odit, aut.
-                    </span>
-                  </Popup>
-                  <button
-                    className="button"
-                    onClick={() => {
-                      console.log('modal closed ');
-                      close();
-                    }}
-                  >
-                    close modal
-                  </button>
+                  {doctors.map(doctor => (
+                    <div key={doctor.id} className="doctor-details">
+                      <h3>{doctor.name}</h3>
+                      <p>{doctor.specialization}</p>
+                      <button onClick={() => {
+                        setSelectedDoctor(doctor.id);
+                        console.log('Selected doctor:', doctor);
+                        close();
+                      }}>Select Doctor</button>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
           </Popup>
+
+
+
           <button
             type="submit"
             className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
