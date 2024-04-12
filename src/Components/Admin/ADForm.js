@@ -290,6 +290,8 @@ export const ADForm = ({ email }) => {
     dob: "",
     mobileNo: "",
     email: email,
+    doctorLicenseNo: "",
+    tokenMax: "",
   });
 
   const handleTextFieldChange = (event) => {
@@ -373,7 +375,8 @@ export const ADForm = ({ email }) => {
         flexDirection: "column",
         justifyContent: "space-around",
         alignItems: "center",
-        paddingTop: "2rem",
+        marginTop: "-1rem",
+        paddingBottom: "1rem",
       }}
     >
       <div className="flex">
@@ -521,12 +524,40 @@ export const ADForm = ({ email }) => {
             <MenuItem value="Ophthalmologist">Ophthalmologist</MenuItem>
             <MenuItem value="Dentist">Dentist</MenuItem>
           </Select>
+
+          
         </FormControl>
+
+        <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "2rem",
+            }}
+          >
+            <TextField
+              id="doctorLicenseNo"
+              label="License Number"
+              variant="outlined"
+              size="small"
+              style={{ marginBottom: "2rem", width: "50%" }}
+              onChange={handleTextFieldChange}
+            />
+
+            <TextField
+              id="tokenMax"
+              label="Max Tokens"
+              variant="outlined"
+              size="small"
+              style={{ marginBottom: "2rem", width: "50%" }}
+              onChange={handleTextFieldChange}
+            />
+          </div>
 
         <button
           type="button"
           onClick={handleSubmit}
-          className="button w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          className="button "
           style={{
             marginBottom: "-100px",
             marginTop: "1rem",

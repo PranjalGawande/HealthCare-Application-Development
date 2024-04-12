@@ -38,7 +38,7 @@ const AddDoctorForm = () => {
         </div>
 
         <div className="flex justify-center items-center mt-20 pt-10">
-          <div className="container glass-background login-cred">
+          <div className="container glass-background login-cred doctor-details">
             {!loginSuccess && (
               <AddLoginCredDoc onSuccess={handleLoginSuccess} />
             )}

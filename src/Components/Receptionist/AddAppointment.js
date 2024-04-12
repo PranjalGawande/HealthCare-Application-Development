@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import patientImage from '../../assets/PatientPage.png';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { toast } from 'react-hot-toast';
 
 export const AddAppointment = () => {
   // const [time, setTime] = useState("");
@@ -16,6 +15,7 @@ export const AddAppointment = () => {
   const [abhaId, setAbhaId] = useState("");
   const navigate = useNavigate();
   const [modalShow, setModalShow] = React.useState(false);
+  const [selectedDoctorDetails, setSelectedDoctorDetails] = useState(null); // Store selected doctor's details
 
 
   // useEffect(() => {
@@ -36,6 +36,9 @@ export const AddAppointment = () => {
 
   // fetchDoctors();
   // }, []);
+  const handleDoctorSelect = (doctor) => {
+    setSelectedDoctorDetails(doctor); // Set selected doctor's details
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,14 +54,19 @@ export const AddAppointment = () => {
         abhaId: abhaId,
         doctorId: selectedDoctor
       };
+      console.log('Appointment Data:', appointmentData);
       axios.defaults.withCredentials = true;
       const response = await axios.post("http://localhost:9191/receptionist/addAppointment", appointmentData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log('Response:', response.data);
-      navigate('/receptionist/adhaar-otp-verification');
+      toast.success('Appointment Added Successfully');
+      setTimeout(() => {
+        navigate('/receptionist');
+      }, 2000);
     } catch (error) {
       console.error('Error:', error);
+      toast.error('Error in Adding Appointment');
     }
   };
 
@@ -69,13 +77,15 @@ export const AddAppointment = () => {
           <img src={patientImage} className="admin-image" alt='patientImage' />
           <div className="dashboard-name-patient" >ADD APPOINTMENT</div>
         </div>
-        <div className="container glass-background mt-5">
-          <label className="text-login fw-bold text-center">
-            Enter <br /> Appointment Details
+        <div className="container glass-background pt-5">
+          <label className="text-login fw-bold text-center"
+            style={{ marginTop: '-70px', marginBottom: '-20px' }}
+          >
+            Appointment Details
           </label>
           <TextField
             id="abhaId"
-            label="Abha ID"
+            label="Abha Address"
             value={abhaId}
             style={{ marginBottom: "2rem", width: "50%" }}
             onChange={(e) => setAbhaId(e.target.value)}
@@ -89,15 +99,21 @@ export const AddAppointment = () => {
             onChange={(e) => setReason(e.target.value)}
             required
           />
-          
+
+          {selectedDoctorDetails && ( // Render selected doctor's details if available
+            <div style={{ fontSize: '25px' }}>
+              <span>Selected Doctor: {selectedDoctorDetails.name}</span>
+              <p>Specialty: {selectedDoctorDetails.speciality}</p>
+              {/* Add more details as needed */}
+            </div>
+          )}
 
 
           <Button
             className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-
             style={{ marginTop: '2rem', width: "80%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             onClick={() => { setModalShow(true); fetchDoctors() }}>
-            Select Doctor
+            {selectedDoctorDetails ? 'Change Doctor' : 'Select Doctor'}
           </Button>
 
 
@@ -120,7 +136,7 @@ export const AddAppointment = () => {
                     <th>Doctor ID</th>
                     <th>Doctor Name</th>
                     <th>Specialty</th>
-                    <th>Select</th>
+                    <th className='d-flex justify-content-center'>Select</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -129,11 +145,13 @@ export const AddAppointment = () => {
                       <td>{doctor.doctorId}</td>
                       <td>{doctor.name}</td>
                       <td>{doctor.speciality}</td>
-                      <td>
+                      <td className='d-flex justify-content-center'>
                         <Button onClick={() => {
-                          setSelectedDoctor(doctor.id);
-                          setModalShow(false); // Close the modal after selecting the doctor
-                        }}>Select</Button>
+                          setSelectedDoctor(doctor.doctorId);
+                          handleDoctorSelect(doctor);
+                          setModalShow(false);
+                        }}>Select
+                        </Button>
                       </td>
                     </tr>
                   ))}
@@ -141,9 +159,6 @@ export const AddAppointment = () => {
               </table>
             </Modal.Body>
 
-            <Modal.Footer>
-              <Button onClick={() => setModalShow(false)}>Close</Button>
-            </Modal.Footer>
           </Modal>
 
 
@@ -176,7 +191,7 @@ export const AddAppointment = () => {
 
           <button
             type="submit"
-            className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2"
             style={{ marginTop: '2rem', width: "80%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             onClick={handleSubmit}>Add Appointment</button>
         </div>
