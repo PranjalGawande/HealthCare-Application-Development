@@ -71,7 +71,7 @@ export const ViewAdminDetails = () => {
           </label>
           {adminDetails && (
             <div className="flex flex-col text-2xl">
-              <p className="mb-2 font-bold">
+              {/* <p className="mb-2 font-bold">
                 Name:<span className="font-normal"> {adminDetails.name}</span>
               </p>
               <p className="mb-2 font-bold">
@@ -90,7 +90,52 @@ export const ViewAdminDetails = () => {
               </p>
               <p className="mb-2 font-bold">
                 Email: <span className="font-normal">{adminDetails.email}</span>
-              </p>
+              </p> */}
+
+
+              <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Name:
+                  </span>
+                  <span className="flex justify-start">
+                    {adminDetails.name}
+                  </span>
+                </div>
+                
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    DOB:
+                  </span>
+                  <span className="flex justify-start">
+                  {new Date(adminDetails.dob).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Mobile:
+                  </span>
+                  <span className="flex justify-start">
+                  {adminDetails.mobileNo}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Gender:
+                  </span>
+                  <span className="flex justify-start">
+                  {adminDetails.gender}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Email:
+                  </span>
+                  <span className="flex justify-start">
+                  {adminDetails.email}
+                  </span>
+                </div>
+
+
               <br />
               <div className="mt-3">
                 <button

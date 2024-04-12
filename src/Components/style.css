@@ -75,6 +75,20 @@
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+.doctor-details{
+  height: 800px;
+  width: 600px;
+  background: linear-gradient(135deg, rgba(232, 246, 246, 0.977), rgba(171, 223, 227, 0.834));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 .admin-image {
   height: 900px;

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/loginPage.jpg";
 import toast from "react-hot-toast";
@@ -17,7 +17,6 @@ const LoginForm = () => {
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,8 +99,6 @@ const LoginForm = () => {
     setRole(e.target.value);
   };
 
-  
-
   return (
     <div className="container-fluid main-background">
       <div className="container background d-flex align-items-center">
@@ -113,7 +110,7 @@ const LoginForm = () => {
             LOGIN DETAILS
           </label>
           <div className="login-form mx-5">
-            <form className="" onSubmit={handleSubmit}>
+            {/* <form className="" onSubmit={handleSubmit}>
               <div>
                 <TextField
                   id="email"
@@ -168,11 +165,99 @@ const LoginForm = () => {
                   </div>
                 ) : <button
                   type="submit"
-                  className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                  style={{ marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                  className="button"
+                  // className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                  // style={{ marginTop: '2rem', width: "100%", height: '20%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                  style={{ height: "fit-content" }}
+
                 >
                   Login
                 </button>}
+              </div>
+            </form> */}
+
+            <form className="" onSubmit={handleSubmit}>
+              <div>
+                <TextField
+                  id="email"
+                  label="Email"
+                  variant="outlined"
+                  size="medium"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{ marginBottom: "2rem", width: "100%" }}
+                />
+                <TextField
+                  id="password"
+                  label="Password"
+                  variant="outlined"
+                  size="medium"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ marginBottom: "2rem", width: "100%" }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          onMouseDown={(e) => e.preventDefault()}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <TextField
+                  id="role"
+                  select
+                  label="Role"
+                  variant="outlined"
+                  size="medium"
+                  value={role}
+                  onChange={handleRoleChange}
+                  style={{ marginBottom: "2rem", width: "100%" }}
+                >
+                  <MenuItem value="ADMIN">Admin</MenuItem>
+                  <MenuItem value="Receptionist">Receptionist</MenuItem>
+                  <MenuItem value="DOCTOR">Doctor</MenuItem>
+                </TextField>
+              </div>
+              <br></br>
+              <div className="flex justify-center">
+                {" "}
+                {/* Add flex properties to center the button */}
+                {loading ? (
+                  <div
+                    style={{
+                      height: "20%",
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "1rem",
+                    }}
+                  >
+                    <div class="loader"></div>
+                  </div>
+                ) : (
+                  <button
+                    type="submit"
+                    className="button"
+                    style={{
+                      height: "fit-content",
+                      padding: "20px",
+                      color: "white", // Set default font color to white
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.color = "black";
+                    }} // Change font color to black on hover
+                    onMouseLeave={(e) => {
+                      e.target.style.color = "white";
+                    }} // Change font color back to white when not hovered
+                  >
+                    Login
+                  </button>
+                )}
               </div>
             </form>
           </div>

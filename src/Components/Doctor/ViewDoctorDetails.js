@@ -112,20 +112,91 @@ export const ViewDoctorDetails = () => {
           <img src={doctorImage} className="admin-image" alt="doctorImage"/>
           <div className="dashboard-name-doctor" style={{ fontSize: determineFontSize() }}>{doctorDetails.name}</div>
         </div>
-        <div className="container glass-background mt-5">
+        <div className="doctor-details container glass-background mt-5">
           <label className="text-login profile-details fw-bold text-center mt-5">
             Profile Details
           </label>
           {doctorDetails && (
             <div className="flex flex-col text-2xl">
-              <p className="mb-2 font-bold">Name:<span className="font-normal"> {doctorDetails.name}</span></p>
+              {/* <p className="mb-2 font-bold">Name:<span className="font-normal"> {doctorDetails.name}</span></p>
               <p className="mb-2 font-bold">Date of Birth: <span className="font-normal">{new Date(doctorDetails.dob).toLocaleDateString()}</span></p>
               <p className="mb-2 font-bold">Mobile No: <span className="font-normal">{doctorDetails.mobileNo}</span></p>
               <p className="mb-2 font-bold">Gender: <span className="font-normal">{doctorDetails.gender}</span></p>
               <p className="mb-2 font-bold">Speciality: <span className="font-normal">{doctorDetails.speciality}</span></p>
               <p className="mb-2 font-bold">Experience: <span className="font-normal">{doctorDetails.experience}</span></p>
               <p className="mb-2 font-bold">Email: <span className="font-normal">{doctorDetails.email}</span></p>
-              <p className="mb-2 font-bold">Status: <span className="font-normal">{doctorDetails.status ? 'Active' : 'Inactive'}</span></p>
+              <p className="mb-2 font-bold">Status: <span className="font-normal">{doctorDetails.status ? 'Active' : 'Inactive'}</span></p> */}
+
+
+
+              <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Name:
+                  </span>
+                  <span className="flex justify-start">
+                    {doctorDetails.name}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    DOB:
+                  </span>
+                  <span className="flex justify-start">
+                    {doctorDetails.dob}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Mobile:
+                  </span>
+                  <span className="flex justify-start">
+                    {doctorDetails.mobileNo}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Gender:
+                  </span>
+                  <span className="flex justify-start">
+                    {doctorDetails.gender}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Speciality:
+                  </span>
+                  <span className="flex justify-start">
+                    {doctorDetails.speciality}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Experience:
+                  </span>
+                  <span className="flex justify-start">
+                    {doctorDetails.experience}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Email:
+                  </span>
+                  <span className="flex justify-start">
+                    {doctorDetails.email}
+                  </span>
+                </div>
+                <div className="flex mb-2 justify-start">
+                  <span className="w-32 font-semibold flex justify-start">
+                    Status:
+                  </span>
+                  <span
+                    className={`flex justify-start ${
+                      doctorDetails.status ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {doctorDetails.status ? "Active" : "Inactive"}
+                  </span>
+                </div>
               <br />
               <div className="mt-n1 mb-n5">
                 <button
