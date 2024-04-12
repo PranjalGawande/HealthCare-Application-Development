@@ -59,7 +59,7 @@ export const AbhaIdDisplayAndAdd = () => {
       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
         <div className="image-container">
           <img src={patientImage} className="admin-image" alt='patientImage' />
-          <div className="dashboard-name-patient" >ABHA CREATION</div>
+          <div className="dashboard-name-patient" >ADD PATIENT</div>
         </div>
         <div className="container glass-background mt-5">
           <label className="text-login fw-bold text-center" style={{ marginTop: '1px' }}>

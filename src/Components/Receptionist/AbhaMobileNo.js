@@ -27,7 +27,7 @@ export const AbhaMobileNo = () => {
       console.log('Response:', response.data);
       console.log('Mobile Linked:', response.data.mobileLinked);
       if (response.data.mobileLinked === true) {
-        navigate('/receptionist/abha-verification');
+        navigate('/receptionist/health-id-adhaar');
       } else {
         navigate('/receptionist/abha-new-mobile-no-verification');
       }

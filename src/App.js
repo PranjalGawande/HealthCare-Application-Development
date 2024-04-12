@@ -37,11 +37,13 @@ import { NewAbhaNoOtpVerification } from "./Components/Receptionist/NewAbhaNoOtp
 import { AddAppointment } from "./Components/Receptionist/AddAppointment";
 import { HealthIdByAdhaar } from "./Components/Receptionist/HealthIdByAdhaar";
 import { toast, Toaster } from "react-hot-toast";
-// import { AddPatientDetails } from "./Components/AddPatientDetails";
+import { AddPatientDetails } from "./Components/AddPatientDetails";
 import { Analytics } from "./Components/Admin/Analytics";
 import ReceptionistDashboard from "./Components/Receptionist/ReceptionistDashboard";
 import { ExistingPatientAbhaSearch } from "./Components/Receptionist/ExistingPatientAbhaSearch";
 import { ExistingPatientDetails } from "./Components/Receptionist/ExistingPatientDetails";
+import { AbdmOtpCredentials } from "./Components/Receptionist/AbdmOtpCredentials";
+import { SuggestAbhaAddress } from "./Components/Receptionist/SuggestAbhaAddress";
 
 
 function App() {
@@ -118,13 +120,15 @@ function App() {
           <Route path="/receptionist/abha-new-mobile-no-verification" element={<NewAbhaNoOtpVerification />} />
           <Route path="/receptionist/health-id-adhaar" element={<HealthIdByAdhaar />} />
           <Route path="/receptionist/abha-id-display-and-add" element={<AbhaIdDisplayAndAdd />} />
-          {/* <Route path="/receptionist/add-patient-details" element={<AddPatientDetails />} /> */}
+          <Route path="/receptionist/add-patient-details" element={<AddPatientDetails />} />
           <Route path="/receptionist/abha-verification" element={<AbhaIdVerification />} />
           <Route path="/receptionist/abha-otp-verification" element={<AbhaIdOtpVerification />} />
           <Route path="/receptionist/add-appointment" element={<AddAppointment />} />
           <Route path="/admin/analytics" element={<Analytics />} />
           <Route path="/receptionist/existing-patient-abha-search" element={<ExistingPatientAbhaSearch />} />
           <Route path="/receptionist/existing-patient-details" element={<ExistingPatientDetails />} />
+          <Route path="/receptionist/abdm-otp-credentials" element={<AbdmOtpCredentials />} />
+          <Route path="/receptionist/suggest-abha-address" element={<SuggestAbhaAddress />} />
 
 
         </Routes>

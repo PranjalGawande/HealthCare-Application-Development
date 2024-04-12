@@ -18,14 +18,14 @@ export const AbhaIdVerification = () => {
         abhaid: abhaAdd
       };
       axios.defaults.withCredentials = true;
-      const response = await axios.post("http://localhost:9191/receptionist/abha-verification",
+      const response = await axios.post("http://localhost:9191/receptionist/generateAbhaAddressVerificationOtp",
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       console.log('Response:', response.data);
-      navigate('/receptionist/abha-id-display-and-add');
+      navigate('/receptionist/abha-otp-verification');
     } catch (error) {
       console.error('Error:', error);
     } finally {
