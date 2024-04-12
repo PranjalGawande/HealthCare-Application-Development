@@ -5,8 +5,8 @@ import TextField from "@mui/material/TextField";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import patientImage from '../../assets/PatientPage.png';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export const AddAppointment = () => {
   // const [time, setTime] = useState("");
@@ -15,25 +15,27 @@ export const AddAppointment = () => {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [abhaId, setAbhaId] = useState("");
   const navigate = useNavigate();
+  const [modalShow, setModalShow] = React.useState(false);
 
-  useEffect(() => {
-    // Fetch doctors list from API
-    const fetchDoctors = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:9191/receptionist/doctorList", {
-          headers: { Authorization: `Bearer ${token}` }
-        },
-        );
-        console.log('Response:', response.data);
-        setDoctors(response.data);
-      } catch (error) {
-        console.error('Error fetching doctors:', error);
-      }
-    };
 
-    fetchDoctors();
-  }, []);
+  // useEffect(() => {
+  // Fetch doctors list from API
+  const fetchDoctors = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:9191/receptionist/doctorList", {
+        headers: { Authorization: `Bearer ${token}` }
+      },
+      );
+      console.log('Response:', response.data);
+      setDoctors(response.data);
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+    }
+  };
+
+  // fetchDoctors();
+  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,55 +89,95 @@ export const AddAppointment = () => {
             onChange={(e) => setReason(e.target.value)}
             required
           />
-          <Select
-            value={selectedDoctor}
-            onChange={(e) => setSelectedDoctor(e.target.value)}
-            displayEmpty
-            style={{ marginBottom: "2rem", width: "50%" }}
-          >
-            <MenuItem value="" disabled>
-              Select Doctor
-            </MenuItem>
-            {doctors.map((doctor) => (
-              <MenuItem key={doctor.id} value={doctor.id}>{doctor.name}</MenuItem>
-            ))}
-          </Select>
+          
 
 
-          <Popup
-            trigger={<button className="button">Select Doctor</button>}
-            modal
-            nested
+          <Button
+            className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+
+            style={{ marginTop: '2rem', width: "80%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            onClick={() => { setModalShow(true); fetchDoctors() }}>
+            Select Doctor
+          </Button>
+
+
+          <Modal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
           >
-            {close => (
-              <div className="modal">
-                <button className="close" onClick={close}>
-                  &times;
-                </button>
-                <div className="header">Doctor List</div>
-                <div className="content">
-                  {doctors.map(doctor => (
-                    <div key={doctor.id} className="doctor-details">
-                      <h3>{doctor.name}</h3>
-                      <p>{doctor.specialization}</p>
-                      <button onClick={() => {
-                        setSelectedDoctor(doctor.id);
-                        console.log('Selected doctor:', doctor);
-                        close();
-                      }}>Select Doctor</button>
-                    </div>
+            <Modal.Header closeButton>
+              <Modal.Title id="contained-modal-title-vcenter">
+                Select Doctor
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Doctor ID</th>
+                    <th>Doctor Name</th>
+                    <th>Specialty</th>
+                    <th>Select</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {doctors.map((doctor) => (
+                    <tr key={doctor.id}>
+                      <td>{doctor.doctorId}</td>
+                      <td>{doctor.name}</td>
+                      <td>{doctor.speciality}</td>
+                      <td>
+                        <Button onClick={() => {
+                          setSelectedDoctor(doctor.id);
+                          setModalShow(false); // Close the modal after selecting the doctor
+                        }}>Select</Button>
+                      </td>
+                    </tr>
                   ))}
-                </div>
-              </div>
-            )}
-          </Popup>
+                </tbody>
+              </table>
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button onClick={() => setModalShow(false)}>Close</Button>
+            </Modal.Footer>
+          </Modal>
 
 
+
+          {/* <Modal
+            // {...props}
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="contained-modal-title-vcenter">
+                Modal heading
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <h4>Centered Modal</h4>
+              <p>
+                Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+                dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+                consectetur ac, vestibulum at eros.
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick= {() => setModalShow(false)} >Close</Button>
+            </Modal.Footer>
+          </Modal> */}
 
           <button
             type="submit"
             className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-            style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            style={{ marginTop: '2rem', width: "80%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             onClick={handleSubmit}>Add Appointment</button>
         </div>
       </div>
