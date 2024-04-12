@@ -1,6 +1,5 @@
 package com.example.HAD.Backend.controller;
 
-import com.example.HAD.Backend.dto.DoctorDTO;
 import com.example.HAD.Backend.dto.ExtraDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.entities.*;
@@ -17,9 +16,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.time.LocalDate;
 
 @RestController
 @CrossOrigin("http://localhost:9191")
@@ -54,6 +53,9 @@ public class ReceptionistController {
     @Autowired
     private AbdmService abdmService;
 
+    @Autowired
+    private AbdmAbhaAddressCreationService abdmAbhaAddressCreationService;
+
     @PostMapping("/receptionistDetails")
     @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<StaffDTO> getReceptionistDetail(
@@ -78,6 +80,8 @@ public class ReceptionistController {
         return ResponseEntity.ok().body("Successfully added New Patient Record");
     }
 
+// ---------------------------------------------------
+
     @PostMapping("/generateAadhaarOtp")
     @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<String> generateAadhaarOtp(@RequestBody Map<String, String> aadhaarData, HttpSession session, HttpServletRequest request) {
@@ -90,15 +94,9 @@ public class ReceptionistController {
             // Generate a gateway session token using the unified AbdmSessionService
             String token = abdmSessionService.getToken();
 
-            // Register a callback URL and handle failure using the unified AbdmSessionService
-            boolean callbackRegistered = abdmSessionService.registerCallbackUrl(token);
-            if (!callbackRegistered) {
-                return ResponseEntity.internalServerError().body("Failed to register callback URL.");
-            }
-
             // Encrypt the Aadhaar number using the unified AbdmSessionService
-            String publicKeyStr = abdmSessionService.fetchPublicKey();
-            String encryptedAadhaar = abdmSessionService.encryptTextUsingPublicKey(aadhaarNumber, publicKeyStr);
+            String publicKeyStr = abdmSessionService.fetchPublicKeyV2();
+            String encryptedAadhaar = abdmSessionService.encryptTextUsingPublicKey(aadhaarNumber, publicKeyStr, "RSA/ECB/PKCS1Padding");
 
             // Send encrypted Aadhaar and request OTP
             Map<String, Object> result = aadhaarService.sendEncryptedAadhaar(encryptedAadhaar, token); // Use aadhaarService here
@@ -148,7 +146,7 @@ public class ReceptionistController {
             String otp = otpData.get("otp");
 
             // Encrypt the OTP using the public key
-            String encryptedOtp = abdmSessionService.encryptTextUsingPublicKey(otp, publicKeyStr);
+            String encryptedOtp = abdmSessionService.encryptTextUsingPublicKey(otp, publicKeyStr, "RSA/ECB/PKCS1Padding");
 
             // Call aadhaarService to verify encrypted OTP with txnId and token
             Map<String, Object> verificationResult = aadhaarService.verifyOtp(encryptedOtp, txnId, token); // Use aadhaarService here
@@ -169,7 +167,6 @@ public class ReceptionistController {
             return ResponseEntity.internalServerError().body("An error occurred while processing the Aadhaar OTP verify request.");
         }
     }
-
 
     @PostMapping("/setAbdmMobileNumber")
     @PreAuthorize("hasAuthority('receptionist:post')")
@@ -219,7 +216,7 @@ public class ReceptionistController {
             }
 
             // Encrypt the OTP using the public key
-            String encryptedOtp = abdmSessionService.encryptTextUsingPublicKey(otp, publicKeyStr);
+            String encryptedOtp = abdmSessionService.encryptTextUsingPublicKey(otp, publicKeyStr, "RSA/ECB/PKCS1Padding");
 
             // Call service to verify encrypted OTP with txnId and token
             Map<String, Object> verificationResult = abdmService.verifyOtp(encryptedOtp, txnId, token);
@@ -243,7 +240,7 @@ public class ReceptionistController {
 
     @PostMapping("/createHealthIdByAadhaar")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<?> verifyConsent(@RequestBody Map<String, String> consentData, HttpSession session) {
+    public ResponseEntity<?> createHealthIdByAadhaar(@RequestBody Map<String, String> consentData, HttpSession session) {
         if (consentData == null || !consentData.containsKey("consent") || !consentData.containsKey("consentVersion")) {
             return ResponseEntity.badRequest().body("Invalid request. Please include both 'consent' and 'consentVersion'.");
         }
@@ -253,7 +250,7 @@ public class ReceptionistController {
             String txnId = (String) session.getAttribute("txnId");
             String token = (String) session.getAttribute("token");
 
-            if (token == null) {
+            if (token == null || txnId == null) {
                 return ResponseEntity.badRequest().body("Session expired or invalid. Please login again.");
             }
 
@@ -262,24 +259,89 @@ public class ReceptionistController {
 
             if (response == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("AbhaID creation failed.");
-            } else {
-                // Extracting specific fields from the response
-                Map<String, Object> minimalResponse = new HashMap<>();
-                minimalResponse.put("healthIdNumber", response.get("healthIdNumber"));
-                minimalResponse.put("gender", response.get("gender"));
-                minimalResponse.put("yearOfBirth", response.get("yearOfBirth"));
-                minimalResponse.put("monthOfBirth", response.get("monthOfBirth"));
-                minimalResponse.put("dayOfBirth", response.get("dayOfBirth"));
-                minimalResponse.put("firstName", response.get("firstName"));
-                minimalResponse.put("lastName", response.get("lastName"));
-                minimalResponse.put("stateName", response.get("stateName"));
-                minimalResponse.put("districtName", response.get("districtName"));
-                minimalResponse.put("mobile", response.get("mobile"));
-                minimalResponse.put("profilePhoto", response.get("profilePhoto"));
+            }
 
-                // Update the session with the new txnId, if needed
-                String newTxnId = (String) response.get("txnId");
-                session.setAttribute("txnId", newTxnId);
+            String dashedAbhaNumber = (String) response.get("healthIdNumber");
+
+            Map<String, Object> initOtpResponse = abdmService.initTransaction("MOBILE_OTP", dashedAbhaNumber, token);
+
+            if (initOtpResponse == null || initOtpResponse.isEmpty()) {
+                return ResponseEntity.internalServerError().body("Otp generation failed. Try Again after some time.");
+            }
+
+            txnId = (String) initOtpResponse.get("transactionId");
+            session.setAttribute("txnId", txnId);
+            session.setAttribute("token", token);
+            System.out.println(txnId);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            // Log the exception with a logger (e.g., SLF4J) instead of e.printStackTrace() for production code
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("An error occurred while processing the Aadhaar OTP verify request.");
+        }
+    }
+
+    @PostMapping("/confirmAbdmCredentials")
+    @PreAuthorize("hasAuthority('receptionist:post')")
+    public ResponseEntity<?> confirmAbdmCredentials(@RequestBody Map<String, String> otpData, HttpSession session) {
+        if (otpData == null || !otpData.containsKey("otp")) {
+            return ResponseEntity.badRequest().body("Invalid request. Please include 'otp'.");
+        }
+
+        try {
+            String otp = otpData.get("otp");
+            String txnId = (String) session.getAttribute("txnId");
+            String token = (String) session.getAttribute("token");
+            String publicKeyPhr = abdmSessionService.fetchPublicKeyV1Phr();
+
+            if (token == null) {
+                return ResponseEntity.badRequest().body("Session expired or invalid. Please login again.");
+            }
+            if (publicKeyPhr == null) {
+                return ResponseEntity.badRequest().body("Internal Server Error, please try again.");
+            }
+
+            // Encrypt the OTP using the public key
+            String encryptedOtp = abdmSessionService.encryptTextUsingPublicKey(otp, publicKeyPhr, "RSA");
+
+            // Call service to verify encrypted OTP with txnId and token
+            Map<String, Object> response = abdmAbhaAddressCreationService.confirmCredential(encryptedOtp, txnId, token);
+
+            if (response == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("OTP verification failed.");
+            } else {
+                // Create a response map to only include txnId
+                String newTxnId = (String) response.get("transactionId");
+                session.setAttribute("txnId", newTxnId); // Update the session with the new txnId
+                session.setAttribute("publicKeyPhr", publicKeyPhr);
+
+                Map<String, Object> minimalResponse = new LinkedHashMap<>();
+
+                // Extracting and formatting the date of birth using LocalDate and DateTimeFormatter
+                int yearOfBirth = Integer.parseInt((String) response.get("yearOfBirth"));
+                int monthOfBirth = Integer.parseInt((String)response.get("monthOfBirth"));
+                int dayOfBirth = Integer.parseInt((String)response.get("dayOfBirth"));
+                LocalDate dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                String dob = dateOfBirth.format(formatter);
+                minimalResponse.put("DOB", dob);
+
+                // Combining first name, middle name (if not null), and last name (if not null) into a single name
+                String firstName = (String) response.get("firstName");
+                String middleName = (String) response.get("middleName");
+                String lastName = (String) response.get("lastName");
+                String fullName = firstName;
+                fullName += middleName != null ? " " + middleName : "";
+                fullName += lastName != null ? " " + lastName : "";
+                minimalResponse.put("name", fullName);
+
+                // Storing other details directly from the response
+                minimalResponse.put("mobile", response.get("mobile"));
+                minimalResponse.put("email", response.get("email"));
+                minimalResponse.put("gender", response.get("gender"));
+                minimalResponse.put("kycVerified", response.get("kycVerified"));
+                minimalResponse.put("linkedPhrAddess", response.get("linkedPhrAddess"));
+                minimalResponse.put("phrAddress", response.get("phrAddress"));
 
                 return ResponseEntity.ok().body(minimalResponse);
             }
@@ -290,7 +352,108 @@ public class ReceptionistController {
         }
     }
 
+    @PostMapping("/suggestAbhaAddress")
+    @PreAuthorize("hasAuthority('receptionist:post')")
+    public ResponseEntity<?> suggestAbhaAddress(HttpSession session) {
+        try {
+            String txnId = (String) session.getAttribute("txnId");
+            String token = (String) session.getAttribute("token");
+            List<String> abhaAddresses = abdmAbhaAddressCreationService.suggestPhrAddresses(txnId, token);
+            if (abhaAddresses != null && !abhaAddresses.isEmpty()) {
+                return ResponseEntity.ok().body(abhaAddresses);
+            } else {
+                return ResponseEntity.ok().body(Collections.emptyList());
+            }
+        } catch (Exception e) {
+            // Log the exception with a logger (e.g., SLF4J) instead of e.printStackTrace() for production code
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("An error occurred while processing the Aadhaar OTP verify request.");
+        }
+    }
 
+    @PostMapping("/createAbhaAddress")
+    @PreAuthorize("hasAuthority('receptionist:post')")
+    public ResponseEntity<?> createAbhaAddress(@RequestBody Map<String, String> abhaCreateData, HttpSession session) {
+        if (abhaCreateData == null || !abhaCreateData.containsKey("abhaAddress")) {
+            return ResponseEntity.badRequest().body("Invalid request. Please provide a Abha Address.");
+        }
+
+        try {
+            String abhaAddress = abhaCreateData.get("abhaAddress");
+            String token = (String) session.getAttribute("token");
+            String txnId = (String) session.getAttribute("txnId");
+            if (!abdmAbhaAddressCreationService.checkAbhaAddressValidity(abhaAddress, token)) {
+                return ResponseEntity.badRequest().body("Invalid Abha address. Please provide a different Abha Address.");
+            }
+            String password = abhaCreateData.get("password");
+            Map<String, Object> response = abdmAbhaAddressCreationService.createAbhaAddress((password == null ? "" : password), abhaAddress, txnId, token);
+
+            if (response == null) {
+                return ResponseEntity.internalServerError().body("Failed to add ABHA address....");
+            }
+
+            // Note: The ResponseEntity returned here should not assume success until the final callback confirms it.
+            return ResponseEntity.ok("Abha address added successfully..");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.internalServerError().body("An error occurred while adding Abha address.");
+    }
+
+    @PostMapping("/generateAbhaAddressVerificationOtp")
+    @PreAuthorize("hasAuthority('receptionist:post')")
+    public ResponseEntity<String> generateAbhaAddressVerificationOtp(@RequestBody Map<String, String> abhaAddressData) {
+        if(abhaAddressData == null || !abdmService.isValidABHAAddress(abhaAddressData.get("abhaAddress"))) {
+            return ResponseEntity.badRequest().body("Invalid or missing Abha address.");
+        }
+
+        try {
+            String abhaAddress = abhaAddressData.get("abhaAddress");
+            String token = abdmSessionService.getToken(); // Assume getToken() method exists to fetch or create a new session token.
+
+//            boolean fetchAuthResponse = abdmService.initiateAbhaVerification(abhaAddress, token);
+//            if (!fetchAuthResponse) {
+//                return ResponseEntity.internalServerError().body("Failed to send OTP...");
+//            }
+
+            boolean initOtpResponse = abdmService.generateOtpForVerification(abhaAddress, token);
+            if (!initOtpResponse) {
+                return ResponseEntity.internalServerError().body("Failed to send OTP....");
+            }
+
+            // Note: The ResponseEntity returned here should not assume success until the final callback confirms it.
+            return ResponseEntity.ok("OTP request initiated...");
+        } catch (Exception e) {
+            // Log the exception and return a generic error response
+            return ResponseEntity.internalServerError().body("An error occurred while processing the verification OTP request.");
+        }
+    }
+
+
+    @PostMapping("/verificationAbhaAddressOtp")
+    @PreAuthorize("hasAuthority('receptionist:post')")
+    public ResponseEntity<String> verificationAbhaAddressOtp(@RequestBody Map<String, String> otpData) {
+        if(otpData == null) {
+            return ResponseEntity.badRequest().body("Invalid or missing Abha address.");
+        }
+
+        try {
+            String otp = otpData.get("otp");
+            String txnId = otpData.get("txnId");
+            String token = abdmSessionService.getToken();
+            boolean result = abdmService.initiateAbhaOtpVerification(otp, token, txnId);
+            if (!result) {
+                return ResponseEntity.internalServerError().body("Incorrect OTP...");
+            }
+            return ResponseEntity.ok("Sending you the patient data...");
+        } catch (Exception e) {
+            // Log the exception and return a generic error response
+            e.printStackTrace();
+        }
+        return ResponseEntity.internalServerError().body("An error occurred while processing the verification OTP request.");
+    }
+
+// ---------------------------------------------------
 
     @GetMapping("/patientDetails")
     @PreAuthorize("hasAuthority('receptionist:get')")

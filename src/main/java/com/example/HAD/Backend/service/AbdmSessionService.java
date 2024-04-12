@@ -29,10 +29,11 @@ public class AbdmSessionService {
     @Value("${gateway.clientSecret}")
     private String clientSecret;
 
-    @Value("https://webhook.site/499a8d51-9091-4c25-bfc3-d50be040ef0d")
-    private String callbackUrl;
+    @Value("${publickey.v2}")
+    private String publicKeyUrl;
 
-    private static final String PUBLIC_KEY_URL = "https://healthidsbx.abdm.gov.in/api/v2/auth/cert";
+    @Value("${publickey.v1.phr}")
+    private String publicKeyUrlPhr;
 
     public String getToken() throws Exception {
         HttpHeaders headers = new HttpHeaders();
@@ -56,32 +57,10 @@ public class AbdmSessionService {
         return responseJson.getString("accessToken");
     }
 
-    public boolean registerCallbackUrl(String token) throws Exception {
-        WebClient webClient = WebClient.builder()
-                .baseUrl("https://dev.ndhm.gov.in")
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .build();
-
-        String requestBody = "{\"url\": \"" + callbackUrl + "\"}";
-
-        Mono<Boolean> responseMono = webClient.patch()
-                .uri("/devservice/v1/bridges")
-                .header("Content-Type", "application/json")
-                .bodyValue(requestBody)
-                .exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode().is2xxSuccessful()));
-
-        try {
-            return responseMono.block();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public String fetchPublicKey() throws IOException, InterruptedException {
+    public String fetchPublicKeyV2() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(PUBLIC_KEY_URL))
+                .uri(URI.create(publicKeyUrl))
                 .GET()
                 .build();
 
@@ -95,13 +74,30 @@ public class AbdmSessionService {
         return fetchedPublicKeyStr;
     }
 
-    public String encryptTextUsingPublicKey(String text, String publicKeyStr) throws Exception {
+    public String fetchPublicKeyV1Phr() throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(publicKeyUrlPhr))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        String fetchedPublicKeyStr = response.body()
+                .replaceAll("-----BEGIN PUBLIC KEY-----", "")
+                .replaceAll("-----END PUBLIC KEY-----", "")
+                .replaceAll("\\s+", "");
+
+        return fetchedPublicKeyStr;
+    }
+
+    public String encryptTextUsingPublicKey(String text, String publicKeyStr, String transformType) throws Exception {
         byte[] publicBytes = Base64.getDecoder().decode(publicKeyStr);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PublicKey publicKey = keyFactory.generatePublic(keySpec);
 
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        Cipher cipher = Cipher.getInstance(transformType);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
         byte[] encryptedBytes = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));

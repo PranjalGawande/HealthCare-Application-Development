@@ -76,4 +76,7 @@ public class PatientService {
         return patientCountByGender;
     }
 
+    public void updateAbhaAddress(String abhaId, String accessToken) {
+        patientRepository.updateAbhaAddress(abhaId, accessToken);
+    }
 }
