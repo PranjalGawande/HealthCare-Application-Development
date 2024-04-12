@@ -29,7 +29,7 @@ import { ViewReceptionistDetails } from "./Components/Receptionist/ViewReception
 import { ViewAppointments } from "./Components/Doctor/ViewAppointments";
 import { AdhaarAbhaIdCreation } from "./Components/Receptionist/AdhaarAbhaIdCreation";
 import { AbhaIdVerification } from "./Components/Receptionist/AbhaIdVerification";
-import { AbhaIdDisplay, AbhaIdDisplayAndAdd } from "./Components/Receptionist/AddPatient";
+// import { AbhaIdDisplay, AbhaIdDisplayAndAdd } from "./Components/Receptionist/AddPatient";
 import { AbhaIdOtpVerification } from "./Components/Receptionist/AbhaIdOtpVerification";
 import { AdhaarOtpVerification } from "./Components/Receptionist/AdhaarOtpVerification";
 import { AbhaMobileNo } from "./Components/Receptionist/AbhaMobileNo";
@@ -37,13 +37,16 @@ import { NewAbhaNoOtpVerification } from "./Components/Receptionist/NewAbhaNoOtp
 import { AddAppointment } from "./Components/Receptionist/AddAppointment";
 import { HealthIdByAdhaar } from "./Components/Receptionist/HealthIdByAdhaar";
 import { toast, Toaster } from "react-hot-toast";
-import { AddPatientDetails } from "./Components/AddPatientDetails";
+// import { AddPatientDetails } from "./Components/AddPatientDetails";
+// import { AbhaIdDisplayAndAdd } from "./Components/Receptionist/AddPatient";
+// import { AddPatient } from "./Components/Receptionist/AddPatient";
 import { Analytics } from "./Components/Admin/Analytics";
 import ReceptionistDashboard from "./Components/Receptionist/ReceptionistDashboard";
 import { ExistingPatientAbhaSearch } from "./Components/Receptionist/ExistingPatientAbhaSearch";
 import { ExistingPatientDetails } from "./Components/Receptionist/ExistingPatientDetails";
 import { AbdmOtpCredentials } from "./Components/Receptionist/AbdmOtpCredentials";
 import { SuggestAbhaAddress } from "./Components/Receptionist/SuggestAbhaAddress";
+import { AddPatientDetails } from "./Components/Receptionist/AddPatientDetails";
 
 
 function App() {
@@ -119,8 +122,8 @@ function App() {
           <Route path="/receptionist/abha-mobile-no" element={<AbhaMobileNo />} />
           <Route path="/receptionist/abha-new-mobile-no-verification" element={<NewAbhaNoOtpVerification />} />
           <Route path="/receptionist/health-id-adhaar" element={<HealthIdByAdhaar />} />
-          <Route path="/receptionist/abha-id-display-and-add" element={<AbhaIdDisplayAndAdd />} />
-          <Route path="/receptionist/add-patient-details" element={<AddPatientDetails />} />
+          {/* <Route path="/receptionist/abha-id-display-and-add" element={<AbhaIdDisplayAndAdd />} /> */}
+          {/* <Route path="/receptionist/add-patient-details" element={<AddPatientDetails />} /> */}
           <Route path="/receptionist/abha-verification" element={<AbhaIdVerification />} />
           <Route path="/receptionist/abha-otp-verification" element={<AbhaIdOtpVerification />} />
           <Route path="/receptionist/add-appointment" element={<AddAppointment />} />
@@ -129,6 +132,10 @@ function App() {
           <Route path="/receptionist/existing-patient-details" element={<ExistingPatientDetails />} />
           <Route path="/receptionist/abdm-otp-credentials" element={<AbdmOtpCredentials />} />
           <Route path="/receptionist/suggest-abha-address" element={<SuggestAbhaAddress />} />
+          {/* <Route path="/receptionist/add-patient-details" element={<AbhaIdDisplayAndAdd />} /> */}
+          {/* <Route path="/receptionist/add-patient" element={<AddPatient />} /> */}
+          <Route path="/receptionist/add-patient" element={<AddPatientDetails />} />
+
 
 
         </Routes>
