@@ -41,7 +41,7 @@ public class Patient {
     @Column
     private String address;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String abhaId;
 
     @Column(name = "access_token", columnDefinition = "VARCHAR(800)")

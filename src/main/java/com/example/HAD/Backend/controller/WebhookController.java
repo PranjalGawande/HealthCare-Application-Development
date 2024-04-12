@@ -5,7 +5,6 @@ import com.example.HAD.Backend.service.AbdmService;
 import com.example.HAD.Backend.service.PatientService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,32 +82,43 @@ public class WebhookController {
         }
 
         try {
-            Object authRaw = body.get("auth");
-            if (!(authRaw instanceof Map)) {
-                System.out.println("Authentication information is missing or invalid.");
-                return ResponseEntity.badRequest().body("Authentication information is missing or invalid.");
+            Map<String, Object> auth = (Map<String, Object>) body.get("auth");
+            if (auth == null) {
+                System.out.println("Auth is missing.");
+                return ResponseEntity.badRequest().body("Auth is missing.");
             }
-            Map<String, Object> authInfo = (Map<String, Object>) authRaw;
+            String accessToken = (String) auth.get("accessToken");
 
-            String accessToken = (String) authInfo.get("accessToken");
-            if (accessToken == null) {
-                System.out.println("Access token is missing.");
-                return ResponseEntity.badRequest().body("Access token is missing.");
+            Map<String, Object> patientInfo = (Map<String, Object>) auth.get("patient");
+            if (patientInfo == null) {
+                System.out.println("Patient information is missing.");
+                return ResponseEntity.badRequest().body("Patient information is missing.");
             }
-
-            Object patientRaw = authInfo.get("patient");
-            if (!(patientRaw instanceof Map)) {
-                System.out.println("Patient information is missing or invalid.");
-                return ResponseEntity.badRequest().body("Patient information is missing or invalid.");
-            }
-            Map<String, Object> patientInfo = (Map<String, Object>) patientRaw;
-
-            String abhaId = (String) patientInfo.get("id");
+            String abhaAddress = (String) patientInfo.get("id");
             String name = (String) patientInfo.get("name");
             String gender = (String) patientInfo.get("gender");
             Integer yearOfBirth = (Integer) patientInfo.get("yearOfBirth");
             Integer monthOfBirth = (Integer) patientInfo.get("monthOfBirth");
             Integer dayOfBirth = (Integer) patientInfo.get("dayOfBirth");
+
+            List<Map<String, Object>> identifiers = (List<Map<String, Object>>) patientInfo.get("identifiers");
+            if (identifiers == null) {
+                System.out.println("Patient Identifier information is missing.");
+                return ResponseEntity.badRequest().body("Patient Identifier information is missing.");
+            }
+            String mobileNumber = null;
+            String abhaNumber = null;
+            for (Map<String, Object> identifier : identifiers) {
+                if ("MOBILE".equals(identifier.get("type"))) {
+                    mobileNumber = (String) identifier.get("value");
+                } else if ("NDHM_HEALTH_NUMBER".equals(identifier.get("type"))) {
+                    abhaNumber = (String) identifier.get("value");
+                }
+            }
+            if (mobileNumber == null || abhaNumber == null) {
+                System.out.println("Patient mobile number or abha number is missing.");
+                return ResponseEntity.badRequest().body("Patient mobile number or abha number is missing.");
+            }
 
             if (yearOfBirth == null || monthOfBirth == null || dayOfBirth == null) {
                 System.out.println("Date of birth components are missing.");
@@ -119,21 +131,35 @@ public class WebhookController {
             ObjectMapper mapper = new ObjectMapper();
             System.out.println(mapper.writeValueAsString(Map.of(
                     "accessToken", accessToken,
-                    "abhaId", abhaId,
+                    "abhaNumber", abhaNumber,
+                    "abhaAddress", abhaAddress,
                     "name", name,
                     "gender", gender,
-                    "dateOfBirth", dob
+                    "dateOfBirth", dob,
+                    "mobileNumber", mobileNumber
             )));
 
-//            Patient patient = new Patient();
-//            patient.setAbhaId(abhaId);
-//            patient.setAccessToken(accessToken);
+            Patient patient = new Patient();
+            patient.setName(name);
+            patient.setAbhaId(abhaAddress);
+            patient.setMobileNo(mobileNumber);
+            patient.setDob(dateOfBirth);
+            patient.setGender(gender);
+            patient.setAccessToken(accessToken);
+            patientService.addPatient(patient);
 
-            patientService.updateAbhaAddress(abhaId, accessToken);
+//            patientService.updateAbhaAddress(abhaAddress, accessToken);
             // Return all relevant information to the frontend
-            return ResponseEntity.ok().body("Access Token added to patient record in Db.");
+            return ResponseEntity.ok().body(Map.of(
+                    "abhaNumber", abhaNumber,
+                    "abhaAddress", abhaAddress,
+                    "name", name,
+                    "gender", gender,
+                    "dateOfBirth", dob,
+                    "mobileNumber", mobileNumber
+            ));
 
-        } catch (Exception e) {
+        } catch (ClassCastException | DateTimeException | NullPointerException | JsonProcessingException e) {
             System.out.println("Failed to process patient data: " + e.getMessage());
             return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
         }

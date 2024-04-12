@@ -75,7 +75,11 @@ public class ReceptionistController {
 
     @PostMapping("/addPatient")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> addPatientDetails(@RequestBody Patient patient) {
+    public ResponseEntity<String> addPatientDetails(@RequestBody Map<String, String> patientData) {
+        Patient patient = new Patient();
+        patient.setAbhaId(patientData.get("abhaAddress"));
+        patient.setBloodGroup(patientData.get("bloodGroup"));
+        patient.setAddress(patientData.get("address"));
         patientService.addPatient(patient);
         return ResponseEntity.ok().body("Successfully added New Patient Record");
     }
