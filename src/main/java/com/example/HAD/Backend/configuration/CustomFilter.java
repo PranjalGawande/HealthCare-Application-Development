@@ -14,9 +14,10 @@ public class CustomFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestUri = request.getRequestURI();
 
-        response.addHeader("Access-Control-Allow-Origin", "*");
+
 
         if (requestUri.contains(callbackUrl)) {
+            response.addHeader("Access-Control-Allow-Origin", "*");
             filterChain.doFilter(request, response);
             return;
         }
