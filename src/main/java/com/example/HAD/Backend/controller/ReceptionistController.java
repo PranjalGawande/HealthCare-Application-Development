@@ -2,7 +2,6 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.dto.ExtraDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
-import com.example.HAD.Backend.dto.TransactionIdDTO;
 import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.service.*;
@@ -56,9 +55,6 @@ public class ReceptionistController {
 
     @Autowired
     private AbdmAbhaAddressCreationService abdmAbhaAddressCreationService;
-
-    @Autowired
-    private TransactionIdDTO transactionIdDTO;
 
     @PostMapping("/receptionistDetails")
     @PreAuthorize("hasAuthority('receptionist:post')")

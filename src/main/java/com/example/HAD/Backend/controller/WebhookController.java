@@ -1,6 +1,5 @@
 package com.example.HAD.Backend.controller;
 
-import com.example.HAD.Backend.dto.TransactionIdDTO;
 import com.example.HAD.Backend.entities.Patient;
 import com.example.HAD.Backend.service.AbdmService;
 import com.example.HAD.Backend.service.PatientService;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
