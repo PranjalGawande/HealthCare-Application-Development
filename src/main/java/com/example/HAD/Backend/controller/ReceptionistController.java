@@ -2,6 +2,7 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.dto.ExtraDTO;
 import com.example.HAD.Backend.dto.StaffDTO;
+import com.example.HAD.Backend.dto.TransactionIdDTO;
 import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.service.*;
@@ -55,6 +56,9 @@ public class ReceptionistController {
 
     @Autowired
     private AbdmAbhaAddressCreationService abdmAbhaAddressCreationService;
+
+    @Autowired
+    private TransactionIdDTO transactionIdDTO;
 
     @PostMapping("/receptionistDetails")
     @PreAuthorize("hasAuthority('receptionist:post')")
@@ -406,7 +410,7 @@ public class ReceptionistController {
 
     @PostMapping("/generateAbhaAddressVerificationOtp")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> generateAbhaAddressVerificationOtp(@RequestBody Map<String, String> abhaAddressData) {
+    public ResponseEntity<String> generateAbhaAddressVerificationOtp(@RequestBody Map<String, String> abhaAddressData, HttpSession session, HttpServletRequest request) {
         if(abhaAddressData == null || !abdmService.isValidABHAAddress(abhaAddressData.get("abhaAddress"))) {
             return ResponseEntity.badRequest().body("Invalid or missing Abha address.");
         }
@@ -424,6 +428,7 @@ public class ReceptionistController {
             if (!initOtpResponse) {
                 return ResponseEntity.internalServerError().body("Failed to send OTP....");
             }
+
 
             // Note: The ResponseEntity returned here should not assume success until the final callback confirms it.
             return ResponseEntity.ok("OTP request initiated...");

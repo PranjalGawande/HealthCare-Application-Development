@@ -1,5 +1,6 @@
 package com.example.HAD.Backend.controller;
 
+import com.example.HAD.Backend.dto.TransactionIdDTO;
 import com.example.HAD.Backend.entities.Patient;
 import com.example.HAD.Backend.service.AbdmService;
 import com.example.HAD.Backend.service.PatientService;
@@ -8,10 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -23,6 +21,10 @@ import java.util.Map;
 @RestController
 @CrossOrigin("http://localhost:9191")
 public class WebhookController {
+
+    private String txnId = null;
+
+    private Map<String, String> patientData = null;
 
     @Autowired
     private AbdmService abdmService;
@@ -53,14 +55,18 @@ public class WebhookController {
                 return ResponseEntity.badRequest().body("Missing 'auth' section in the request");
             }
 
-            String txnId = (String) authMap.get("transactionId");
+            txnId = (String) authMap.get("transactionId");
             if (txnId == null || txnId.isEmpty()) {
                 System.out.println("Transaction ID is missing in the response.");
                 return ResponseEntity.badRequest().body("Transaction ID is missing");
             }
 
+//            transactionIdDTO = new TransactionIdDTO();
+//            transactionIdDTO.setTransactionId(txnId);
+
             System.out.println("txnId: " + txnId);
             System.out.println("OTP has been sent to your registered mobile number...");
+            session.setAttribute("transactionId", txnId);
 
             // Return transaction ID to the frontend
             return ResponseEntity.ok().body(Map.of("transactionId", txnId));
@@ -72,6 +78,11 @@ public class WebhookController {
             System.out.println("An error occurred while processing the verification OTP request.");
             return ResponseEntity.status(500).body("Internal server error");
         }
+    }
+
+    @GetMapping("/getTransactionId")
+    public ResponseEntity<?> getTransactionId() {
+        return ResponseEntity.ok().body(Map.of("transactionId", txnId));
     }
 
     @PostMapping("/v0.5/users/auth/on-confirm")
@@ -148,20 +159,28 @@ public class WebhookController {
             patient.setAccessToken(accessToken);
             patientService.addPatient(patient);
 
-//            patientService.updateAbhaAddress(abhaAddress, accessToken);
-            // Return all relevant information to the frontend
-            return ResponseEntity.ok().body(Map.of(
+            patientData = Map.of(
                     "abhaNumber", abhaNumber,
                     "abhaAddress", abhaAddress,
                     "name", name,
                     "gender", gender,
                     "dateOfBirth", dob,
                     "mobileNumber", mobileNumber
-            ));
+            );
+            System.out.println("From on-confirm" + patientData);
+//            patientService.updateAbhaAddress(abhaAddress, accessToken);
+            // Return all relevant information to the frontend
+            return ResponseEntity.ok().body("Send request on get patientInfo...");
 
         } catch (ClassCastException | DateTimeException | NullPointerException | JsonProcessingException e) {
             System.out.println("Failed to process patient data: " + e.getMessage());
             return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/getPatientInfo")
+    public ResponseEntity<?> getPatientInfo() {
+        System.out.println("From getPatientInfo" + patientData);
+        return ResponseEntity.ok().body(patientData);
     }
 }

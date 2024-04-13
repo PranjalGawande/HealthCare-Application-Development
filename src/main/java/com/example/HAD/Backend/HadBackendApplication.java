@@ -18,9 +18,7 @@ import java.time.LocalDate;
 @SpringBootApplication
 public class 	HadBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HadBackendApplication.class, args);
-	}
+	public static void main(String[] args) { SpringApplication.run(HadBackendApplication.class, args); }
 
 	@Component
 	class AdminInitializer implements CommandLineRunner {
