@@ -288,8 +288,8 @@ public class ReceptionistController {
     @PostMapping("/resendOtp")
     @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<String> resendOtp(HttpSession session) {
-        String transactionId = (String) session.getAttribute("transactionId");
-        if (transactionId == null || transactionId.isEmpty()) {
+        String txnId = (String) session.getAttribute("txnId");
+        if (txnId == null || txnId.isEmpty()) {
             return ResponseEntity.badRequest().body("Transaction ID is required but was not found in session.");
         }
 
@@ -300,7 +300,7 @@ public class ReceptionistController {
 
         try {
             // Resend OTP using the transactionId and bearer token fetched from the session
-            Map<String, Object> response = abdmAbhaAddressCreationService.resendOTP(transactionId, token);
+            Map<String, Object> response = abdmAbhaAddressCreationService.resendOTP(txnId, token);
             if (response == null || response.isEmpty()) {
                 return ResponseEntity.internalServerError().body("Failed to resend OTP.");
             }
