@@ -15,7 +15,7 @@ export const AbhaIdVerification = () => {
     try {
       const token = localStorage.getItem("token");
       const formData = {
-        abhaid: abhaAdd
+        abhaAddress: abhaAdd
       };
       axios.defaults.withCredentials = true;
       const response = await axios.post("http://localhost:9191/receptionist/generateAbhaAddressVerificationOtp",
