@@ -130,13 +130,16 @@ export const AbhaIdOtpVerification = () => {
 
   const fetchTransactionId = async () => {
     try {
+      setTimeout(async () => {
+        axios.defaults.withCredentials = true;
+        const response = await axios.get("http://localhost:9191/getTransactionId");
+        // Extract transaction ID from the response
+        const { transactionId } = response.data;
+        setTransactionId(transactionId);
+        console.log('Transaction ID:', transactionId);
+      }, 5000);
       // const token = localStorage.getItem("token");
-      axios.defaults.withCredentials = true;
-      const response = await axios.get("http://localhost:9191/getTransactionId");
-      // Extract transaction ID from the response
-      const { transactionId } = response.data;
-      setTransactionId(transactionId);
-      console.log('Transaction ID:', transactionId);
+
     } catch (error) {
       console.error('Error fetching transaction ID:', error);
     }
