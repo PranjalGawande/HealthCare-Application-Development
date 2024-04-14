@@ -487,7 +487,7 @@ public class ReceptionistController {
 
 // ---------------------------------------------------
 
-    @GetMapping("/patientDetails")
+    @PostMapping("/patientDetails")
     @PreAuthorize("hasAuthority('receptionist:get')")
     public ResponseEntity<Patient> getPatientRecord(@RequestBody ExtraDTO extraDTO) {
         Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
