@@ -123,42 +123,110 @@ export const AbhaIdOtpVerification = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Fetch transaction ID when component mounts
-    fetchTransactionId();
-  }, []);
+  // useEffect(() => {
+  //   // Fetch transaction ID when component mounts
+  //   fetchTransactionId();
+  // }, []);
+
+  // const fetchTransactionId = async () => {
+  //   try {
+  //     setTimeout(async () => {
+  //       axios.defaults.withCredentials = true;
+  //       const response = await axios.get("http://localhost:9191/getTransactionId");
+  //       // Extract transaction ID from the response
+  //       const { transactionId } = response.data;
+  //       setTransactionId(transactionId);
+  //       console.log('Transaction ID:', transactionId);
+  //     }, 5000);
+  //     // const token = localStorage.getItem("token");
+
+  //   } catch (error) {
+  //     console.error('Error fetching transaction ID:', error);
+  //   }
+  // };
+
+
+
+
+
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const formData = {
+  //       txnId: transactionId, // Add transaction ID to the formData,
+  //       otp: abdmOtp
+  //     };
+  //     console.log('FormData:', formData);
+  //     axios.defaults.withCredentials = true;
+  //     const response = await axios.post("http://localhost:9191/receptionist/verificationAbhaAddressOtp",
+  //       formData,
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
+  //     console.log('Response:', response.data);
+  //     navigate('/receptionist/add-patient');
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
 
   const fetchTransactionId = async () => {
     try {
-      setTimeout(async () => {
-        axios.defaults.withCredentials = true;
-        const response = await axios.get("http://localhost:9191/getTransactionId");
-        // Extract transaction ID from the response
-        const { transactionId } = response.data;
-        setTransactionId(transactionId);
-        console.log('Transaction ID:', transactionId);
-      }, 5000);
-      // const token = localStorage.getItem("token");
-
+      // Implement the logic to fetch the transaction ID here
+      // For example:
+      axios.defaults.withCredentials = true;
+      const response = await axios.get("http://localhost:9191/getTransactionId");
+      // Extract transaction ID from the response
+      const { transactionId } = response.data;
+      console.log('Transaction ID:', transactionId);
+      return transactionId; // Return the transaction ID
     } catch (error) {
       console.error('Error fetching transaction ID:', error);
+      throw error; // Throw the error to be caught by the caller
     }
   };
-
-
-
-
-
-
-
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
+      let transactionIdAttempt = 0;
+      let transactionId = '';
+  
+      // Retry logic to fetch transaction ID
+      while (!transactionId && transactionIdAttempt < 5) { // You can adjust the number of attempts as needed
+        try {
+          // Attempt to fetch transaction ID
+          transactionId = await fetchTransactionId();
+        } catch (error) {
+          console.error('Error fetching transaction ID:', error);
+        }
+        // Increase attempt count
+        transactionIdAttempt++;
+        // Delay before next attempt (5000 milliseconds = 5 seconds)
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+  
+      // If transaction ID is still empty after retries, display error
+      if (!transactionId) {
+        throw new Error('Unable to fetch transaction ID after multiple attempts.');
+      }
+  
+      // Proceed with form submission
       const formData = {
-        txnId: transactionId, // Add transaction ID to the formData,
+        txnId: transactionId,
         otp: abdmOtp
       };
       console.log('FormData:', formData);
@@ -177,6 +245,7 @@ export const AbhaIdOtpVerification = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="h-full flex justify-center items-center ">
