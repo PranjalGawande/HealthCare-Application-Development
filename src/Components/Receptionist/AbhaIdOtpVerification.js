@@ -158,6 +158,7 @@ export const AbhaIdOtpVerification = () => {
         txnId: transactionId, // Add transaction ID to the formData,
         otp: abdmOtp
       };
+      console.log('FormData:', formData);
       axios.defaults.withCredentials = true;
       const response = await axios.post("http://localhost:9191/receptionist/verificationAbhaAddressOtp",
         formData,

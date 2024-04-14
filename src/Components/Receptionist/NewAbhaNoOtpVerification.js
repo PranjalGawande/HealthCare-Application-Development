@@ -25,7 +25,7 @@ export const NewAbhaNoOtpVerification = () => {
         }
       );
       console.log('Response:', response.data);
-      navigate('/receptionist/abha-verification');
+      navigate('/receptionist/health-id-adhaar');
     } catch (error) {
       console.error('Error:', error);
     } finally {

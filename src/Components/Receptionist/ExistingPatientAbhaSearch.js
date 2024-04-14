@@ -150,7 +150,7 @@ export const ExistingPatientAbhaSearch = () => {
         abhaid: abhaAdd
       };
       axios.defaults.withCredentials = true;
-      const response = await axios.post("http://localhost:9191/receptionist/*****", formData, {
+      const response = await axios.get("localhost:9191/receptionist/patientDetails", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log('Response:', response.data);
