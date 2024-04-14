@@ -26,7 +26,7 @@ public class Patient {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, length = 10, unique = true)
+    @Column(nullable = false, length = 10)
     private String mobileNo;
 
     @Column(nullable = false)

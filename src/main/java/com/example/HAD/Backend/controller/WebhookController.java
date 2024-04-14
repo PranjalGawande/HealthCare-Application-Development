@@ -6,6 +6,7 @@ import com.example.HAD.Backend.service.PatientService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
+import org.aspectj.apache.bcel.util.ClassLoaderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,9 @@ public class WebhookController {
     private String txnId = null;
 
     private Map<String, String> patientData = null;
+
+    @Autowired
+    private SseController sseController;
 
     @Autowired
     private AbdmService abdmService;
@@ -42,7 +47,8 @@ public class WebhookController {
     @PostMapping("/v0.5/users/auth/on-init")
     public ResponseEntity<?> userAuthInit(@RequestBody Map<String, Object> body, HttpSession session) {
         if (body == null || body.containsKey("error") && body.get("error") != null) {
-            System.out.println("An error occurred while processing the Aadhaar OTP request.");
+            System.out.println("Error processing the request");
+//            sseController.sendToClients("error", "Error processing the request");
             return ResponseEntity.badRequest().body("Error processing the request");
         }
 
@@ -64,11 +70,8 @@ public class WebhookController {
 
             System.out.println("txnId: " + txnId);
             System.out.println("OTP has been sent to your registered mobile number...");
-            session.setAttribute("transactionId", txnId);
-
-            // Return transaction ID to the frontend
+//            sseController.sendToClients("transactionId", txnId);
             return ResponseEntity.ok().body(Map.of("transactionId", txnId));
-
         } catch (ClassCastException e) {
             System.out.println("An error occurred due to incorrect data format.");
             return ResponseEntity.badRequest().body("Incorrect data format");
@@ -165,10 +168,12 @@ public class WebhookController {
                     "dateOfBirth", dob,
                     "mobileNumber", mobileNumber
             );
+
+//            sseController.sendToClients("patientData", patientData);
             System.out.println("From on-confirm" + patientData);
 //            patientService.updateAbhaAddress(abhaAddress, accessToken);
             // Return all relevant information to the frontend
-            return ResponseEntity.ok().body("Send request on get patientInfo...");
+            return ResponseEntity.ok().body("Patient data processed and sent");
 
         } catch (ClassCastException | DateTimeException | NullPointerException | JsonProcessingException e) {
             System.out.println("Failed to process patient data: " + e.getMessage());

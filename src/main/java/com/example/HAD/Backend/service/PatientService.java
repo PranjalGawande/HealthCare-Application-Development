@@ -26,25 +26,25 @@ public class PatientService {
         Patient existingPatient = patientRepository.findPatientByAbhaId(patient.getAbhaId());
         if (existingPatient != null) {
             // Ensure we are updating not inserting a new entry
-            patient.setPatientId(existingPatient.getPatientId());
-
-            // Compare and update fields only if they differ and are not null
-            if (patient.getName() != null && !patient.getName().equals(existingPatient.getName())) {
-                existingPatient.setName(patient.getName());
-            }
-            if (patient.getMobileNo() != null && !patient.getMobileNo().equals(existingPatient.getMobileNo())) {
-                existingPatient.setMobileNo(patient.getMobileNo());
-            }
-            if (patient.getDob() != null && !patient.getDob().equals(existingPatient.getDob())) {
-                existingPatient.setDob(patient.getDob());
-            }
-            if (patient.getGender() != null && !patient.getGender().equals(existingPatient.getGender())) {
-                existingPatient.setGender(patient.getGender());
-            }
-            if (patient.getBloodGroup() != null && !patient.getBloodGroup().equals(existingPatient.getBloodGroup())) {
+//            patient.setPatientId(existingPatient.getPatientId());
+//
+//            // Compare and update fields only if they differ and are not null
+//            if (existingPatient.getName() == null && patient.getName() != null) {
+//                existingPatient.setName(patient.getName());
+//            }
+//            if (existingPatient.getMobileNo() == null && patient.getMobileNo() != null) {
+//                existingPatient.setMobileNo(patient.getMobileNo());
+//            }
+//            if (existingPatient.getDob() == null && patient.getDob() != null) {
+//                existingPatient.setDob(patient.getDob());
+//            }
+//            if (existingPatient.getGender() == null && patient.getGender() != null) {
+//                existingPatient.setGender(patient.getGender());
+//            }
+            if (patient.getBloodGroup() == null || !patient.getBloodGroup().equals(existingPatient.getBloodGroup())) {
                 existingPatient.setBloodGroup(patient.getBloodGroup());
             }
-            if (patient.getAddress() != null && !patient.getAddress().equals(existingPatient.getAddress())) {
+            if (patient.getAddress() == null || !patient.getAddress().equals(existingPatient.getAddress())) {
                 existingPatient.setAddress(patient.getAddress());
             }
 
