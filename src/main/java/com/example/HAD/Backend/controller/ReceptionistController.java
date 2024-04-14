@@ -202,7 +202,7 @@ public class ReceptionistController {
         }
     }
 
-    @PostMapping("/verifyAbdmOtp")
+   @PostMapping("/verifyAbdmOtp")
     @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<?> verifyAbdmOtp(@RequestBody Map<String, String> otpData, HttpSession session) {
         if (otpData == null || !otpData.containsKey("otp")) {
@@ -282,6 +282,33 @@ public class ReceptionistController {
             // Log the exception with a logger (e.g., SLF4J) instead of e.printStackTrace() for production code
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("An error occurred while processing the Aadhaar OTP verify request.");
+        }
+    }
+
+    @PostMapping("/resendOtp")
+    @PreAuthorize("hasAuthority('receptionist:post')")
+    public ResponseEntity<String> resendOtp(@RequestBody Map<String, String> requestData, HttpSession session) {
+        String transactionId = requestData.get("transactionId");
+        if (transactionId == null || transactionId.isEmpty()) {
+            return ResponseEntity.badRequest().body("Transaction ID is required.");
+        }
+
+        String token = (String) session.getAttribute("token");
+        if (token == null) {
+            return ResponseEntity.badRequest().body("Session expired or invalid. Please login again.");
+        }
+
+        try {
+            // Assuming resendOTP requires only the transaction ID and the token
+            Map<String, Object> response = abdmAbhaAddressCreationService.resendOTP(transactionId, token);
+            if (response == null || response.isEmpty()) {
+                return ResponseEntity.internalServerError().body("Failed to resend OTP.");
+            }
+
+            return ResponseEntity.ok("OTP has been resent successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("An error occurred while resending the OTP.");
         }
     }
 
