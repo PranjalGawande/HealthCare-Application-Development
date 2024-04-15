@@ -19,9 +19,7 @@ export const ViewReceptionistDetails = () => {
   };
 
   const handleChangePassword = () => {
-    navigate("/admin/admin-receptionist-password-change", {
-      state: { staff: staffDetails },
-    });
+    navigate("/password-change");
   };
 
   const handleActivateDoctor = async (email) => {
@@ -118,7 +116,7 @@ export const ViewReceptionistDetails = () => {
             </div>
           </div>
           <div className="container glass-background mt-5">
-            <label className="text-login profile-details fw-bold text-center mt-5">
+            <label className="text-login profile-details fw-bold text-center mt-5 mb-1">
               Profile Details
             </label>
             {staffDetails && (

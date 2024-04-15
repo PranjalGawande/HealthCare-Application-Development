@@ -81,6 +81,8 @@ export default function Navbar() {
     }
   };
 
+  const paddingleft = (role === "Receptionist" || role === "DOCTOR") ? "8rem" : "0";
+
   const token = localStorage.getItem("token");
 
   return (
@@ -111,7 +113,9 @@ export default function Navbar() {
         )}
 
         <div className="container d-flex justify-content-center">
-          <p className="navbar-brand text-white playfair-display">
+          <p className="navbar-brand text-white playfair-display"
+          style={{ fontSize: "2.5rem", paddingLeft: paddingleft}}
+          >
             HEALTH SYNC
           </p>
         </div>

@@ -47,7 +47,7 @@ export default function DoctorDashboard() {
       <div className=" background h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
           <div className="image-container" >
-            <img src={doctorImage} className="admin-image" />
+            <img src={doctorImage} className="admin-image" alt='doctorImage'/>
             <div className="dashboard-name-doctor" style={{ fontSize: determineFontSize() }}>{doctorName}</div>
           </div>
           <div className='flex flex-col gap-5 '>

@@ -16,7 +16,7 @@ export const ViewDoctorDetails = () => {
   };
 
   const handleChangePassword = () => {
-    navigate('/admin/admin-doctor-password-change', { state: { doctor: doctorDetails } });
+    navigate('/password-change', { state: { doctor: doctorDetails } });
   };
 
   const handleActivateDoctor = async (email) => {
@@ -112,8 +112,8 @@ export const ViewDoctorDetails = () => {
           <img src={doctorImage} className="admin-image" alt="doctorImage"/>
           <div className="dashboard-name-doctor" style={{ fontSize: determineFontSize() }}>{doctorDetails.name}</div>
         </div>
-        <div className="doctor-details container glass-background mt-5">
-          <label className="text-login profile-details fw-bold text-center mt-5">
+        <div className="container glass-background mt-5">
+          <label className="text-login profile-details fw-bold text-center mt-5 mb-1">
             Profile Details
           </label>
           {doctorDetails && (

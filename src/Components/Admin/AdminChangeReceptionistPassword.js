@@ -62,7 +62,7 @@ export const AdminChangeReceptionistPassword = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container md:block hidden">
-            <img src={receptionistImage} className="admin-image" />
+            <img src={receptionistImage} className="admin-image" alt="receptionistImage"/>
             <div
               className="dashboard-name-receptionist"
               style={{ fontSize: "xx-large" }}

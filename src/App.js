@@ -18,7 +18,7 @@ import ViewStaff from "./Components/Admin/ViewReceptionist";
 import AddAdminForm from "./Components/Admin/AddAdminForm";
 import ViewAdmin from "./Components/Admin/ViewAdmin";
 import { ViewAdminDetails } from "./Components/Admin/ViewAdminDetails";
-import { AdminPasswordChange } from "./Components/Admin/AdminPasswordChange";
+import { PasswordChange } from "./Components/PasswordChange";
 import { ViewDoctorDetails } from "./Components/Doctor/ViewDoctorDetails";
 import { AdminChangeDoctorPassword } from "./Components/Admin/AdminChangeDoctorPassword";
 import { AdminUpdateDoctorDetails } from "./Components/Admin/AdminUpdateDoctorDetails";
@@ -79,8 +79,8 @@ function App() {
             element={<ViewDoctorDetails />}
           />
           <Route
-            path="/admin/admin-password-change"
-            element={<AdminPasswordChange />}
+            path="/password-change"
+            element={<PasswordChange />}
           />
           <Route
             path="/admin/admin-doctor-password-change"
