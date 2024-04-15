@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import patientImage from '../../assets/PatientPage.png';
 import toast from 'react-hot-toast';
+import MenuItem from '@mui/material/MenuItem';
 
 export const AddPatientDetails = () => {
     const location = useLocation();
@@ -102,9 +103,8 @@ export const AddPatientDetails = () => {
                     <img src={patientImage} className="admin-image" alt='patientImage' />
                     <div className="dashboard-name-patient" >ADD PATIENT</div>
                 </div>
-                <div className="container glass-background mt-5">
-
-                    <form onSubmit={handleSubmit}>
+                <div className="container glass-background mt-5 doctor-details">
+                    <form onSubmit={handleSubmit} style={{ width: '80%' }}>
                         <label className="text-login fw-bold text-center" style={{ marginTop: '1px' }}>
                             Enter Patient Details
                         </label>
@@ -112,7 +112,7 @@ export const AddPatientDetails = () => {
                             name="name"
                             label="Name"
                             value={patientInfo.name}
-                            style={{ marginBottom: "1rem", width: "78%" }}
+                            style={{ marginBottom: "1rem", width: "100%" }}
                             readOnly
                             disabled
                         />
@@ -120,7 +120,7 @@ export const AddPatientDetails = () => {
                             name="mobileNo"
                             label="Mobile Number"
                             value={patientInfo.mobileNo}
-                            style={{ marginBottom: "1rem", width: "78%" }}
+                            style={{ marginBottom: "1rem", width: "100%" }}
                             readOnly
                             disabled
                         />
@@ -150,20 +150,28 @@ export const AddPatientDetails = () => {
                             />
                         </div>
                         <TextField
+                            select
                             name="bloodGroup"
                             label="Blood Group"
                             value={patientInfo.bloodGroup}
-                            style={{ marginBottom: "1rem", width: "78%" }}
+                            style={{ marginBottom: "1rem", width: "100%" }}
                             onChange={handleChange}
                             required
-                        // readOnly
-                        // disabled
-                        />
+                        >
+                            <MenuItem value="A+">A+</MenuItem>
+                            <MenuItem value="A-">A-</MenuItem>
+                            <MenuItem value="B+">B+</MenuItem>
+                            <MenuItem value="B-">B-</MenuItem>
+                            <MenuItem value="AB+">AB+</MenuItem>
+                            <MenuItem value="AB-">AB-</MenuItem>
+                            <MenuItem value="O+">O+</MenuItem>
+                            <MenuItem value="O-">O-</MenuItem>
+                        </TextField>
                         <TextField
                             name="address"
                             label="Address"
                             value={patientInfo.address}
-                            style={{ marginBottom: "1rem", width: "78%" }}
+                            style={{ marginBottom: "1rem", width: "100%" }}
                             onChange={handleChange}
                             required
                         // readOnly
@@ -173,21 +181,23 @@ export const AddPatientDetails = () => {
                             name="abhaId"
                             label="Abha ID"
                             value={patientInfo.abhaId}
-                            style={{ marginBottom: "1rem", width: "78%" }}
+                            style={{ marginBottom: "1rem", width: "100%" }}
                             readOnly
                             disabled
                         />
-                        {loading ? (
-                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-                                <div className="loader"></div>
-                            </div>
-                        ) : (
-                            <button
-                                type="submit"
-                                className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                                style={{ marginTop: '2rem', width: "80%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                                onClick={handleSubmit}>Submit</button>
-                        )}
+                        <div className='d-flex justify-content-center'>
+                            {loading ? (
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                                    <div className="loader"></div>
+                                </div>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className="button"
+                                    style={{ marginTop: '2rem', width: "80%", height: '5%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                    onClick={handleSubmit}>Submit</button>
+                            )}
+                        </div>
                     </form>
 
                 </div>

@@ -150,7 +150,10 @@ export const AddAppointment = () => {
                           setSelectedDoctor(doctor.doctorId);
                           handleDoctorSelect(doctor);
                           setModalShow(false);
-                        }}>Select
+                        }}
+                        disabled={doctor.tokenNo >= doctor.tokenMax + 1}
+                        >
+                          {doctor.tokenNo >= doctor.tokenMax + 1 ? 'Fully Booked' : 'Select Doctor'}
                         </Button>
                       </td>
                     </tr>
