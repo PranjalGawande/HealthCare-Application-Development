@@ -1,449 +1,78 @@
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
-// import TextField from "@mui/material/TextField";
-// import patientImage from '../../assets/PatientPage.png';
-
-// export const ExistingPatientAbhaSearch = () => {
-//   const [abhaAdd, setAbhaAdd] = useState("");
-//   const navigate = useNavigate();
-//   const [loading, setLoading] = useState(false);
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     try {
-//       const token = localStorage.getItem("token");
-//       const formData = {
-//         abhaid: abhaAdd
-//       };
-//       axios.defaults.withCredentials = true;
-//       const response = await axios.post("http://localhost:9191/receptionist/*****", // Add the endpoint here
-//         formData,
-//         {
-//           headers: { Authorization: `Bearer ${token}` },
-//         }
-//       );
-//       console.log('Response:', response.data);
-//       navigate('/receptionist/existing-patient-details');
-//     } catch (error) {
-//       console.error('Error:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-
-//   };
-
-
-//   return (
-//     <div className="h-full flex justify-center items-center ">
-//       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
-//         <div className="image-container">
-//           <img src={patientImage} className="admin-image" alt='patientImage' />
-//           <div className="dashboard-name-patient" >ABHA SEARCH</div>
-//         </div>
-//         <div className="container glass-background mt-5">
-//           <label className="text-login fw-bold text-center">
-//             Enter <br /> Abha Address
-//           </label>
-//           <TextField
-//             id="abhaid"
-//             label="Abha Address"
-//             value={abhaAdd}
-//             style={{ marginBottom: "2rem", width: "50%" }}
-//             onChange={(e) => setAbhaAdd(e.target.value)}
-//             required
-//           />
-//           {/* <button
-//             type="submit"
-//             className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-//             style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-//             onClick={handleSubmit}>Submit</button> */}
-
-//           {loading ? (
-//             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-//               <div class="loader"></div>
-//             </div>
-//           ) : (
-//             <button
-//               type="submit"
-//               className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-//               style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-//               onClick={handleSubmit}>Submit</button>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
-// import TextField from "@mui/material/TextField";
-// import patientImage from '../../assets/PatientPage.png';
-
-// export const ExistingPatientAbhaSearch = () => {
-//   const [abhaAdd, setAbhaAdd] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     try {
-//       const token = localStorage.getItem("token");
-//       const formData = {
-//         abhaId: abhaAdd
-//       };
-//       axios.defaults.withCredentials = true;
-//       const response = await axios.post("http://localhost:9191/receptionist/patientDetails", formData, {
-//         headers: { Authorization: `Bearer ${token}` },
-//       });
-//       console.log('Response:', response.data);
-//       navigate('/receptionist/existing-patient-details', { state: { patientDetails: response.data } });
-//     } catch (error) {
-//       console.error('Error:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="h-full flex justify-center items-center ">
-//       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
-//         <div className="image-container">
-//           <img src={patientImage} className="admin-image" alt='patientImage' />
-//           <div className="dashboard-name-patient" >ABHA SEARCH</div>
-//         </div>
-//         <div className="container glass-background mt-5">
-//           <label className="text-login fw-bold text-center">
-//             Enter <br /> Abha Address
-//           </label>
-//           <TextField
-//             id="abhaid"
-//             label="Abha Address"
-//             value={abhaAdd}
-//             style={{ marginBottom: "2rem", width: "50%" }}
-//             onChange={(e) => setAbhaAdd(e.target.value)}
-//             required
-//           />
-//           {loading ? (
-//             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-//               <div className="loader"></div>
-//             </div>
-//           ) : (
-//             <button
-//               type="submit"
-//               className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-//               style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-//               onClick={handleSubmit}>Submit</button>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
-// import TextField from "@mui/material/TextField";
-// import patientImage from '../../assets/PatientPage.png';
-
-// export const ExistingPatientAbhaSearch = () => {
-//   const [abhaAdd, setAbhaAdd] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     try {
-//       const token = localStorage.getItem("token");
-//       const formData = {
-//         abhaId: abhaAdd
-//       };
-//       // Simulate API call to fetch patient details based on Abha Address
-//       console.log('Fetching patient details for Abha Address:', abhaAdd);
-//       const response = await axios.post("http://localhost:9191/receptionist/patientDetails", formData, {
-//                  headers: { Authorization: `Bearer ${token}` },
-//                });
-//       navigate('/receptionist/existing-patient-details', { state: { patientInfo: response.data } });
-//     } catch (error) {
-//       console.error('Error:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="h-full flex justify-center items-center ">
-//       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
-//         <div className="image-container">
-//           <img src={patientImage} className="admin-image" alt='patientImage' />
-//           <div className="dashboard-name-patient" >ABHA SEARCH</div>
-//         </div>
-//         <div className="container glass-background mt-5">
-//           <label className="text-login fw-bold text-center">
-//             Enter <br /> Abha Address
-//           </label>
-//           <form onSubmit={handleSubmit}>
-//             <TextField
-//               id="abhaid"
-//               label="Abha Address"
-//               value={abhaAdd}
-//               style={{ marginBottom: "2rem", width: "50%" }}
-//               onChange={(e) => setAbhaAdd(e.target.value)}
-//               required
-//             />
-//             {loading ? (
-//               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-//                 <div className="loader"></div>
-//               </div>
-//             ) : (
-//               <button
-//                 type="submit"
-//                 className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-//                 style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-//               >
-//                 Submit
-//               </button>
-//             )}
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
-// import TextField from "@mui/material/TextField";
-// import patientImage from '../../assets/PatientPage.png';
-
-// export const ExistingPatientAbhaSearch = () => {
-//   const [abhaAdd, setAbhaAdd] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     try {
-//       const token = localStorage.getItem("token");
-//       const formData = {
-//         abhaId: abhaAdd
-//       };
-//       // const response = await axios.post("http://localhost:9191/receptionist/patientDetails", { abhaId: abhaAdd }, {
-//       //   headers: { Authorization: `Bearer ${token}` },
-//       // });
-//       const response = await axios.post("http://localhost:9191/receptionist/patientDetails",
-//         formData,
-//         {
-//           headers: { Authorization: `Bearer ${token}` },
-//         }
-//       );
-//       const patientInfo = response.data;
-//       navigate('/receptionist/existing-patient-details', { state: { patientInfo } });
-//     } catch (error) {
-//       console.error('Error:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="h-full flex justify-center items-center ">
-//       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
-//         <div className="image-container">
-//           <img src={patientImage} className="admin-image" alt='patientImage' />
-//           <div className="dashboard-name-patient" >ABHA SEARCH</div>
-//         </div>
-//         <div className="container glass-background mt-5">
-//           <label className="text-login fw-bold text-center">
-//             Enter <br /> Abha Address
-//           </label>
-//           <form onSubmit={handleSubmit}>
-//             <TextField
-//               id="abhaid"
-//               label="Abha Address"
-//               value={abhaAdd}
-//               style={{ marginBottom: "2rem", width: "50%" }}
-//               onChange={(e) => setAbhaAdd(e.target.value)}
-//               required
-//             />
-//             {loading ? (
-//               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-//                 <div className="loader"></div>
-//               </div>
-//             ) : (
-//               <button
-//                 type="submit"
-//                 className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-//                 style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-//               >
-//                 Submit
-//               </button>
-//             )}
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import patientImage from '../../assets/PatientPage.png';
+import toast from 'react-hot-toast';
 
 export const ExistingPatientAbhaSearch = () => {
-  const [abhaAdd, setAbhaAdd] = useState("");
+  const [abhaId, setAbhaId] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const formData = {
-        abhaId: abhaAdd
-      };
+      const formData = { abhaId };
       axios.defaults.withCredentials = true;
       const response = await axios.post("http://localhost:9191/receptionist/patientDetails", formData, {
-        headers: { Authorization: `Bearer ${token}` }, // Corrected line
+        headers: { Authorization: `Bearer ${token}` },
       });
       console.log('Response:', response.data);
-      navigate('/receptionist/existing-patient-details', { state: { patientDetails: response.data } });
+      const patientDetails = {
+        abhaId: response.data.abhaId,
+        address: response.data.address,
+        bloodGroup: response.data.bloodGroup,
+        dob: response.data.dob,
+        gender: response.data.gender,
+        mobileNo: response.data.mobileNo,
+        name: response.data.name
+      };
+      navigate('/receptionist/existing-patient-details', { state: { patientDetails } });
     } catch (error) {
       console.error('Error:', error);
+      toast.error('Error searching for patient');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="h-full flex justify-center items-center ">
-      <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
+    <div className="h-full flex justify-center items-center">
+      <div className="flex admin-dashboard justify-evenly items-center border-amber-300 border-solid">
         <div className="image-container">
           <img src={patientImage} className="admin-image" alt='patientImage' />
-          <div className="dashboard-name-patient" >ABHA SEARCH</div>
+          <div className="dashboard-name-patient">ABHA SEARCH</div>
         </div>
         <div className="container glass-background mt-5">
-          <label className="text-login fw-bold text-center">
-            Enter <br /> Abha Address
-          </label>
-          <TextField
-            id="abhaid"
-            label="Abha Address"
-            value={abhaAdd}
-            style={{ marginBottom: "2rem", width: "50%" }}
-            onChange={(e) => setAbhaAdd(e.target.value)}
-            required
-          />
-          {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-              <div className="loader"></div>
-            </div>
-          ) : (
-            <button
-              type="submit"
-              className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-              style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-              onClick={handleSubmit}>Submit</button>
-          )}
+          <form onSubmit={handleSubmit}>
+            <label className="text-login fw-bold text-center">
+              Enter <br /> Abha Address
+            </label>
+            <TextField
+              id="abhaid"
+              label="Abha Address"
+              value={abhaId}
+              style={{ marginBottom: "2rem", width: "50%" }}
+              onChange={(e) => setAbhaId(e.target.value)}
+              required
+            />
+            {loading ? (
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+                <div className="loader"></div>
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                style={{ marginTop: '2rem', width: "50%", height: '10%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              >
+                Search
+              </button>
+            )}
+          </form>
         </div>
       </div>
     </div>
