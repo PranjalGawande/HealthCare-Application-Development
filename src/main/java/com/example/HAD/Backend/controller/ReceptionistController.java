@@ -489,18 +489,25 @@ public class ReceptionistController {
 
 // ---------------------------------------------------
 
+//    @PostMapping("/patientDetails")
+//    @PreAuthorize("hasAuthority('receptionist:get')")
+//    public ResponseEntity<?> getPatientRecord(@RequestBody PatientDto patientDto) {
+//        String abhaId = patientDto.getAbhaId();
+//        if (abhaId == null || abhaId.trim().isEmpty()) {
+//            return ResponseEntity.badRequest().body("ABHA ID must be provided.");
+//        }
+//        Patient patient = patientService.getPatientByAbhaId(abhaId);
+//        if (patient == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No patient found with ABHA ID: " + abhaId);
+//        }
+//        return ResponseEntity.ok().body(new PatientDto(patient));
+//    }
+
     @PostMapping("/patientDetails")
     @PreAuthorize("hasAuthority('receptionist:get')")
-    public ResponseEntity<?> getPatientRecord(@RequestBody PatientDto patientDto) {
-        String abhaId = patientDto.getAbhaId();
-        if (abhaId == null || abhaId.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("ABHA ID must be provided.");
-        }
-        Patient patient = patientService.getPatientByAbhaId(abhaId);
-        if (patient == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No patient found with ABHA ID: " + abhaId);
-        }
-        return ResponseEntity.ok().body(new PatientDto(patient));
+    public ResponseEntity<Patient> getPatientRecord(@RequestBody ExtraDTO extraDTO) {
+        Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
+        return ResponseEntity.ok().body(patient);
     }
 
     @PostMapping("/addAppointment")
