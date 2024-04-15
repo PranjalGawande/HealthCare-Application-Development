@@ -148,6 +148,20 @@
   transform: translateY(-7px);
 }
 
+nav {
+  background: linear-gradient(180deg, rgb(24, 132, 149), rgb(183, 219, 232));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* border-radius: 20px; */
+  /* border: 1px solid rgba(255, 255, 255, 0.18); */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; 
+}
+
 .navbtn {
   padding: .5em 1.5em;
   font-size: 18px;

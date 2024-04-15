@@ -87,7 +87,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="container-fluid navbar navbar-expand-lg text-white bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-800 border-bottom border-body"
+      className="container-fluid navbar navbar-expand-lg text-white "
       data-bs-theme="dark"
     >
       <div className="container-fluid">
