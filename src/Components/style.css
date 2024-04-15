@@ -57,7 +57,8 @@
 
 .image-container {
   position: relative;
-  text-align: center;
+  /* text-align: center; */
+  /* padding-right: 100px; */
   color: rgb(3, 3, 3);
 }
 

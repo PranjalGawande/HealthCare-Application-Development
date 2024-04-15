@@ -2,8 +2,6 @@ import React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { LineChart } from "@mui/x-charts/LineChart";
-import { Line } from "react-chartjs-2";
-
 import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -11,9 +9,22 @@ import CardActions from "@mui/joy/CardActions";
 import CircularProgress from "@mui/joy/CircularProgress";
 import Typography from "@mui/joy/Typography";
 import SvgIcon from "@mui/joy/SvgIcon";
-
 import { useState, useEffect } from "react";
 import axios from "axios"; // Import axios for making HTTP requests
+import { FiberPin } from "@mui/icons-material";
+
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  plugins
+} from "chart.js";
+import { Step } from "@mui/material";
+
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const chartSetting = {
   xAxis: [
@@ -289,15 +300,21 @@ export const Analytics = () => {
             },
           }
         );
-        setAppDateData(response.data);
-        console.log("Analytics data fetched successfully:", response.data);
+
+        const formattedData = Object.entries(response.data).map(([date, count]) => ({
+          date,
+          count
+        }));
+
+        setAppDateData(formattedData);
+        console.log("Analytics data fetched successfully:", formattedData);
       } catch (error) {
         console.error("Error fetching analytics data:", error);
       }
     };
 
     fetchAppDateData();
-    
+
   }, []); // Notice the empty dependency array
 
   // const xAxisData = Object.keys(appDateData);
@@ -333,25 +350,147 @@ export const Analytics = () => {
   //     ],
   //   };
   // }
-  let chartData = null;
-  if (Array.isArray(appDateData) && appDateData.length > 0) {
-    chartData = {
-      xAxis: [
-        {
-          data: appDateData.map((entry) => entry.date), // Use dates for x-axis
-        },
-      ],
-      series: [
-        {
-          data: appDateData.map((entry) => entry.count), // Use counts for y-axis
-        },
-      ],
-      width: 1400,
-      height: 350,
-    };
-    console.log("Chart data:", chartData);
+  // let chartData = null;
+  // if (Array.isArray(appDateData) && appDateData.length > 0) {
+  //   chartData = {
+  //     xAxis: [
+  //       {
+  //         data: appDateData.map((entry) => entry.date), // Use dates for x-axis
+  //       },
+  //     ],
+  //     series: [
+  //       {
+  //         data: appDateData.map((entry) => entry.count), // Use counts for y-axis
+  //       },
+  //     ],
+  //     width: 1400,
+  //     height: 350,
+  //   };
+  //   console.log("Chart data:", chartData);
+  // }
+
+
+
+  const data = {
+    labels: appDateData.map((entry) => entry.date),
+    datasets: [
+      {
+        label: "Number of Appointments",
+        data: appDateData.map((entry) => entry.count),
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        backgroundColor: "transparent",
+        tension: 0.1,
+        borderWidth: 3,
+      }
+    ],
   }
-  
+
+  // const options = {
+  //   plugins: {
+  //     legend: {
+  //       labels: {
+  //         font: {
+  //           size: 16, // Increase font size
+  //         },
+  //       },
+  //     },
+  //   },
+  //   scales: {
+  //     x: {
+  //       title: {
+  //         display: true,
+  //         text: 'Date',
+  //         font: {
+  //           size: 16, // Increase font size
+  //         }
+  //       }
+  //     },
+  //     y: {
+  //       min: 1,
+  //       max: 10,
+  //       ticks: {
+  //         stepSize: 1,
+  //         callback: (value) => value,
+  //         font: {
+  //           size: 16, // Increase font size
+  //         }
+  //       },
+  //       grid: {
+  //         borderDash: [20]
+  //       },
+  //       title: {
+  //         display: true,
+  //         text: 'Number of Appointments',
+  //         font: {
+  //           size: 16, // Increase font size
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
+
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 20, // Increase font size
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+          font: {
+            size: 20, // Increase font size
+          },
+        },
+        ticks: {
+          stepSize: 4, // Set x-axis step size
+          autoSkip: true, // Enable auto-skipping of ticks
+          // maxRotation: 0, // Rotate x-axis labels if needed
+          padding: -10, // Adjust the padding between ticks
+          font: {
+            size: 18, // Increase tick font size
+          },
+        },
+        grid: {
+          display: false, // Hide x-axis grid lines
+          offset: true, // Adds spacing between the grid lines and the data
+        },
+      },
+      y: {
+        min: 0,
+        ticks: {
+          font: {
+            size: 20, // Increase tick font size
+          },
+        },
+        // grid: {
+        //   offset: true, // Adds spacing between the grid lines and the data
+        // },
+        title: {
+          display: true,
+          text: 'Number of Appointments',
+          font: {
+            size: 18, // Increase font size
+          },
+        },
+      },
+    },
+    layout: {
+      padding: {
+        left: -1000, // Increase left padding to stretch x-axis
+        right: -100, // Increase right padding to stretch x-axis
+      },
+    },
+  };
+
+
 
   return (
     <div className="background-table">
@@ -494,12 +633,16 @@ export const Analytics = () => {
         <br></br>
 
         <div className="flex">
-          <div style={{ width: "70%" }}>
+          <div style={{ width: "180%" }}>
             <div className="flex flex-col">
               {/* <p>Appointments By Day</p> */}
               <h2>Appointments Line Chart</h2>
 
-              {chartData ? <LineChart {...chartData} /> : <CircularProgress />}
+
+              <div className="d-flex justify-content-center" style={{ width: '100%', height: '280px', marginLeft: '20px' }}>
+                <Line data={data} options={options} style={{ width: '500px' }}></Line>
+              </div>
+              {/* {chartData ? <LineChart {...chartData} /> : <CircularProgress />} */}
 
               {/* <div>
               <div id="chart">

@@ -11,14 +11,23 @@ export const AddPatientDetails = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [patientInfo, setPatientInfo] = useState({
-        name: location.state.patientInfo.name,
-        mobileNo: location.state.patientInfo.mobileNo,
-        dob: location.state.patientInfo.dob,
-        gender: location.state.patientInfo.gender,
+        name: "",
+        mobileNo: "",
+        dob: "",
+        gender: "",
         bloodGroup: "",
         address: "",
-        abhaId: location.state.patientInfo.abhaId
+        abhaId: ""
     });
+    // const [patientInfo, setPatientInfo] = useState({
+    //     name: location.state.patientInfo.name,
+    //     mobileNo: location.state.patientInfo.mobileNo,
+    //     dob: location.state.patientInfo.dob,
+    //     gender: location.state.patientInfo.gender,
+    //     bloodGroup: "",
+    //     address: "",
+    //     abhaId: location.state.patientInfo.abhaId
+    // });
 
     // useEffect(() => {
     //     console.log('Location:', location.state.patientInfo);
@@ -60,6 +69,27 @@ export const AddPatientDetails = () => {
 
 
 
+    useEffect(() => {
+        // Check if patientInfo is available in location state
+        if (location.state && location.state.patientInfo) {
+            const { name, mobileNo, dob, gender, abhaId } = location.state.patientInfo;
+            // Update patientInfo state with the received data
+            setPatientInfo({
+                name,
+                mobileNo,
+                dob,
+                gender,
+                bloodGroup: "",
+                address: "",
+                abhaId
+            });
+        } else {
+            // Handle case where patientInfo is not provided
+            console.error("Patient info not provided in location state");
+        }
+    }, [location.state]);
+
+
     // Removed handleChange since it's not needed for read-only fields
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -95,6 +125,8 @@ export const AddPatientDetails = () => {
             setLoading(false);
         }
     };
+
+
 
     return (
         <div className="h-full flex justify-center items-center ">
