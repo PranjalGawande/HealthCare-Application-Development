@@ -16,4 +16,6 @@ public class DoctorListDTO {
     private String email;
     private String speciality;
     private boolean status;
+    private Integer tokenMax;
+    private Integer tokenNo;
 }

@@ -25,7 +25,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     @Query("UPDATE Doctor d SET d.speciality= :speciality, d.mobileNo= :mobileNo, d.experience= :experience, d.tokenMax= :tokenMax WHERE d.doctorId =:doctorId")
     void updateDoctor(@Param("doctorId") Integer doctorId, @Param("speciality") String speciality, @Param("mobileNo") String mobileNo,@Param("experience") Integer experience,@Param("tokenMax") Integer tokenMax);
 
-    @Query("SELECT new com.example.HAD.Backend.dto.DoctorListDTO(d.doctorId, d.name, l.email, d.speciality, l.status)" +
+    @Query("SELECT new com.example.HAD.Backend.dto.DoctorListDTO(d.doctorId, d.name, l.email, d.speciality, l.status, d.tokenMax, d.tokenNo)" +
             "FROM Doctor d JOIN d.login l")
     List<DoctorListDTO> getDoctors();
 

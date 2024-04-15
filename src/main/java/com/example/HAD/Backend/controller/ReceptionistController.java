@@ -517,7 +517,7 @@ public class ReceptionistController {
 
         int tokenNo = doctor.generateToken();
         if (tokenNo == 0) {
-            return ResponseEntity.ok().body("Doctor appointment is full for today");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Doctor appointment is full for today");
         }
         appointment.setTokenNo(tokenNo);
 
