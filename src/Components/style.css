@@ -186,6 +186,20 @@
   transform: translateY(-2px);
 }
 
+.background-table {
+  background-image: linear-gradient(to right bottom, #ebf1fa, #d8f2ff, #bdf5ff, #9cf8ff, #7bfbff);
+  min-height: 122vh;
+}
+
+table {
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  font-size: 20px;
+}
+
+td {
+  height: 60px;
+}
+
 .profile-btn {
   /* height: 50px; */
   padding: .5em 1.5em;

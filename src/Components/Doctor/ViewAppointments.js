@@ -72,19 +72,24 @@ export const ViewAppointments = () => {
   const leastTokenAppointment = sortedAppointments?.[0];
 
   return (
-    <div className="container mt-10">
-      <h1>Doctor Appointments</h1>
-      <div>
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th>Token No</th>
-              <th>Time</th>
-              <th>Reason for Visit</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-            <tbody>
+    <div className="container-fluid background-table">
+      <div className="container pt-5">
+        <h1
+          style={{ fontSize: "4rem", fontWeight: "bold", textAlign: "center", marginBottom: "4rem" }}
+        >
+          Doctor Appointments
+        </h1>
+        <div>
+          <table className="table table-hover">
+            <thead >
+              <tr>
+                <th>Token No</th>
+                <th>Time</th>
+                <th>Reason for Visit</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody className="table-group-divider">
               {sortedAppointments.map((appointment) => (
                 <tr key={appointment.tokenNo}>
                   <td>{appointment.tokenNo}</td>
@@ -112,7 +117,8 @@ export const ViewAppointments = () => {
                 </tr>
               ))}
             </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   );
