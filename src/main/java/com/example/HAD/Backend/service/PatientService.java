@@ -25,31 +25,13 @@ public class PatientService {
     public void addPatient(Patient patient) {
         Patient existingPatient = patientRepository.findPatientByAbhaId(patient.getAbhaId());
         if (existingPatient != null) {
-            // Ensure we are updating not inserting a new entry
-//            patient.setPatientId(existingPatient.getPatientId());
-//
-//            // Compare and update fields only if they differ and are not null
-//            if (existingPatient.getName() == null && patient.getName() != null) {
-//                existingPatient.setName(patient.getName());
-//            }
-//            if (existingPatient.getMobileNo() == null && patient.getMobileNo() != null) {
-//                existingPatient.setMobileNo(patient.getMobileNo());
-//            }
-//            if (existingPatient.getDob() == null && patient.getDob() != null) {
-//                existingPatient.setDob(patient.getDob());
-//            }
-//            if (existingPatient.getGender() == null && patient.getGender() != null) {
-//                existingPatient.setGender(patient.getGender());
-//            }
             if (patient.getBloodGroup() == null || !patient.getBloodGroup().equals(existingPatient.getBloodGroup())) {
                 existingPatient.setBloodGroup(patient.getBloodGroup());
             }
             if (patient.getAddress() == null || !patient.getAddress().equals(existingPatient.getAddress())) {
                 existingPatient.setAddress(patient.getAddress());
             }
-
             // No need to check accessToken since it's not passed and shouldn't be overwritten
-
             // Persist the updated existing patient
             patientRepository.save(existingPatient);
         } else {
@@ -108,7 +90,7 @@ public class PatientService {
         return patientCountByGender;
     }
 
-    public void updateAbhaAddress(String abhaId, String accessToken) {
-        patientRepository.updateAbhaAddress(abhaId, accessToken);
-    }
+//    public void updateAbhaAddress(String abhaId, String accessToken) {
+//        patientRepository.updateAbhaAddress(abhaId, accessToken);
+//    }
 }

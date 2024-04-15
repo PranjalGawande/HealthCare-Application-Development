@@ -1,6 +1,7 @@
 package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.dto.ExtraDTO;
+import com.example.HAD.Backend.dto.PatientDto;
 import com.example.HAD.Backend.dto.StaffDTO;
 import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.DoctorListDTO;
@@ -83,6 +84,7 @@ public class ReceptionistController {
         patientService.addPatient(patient);
         return ResponseEntity.ok().body("Successfully added New Patient Record");
     }
+
 
 // ---------------------------------------------------
 
@@ -489,9 +491,16 @@ public class ReceptionistController {
 
     @PostMapping("/patientDetails")
     @PreAuthorize("hasAuthority('receptionist:get')")
-    public ResponseEntity<Patient> getPatientRecord(@RequestBody ExtraDTO extraDTO) {
-        Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
-        return ResponseEntity.ok().body(patient);
+    public ResponseEntity<?> getPatientRecord(@RequestBody PatientDto patientDto) {
+        String abhaId = patientDto.getAbhaId();
+        if (abhaId == null || abhaId.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("ABHA ID must be provided.");
+        }
+        Patient patient = patientService.getPatientByAbhaId(abhaId);
+        if (patient == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No patient found with ABHA ID: " + abhaId);
+        }
+        return ResponseEntity.ok().body(new PatientDto(patient));
     }
 
     @PostMapping("/addAppointment")

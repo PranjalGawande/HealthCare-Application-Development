@@ -1,10 +1,8 @@
 package com.example.HAD.Backend.entities;
+import com.example.HAD.Backend.dto.PatientDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString(exclude = "appointments")
 @Entity
 @Table(name = "patient")
 public class Patient {
@@ -50,4 +49,14 @@ public class Patient {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")
     private List<Appointment> appointments = new ArrayList<>();
+
+    public Patient(PatientDto patient) {
+        this.name = patient.getName();
+        this.mobileNo = patient.getMobileNo();
+        this.dob = patient.getDob();
+        this.gender = patient.getGender();
+        this.bloodGroup = patient.getBloodGroup();
+        this.address = patient.getAddress();
+        this.abhaId = patient.getAbhaId();
+    }
 }

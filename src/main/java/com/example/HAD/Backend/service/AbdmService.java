@@ -108,7 +108,7 @@ public class AbdmService {
         query.put("authMode", "MOBILE_OTP");
         Map<String, String> requester = new HashMap<>();
         requester.put("type", "HIP");
-        requester.put("id", "IN0610089593");
+        requester.put("id", "H_01");
         query.put("requester", requester);
 
         Map<String, Object> requestBody = new HashMap<>();

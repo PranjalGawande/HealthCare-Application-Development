@@ -6,7 +6,10 @@ import com.example.HAD.Backend.service.PatientService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
-import org.aspectj.apache.bcel.util.ClassLoaderRepository;
+import org.aspectj.asm.IProgramElement;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,20 +24,18 @@ import java.util.Map;
 @CrossOrigin("http://localhost:9191")
 public class WebhookController {
 
-    private String txnId = null;
+    private JSONObject resultJson = null;
 
     private Map<String, String> patientData = null;
 
     @Autowired
-    private SseController sseController;
-
-    @Autowired
-    private AbdmService abdmService;
-
-    @Autowired
     private PatientService patientService;
+
+//    @Autowired
+//    private SseController sseController;
+
     @PostMapping("/v0.5/users/auth/on-fetch-modes")
-    public void authFetchModes(@RequestBody Map<String, Object> body, HttpSession session) throws JsonProcessingException {
+    public void authFetchModes(@RequestBody Map<String, Object> body) throws JsonProcessingException {
         if (body == null || body.containsKey("error")) {
             System.out.println("An error occurred while processing the Aadhaar OTP request.");
             return;
@@ -45,145 +45,151 @@ public class WebhookController {
     }
 
     @PostMapping("/v0.5/users/auth/on-init")
-    public ResponseEntity<?> userAuthInit(@RequestBody Map<String, Object> body, HttpSession session) {
-        if (body == null || body.containsKey("error") && body.get("error") != null) {
-            System.out.println("Error processing the request");
-//            sseController.sendToClients("error", "Error processing the request");
-            return ResponseEntity.badRequest().body("Error processing the request");
-        }
-
+    public void userAuthInit(@RequestBody String body) {
         try {
-            Map<String, Object> authMap = (Map<String, Object>) body.get("auth");
-            if (authMap == null) {
-                System.out.println("The 'auth' section is missing in the response.");
-                return ResponseEntity.badRequest().body("Missing 'auth' section in the request");
+            resultJson = new JSONObject();
+            if (body == null) {
+                System.err.println("ABDM Server did not send any response...");
+
+                resultJson.put("transactionId", JSONObject.NULL);
+                JSONObject errorObject = new JSONObject();
+                errorObject.put("code", 911);
+                errorObject.put("message", "ABDM Server did not send any response...");
+                resultJson.put("error", errorObject);
+            } else {
+                JSONObject jsonObject = new JSONObject(body);
+                JSONObject auth = jsonObject.optJSONObject("auth");
+                if (auth != null) {
+                    String transactionId = auth.getString("transactionId");
+                    System.out.println("TransactionId as received by authOnInit callback api: " + transactionId);
+
+                    resultJson.put("transactionId", transactionId);
+                    resultJson.put("error", JSONObject.NULL);
+                } else {
+                    JSONObject error = jsonObject.getJSONObject("error");
+                    String errorCode = error.getString("code");
+                    String errorMessage = error.getString("message");
+                    System.err.println("Error Code: " + errorCode + " received with message " + errorMessage);
+
+                    resultJson.put("transactionId", JSONObject.NULL);
+                    JSONObject errorObject = new JSONObject();
+                    errorObject.put("code", errorCode);
+                    errorObject.put("message", errorMessage);
+                    resultJson.put("error", errorObject);
+                }
+                System.out.println("Printed from <userAuthInit>" + resultJson.toString());
             }
-
-            txnId = (String) authMap.get("transactionId");
-            if (txnId == null || txnId.isEmpty()) {
-                System.out.println("Transaction ID is missing in the response.");
-                return ResponseEntity.badRequest().body("Transaction ID is missing");
-            }
-
-//            transactionIdDTO = new TransactionIdDTO();
-//            transactionIdDTO.setTransactionId(txnId);
-
-            System.out.println("txnId: " + txnId);
-            System.out.println("OTP has been sent to your registered mobile number...");
-//            sseController.sendToClients("transactionId", txnId);
-            return ResponseEntity.ok().body(Map.of("transactionId", txnId));
-        } catch (ClassCastException e) {
-            System.out.println("An error occurred due to incorrect data format.");
-            return ResponseEntity.badRequest().body("Incorrect data format");
-        } catch (Exception e) {
-            System.out.println("An error occurred while processing the verification OTP request.");
-            return ResponseEntity.status(500).body("Internal server error");
+        } catch (JSONException je) {
+            System.err.println(je.getMessage());
         }
     }
 
     @GetMapping("/getTransactionId")
     public ResponseEntity<?> getTransactionId() {
-        return ResponseEntity.ok().body(Map.of("transactionId", txnId));
-    }
-
-    @PostMapping("/v0.5/users/auth/on-confirm")
-    public ResponseEntity<?> confirmAuthInit(@RequestBody Map<String, Object> body, HttpSession session) {
-        if (body == null || body.containsKey("error") && body.get("error") != null) {
-            System.out.println("An error occurred during the authentication process.");
-            return ResponseEntity.badRequest().body("Authentication process error.");
-        }
-
         try {
-            Map<String, Object> auth = (Map<String, Object>) body.get("auth");
-            if (auth == null) {
-                System.out.println("Auth is missing.");
-                return ResponseEntity.badRequest().body("Auth is missing.");
+            System.out.println("Printed from <getTransactionId>: " + (resultJson != null ? resultJson.toString() : "null"));
+
+            if (resultJson == null) {
+                JSONObject errorResponse = new JSONObject();
+                errorResponse.put("error", "Webhooks.site is not receiving callbacks!!!");
+                errorResponse.put("transactionId", JSONObject.NULL);
+                return ResponseEntity.badRequest().body(errorResponse.toString());
             }
-            String accessToken = (String) auth.get("accessToken");
-
-            Map<String, Object> patientInfo = (Map<String, Object>) auth.get("patient");
-            if (patientInfo == null) {
-                System.out.println("Patient information is missing.");
-                return ResponseEntity.badRequest().body("Patient information is missing.");
-            }
-            String abhaAddress = (String) patientInfo.get("id");
-            String name = (String) patientInfo.get("name");
-            String gender = (String) patientInfo.get("gender");
-            Integer yearOfBirth = (Integer) patientInfo.get("yearOfBirth");
-            Integer monthOfBirth = (Integer) patientInfo.get("monthOfBirth");
-            Integer dayOfBirth = (Integer) patientInfo.get("dayOfBirth");
-
-            List<Map<String, Object>> identifiers = (List<Map<String, Object>>) patientInfo.get("identifiers");
-            if (identifiers == null) {
-                System.out.println("Patient Identifier information is missing.");
-                return ResponseEntity.badRequest().body("Patient Identifier information is missing.");
-            }
-            String mobileNumber = null;
-            String abhaNumber = null;
-            for (Map<String, Object> identifier : identifiers) {
-                if ("MOBILE".equals(identifier.get("type"))) {
-                    mobileNumber = (String) identifier.get("value");
-                } else if ("NDHM_HEALTH_NUMBER".equals(identifier.get("type"))) {
-                    abhaNumber = (String) identifier.get("value");
-                }
-            }
-            if (mobileNumber == null || abhaNumber == null) {
-                System.out.println("Patient mobile number or abha number is missing.");
-                return ResponseEntity.badRequest().body("Patient mobile number or abha number is missing.");
-            }
-
-            if (yearOfBirth == null || monthOfBirth == null || dayOfBirth == null) {
-                System.out.println("Date of birth components are missing.");
-                return ResponseEntity.badRequest().body("Date of birth components are missing.");
-            }
-            LocalDate dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            String dob = dateOfBirth.format(formatter);
-
-            ObjectMapper mapper = new ObjectMapper();
-            System.out.println(mapper.writeValueAsString(Map.of(
-                    "accessToken", accessToken,
-                    "abhaNumber", abhaNumber,
-                    "abhaAddress", abhaAddress,
-                    "name", name,
-                    "gender", gender,
-                    "dateOfBirth", dob,
-                    "mobileNumber", mobileNumber
-            )));
-
-            Patient patient = new Patient();
-            patient.setName(name);
-            patient.setAbhaId(abhaAddress);
-            patient.setMobileNo(mobileNumber);
-            patient.setDob(dateOfBirth);
-            patient.setGender(gender);
-            patient.setAccessToken(accessToken);
-            patientService.addPatient(patient);
-
-            patientData = Map.of(
-                    "abhaNumber", abhaNumber,
-                    "abhaAddress", abhaAddress,
-                    "name", name,
-                    "gender", gender,
-                    "dateOfBirth", dob,
-                    "mobileNumber", mobileNumber
-            );
-
-//            sseController.sendToClients("patientData", patientData);
-            System.out.println("From on-confirm" + patientData);
-//            patientService.updateAbhaAddress(abhaAddress, accessToken);
-            // Return all relevant information to the frontend
-            return ResponseEntity.ok().body("Patient data processed and sent");
-
-        } catch (ClassCastException | DateTimeException | NullPointerException | JsonProcessingException e) {
-            System.out.println("Failed to process patient data: " + e.getMessage());
-            return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
+            return ResponseEntity.ok(resultJson.toString());
+        } catch (JSONException je) {
+            System.err.println(je.getMessage());
+            return ResponseEntity.internalServerError().body("{\"error\": \"Critical JSON processing error...\"}");
         }
     }
+    @PostMapping("/v0.5/users/auth/on-confirm")
+    public void confirmAuthInit(@RequestBody Map<String, Object> body) {
 
-    @GetMapping("/getPatientInfo")
-    public ResponseEntity<?> getPatientInfo() {
-        System.out.println("From getPatientInfo" + patientData);
-        return ResponseEntity.ok().body(patientData);
+            try {
+                if (body == null) {
+                    System.err.println("ABDM Server did not send any response...");
+
+                    resultJson.put("transactionId", JSONObject.NULL);
+                    JSONObject errorObject = new JSONObject();
+                    errorObject.put("code", 911);
+                    errorObject.put("message", "ABDM Server did not send any response...");
+                    resultJson.put("error", errorObject);
+                } else {
+
+                    JSONObject requestBody = new JSONObject(body);
+
+                    JSONObject auth = requestBody.optJSONObject("auth");
+                    if (auth == null) {
+                        System.err.println("Auth is missing in ABDM response DB ot updated...");
+                    } else {
+
+                        String accessToken = auth.optString("accessToken");
+
+                        JSONObject patientInfo = auth.optJSONObject("patient");
+                        if (patientInfo == null) {
+                            System.err.println("Patient information is missing...");
+                        }
+                        String abhaAddress = patientInfo != null ? patientInfo.optString("id") : null;
+                        String name = patientInfo != null ? patientInfo.optString("name") : null;
+                        String gender = patientInfo != null ? patientInfo.optString("gender") : null;
+                        int yearOfBirth = patientInfo != null ? patientInfo.optInt("yearOfBirth") : 0;
+                        int monthOfBirth = patientInfo != null ? patientInfo.optInt("monthOfBirth") : 0;
+                        int dayOfBirth = patientInfo != null ? patientInfo.optInt("dayOfBirth") : 0;
+
+                        JSONArray identifiers = patientInfo != null ? patientInfo.optJSONArray("identifiers") : null;
+                        if (identifiers == null) {
+                            System.err.println("Patient Identifier information is missing...");
+                        }
+                        String mobileNumber = null;
+                        String abhaNumber = null;
+                        for (int i = 0; i < (identifiers != null ? identifiers.length() : 0); i++) {
+                            JSONObject identifier = identifiers.getJSONObject(i);
+                            if ("MOBILE".equals(identifier.getString("type"))) {
+                                mobileNumber = identifier.getString("value");
+                            } else if ("NDHM_HEALTH_NUMBER".equals(identifier.getString("type"))) {
+                                abhaNumber = identifier.getString("value");
+                            }
+                        }
+                        if (mobileNumber == null || abhaNumber == null) {
+                            System.err.println("Patient mobile number or abha number is missing...");
+                        }
+
+                        if (yearOfBirth == 0 || monthOfBirth == 0 || dayOfBirth == 0) {
+                            System.err.println("Date of birth components are missing...");
+                        }
+                        LocalDate dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        String dob = dateOfBirth.format(formatter);
+
+//                        JSONObject patientData = new JSONObject();
+//                        patientData.put("accessToken", accessToken);
+//                        patientData.put("abhaNumber", abhaNumber);
+//                        patientData.put("abhaAddress", abhaAddress);
+//                        patientData.put("name", name);
+//                        patientData.put("gender", gender);
+//                        patientData.put("dateOfBirth", dob);
+//                        patientData.put("mobileNumber", mobileNumber);
+
+
+                        // Assuming Patient is a model managed by patientService
+                        Patient patient = new Patient();
+                        patient.setName(name);
+                        patient.setAbhaId(abhaAddress);
+                        patient.setMobileNo(mobileNumber);
+                        patient.setDob(dateOfBirth);
+                        patient.setGender(gender);
+                        patient.setAccessToken(accessToken);
+                        System.out.println("From on-confirm: " + patient);
+                        patientService.addPatient(patient);
+                    }
+                }
+            } catch (JSONException je) {
+                System.err.println("Failed to process patient data: " + je.getMessage());
+            }
     }
+
+//    @GetMapping("/getPatientInfo")
+//    public ResponseEntity<?> getPatientInfo() {
+//        System.out.println("From getPatientInfo" + patientData);
+//        return ResponseEntity.ok().body(patientData);
+//    }
 }
