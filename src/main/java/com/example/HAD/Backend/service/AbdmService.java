@@ -1,5 +1,9 @@
 package com.example.HAD.Backend.service;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -7,11 +11,24 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
+import java.net.http.HttpRequest;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class AbdmService {
+
+    @Autowired
+    private AbdmSessionService abdmSessionService;
+
     private final RestTemplate restTemplate = new RestTemplate();
 
     public Map<String, Object> verifyMobile(String mobileNo, String txnID, String bearerToken) {
@@ -75,6 +92,148 @@ public class AbdmService {
         }
         // Return null or a specific error indicator if the transaction is unsuccessful
         return null;
+    }
+
+    public String getEncryptionKeys() {
+        System.out.println("GETTING-ENCRYPTION-KEYS");
+        String requestBody =  "";
+        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8090/keys/generate"))
+                .method("GET", java.net.http.HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = null;
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("RESPONSE : "+ response.body());
+            return response.body();
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String getEncryptedData(String bundleString, String publicKey, String nonce, String hipPublicKey, String hipPrivateKey, String hipNonce) throws JSONException {
+        System.out.println("GET-ENCRYPTED DATA: ");
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("receiverPublicKey", publicKey);
+        jsonObject.put("receiverNonce", nonce);
+        jsonObject.put("senderPrivateKey", hipPrivateKey);
+        jsonObject.put("senderPublicKey", hipPublicKey);
+        jsonObject.put("senderNonce", hipNonce);
+        jsonObject.put("plainTextData", bundleString);
+
+        String requestBody =  jsonObject.toString();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8090/encrypt"))
+                .method("POST",HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = null;
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("RESPONSE ENCRYPTED: "+ response.body().length());
+            return response.body();
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
+    public void sendEncryptedData(String dataPushUrl, String encryptedResponse, String nonce, List<Integer> careContextReference) throws Exception {
+        System.out.println("SEND-ENCRYPTED DATA: ");
+
+        JSONObject encryptedObject = new JSONObject(encryptedResponse);
+
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("pageNumber", 0);
+        jsonObject.put("pageCount", 0);
+        jsonObject.put("transactionId", UUID.randomUUID().toString());
+
+        JSONArray entries = new JSONArray();
+
+        JSONObject entryJson = new JSONObject();
+        entryJson.put("content", encryptedObject.get("encryptedData"));
+        entryJson.put("media","application/fhir+json");
+        entryJson.put("checksum", "string");
+        entryJson.put("careContextReference",careContextReference.get(0));
+
+        entries.put(entryJson);
+
+        JSONObject keyMaterial = new JSONObject();
+        keyMaterial.put("cryptoAlg","ECDH");
+        keyMaterial.put("curve","Curve25519");
+
+        JSONObject dhPublicKey = new JSONObject();
+        dhPublicKey.put("expiry", LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ISO_DATE_TIME));
+        dhPublicKey.put("parameters", "Curve25519/32byte random key");
+        dhPublicKey.put("keyValue", encryptedObject.get("keyToShare"));
+
+        keyMaterial.put("dhPublicKey", dhPublicKey);
+        keyMaterial.put("nonce", nonce);
+
+        jsonObject.put("entries", entries);
+        jsonObject.put("keyMaterial", keyMaterial);
+
+        String authToken = abdmSessionService.getToken();
+
+        String requestBody = jsonObject.toString();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(dataPushUrl))
+                .method("POST",HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + authToken)
+                .build();
+
+        HttpResponse<String> response = null;
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("RESPONSE ENCRYPTED LENGTH: "+ response.body().length());
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendHipOnRequest(String requestId, String transactionId) throws Exception {
+
+        System.out.println("SEND-ACKNOWLEDGEMENT FOR HIP REQUEST: ");
+        try {
+            JSONObject response = new JSONObject();
+            response.put("requestId", UUID.randomUUID().toString());
+            response.put("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+
+            JSONObject hiRequest = new JSONObject();
+            hiRequest.put("transactionId", transactionId);
+            hiRequest.put("sessionStatus", "ACKNOWLEDGED");
+
+            JSONObject resp = new JSONObject();
+            resp.put("requestId", requestId);
+
+            response.put("hiRequest", hiRequest);
+            response.put("resp", resp);
+
+            String authToken = abdmSessionService.getToken();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(authToken);
+            headers.set("X-CM-ID", "sbx");
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<String> entity = new HttpEntity<>(response.toString(), headers);
+            ResponseEntity<String> acknowledgment = restTemplate.exchange("https://dev.abdm.gov.in/gateway/v0.5/health-information/hip/on-request", HttpMethod.POST, entity, String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isValidABHAAddress(String abhaAddress) {
@@ -199,5 +358,52 @@ public class AbdmService {
 
         // Return false if an exception occurred or if the response status is not 202
         return false;
+    }
+
+    public void sendTransferStatus(String transactionId, String consentId, Integer careContextReference) {
+        System.out.println("SEND-ACKNOWLEDGEMENT FOR HIP REQUEST: ");
+        try {
+            JSONObject notification = new JSONObject();
+
+            notification.put("careContextReference", careContextReference);
+            notification.put("hiStatus", "OK");
+            notification.put("description", "string");
+
+            JSONObject statusNotification = new JSONObject();
+            statusNotification.put("sessionStatus", "TRANSFERRED");
+
+            // Value is hard coded for Now.
+            statusNotification.put("hipId", "919");
+            statusNotification.put("statusResponses", new JSONObject[]{notification});
+
+            JSONObject notifier = new JSONObject();
+            notifier.put("type", "HIP");
+            // Value is hard coded for Now.
+            notifier.put("id", "919");
+
+            JSONObject json = new JSONObject();
+            json.put("requestId", UUID.randomUUID().toString());
+            json.put("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            json.put("notification", notification);
+            json.put("consentId", consentId);
+            json.put("transactionId", transactionId);
+            json.put("doneAt", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            json.put("notifier", notifier);
+            json.put("statusNotification", statusNotification);
+
+            String authToken = abdmSessionService.getToken();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(authToken);
+            headers.set("X-CM-ID", "sbx");
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<String> entity = new HttpEntity<>(json.toString(), headers);
+            ResponseEntity<String> acknowledgment = restTemplate.exchange("https://dev.abdm.gov.in/gateway/v0.5/health-information/notify", HttpMethod.POST, entity, String.class);
+            System.out.println(acknowledgment);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

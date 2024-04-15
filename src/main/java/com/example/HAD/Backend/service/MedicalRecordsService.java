@@ -24,4 +24,8 @@ public class MedicalRecordsService {
     public List<MedicalRecords> getPatientHistory(Integer patientId) {
         return medicalRecordsRepository.getPatientMedicalHistory(patientId);
     }
+
+    public MedicalRecords getPatientConsultationRecord(Integer appointmentId) {
+        return medicalRecordsRepository.findPatientMedicalRecord(appointmentId);
+    }
 }

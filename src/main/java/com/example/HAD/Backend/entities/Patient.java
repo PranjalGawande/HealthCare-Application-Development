@@ -3,6 +3,8 @@ import com.example.HAD.Backend.dto.PatientDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.ResourceType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

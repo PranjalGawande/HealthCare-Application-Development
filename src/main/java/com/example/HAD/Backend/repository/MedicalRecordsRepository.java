@@ -18,4 +18,7 @@ public interface MedicalRecordsRepository extends JpaRepository<MedicalRecords, 
     @Query("SELECT m FROM MedicalRecords m WHERE m.appointment.appointmentId IN " +
             "(SELECT a.appointmentId FROM Appointment a WHERE a.patient.patientId =:patientId)")
     List<MedicalRecords> getPatientMedicalHistory(Integer patientId);
+
+    @Query("SELECT mr FROM MedicalRecords mr WHERE mr.appointment.appointmentId=:appointmentId")
+    MedicalRecords findPatientMedicalRecord(Integer appointmentId);
 }
