@@ -69,7 +69,10 @@ const ViewStaff = () => {
   };
 
   return (
-    <div className="container mt-10">
+    <div className="background-table">
+    <div className="container pt-5">
+    <h2 style={{ fontSize: "4rem", fontWeight: "bold", textAlign: "center", marginBottom: "4rem" }}>RECEPTIONISTS LIST</h2>
+
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -110,6 +113,7 @@ const ViewStaff = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };

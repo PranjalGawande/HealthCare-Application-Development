@@ -2,6 +2,7 @@ import React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { LineChart } from "@mui/x-charts/LineChart";
+import { Line } from "react-chartjs-2";
 
 import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
@@ -52,7 +53,8 @@ export const Analytics = () => {
   const [appSpecData, setAppSpecData] = useState(""); // State to store appointment speciality data
   const [patientAgeData, setPatientAgeData] = useState(""); // State to store patient age data
   const [patientGenderData, setPatientGenderData] = useState(""); // State to store
-  const [appDateData, setAppDateData] = useState(""); // State to store
+  // const [appDateData, setAppDateData] = useState(""); // State to store
+  const [appDateData, setAppDateData] = useState([]);
 
   // const [loading, setLoading] = useState(true); // State to manage loading state
 
@@ -156,7 +158,30 @@ export const Analytics = () => {
     fetchPatientAgeData(); // Call the function to fetch analytics data when the component mounts
   }, []); // Empty dependency array ensures the effect runs only once after the component mounts
 
+  useEffect(() => {
+    // Function to fetch analytics data from the backend API
+    const fetchPatientGenderData = async () => {
+      try {
+        const token = localStorage.getItem("token"); // Retrieve the token from local storage
+        const response = await axios.get(
+          "http://localhost:9191/admin/patient-count-by-gender",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include the token in the request headers
+            },
+          }
+        );
+        setPatientGenderData(response.data); // Set the analytics data in state
+        console.log("Analytics data fetched successfully:", response.data);
+      } catch (error) {
+        console.error("Error fetching analytics data:", error);
+        // setLoading(false); // Update loading state in case of error
+      }
+    };
+    // console.log("Analytics data fetched successfully:", analyticsData);
 
+    fetchPatientGenderData(); // Call the function to fetch analytics data when the component mounts
+  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
 
   useEffect(() => {
     // Function to fetch analytics data from the backend API
@@ -183,188 +208,345 @@ export const Analytics = () => {
     fetchPatientGenderData(); // Call the function to fetch analytics data when the component mounts
   }, []); // Empty dependency array ensures the effect runs only once after the component mounts
 
+  // useEffect(() => {
+  //   // Function to fetch analytics data from the backend API
+  //   const fetchAppDateData = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token"); // Retrieve the token from local storage
+  //       const response = await axios.get(
+  //         "http://localhost:9191/admin/appointment-count-by-day",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`, // Include the token in the request headers
+  //           },
+  //         }
+  //       );
+  //       setAppDateData(response.data); // Set the analytics data in state
+  //       console.log("Analytics data fetched successfully:", response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching analytics data:", error);
+  //       // setLoading(false); // Update loading state in case of error
+  //     }
+  //   };
+  //   // console.log("Analytics data fetched successfully:", analyticsData);
 
+  //   fetchAppDateData(); // Call the function to fetch analytics data when the component mounts
+  // }, []); // Empty dependency array ensures the effect runs only once after the component mounts
 
+  // useEffect(() => {
+  //   const fetchAppDateData = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(
+  //         "http://localhost:9191/admin/appointment-count-by-day",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       setAppDateData(response.data);
+  //       console.log("Analytics data fetched successfully:", response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching analytics data:", error);
+  //     }
+  //   };
+
+  //   fetchAppDateData();
+  // }, []);
+
+  // useEffect(() => {
+  //   const fetchAppDateData = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(
+  //         "http://localhost:9191/admin/appointment-count-by-day",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       setAppDateData(response.data);
+  //       console.log("Analytics data fetched successfully:", response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching analytics data:", error);
+  //     }
+  //   };
+
+  //   fetchAppDateData();
+  // }, []);
 
   useEffect(() => {
-    // Function to fetch analytics data from the backend API
-    const fetchPatientGenderData = async () => {
-      try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
-        const response = await axios.get(
-          "http://localhost:9191/admin/patient-count-by-gender",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
-            },
-          }
-        );
-        setPatientGenderData(response.data); // Set the analytics data in state
-        console.log("Analytics data fetched successfully:", response.data);
-      } catch (error) {
-        console.error("Error fetching analytics data:", error);
-        // setLoading(false); // Update loading state in case of error
-      }
-    };
-    // console.log("Analytics data fetched successfully:", analyticsData);
-
-    fetchPatientGenderData(); // Call the function to fetch analytics data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
-
-
-
-  useEffect(() => {
-    // Function to fetch analytics data from the backend API
     const fetchAppDateData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
+        const token = localStorage.getItem("token");
         const response = await axios.get(
           "http://localhost:9191/admin/appointment-count-by-day",
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
+              Authorization: `Bearer ${token}`,
             },
           }
         );
-        setAppDateData(response.data); // Set the analytics data in state
+        setAppDateData(response.data);
         console.log("Analytics data fetched successfully:", response.data);
       } catch (error) {
         console.error("Error fetching analytics data:", error);
-        // setLoading(false); // Update loading state in case of error
       }
     };
-    // console.log("Analytics data fetched successfully:", analyticsData);
 
-    fetchAppDateData(); // Call the function to fetch analytics data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
+    fetchAppDateData();
+    
+  }, []); // Notice the empty dependency array
 
+  // const xAxisData = Object.keys(appDateData);
+  // console.log(xAxisData);
+  // const seriesData = Object.values(appDateData);
+  // console.log(seriesData);
 
+  // const chartData = {
+  //   labels: appDateData.map((entry) => entry.date),
+  //   datasets: [
+  //     {
+  //       label: "Number of Appointments",
+  //       data: appDateData.map((entry) => entry.count),
+  //       fill: false,
+  //       borderColor: "rgb(75, 192, 192)",
+  //       tension: 0.1,
+  //     },
+  //   ],
+  // };
 
-
-
-
-
+  // let chartData = null;
+  // if (Array.isArray(appDateData) && appDateData.length > 0) {
+  //   chartData = {
+  //     labels: appDateData.map((entry) => entry.date),
+  //     datasets: [
+  //       {
+  //         label: "Number of Appointments",
+  //         data: appDateData.map((entry) => entry.count),
+  //         fill: false,
+  //         borderColor: "rgb(75, 192, 192)",
+  //         tension: 0.1,
+  //       },
+  //     ],
+  //   };
+  // }
+  let chartData = null;
+  if (Array.isArray(appDateData) && appDateData.length > 0) {
+    chartData = {
+      xAxis: [
+        {
+          data: appDateData.map((entry) => entry.date), // Use dates for x-axis
+        },
+      ],
+      series: [
+        {
+          data: appDateData.map((entry) => entry.count), // Use counts for y-axis
+        },
+      ],
+      width: 1400,
+      height: 350,
+    };
+    console.log("Chart data:", chartData);
+  }
+  
 
   return (
-    <div className="m-3">
-      <div className="flex gap-3 w-full">
-        <Card variant="solid" color="success" invertedColors className="w-full">
-          <CardContent
-            orientation="horizontal"
-            style={{ display: "flex", alignItems: "center" }}
+    <div className="background-table">
+      <div className="pt-3 mx-3">
+        <div className="flex gap-3 w-full">
+          <Card
+            variant="solid"
+            color="success"
+            invertedColors
+            className="w-full"
+            style={{
+              height: "150px",
+              background: "linear-gradient(to right, #4FACFE, #00F2FE)",
+            }}
           >
-            <CircularProgress size="lg" determinate value={20}>
-              <SvgIcon>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
+            <CardContent
+              orientation="horizontal"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <CircularProgress size="lg" determinate value={20}>
+                <SvgIcon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+                    />
+                  </svg>
+                </SvgIcon>
+              </CircularProgress>
+              <CardContent style={{ textAlign: "center" }}>
+                <Typography
+                  level="h4"
+                  style={{ fontSize: "1.5rem", textAlign: "center" }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-                  />
-                </svg>
-              </SvgIcon>
-            </CircularProgress>
-            <CardContent style={{ textAlign: "center" }}>
-              <Typography
-                level="h4"
-                style={{ fontSize: "1.5rem", textAlign: "center" }}
-              >
-                Total Registered Patients
-              </Typography>
-              <Typography level="h2">{analyticsData.totalPatients}</Typography>
+                  Total Registered Patients
+                </Typography>
+                <Typography level="h2">
+                  {analyticsData.totalPatients}
+                </Typography>
+              </CardContent>
             </CardContent>
-          </CardContent>
-        </Card>
+          </Card>
 
-        <Card variant="solid" color="danger" invertedColors className="w-full">
-          <CardContent
-            orientation="horizontal"
-            style={{ display: "flex", alignItems: "center" }}
+          <Card
+            variant="solid"
+            color="danger"
+            invertedColors
+            className="w-full"
+            style={{
+              height: "150px",
+              background: "linear-gradient(to right, #4FACFE, #00F2FE)",
+            }}
           >
-            <CircularProgress size="lg" determinate value={20}>
-              <SvgIcon>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
+            <CardContent
+              orientation="horizontal"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <CircularProgress size="lg" determinate value={20}>
+                <SvgIcon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+                    />
+                  </svg>
+                </SvgIcon>
+              </CircularProgress>
+              <CardContent style={{ textAlign: "center" }}>
+                <Typography
+                  level="h4"
+                  style={{ fontSize: "1.5rem", textAlign: "center" }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-                  />
-                </svg>
-              </SvgIcon>
-            </CircularProgress>
-            <CardContent style={{ textAlign: "center" }}>
-              <Typography
-                level="h4"
-                style={{ fontSize: "1.5rem", textAlign: "center" }}
-              >
-                Total Registered Receptionists
-              </Typography>
-              <Typography level="h2">
-                {analyticsData.totalReceptionists}
-              </Typography>
+                  Total Registered Receptionists
+                </Typography>
+                <Typography level="h2">
+                  {analyticsData.totalReceptionists}
+                </Typography>
+              </CardContent>
             </CardContent>
-          </CardContent>
-        </Card>
+          </Card>
 
-        <Card
-          variant="solid"
-          color="primary"
-          invertedColors
-          className="w-full"
-          style={{ height: "150px" }}
-        >
-          <CardContent
-            orientation="horizontal"
-            style={{ display: "flex", alignItems: "center" }}
+          <Card
+            variant="solid"
+            color="primary"
+            invertedColors
+            className="w-full"
+            style={{
+              height: "150px",
+              background: "linear-gradient(to right, #4FACFE, #00F2FE)",
+            }}
           >
-            <CircularProgress size="lg" determinate value={20}>
-              <SvgIcon>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
+            <CardContent
+              orientation="horizontal"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <CircularProgress size="lg" determinate value={20}>
+                <SvgIcon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+                    />
+                  </svg>
+                </SvgIcon>
+              </CircularProgress>
+              <CardContent style={{ textAlign: "center" }}>
+                <Typography
+                  level="h4"
+                  style={{ fontSize: "1.5rem", textAlign: "center" }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-                  />
-                </svg>
-              </SvgIcon>
-            </CircularProgress>
-            <CardContent style={{ textAlign: "center" }}>
-              <Typography
-                level="h4"
-                style={{ fontSize: "1.5rem", textAlign: "center" }}
-              >
-                Total Registered Doctors
-              </Typography>
-              <Typography level="h2">{analyticsData.totalDoctors}</Typography>
+                  Total Registered Doctors
+                </Typography>
+                <Typography level="h2">{analyticsData.totalDoctors}</Typography>
+              </CardContent>
             </CardContent>
-          </CardContent>
-        </Card>
-      </div>
+          </Card>
+        </div>
 
-      <br></br>
+        <br></br>
 
-      <div className="flex">
-        <div style={{ width: "70%" }}>
-          <LineChart
+        <div className="flex">
+          <div style={{ width: "70%" }}>
+            <div className="flex flex-col">
+              {/* <p>Appointments By Day</p> */}
+              <h2>Appointments Line Chart</h2>
+
+              {chartData ? <LineChart {...chartData} /> : <CircularProgress />}
+
+              {/* <div>
+              <div id="chart">
+                <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={350} />
+              </div>
+              <div id="html-dist"></div>
+            </div> */}
+              {/* {appDateData.length ? (
+        <div style={{ height: "400px", width: "600px" }}>
+          <Line data={chartData} />
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )} */}
+
+              {/* {chartData && (
+                <div style={{ height: "400px", width: "600px" }}>
+                  <Line data={chartData} />
+                </div>
+              )}
+              {!chartData && <p>Loading...</p>} */}
+
+              {/* <LineChart
+      xAxis={[{ data: xAxisData }]}
+      series={[
+        {
+          data: seriesData,
+        },
+      ]}
+      width={1400}
+      height={350}
+    /> */}
+
+              {/* <LineChart
+  xAxis={[{ data: Object.keys(appDateData) }]}
+  series={[
+    {
+      data: Object.values(appDateData),
+    },
+  ]}
+  width={1400}
+  height={350}
+/> */}
+              {/* 
+              <LineChart
             xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+            // console.log(data);
             series={[
               {
                 data: [2, 5.5, 2, 8.5, 1.5, 5],
@@ -372,12 +554,10 @@ export const Analytics = () => {
             ]}
             width={1400}
             height={350}
-          />
+          /> */}
+            </div>
 
-
-
-
-          {/* <LineChart
+            {/* <LineChart
         xAxis={[{ data: appDateData.map((data) => data.day) }]}
         series={[
           {
@@ -387,15 +567,9 @@ export const Analytics = () => {
         width={1400}
         height={350}
       /> */}
+          </div>
 
-
-
-
-
-
-        </div>
-
-        {/* <PieChart
+          {/* <PieChart
           series={[
             {
               data: [
@@ -411,81 +585,94 @@ export const Analytics = () => {
           style={{ margin: "7px" }}
         /> */}
 
-        <PieChart
-        series={[
-          {
-            data: [
-              { id: 0, value: patientGenderData.Male, label: "Male" },
-              { id: 1, value: patientGenderData.Female, label: "Female" },
-            ],
-            highlightScope: { faded: "global", highlighted: "item" },
-            faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-          },
-        ]}
-        height={310}
-        style={{ margin: "7px" }}
-      />
-      </div>
-
-      <div className="flex">
-        {docSpecData && Object.keys(docSpecData).length > 0 && (
-          <BarChart
-            dataset={Object.entries(docSpecData).map(([speciality, count]) => ({
-              speciality,
-              Count: count,
-            }))}
-            yAxis={[{ scaleType: "band", dataKey: "speciality" }]}
+          <PieChart
             series={[
               {
-                dataKey: "Count",
-                label: "Doctors By Speciality",
-                valueFormatter,
+                data: [
+                  { id: 0, value: patientGenderData.M, label: "Male Patient" },
+                  {
+                    id: 1,
+                    value: patientGenderData.F,
+                    label: "Female Patient",
+                  },
+                ],
+                highlightScope: { faded: "global", highlighted: "item" },
+                faded: {
+                  innerRadius: 30,
+                  additionalRadius: -30,
+                  color: "gray",
+                },
               },
             ]}
-            layout="horizontal"
-            {...chartSetting}
+            height={310}
+            style={{ margin: "7px" }}
           />
-        )}
+        </div>
 
-        {appSpecData && Object.keys(appSpecData).length > 0 && (
-          <BarChart
-            dataset={Object.entries(appSpecData).map(([speciality, count]) => ({
-              speciality,
-              Count: count,
-            }))}
-            yAxis={[{ scaleType: "band", dataKey: "speciality" }]}
-            series={[
-              {
-                dataKey: "Count",
-                label: "Appointments By Speciality",
-                valueFormatter,
-              },
-            ]}
-            layout="horizontal"
-            {...appChartSetting}
-          />
-        )}
+        <div className="flex">
+          {docSpecData && Object.keys(docSpecData).length > 0 && (
+            <BarChart
+              dataset={Object.entries(docSpecData).map(
+                ([speciality, count]) => ({
+                  speciality,
+                  Count: count,
+                })
+              )}
+              yAxis={[{ scaleType: "band", dataKey: "speciality" }]}
+              series={[
+                {
+                  dataKey: "Count",
+                  label: "Doctors By Speciality",
+                  valueFormatter,
+                },
+              ]}
+              layout="horizontal"
+              {...chartSetting}
+            />
+          )}
 
-        {patientAgeData && Object.keys(patientAgeData).length > 0 && (
-          <BarChart
-            dataset={Object.entries(patientAgeData).map(
-              ([speciality, count]) => ({
-                speciality,
-                Count: count,
-              })
-            )}
-            yAxis={[{ scaleType: "band", dataKey: "speciality" }]}
-            series={[
-              {
-                dataKey: "Count",
-                label: "Patients By Ages",
-                valueFormatter,
-              },
-            ]}
-            layout="horizontal"
-            {...patientChartSetting}
-          />
-        )}
+          {appSpecData && Object.keys(appSpecData).length > 0 && (
+            <BarChart
+              dataset={Object.entries(appSpecData).map(
+                ([speciality, count]) => ({
+                  speciality,
+                  Count: count,
+                })
+              )}
+              yAxis={[{ scaleType: "band", dataKey: "speciality" }]}
+              series={[
+                {
+                  dataKey: "Count",
+                  label: "Appointments By Speciality",
+                  valueFormatter,
+                },
+              ]}
+              layout="horizontal"
+              {...appChartSetting}
+            />
+          )}
+
+          {patientAgeData && Object.keys(patientAgeData).length > 0 && (
+            <BarChart
+              dataset={Object.entries(patientAgeData).map(
+                ([speciality, count]) => ({
+                  speciality,
+                  Count: count,
+                })
+              )}
+              yAxis={[{ scaleType: "band", dataKey: "speciality" }]}
+              series={[
+                {
+                  dataKey: "Count",
+                  label: "Patients By Ages",
+                  valueFormatter,
+                },
+              ]}
+              layout="horizontal"
+              {...patientChartSetting}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

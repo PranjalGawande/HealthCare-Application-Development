@@ -45,8 +45,9 @@ const ViewAdmin = () => {
   }, []);
 
   return (
-    <div className="container mt-10">
-      <h2 className="list-heading">Admins List</h2>
+    <div className="background-table">
+    <div className="container pt-5">
+      <h2 style={{ fontSize: "4rem", fontWeight: "bold", textAlign: "center", marginBottom: "4rem" }}>ADMINS LIST</h2>
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -69,6 +70,7 @@ const ViewAdmin = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };
