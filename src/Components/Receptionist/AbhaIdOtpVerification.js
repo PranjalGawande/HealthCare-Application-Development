@@ -122,63 +122,16 @@ export const AbhaIdOtpVerification = () => {
   const [transactionId, setTransactionId] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-  // useEffect(() => {
-  //   // Fetch transaction ID when component mounts
-  //   fetchTransactionId();
-  // }, []);
-
-  // const fetchTransactionId = async () => {
-  //   try {
-  //     setTimeout(async () => {
-  //       axios.defaults.withCredentials = true;
-  //       const response = await axios.get("http://localhost:9191/getTransactionId");
-  //       // Extract transaction ID from the response
-  //       const { transactionId } = response.data;
-  //       setTransactionId(transactionId);
-  //       console.log('Transaction ID:', transactionId);
-  //     }, 5000);
-  //     // const token = localStorage.getItem("token");
-
-  //   } catch (error) {
-  //     console.error('Error fetching transaction ID:', error);
-  //   }
-  // };
-
-
-
-
-
-
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const formData = {
-  //       txnId: transactionId, // Add transaction ID to the formData,
-  //       otp: abdmOtp
-  //     };
-  //     console.log('FormData:', formData);
-  //     axios.defaults.withCredentials = true;
-  //     const response = await axios.post("http://localhost:9191/receptionist/verificationAbhaAddressOtp",
-  //       formData,
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       }
-  //     );
-  //     console.log('Response:', response.data);
-  //     navigate('/receptionist/add-patient');
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
+  const [patientInfo, setPatientInfo] = useState({
+    name: "",
+    mobileNo: "",
+    dob: "",
+    gender: "",
+    bloodGroup: "", // You may fetch this information if available
+    address: "",//patientData.abhaAddress, // Assuming this is the patient's address
+    abhaId: ""  //patientData.abhaNumber
+  
+  });
 
   const fetchTransactionId = async () => {
     try {
@@ -195,7 +148,44 @@ export const AbhaIdOtpVerification = () => {
       throw error; // Throw the error to be caught by the caller
     }
   };
-  
+
+
+  const fetchPatientData = async () => {
+    try {
+      const abhaAdd = localStorage.getItem("abhaAddress")
+      const token = localStorage.getItem("token");
+      const formData = {
+        abhaId: abhaAdd
+      };
+      // let patientData = "";
+      console.log('Form Data in add Patient form:', formData);
+      axios.defaults.withCredentials = true;
+      // setTimeout(async () => {
+        const response = await axios.post("http://localhost:9191/receptionist/patientDetails", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const patientData = response.data;
+      // }, 5000);
+      console.log('Patient Data:', patientData);
+      // setPatientInfo({
+      //   name: patientData.name,
+      //   mobileNo: patientData.mobileNo,
+      //   dob: patientData.dob,
+      //   gender: patientData.gender,
+      //   bloodGroup: "", // You may fetch this information if available
+      //   address: "",//patientData.abhaAddress, // Assuming this is the patient's address
+      //   abhaId: patientData.abhaId//patientData.abhaNumber
+      // });
+      return patientData;
+      // console.log(patientData);
+    } catch (error) {
+      console.error('Error fetching patient data:', error);
+    } finally {
+      console.log('Patient Info:', patientInfo);
+      // setLoading(false);
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -204,7 +194,7 @@ export const AbhaIdOtpVerification = () => {
       const token = localStorage.getItem("token");
       let transactionIdAttempt = 0;
       let transactionId = '';
-  
+
       // Retry logic to fetch transaction ID
       while (!transactionId && transactionIdAttempt < 5) { // You can adjust the number of attempts as needed
         try {
@@ -218,12 +208,12 @@ export const AbhaIdOtpVerification = () => {
         // Delay before next attempt (5000 milliseconds = 5 seconds)
         await new Promise(resolve => setTimeout(resolve, 5000));
       }
-  
+
       // If transaction ID is still empty after retries, display error
       if (!transactionId) {
         throw new Error('Unable to fetch transaction ID after multiple attempts.');
       }
-  
+
       // Proceed with form submission
       const formData = {
         txnId: transactionId,
@@ -238,14 +228,78 @@ export const AbhaIdOtpVerification = () => {
         }
       );
       console.log('Response:', response.data);
-      navigate('/receptionist/add-patient');
+      // navigate('/receptionist/add-patient');
     } catch (error) {
       console.error('Error:', error);
-    } finally {
-      setLoading(false);
     }
+
+    // fetchPatientData();
+    try {
+      // const token = localStorage.getItem("token");
+      let fetchPatientAttempt = 0;
+      let response = '';
+
+      // Retry logic to fetch transaction ID
+      while (response === '' && fetchPatientAttempt < 5) { // You can adjust the number of attempts as needed
+        try {
+          // Attempt to fetch transaction ID
+          response = await fetchPatientData();
+          console.log('Response:', response);
+        } catch (error) {
+          console.error('Error fetching patient details:', error);
+        }
+        // Increase attempt count
+        fetchPatientAttempt++;
+        // Delay before next attempt (5000 milliseconds = 5 seconds)
+        await new Promise(resolve => setTimeout(resolve, 3000));
+      }
+
+      // If transaction ID is still empty after retries, display error
+      if (response === '') {
+        setLoading(false);
+        throw new Error('Unable to fetch patient data after multiple attempts.');
+      }
+      else {
+        navigate('/receptionist/add-patient', {state: {patientInfo: response}});
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+
+    // while ()
+    // try {
+    //   const abhaAdd = localStorage.getItem("abhaAddress")
+    //   const token = localStorage.getItem("token");
+    //   const formData = {
+    //     abhaId: abhaAdd
+    //   };
+    //   console.log('Form Data in add Patient form:', formData);
+    //   axios.defaults.withCredentials = true;
+    //   const response = await axios.post("http://localhost:9191/receptionist/patientDetails", formData, {
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+
+    //   const patientData = response.data;
+    //   setPatientInfo({
+    //     name: patientData.name,
+    //     mobileNo: patientData.mobileNo,
+    //     dob: patientData.dob,
+    //     gender: patientData.gender,
+    //     bloodGroup: "", // You may fetch this information if available
+    //     address: "",//patientData.abhaAddress, // Assuming this is the patient's address
+    //     abhaId: patientData.abhaId//patientData.abhaNumber
+    //   });
+    //   console.log(patientData);
+    // } catch (error) {
+    //   console.error('Error fetching patient data:', error);
+    // } finally {
+    //   setLoading(false);
+    // }
+
+
   };
-  
+
 
   return (
     <div className="h-full flex justify-center items-center ">

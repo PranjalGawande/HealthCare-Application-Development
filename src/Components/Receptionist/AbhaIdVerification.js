@@ -24,6 +24,7 @@ export const AbhaIdVerification = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      localStorage.setItem("abhaAddress", abhaAdd);
       console.log('Response:', response.data);
       navigate('/receptionist/abha-otp-verification');
     } catch (error) {
@@ -62,7 +63,7 @@ export const AbhaIdVerification = () => {
 
           {loading ? (
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-              <div class="loader"></div>
+              <div className="loader"></div>
             </div>
           ) : (
             <button
