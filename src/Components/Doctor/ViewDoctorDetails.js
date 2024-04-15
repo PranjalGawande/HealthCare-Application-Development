@@ -107,8 +107,8 @@ export const ViewDoctorDetails = () => {
 
   return (
     <div className="h-full flex justify-center items-center ">
-      <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
-        <div className="image-container">
+      <div className="flex flex-col md:flex-row admin-dashboard justify-evenly items-center border-amber-300 border-solid ">
+        <div className="image-container md:block hidden">
           <img src={doctorImage} className="admin-image" alt="doctorImage"/>
           <div className="dashboard-name-doctor" style={{ fontSize: determineFontSize() }}>{doctorDetails.name}</div>
         </div>
@@ -118,16 +118,7 @@ export const ViewDoctorDetails = () => {
           </label>
           {doctorDetails && (
             <div className="flex flex-col text-2xl">
-              {/* <p className="mb-2 font-bold">Name:<span className="font-normal"> {doctorDetails.name}</span></p>
-              <p className="mb-2 font-bold">Date of Birth: <span className="font-normal">{new Date(doctorDetails.dob).toLocaleDateString()}</span></p>
-              <p className="mb-2 font-bold">Mobile No: <span className="font-normal">{doctorDetails.mobileNo}</span></p>
-              <p className="mb-2 font-bold">Gender: <span className="font-normal">{doctorDetails.gender}</span></p>
-              <p className="mb-2 font-bold">Speciality: <span className="font-normal">{doctorDetails.speciality}</span></p>
-              <p className="mb-2 font-bold">Experience: <span className="font-normal">{doctorDetails.experience}</span></p>
-              <p className="mb-2 font-bold">Email: <span className="font-normal">{doctorDetails.email}</span></p>
-              <p className="mb-2 font-bold">Status: <span className="font-normal">{doctorDetails.status ? 'Active' : 'Inactive'}</span></p> */}
-
-
+             
 
               <div className="flex mb-2 justify-start">
                   <span className="w-32 font-semibold flex justify-start">

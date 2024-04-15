@@ -106,19 +106,9 @@ export const ViewReceptionistDetails = () => {
 
   return (
     <div className="h-full flex justify-center items-center ">
-      {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "1rem",
-          }}
-        >
-          <div class="loader"></div>
-        </div>
-      ) : (
-        <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
-          <div className="image-container">
+      
+        <div className="flex flex-col md:flex-row admin-dashboard justify-evenly items-center border-amber-300 border-solid">
+          <div className="image-container md:block hidden">
             <img src={recepImage} className="admin-image" alt="recepImage" />
             <div
               className="dashboard-name-receptionist"
@@ -269,7 +259,6 @@ export const ViewReceptionistDetails = () => {
             )}
           </div>
         </div>
-      )}
     </div>
   );
 };
