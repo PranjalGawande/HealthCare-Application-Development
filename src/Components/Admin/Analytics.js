@@ -83,9 +83,9 @@ export const Analytics = () => {
           }
         );
         setAnalyticsData(response.data); // Set the analytics data in state
-        console.log("Analytics data fetched successfully:", response.data);
+        // console.log("Analytics data fetched successfully:", response.data);
       } catch (error) {
-        console.error("Error fetching analytics data:", error);
+        // console.error("Error fetching analytics data:", error);
         // setLoading(false); // Update loading state in case of error
       }
     };
@@ -108,9 +108,9 @@ export const Analytics = () => {
           }
         );
         setDocSpecData(response.data); // Set the analytics data in state
-        console.log("Analytics data fetched successfully:", response.data);
+        // console.log("Analytics data fetched successfully:", response.data);
       } catch (error) {
-        console.error("Error fetching analytics data:", error);
+        // console.error("Error fetching analytics data:", error);
         // setLoading(false); // Update loading state in case of error
       }
     };
@@ -133,9 +133,9 @@ export const Analytics = () => {
           }
         );
         setAppSpecData(response.data); // Set the analytics data in state
-        console.log("Analytics data fetched successfully:", response.data);
+        // console.log("Analytics data fetched successfully:", response.data);
       } catch (error) {
-        console.error("Error fetching analytics data:", error);
+        // console.error("Error fetching analytics data:", error);
         // setLoading(false); // Update loading state in case of error
       }
     };
@@ -158,9 +158,9 @@ export const Analytics = () => {
           }
         );
         setPatientAgeData(response.data); // Set the analytics data in state
-        console.log("Analytics data fetched successfully:", response.data);
+        // console.log("Analytics data fetched successfully:", response.data);
       } catch (error) {
-        console.error("Error fetching analytics data:", error);
+        // console.error("Error fetching analytics data:", error);
         // setLoading(false); // Update loading state in case of error
       }
     };
@@ -183,9 +183,9 @@ export const Analytics = () => {
           }
         );
         setPatientGenderData(response.data); // Set the analytics data in state
-        console.log("Analytics data fetched successfully:", response.data);
+        // console.log("Analytics data fetched successfully:", response.data);
       } catch (error) {
-        console.error("Error fetching analytics data:", error);
+        // console.error("Error fetching analytics data:", error);
         // setLoading(false); // Update loading state in case of error
       }
     };
@@ -208,9 +208,9 @@ export const Analytics = () => {
           }
         );
         setPatientGenderData(response.data); // Set the analytics data in state
-        console.log("Analytics data fetched successfully:", response.data);
+        // console.log("Analytics data fetched successfully:", response.data);
       } catch (error) {
-        console.error("Error fetching analytics data:", error);
+        // console.error("Error fetching analytics data:", error);
         // setLoading(false); // Update loading state in case of error
       }
     };
@@ -243,9 +243,9 @@ export const Analytics = () => {
         formattedData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         setAppDateData(formattedData);
-        console.log("Analytics data fetched successfully:", formattedData);
+        // console.log("Analytics data fetched successfully:", formattedData);
       } catch (error) {
-        console.error("Error fetching analytics data:", error);
+        // console.error("Error fetching analytics data:", error);
         // Optionally, set an error state and display an error message to the user
       }
     };
@@ -485,91 +485,8 @@ export const Analytics = () => {
                   style={{ width: "500px" }}
                 ></Line>
               </div>
-              {/* {chartData ? <LineChart {...chartData} /> : <CircularProgress />} */}
-
-              {/* <div>
-              <div id="chart">
-                <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={350} />
-              </div>
-              <div id="html-dist"></div>
-            </div> */}
-              {/* {appDateData.length ? (
-        <div style={{ height: "400px", width: "600px" }}>
-          <Line data={chartData} />
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )} */}
-
-              {/* {chartData && (
-                <div style={{ height: "400px", width: "600px" }}>
-                  <Line data={chartData} />
-                </div>
-              )}
-              {!chartData && <p>Loading...</p>} */}
-
-              {/* <LineChart
-      xAxis={[{ data: xAxisData }]}
-      series={[
-        {
-          data: seriesData,
-        },
-      ]}
-      width={1400}
-      height={350}
-    /> */}
-
-              {/* <LineChart
-  xAxis={[{ data: Object.keys(appDateData) }]}
-  series={[
-    {
-      data: Object.values(appDateData),
-    },
-  ]}
-  width={1400}
-  height={350}
-/> */}
-              {/* 
-              <LineChart
-            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-            // console.log(data);
-            series={[
-              {
-                data: [2, 5.5, 2, 8.5, 1.5, 5],
-              },
-            ]}
-            width={1400}
-            height={350}
-          /> */}
             </div>
-
-            {/* <LineChart
-        xAxis={[{ data: appDateData.map((data) => data.day) }]}
-        series={[
-          {
-            data: appDateData.map((data) => data.count),
-          },
-        ]}
-        width={1400}
-        height={350}
-      /> */}
           </div>
-
-          {/* <PieChart
-          series={[
-            {
-              data: [
-                { id: 0, value: {patientGenderData.Male}, label: "Male" },
-                { id: 1, value: {patientGenderData.Female}, label: "Female" },
-                // { id: 2, value: 10, label: "Other" },
-              ],
-              highlightScope: { faded: "global", highlighted: "item" },
-              faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-            },
-          ]}
-          height={310}
-          style={{ margin: "7px" }}
-        /> */}
 
           <PieChart
             series={[
@@ -619,6 +536,7 @@ export const Analytics = () => {
 
           {appSpecData && Object.keys(appSpecData).length > 0 && (
             <BarChart
+            
               dataset={Object.entries(appSpecData).map(
                 ([speciality, count]) => ({
                   speciality,
