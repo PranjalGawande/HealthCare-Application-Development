@@ -184,7 +184,7 @@ nav {
   transform: translateY(-1px);
 }
 
-.navbtn {
+/* .navbtn {
   padding: .5em 1.5em;
   font-size: 18px;
   border: none;
@@ -199,7 +199,7 @@ nav {
   box-shadow: 0px 15px 20px rgba(12, 78, 84, 0.495);
   color: #fff;
   transform: translateY(-2px);
-}
+} */
 
 .background-table {
   background-image: linear-gradient(to right bottom, #ebf1fa, #d8f2ff, #bdf5ff, #9cf8ff, #7bfbff);

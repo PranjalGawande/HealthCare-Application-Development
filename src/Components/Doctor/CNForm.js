@@ -19,7 +19,8 @@ const CNForm = ({ patientId, doctorId }) => {
     bloodPressure: "",
     oxygenLevel: "",
     pulse: "",
-    medicine: [],
+    diagnosis: "",
+    prescriptions: [],
   });
 
   const handleChange = (e) => {
@@ -117,15 +118,15 @@ const CNForm = ({ patientId, doctorId }) => {
     setShowPopup(true);
   };
 
-  const handleRequestConsent = () => {
-  };
+  // const handleRequestConsent = () => {
+  // };
 
   return (
     <div className="">
       <div className="background-appointment flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container md:block hidden pl-2">
-            <img src={doctorImage} className="admin-image" alt="doctorImage"/>
+            <img src={doctorImage} className="admin-image" alt="doctorImage" />
             <div
               className="dashboard-name-doctor"
               style={{ fontSize: "40px" }}
@@ -220,7 +221,7 @@ const CNForm = ({ patientId, doctorId }) => {
                         type="button"
                         className="button"
                         onClick={() => removeMedicine(index + 1)}
-                        style={{ marginTop: "2rem", width: "100%", paddingTop:"10px", paddingBottom:"10px" }}
+                        style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
                       >
                         Remove
                       </button>
@@ -231,9 +232,9 @@ const CNForm = ({ patientId, doctorId }) => {
                     onClick={addMedicine}
                     type="button"
                     className="button"
-                    style={{ marginTop: "2rem", width: "100%", paddingTop:"10px", paddingBottom:"10px"  }}
+                    style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
                   >
-                    Add Medicine
+                    Add Prescriptions
                   </button>
                 </div>
                 {/* <div style={{ marginTop: "1rem" }}>
@@ -246,29 +247,32 @@ const CNForm = ({ patientId, doctorId }) => {
                   Request Consent
                 </button>
               </div> */}
-              {
-                <PatientHistoryPopup
-                  type="button"
-                  className="button"
-                  title="Patient History"
-                  onClose={() => setShowPopup(false)}
-                  patientHistory={patientHistory}
-                  style={{ marginTop: "2rem", width: "100%", paddingTop:"10px", paddingBottom:"10px"  }}
-                />
-              }
-              <div style={{ marginTop: "1rem", marginBottom:"2rem" }}>
-                <button
-                  type="button"
-                  className="button"
-                  style={{ marginTop: "2rem", width: "100%", paddingTop:"10px", paddingBottom:"10px"  }}
-                  onClick={handleRequestConsent}
-                >
-                  Submit
-                </button>
-              </div>
+
+
+                <div style={{ marginTop: "1rem" }}>
+                  <button
+                    type="submit"
+                    className="button"
+                    style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
+                  // onClick={handleRequestConsent}
+                  >
+                    Submit
+                  </button>
+                </div>
               </form>
-              
-              
+
+              <div>
+                {
+                  <PatientHistoryPopup
+                    type="button"
+                    className="button"
+                    title="Patient History"
+                    onClose={() => setShowPopup(false)}
+                    patientHistory={patientHistory}
+                    style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
+                  />
+                }
+              </div>
             </div>
           </div>
         </div>
