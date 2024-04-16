@@ -119,14 +119,66 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export const SuggestAbhaAddress = () => {
-  const [suggestions, setSuggestions] = useState([]);
+  // const [suggestions, setSuggestions] = useState([]);
   const [userChoice, setUserChoice] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchSuggestions();
-  }, []);
+  // useEffect(() => {
+
+    // const fetchSuggestions = async () => {
+    //   setLoading(true);
+    //   try {
+    //     const token = localStorage.getItem("token");
+    //     const response = await axios.post(
+    //       "http://localhost:9191/receptionist/suggestAbhaAddress",
+    //       {
+    //         headers: { Authorization: `Bearer ${token}` },
+    //       }
+    //     );
+    //     const formattedSuggestions = response.data.map((suggestion) => {
+    //       // Split suggestion string by '.' to separate different parts
+    //       const parts = suggestion.split(".");
+    //       // Replace '_' with a space within each part
+    //       const formattedParts = parts.map((part) => part.replace("_", " "));
+    //       // Join the parts with a space and return
+    //       return formattedParts.join(" ");
+    //     });
+    //     setSuggestions(formattedSuggestions);
+    //   } catch (error) {
+    //     console.error("Error:", error);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+  //   const fetchSuggestions = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.post(
+  //         "http://localhost:9191/receptionist/suggestAbhaAddress",
+  //         null,
+  //         {
+  //           headers: { Authorization: `Bearer ${token}` },
+  //         }
+  //       );
+  //       const suggestedAddresses = response.data;
+  //       // const formattedSuggestions = Object.entries(suggestedAddresses).map(([index, suggestion]) => {
+  //       //   return { index: parseInt(index), address: suggestion };
+  //       // });
+  //       setSuggestions(suggestedAddresses);
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //       toast.error("Error fetching suggestions");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+    
+
+  //   fetchSuggestions();
+  // }, []);
 
   // const fetchSuggestions = async () => {
   //   setLoading(true);
@@ -148,31 +200,31 @@ export const SuggestAbhaAddress = () => {
 
 
 
-  const fetchSuggestions = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:9191/receptionist/suggestAbhaAddress",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const formattedSuggestions = response.data.map((suggestion) => {
-        // Split suggestion string by '.' to separate different parts
-        const parts = suggestion.split(".");
-        // Replace '_' with a space within each part
-        const formattedParts = parts.map((part) => part.replace("_", " "));
-        // Join the parts with a space and return
-        return formattedParts.join(" ");
-      });
-      setSuggestions(formattedSuggestions);
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchSuggestions = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await axios.post(
+  //       "http://localhost:9191/receptionist/suggestAbhaAddress",
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
+  //     const formattedSuggestions = response.data.map((suggestion) => {
+  //       // Split suggestion string by '.' to separate different parts
+  //       const parts = suggestion.split(".");
+  //       // Replace '_' with a space within each part
+  //       const formattedParts = parts.map((part) => part.replace("_", " "));
+  //       // Join the parts with a space and return
+  //       return formattedParts.join(" ");
+  //     });
+  //     setSuggestions(formattedSuggestions);
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
 
   const handleUserChoiceChange = (e) => {
@@ -209,9 +261,9 @@ export const SuggestAbhaAddress = () => {
           <label className="text-login fw-bold text-center">
             Enter <br /> Abdm Address
           </label>
-          <h1 className="text-2xl font-semibold mb-4">
+          {/* <h1 className="text-2xl font-semibold mb-4">
             Suggestions for Abha Address
-          </h1>
+          </h1> */}
           {/* {loading ? (
             <div
               style={{
@@ -229,7 +281,7 @@ export const SuggestAbhaAddress = () => {
               ))}
             </ul>
           )} */}
-
+{/* 
           {loading ? (
              <div
                style={{
@@ -246,7 +298,7 @@ export const SuggestAbhaAddress = () => {
                  <li key={index}>{suggestion}</li>
                ))}
              </ul>
-           )}
+           )} */}
 
 
           <TextField

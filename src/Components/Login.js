@@ -171,7 +171,7 @@ const LoginForm = () => {
                       marginTop: "1rem",
                     }}
                   >
-                    <div class="loader"></div>
+                    <div className="loader"></div>
                   </div>
                 ) : (
                   <button
