@@ -46,31 +46,40 @@ const ViewAdmin = () => {
 
   return (
     <div className="background-table">
-    <div className="container pt-5">
-      <h2 style={{ fontSize: "4rem", fontWeight: "bold", textAlign: "center", marginBottom: "4rem" }}>ADMINS LIST</h2>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">E-mail</th>
-              <th scope="col">Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {staff.map((staff) => (
+      <div className="container pt-5">
+        <h2
+          style={{
+            fontSize: "4rem",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: "4rem",
+          }}
+        >
+          ADMINS LIST
+        </h2>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <table className="table table-hover">
+            <thead>
               <tr>
-                <td>{staff.name}</td>
-                <td>{staff.email}</td>
-                <td>{staff.role}</td>
+                <th scope="col">Name</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Role</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+            </thead>
+            <tbody>
+              {staff.map((staff) => (
+                <tr>
+                  <td>{staff.name}</td>
+                  <td>{staff.email}</td>
+                  <td>{staff.role}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

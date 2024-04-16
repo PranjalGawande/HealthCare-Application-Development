@@ -5,7 +5,6 @@ import axios from "axios";
 import doctorImage from "../../assets/DoctorPage.png";
 import toast from "react-hot-toast";
 
-
 export const AdminChangeDoctorPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,9 +27,6 @@ export const AdminChangeDoctorPassword = () => {
     }
   });
 
-  
-  
-
   const handleChangePassword = async (e) => {
     e.preventDefault();
     if (!newPassword || newPassword.length < 6) {
@@ -44,9 +40,7 @@ export const AdminChangeDoctorPassword = () => {
       newPassword: newPassword,
     };
 
-
     try {
-
       const response = await axios.post(
         "http://localhost:9191/doctor/changePassword",
         formData,
@@ -55,8 +49,9 @@ export const AdminChangeDoctorPassword = () => {
         }
       );
       // setSuccess(true);
-      toast.success("Doctor Password updated successfully!", { duration: 3000 });
-
+      toast.success("Doctor Password updated successfully!", {
+        duration: 3000,
+      });
     } catch (error) {
       toast.error("Doctor Password updation failed!", { duration: 3000 });
       // setError(error.response.data.message);
@@ -68,7 +63,7 @@ export const AdminChangeDoctorPassword = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container md:block hidden">
-            <img src={doctorImage} className="admin-image" alt="doctorImage"/>
+            <img src={doctorImage} className="admin-image" alt="doctorImage" />
             <div
               className="dashboard-name-doctor"
               style={{ fontSize: "xx-large" }}
@@ -103,12 +98,6 @@ export const AdminChangeDoctorPassword = () => {
                     onChange={(e) => setNewPassword(e.target.value)}
                   />
                 </div>
-                {/* {error && <p style={{ color: "red" }}>{error}</p>}{" "}
-                {success && (
-                  <p style={{ color: "green" }}>
-                    Password changed successfully!
-                  </p>
-                )}{" "} */}
                 <button
                   type="submit"
                   className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"

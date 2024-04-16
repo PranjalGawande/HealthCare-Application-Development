@@ -20,7 +20,7 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
-  plugins
+  plugins,
 } from "chart.js";
 import { Step } from "@mui/material";
 
@@ -219,108 +219,6 @@ export const Analytics = () => {
     fetchPatientGenderData(); // Call the function to fetch analytics data when the component mounts
   }, []); // Empty dependency array ensures the effect runs only once after the component mounts
 
-  // useEffect(() => {
-  //   // Function to fetch analytics data from the backend API
-  //   const fetchAppDateData = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token"); // Retrieve the token from local storage
-  //       const response = await axios.get(
-  //         "http://localhost:9191/admin/appointment-count-by-day",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`, // Include the token in the request headers
-  //           },
-  //         }
-  //       );
-  //       setAppDateData(response.data); // Set the analytics data in state
-  //       console.log("Analytics data fetched successfully:", response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching analytics data:", error);
-  //       // setLoading(false); // Update loading state in case of error
-  //     }
-  //   };
-  //   // console.log("Analytics data fetched successfully:", analyticsData);
-
-  //   fetchAppDateData(); // Call the function to fetch analytics data when the component mounts
-  // }, []); // Empty dependency array ensures the effect runs only once after the component mounts
-
-  // useEffect(() => {
-  //   const fetchAppDateData = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const response = await axios.get(
-  //         "http://localhost:9191/admin/appointment-count-by-day",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       setAppDateData(response.data);
-  //       console.log("Analytics data fetched successfully:", response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching analytics data:", error);
-  //     }
-  //   };
-
-  //   fetchAppDateData();
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchAppDateData = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const response = await axios.get(
-  //         "http://localhost:9191/admin/appointment-count-by-day",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       setAppDateData(response.data);
-  //       console.log("Analytics data fetched successfully:", response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching analytics data:", error);
-  //     }
-  //   };
-
-  //   fetchAppDateData();
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchAppDateData = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const response = await axios.get(
-  //         "http://localhost:9191/admin/appointment-count-by-day",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-
-  //       const formattedData = Object.entries(response.data).map(([date, count]) => ({
-  //         date,
-  //         count
-  //       }));
-
-  //       setAppDateData(formattedData);
-  //       console.log("Analytics data fetched successfully:", formattedData);
-  //     } catch (error) {
-  //       console.error("Error fetching analytics data:", error);
-  //     }
-  //   };
-
-  //   fetchAppDateData();
-
-  // }, []); // Notice the empty dependency array
-
-
-
-
-
   useEffect(() => {
     const fetchAppDateData = async () => {
       try {
@@ -333,15 +231,17 @@ export const Analytics = () => {
             },
           }
         );
-  
-        const formattedData = Object.entries(response.data).map(([date, count]) => ({
-          date,
-          count
-        }));
-  
+
+        const formattedData = Object.entries(response.data).map(
+          ([date, count]) => ({
+            date,
+            count,
+          })
+        );
+
         // Sort the formatted data by date
         formattedData.sort((a, b) => new Date(a.date) - new Date(b.date));
-  
+
         setAppDateData(formattedData);
         console.log("Analytics data fetched successfully:", formattedData);
       } catch (error) {
@@ -349,13 +249,9 @@ export const Analytics = () => {
         // Optionally, set an error state and display an error message to the user
       }
     };
-  
+
     fetchAppDateData();
   }, []);
-
-
-
-
 
   const data = {
     labels: appDateData ? appDateData.map((entry) => entry.date) : [],
@@ -368,10 +264,10 @@ export const Analytics = () => {
         backgroundColor: "transparent",
         tension: 0.1,
         borderWidth: 3,
-      }
+      },
     ],
-  }
-  
+  };
+
   const options = {
     plugins: {
       legend: {
@@ -386,7 +282,7 @@ export const Analytics = () => {
       x: {
         title: {
           display: true,
-          text: 'Date',
+          text: "Date",
           font: {
             size: 20, // Increase font size
           },
@@ -413,7 +309,7 @@ export const Analytics = () => {
         },
         title: {
           display: true,
-          text: 'Number of Appointments',
+          text: "Number of Appointments",
           font: {
             size: 18, // Increase font size
           },
@@ -427,195 +323,11 @@ export const Analytics = () => {
       },
     },
   };
-  
+
   // Optionally, display a loading state while fetching data
   if (!appDateData) {
     return <div>Loading...</div>;
   }
-
-
-
-
-
-
-
-
-
-
-  // const xAxisData = Object.keys(appDateData);
-  // console.log(xAxisData);
-  // const seriesData = Object.values(appDateData);
-  // console.log(seriesData);
-
-  // const chartData = {
-  //   labels: appDateData.map((entry) => entry.date),
-  //   datasets: [
-  //     {
-  //       label: "Number of Appointments",
-  //       data: appDateData.map((entry) => entry.count),
-  //       fill: false,
-  //       borderColor: "rgb(75, 192, 192)",
-  //       tension: 0.1,
-  //     },
-  //   ],
-  // };
-
-  // let chartData = null;
-  // if (Array.isArray(appDateData) && appDateData.length > 0) {
-  //   chartData = {
-  //     labels: appDateData.map((entry) => entry.date),
-  //     datasets: [
-  //       {
-  //         label: "Number of Appointments",
-  //         data: appDateData.map((entry) => entry.count),
-  //         fill: false,
-  //         borderColor: "rgb(75, 192, 192)",
-  //         tension: 0.1,
-  //       },
-  //     ],
-  //   };
-  // }
-  // let chartData = null;
-  // if (Array.isArray(appDateData) && appDateData.length > 0) {
-  //   chartData = {
-  //     xAxis: [
-  //       {
-  //         data: appDateData.map((entry) => entry.date), // Use dates for x-axis
-  //       },
-  //     ],
-  //     series: [
-  //       {
-  //         data: appDateData.map((entry) => entry.count), // Use counts for y-axis
-  //       },
-  //     ],
-  //     width: 1400,
-  //     height: 350,
-  //   };
-  //   console.log("Chart data:", chartData);
-  // }
-
-
-
-  // const data = {
-  //   labels: appDateData.map((entry) => entry.date),
-  //   datasets: [
-  //     {
-  //       label: "Number of Appointments",
-  //       data: appDateData.map((entry) => entry.count),
-  //       fill: false,
-  //       borderColor: "rgb(75, 192, 192)",
-  //       backgroundColor: "transparent",
-  //       tension: 0.1,
-  //       borderWidth: 3,
-  //     }
-  //   ],
-  // }
-
-  // const options = {
-  //   plugins: {
-  //     legend: {
-  //       labels: {
-  //         font: {
-  //           size: 16, // Increase font size
-  //         },
-  //       },
-  //     },
-  //   },
-  //   scales: {
-  //     x: {
-  //       title: {
-  //         display: true,
-  //         text: 'Date',
-  //         font: {
-  //           size: 16, // Increase font size
-  //         }
-  //       }
-  //     },
-  //     y: {
-  //       min: 1,
-  //       max: 10,
-  //       ticks: {
-  //         stepSize: 1,
-  //         callback: (value) => value,
-  //         font: {
-  //           size: 16, // Increase font size
-  //         }
-  //       },
-  //       grid: {
-  //         borderDash: [20]
-  //       },
-  //       title: {
-  //         display: true,
-  //         text: 'Number of Appointments',
-  //         font: {
-  //           size: 16, // Increase font size
-  //         }
-  //       }
-  //     }
-  //   }
-  // };
-
-  // const options = {
-  //   plugins: {
-  //     legend: {
-  //       labels: {
-  //         font: {
-  //           size: 20, // Increase font size
-  //         },
-  //       },
-  //     },
-  //   },
-  //   scales: {
-  //     x: {
-  //       title: {
-  //         display: true,
-  //         text: 'Date',
-  //         font: {
-  //           size: 20, // Increase font size
-  //         },
-  //       },
-  //       ticks: {
-  //         stepSize: 4, // Set x-axis step size
-  //         autoSkip: true, // Enable auto-skipping of ticks
-  //         // maxRotation: 0, // Rotate x-axis labels if needed
-  //         padding: -10, // Adjust the padding between ticks
-  //         font: {
-  //           size: 18, // Increase tick font size
-  //         },
-  //       },
-  //       grid: {
-  //         display: false, // Hide x-axis grid lines
-  //         offset: true, // Adds spacing between the grid lines and the data
-  //       },
-  //     },
-  //     y: {
-  //       min: 0,
-  //       ticks: {
-  //         font: {
-  //           size: 20, // Increase tick font size
-  //         },
-  //       },
-  //       // grid: {
-  //       //   offset: true, // Adds spacing between the grid lines and the data
-  //       // },
-  //       title: {
-  //         display: true,
-  //         text: 'Number of Appointments',
-  //         font: {
-  //           size: 18, // Increase font size
-  //         },
-  //       },
-  //     },
-  //   },
-  //   layout: {
-  //     padding: {
-  //       left: -1000, // Increase left padding to stretch x-axis
-  //       right: -100, // Increase right padding to stretch x-axis
-  //     },
-  //   },
-  // };
-
-
 
   return (
     <div className="background-table">
@@ -763,9 +475,15 @@ export const Analytics = () => {
               {/* <p>Appointments By Day</p> */}
               <h2>Appointments Line Chart</h2>
 
-
-              <div className="d-flex justify-content-center" style={{ width: '100%', height: '280px', marginLeft: '20px' }}>
-                <Line data={data} options={options} style={{ width: '500px' }}></Line>
+              <div
+                className="d-flex justify-content-center"
+                style={{ width: "100%", height: "280px", marginLeft: "20px" }}
+              >
+                <Line
+                  data={data}
+                  options={options}
+                  style={{ width: "500px" }}
+                ></Line>
               </div>
               {/* {chartData ? <LineChart {...chartData} /> : <CircularProgress />} */}
 

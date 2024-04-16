@@ -59,7 +59,7 @@ const ViewStaff = () => {
         { headers: headers }
       );
       const staffDetails = response.data;
-      console.log("viewform: ",staffDetails);
+      console.log("viewform: ", staffDetails);
       navigate("/admin/view-receptionist-details", {
         state: { staff: staffDetails },
       });
@@ -70,50 +70,59 @@ const ViewStaff = () => {
 
   return (
     <div className="background-table">
-    <div className="container pt-5">
-    <h2 style={{ fontSize: "4rem", fontWeight: "bold", textAlign: "center", marginBottom: "4rem" }}>RECEPTIONISTS LIST</h2>
-
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <table
-          className="table table-hover"
-          cellpadding="0"
-          cellspacing="0"
-          border="0"
+      <div className="container pt-5">
+        <h2
+          style={{
+            fontSize: "4rem",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: "4rem",
+          }}
         >
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">E-mail</th>
-              <th scope="col">Role</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
+          RECEPTIONISTS LIST
+        </h2>
 
-          <tbody>
-            {staff.map((staff) => (
-              <tr key={staff.id}>
-                <td>{staff.name}</td>
-                <td>{staff.email}</td>
-                <td>{staff.role}</td>
-                <td>
-                  {
-                    <button
-                      type="button"
-                      className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-cyan-400 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
-                      onClick={() => handleViewStaffDetails(staff.email)}
-                    >
-                      View Details
-                    </button>
-                  }
-                </td>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <table
+            className="table table-hover"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+          >
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Role</th>
+                <th scope="col">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+            </thead>
+
+            <tbody>
+              {staff.map((staff) => (
+                <tr key={staff.id}>
+                  <td>{staff.name}</td>
+                  <td>{staff.email}</td>
+                  <td>{staff.role}</td>
+                  <td>
+                    {
+                      <button
+                        type="button"
+                        className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-cyan-400 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
+                        onClick={() => handleViewStaffDetails(staff.email)}
+                      >
+                        View Details
+                      </button>
+                    }
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

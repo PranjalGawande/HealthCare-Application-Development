@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import receptionistImage from "../../assets/ReceptionistPage.png";
 import toast from "react-hot-toast";
 
-
 export const AdminChangeReceptionistPassword = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,8 +48,9 @@ export const AdminChangeReceptionistPassword = () => {
         }
       );
       // setSuccess(true);
-      toast.success("Receptionist Password updated successfully!", { duration: 3000 });
-
+      toast.success("Receptionist Password updated successfully!", {
+        duration: 3000,
+      });
     } catch (error) {
       toast.error("Error updating password!", { duration: 3000 });
       // setError(error.response.data.message);
@@ -62,7 +62,11 @@ export const AdminChangeReceptionistPassword = () => {
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
           <div className="image-container md:block hidden">
-            <img src={receptionistImage} className="admin-image" alt="receptionistImage"/>
+            <img
+              src={receptionistImage}
+              className="admin-image"
+              alt="receptionistImage"
+            />
             <div
               className="dashboard-name-receptionist"
               style={{ fontSize: "xx-large" }}

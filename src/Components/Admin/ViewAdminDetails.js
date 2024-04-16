@@ -14,9 +14,7 @@ export const ViewAdminDetails = () => {
     } catch (error) {
       console.error("Error changing password:", error);
     }
-
   };
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -58,18 +56,16 @@ export const ViewAdminDetails = () => {
           </div>
         </div>
         <div className="container glass-background mt-5">
-          <label className="text-login fw-bold text-center">Profile Details</label>
+          <label className="text-login fw-bold text-center">
+            Profile Details
+          </label>
           {adminDetails && (
-
-
             <div className="flex flex-col text-2xl">
               <div className="flex mb-2 justify-start">
                 <span className="w-32 font-semibold flex justify-start">
                   Name:
                 </span>
-                <span className="flex justify-start">
-                  {adminDetails.name}
-                </span>
+                <span className="flex justify-start">{adminDetails.name}</span>
               </div>
 
               <div className="flex mb-2 justify-start">
@@ -100,11 +96,8 @@ export const ViewAdminDetails = () => {
                 <span className="w-32 font-semibold flex justify-start">
                   Email:
                 </span>
-                <span className="flex justify-start">
-                  {adminDetails.email}
-                </span>
+                <span className="flex justify-start">{adminDetails.email}</span>
               </div>
-
 
               <br />
               <div className="mt-3">

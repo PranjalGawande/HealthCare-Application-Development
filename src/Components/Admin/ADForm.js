@@ -147,7 +147,8 @@ export const ADForm = ({ email }) => {
                 height: "20%",
                 display: "flex",
                 alignItems: "center",
-              }}>
+              }}
+            >
               Gender
             </InputLabel>
             <Select
@@ -209,16 +210,6 @@ export const ADForm = ({ email }) => {
           style={{ marginBottom: "2rem", width: "100%" }}
           onChange={handleTextFieldChange}
         />
-        {/* <FormControl fullWidth>
-          <TextField
-            id="speciality"
-            label="Speciality"
-            variant="outlined"
-            size="small"
-            style={{ marginBottom: "2rem", width: "100%" }}
-            onChange={handleTextFieldChange}
-          />
-        </FormControl> */}
 
         <FormControl fullWidth>
           <InputLabel
@@ -253,35 +244,33 @@ export const ADForm = ({ email }) => {
             <MenuItem value="Ophthalmologist">Ophthalmologist</MenuItem>
             <MenuItem value="Dentist">Dentist</MenuItem>
           </Select>
-
-          
         </FormControl>
 
         <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: "2rem",
-            }}
-          >
-            <TextField
-              id="doctorLicenseNo"
-              label="License Number"
-              variant="outlined"
-              size="small"
-              style={{ marginBottom: "2rem", width: "50%" }}
-              onChange={handleTextFieldChange}
-            />
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "2rem",
+          }}
+        >
+          <TextField
+            id="doctorLicenseNo"
+            label="License Number"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: "2rem", width: "50%" }}
+            onChange={handleTextFieldChange}
+          />
 
-            <TextField
-              id="tokenMax"
-              label="Max Tokens"
-              variant="outlined"
-              size="small"
-              style={{ marginBottom: "2rem", width: "50%" }}
-              onChange={handleTextFieldChange}
-            />
-          </div>
+          <TextField
+            id="tokenMax"
+            label="Max Tokens"
+            variant="outlined"
+            size="small"
+            style={{ marginBottom: "2rem", width: "50%" }}
+            onChange={handleTextFieldChange}
+          />
+        </div>
 
         <button
           type="button"

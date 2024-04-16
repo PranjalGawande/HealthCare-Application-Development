@@ -17,42 +17,41 @@ const AddLoginCredDoc = ({ onSuccess }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email)) {
       console.error("Invalid email format");
       toast.error("Invalid email format");
       return;
     }
-  
+
     if (!formData.password || formData.password.length < 6) {
       console.error("Password must be at least 6 characters long");
       toast.error("Password must be at least 6 characters long");
       return;
     }
-  
+
     const token = localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-  
+
     try {
       console.log("Form Data:", formData);
-  
+
       const response = await axios.post(
         "http://localhost:9191/admin/addLogin",
         formData,
         { headers: headers }
       );
       console.log("Response from addLogin backend:", response.data);
-  
+
       onSuccess(formData.email);
     } catch (error) {
       console.error("Error:", error);
       toast.error("Email already exist");
     }
   };
-  
 
   return (
     <div
@@ -91,25 +90,20 @@ const AddLoginCredDoc = ({ onSuccess }) => {
         </div>
         <button
           to="/admin/add-doctor"
-          // className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          // style={{
-          //   marginTop: "2rem",
-          //   width: "100%",
-          //   height: "20%",
-          //   display: "flex",
-          //   justifyContent: "center",
-          //   alignItems: "center",
-          // }}
           type="submit"
-      className="button"
-      style={{ height: "fit-content", padding: "20px", width: "100%",                color: "white", // Set default font color to white
- }}
-      onMouseEnter={(e) => {
-                e.target.style.color = "black";
-              }} // Change font color to black on hover
-              onMouseLeave={(e) => {
-                e.target.style.color = "white";
-              }} // Change font color back to white when not hovered
+          className="button"
+          style={{
+            height: "fit-content",
+            padding: "20px",
+            width: "100%",
+            color: "white",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.color = "black";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.color = "white";
+          }}
         >
           Submit
         </button>

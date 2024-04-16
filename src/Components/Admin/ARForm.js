@@ -79,7 +79,6 @@ export const ASForm = ({ email }) => {
       setTimeout(() => {
         navigate("/admin");
       }, 3000);
-
     } catch (error) {
       console.error("Error:", error);
       toast.error("Failed to add Receptionist!");
@@ -129,24 +128,6 @@ export const ASForm = ({ email }) => {
             </Select>
           </FormControl>
         </div>
-        {/* 
-        <FormControl fullWidth>
-          <InputLabel>Gender</InputLabel>
-          <Select
-            value={formData.gender}
-            name="gender"
-            labelId="gender-label"
-            id="gender"
-            label="Gender"
-            size="medium"
-            style={{ marginBottom: "2rem", width: "100%" }}
-            onChange={handleChangeGender}
-          >
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
-          </Select>
-        </FormControl> */}
 
         <TextField
           id="dob"

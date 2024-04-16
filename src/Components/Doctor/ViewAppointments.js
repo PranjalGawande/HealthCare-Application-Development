@@ -75,13 +75,18 @@ export const ViewAppointments = () => {
     <div className="container-fluid background-table">
       <div className="container pt-5">
         <h1
-          style={{ fontSize: "4rem", fontWeight: "bold", textAlign: "center", marginBottom: "4rem" }}
+          style={{
+            fontSize: "4rem",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: "4rem",
+          }}
         >
           Doctor Appointments
         </h1>
         <div>
           <table className="table table-hover">
-            <thead >
+            <thead>
               <tr>
                 <th>Token No</th>
                 <th>Time</th>

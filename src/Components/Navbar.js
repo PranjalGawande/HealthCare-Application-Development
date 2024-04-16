@@ -38,59 +38,65 @@ export default function Navbar() {
       const role = localStorage.getItem("role");
 
       if (role === "ADMIN") {
-        DetailsResponse = await axios.get("http://localhost:9191/admin/adminDetails", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-
+        DetailsResponse = await axios.get(
+          "http://localhost:9191/admin/adminDetails",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        navigate("/admin/admin-details", {
+          state: { adminDetails: DetailsResponse.data },
         });
-        navigate("/admin/admin-details", { state: { adminDetails: DetailsResponse.data } });
-
-      }
-      else if (role === "DOCTOR") {
+      } else if (role === "DOCTOR") {
         const formData = {};
 
-        DetailsResponse = await axios.post("http://localhost:9191/doctor/doctorDetails",
+        DetailsResponse = await axios.post(
+          "http://localhost:9191/doctor/doctorDetails",
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-            }
-
-          });
-        navigate("/admin/view-doctor-details", { state: { doctor: DetailsResponse.data } });
-
-
-      }
-      else if (role === "Receptionist") {
+            },
+          }
+        );
+        navigate("/admin/view-doctor-details", {
+          state: { doctor: DetailsResponse.data },
+        });
+      } else if (role === "Receptionist") {
         const formData = {};
 
-        DetailsResponse = await axios.post("http://localhost:9191/receptionist/receptionistDetails",
+        DetailsResponse = await axios.post(
+          "http://localhost:9191/receptionist/receptionistDetails",
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
-            }
-
-          });
-        navigate("/admin/view-receptionist-details", { state: { staff: DetailsResponse.data } });
+            },
+          }
+        );
+        navigate("/admin/view-receptionist-details", {
+          state: { staff: DetailsResponse.data },
+        });
       }
-
     } catch (error) {
       console.error("Error fetching admin details:", error);
     }
   };
 
-  const paddingleft = (role === "Receptionist" || role === "DOCTOR") ? "8rem" : "0";
+  const paddingleft =
+    role === "Receptionist" || role === "DOCTOR" ? "8rem" : "0";
 
   const token = localStorage.getItem("token");
 
   return (
+    <div className="flex ">
     <nav
-      className="container-fluid navbar navbar-expand-lg text-white "
+      className="flex flex-wrap container-fluid navbar navbar-expand-lg text-white "
       data-bs-theme="dark"
     >
-      <div className="container-fluid">
+      <div className="flex flex-nowrap container-fluid">
         {token && (
           <button
             type="button"
@@ -101,11 +107,10 @@ export default function Navbar() {
           </button>
         )}
 
-
         {token && role === "ADMIN" && (
           <button
             type="button"
-            className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white ml-4"
+            className="flex navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white ml-4"
             onClick={handleAnalytics}
           >
             ANALYTICS
@@ -113,40 +118,36 @@ export default function Navbar() {
         )}
 
         <div className="container d-flex justify-content-center">
-          <p className="navbar-brand text-white playfair-display"
-          style={{ fontSize: "2.5rem", paddingLeft: paddingleft}}
+          <p
+            className="navbar-brand text-white playfair-display"
+            style={{ fontSize: "2.5rem", paddingLeft: paddingleft }}
           >
             HEALTH SYNC
           </p>
         </div>
 
-        {token && (
-          <button
-            type="button"
-            className="profile-btn btn btn-lg text-white"
-            onClick={handleViewDetails}
-          >
-            <CgProfile />
-          </button>
-        )}
+       
+          {token && (
+            <button
+              type="button"
+              className="profile-btn btn btn-lg text-white"
+              onClick={handleViewDetails}
+            >
+              <CgProfile />
+            </button>
+          )}
 
-        {token && (
-          <button
-            type="button"
-            className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
-            onClick={handleLogout}
-          >
-            LOGOUT
-          </button>
-        )}
+          {token && (
+            <button
+              type="button"
+              className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
+              onClick={handleLogout}
+            >
+              LOGOUT
+            </button>
+          )}
       </div>
     </nav>
+    </div>
   );
 }
-
-
-
-
-
-
-

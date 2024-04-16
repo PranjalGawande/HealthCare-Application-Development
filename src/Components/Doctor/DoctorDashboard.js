@@ -1,20 +1,19 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import doctorImage from '../../assets/DoctorPage.png';
-import { NavLink } from 'react-router-dom';
-import { toast, Toaster } from 'react-hot-toast';
+import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import doctorImage from "../../assets/DoctorPage.png";
+import { NavLink } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function DoctorDashboard() {
-  const doctorName = localStorage.getItem('Name');
+  const doctorName = localStorage.getItem("Name");
   const navigate = useNavigate();
-
 
   const determineFontSize = () => {
     if (doctorName && doctorName.length > 14) {
-      return '2rem';
+      return "2rem";
     }
-    return '3rem';
+    return "3rem";
   };
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,29 +31,29 @@ export default function DoctorDashboard() {
       toast.success(`Welcome, ${doctorName}`);
       localStorage.removeItem("loggedIn");
     }
-
   }, []);
 
-
-
   const handleConsultationForm = () => {
-    navigate('/consultationForm');
+    navigate("/consultationForm");
   };
 
   return (
-    <div className='main-background-doctor'>
+    <div className="main-background-doctor">
       {/* <Toaster /> */}
       <div className=" background h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
-          <div className="image-container md:block hidden pl-2" >
-            <img src={doctorImage} className="admin-image" alt='doctorImage'/>
-            <div className="dashboard-name-doctor" style={{ fontSize: determineFontSize() }}>{doctorName}</div>
+          <div className="image-container md:block hidden pl-2">
+            <img src={doctorImage} className="admin-image" alt="doctorImage" />
+            <div
+              className="dashboard-name-doctor"
+              style={{ fontSize: determineFontSize() }}
+            >
+              {doctorName}
+            </div>
           </div>
-          <div className='flex flex-col gap-5 '>
+          <div className="flex flex-col gap-5 ">
             <NavLink
               to="/doctor/view-appointments"
-              // className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-              // style={{ textAlign: 'center', fontSize: '30px', fontWeight: 'bold' }}
               type="button"
               className="button"
               style={{
@@ -63,7 +62,7 @@ export default function DoctorDashboard() {
                 fontWeight: "bold",
                 color: "white", // Set default font color to white
                 textDecoration: "none", // Remove default underline
-                padding: '30px'
+                padding: "30px",
               }}
               onMouseEnter={(e) => {
                 e.target.style.color = "black";

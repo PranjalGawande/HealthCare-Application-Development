@@ -68,49 +68,58 @@ const ViewDoctors = () => {
 
   return (
     <div className="background-table">
-    <div className="container pt-5">
-          <h2 style={{ fontSize: "4rem", fontWeight: "bold", textAlign: "center", marginBottom: "4rem" }}>DOCTORS LIST</h2>
-
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <table
-          className="table table-hover"
-          cellpadding="0"
-          cellspacing="0"
-          border="0"
+      <div className="container pt-5">
+        <h2
+          style={{
+            fontSize: "4rem",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: "4rem",
+          }}
         >
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">E-mail</th>
-              <th scope="col">Speciality</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {doctors.map((doctor) => (
-              <tr key={doctor.id}>
-                <td>{doctor.name}</td>
-                <td>{doctor.email}</td>
-                <td>{doctor.speciality}</td>
-                <td>
-                  {
-                    <button
-                      type="button"
-                      className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-cyan-400 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
-                      onClick={() => handleViewDoctorDetails(doctor.email)}
-                    >
-                      View Details
-                    </button>
-                  }
-                </td>
+          DOCTORS LIST
+        </h2>
+
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <table
+            className="table table-hover"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+          >
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Speciality</th>
+                <th scope="col">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+            </thead>
+            <tbody>
+              {doctors.map((doctor) => (
+                <tr key={doctor.id}>
+                  <td>{doctor.name}</td>
+                  <td>{doctor.email}</td>
+                  <td>{doctor.speciality}</td>
+                  <td>
+                    {
+                      <button
+                        type="button"
+                        className="navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-cyan-400 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white"
+                        onClick={() => handleViewDoctorDetails(doctor.email)}
+                      >
+                        View Details
+                      </button>
+                    }
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };
