@@ -39,7 +39,7 @@ const chartSetting = {
 const appChartSetting = {
   xAxis: [
     {
-      label: "Doctors Count",
+      label: "Appointments Count",
     },
   ],
   width: 500,
@@ -49,14 +49,14 @@ const appChartSetting = {
 const patientChartSetting = {
   xAxis: [
     {
-      label: "Doctors Count",
+      label: "Patients Count",
     },
   ],
   width: 500,
   height: 400,
 };
 
-const valueFormatter = (value) => `${value}mm`;
+const valueFormatter = (value) => `${value}`;
 
 export const Analytics = () => {
   const [analyticsData, setAnalyticsData] = useState(""); // State to store analytics data
@@ -288,6 +288,39 @@ export const Analytics = () => {
   //   fetchAppDateData();
   // }, []);
 
+  // useEffect(() => {
+  //   const fetchAppDateData = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(
+  //         "http://localhost:9191/admin/appointment-count-by-day",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+
+  //       const formattedData = Object.entries(response.data).map(([date, count]) => ({
+  //         date,
+  //         count
+  //       }));
+
+  //       setAppDateData(formattedData);
+  //       console.log("Analytics data fetched successfully:", formattedData);
+  //     } catch (error) {
+  //       console.error("Error fetching analytics data:", error);
+  //     }
+  //   };
+
+  //   fetchAppDateData();
+
+  // }, []); // Notice the empty dependency array
+
+
+
+
+
   useEffect(() => {
     const fetchAppDateData = async () => {
       try {
@@ -300,22 +333,114 @@ export const Analytics = () => {
             },
           }
         );
-
+  
         const formattedData = Object.entries(response.data).map(([date, count]) => ({
           date,
           count
         }));
-
+  
+        // Sort the formatted data by date
+        formattedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+  
         setAppDateData(formattedData);
         console.log("Analytics data fetched successfully:", formattedData);
       } catch (error) {
         console.error("Error fetching analytics data:", error);
+        // Optionally, set an error state and display an error message to the user
       }
     };
-
+  
     fetchAppDateData();
+  }, []);
 
-  }, []); // Notice the empty dependency array
+
+
+
+
+  const data = {
+    labels: appDateData ? appDateData.map((entry) => entry.date) : [],
+    datasets: [
+      {
+        label: "Number of Appointments",
+        data: appDateData ? appDateData.map((entry) => entry.count) : [],
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        backgroundColor: "transparent",
+        tension: 0.1,
+        borderWidth: 3,
+      }
+    ],
+  }
+  
+  const options = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 20, // Increase font size
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+          font: {
+            size: 20, // Increase font size
+          },
+        },
+        ticks: {
+          stepSize: 4, // Set x-axis step size
+          autoSkip: true, // Enable auto-skipping of ticks
+          padding: 10, // Adjust the padding between ticks
+          font: {
+            size: 18, // Increase tick font size
+          },
+        },
+        grid: {
+          display: false, // Hide x-axis grid lines
+          offset: true, // Adds spacing between the grid lines and the data
+        },
+      },
+      y: {
+        min: 0,
+        ticks: {
+          font: {
+            size: 20, // Increase tick font size
+          },
+        },
+        title: {
+          display: true,
+          text: 'Number of Appointments',
+          font: {
+            size: 18, // Increase font size
+          },
+        },
+      },
+    },
+    layout: {
+      padding: {
+        left: 20, // Adjust left padding
+        right: 20, // Adjust right padding
+      },
+    },
+  };
+  
+  // Optionally, display a loading state while fetching data
+  if (!appDateData) {
+    return <div>Loading...</div>;
+  }
+
+
+
+
+
+
+
+
+
 
   // const xAxisData = Object.keys(appDateData);
   // console.log(xAxisData);
@@ -371,20 +496,20 @@ export const Analytics = () => {
 
 
 
-  const data = {
-    labels: appDateData.map((entry) => entry.date),
-    datasets: [
-      {
-        label: "Number of Appointments",
-        data: appDateData.map((entry) => entry.count),
-        fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "transparent",
-        tension: 0.1,
-        borderWidth: 3,
-      }
-    ],
-  }
+  // const data = {
+  //   labels: appDateData.map((entry) => entry.date),
+  //   datasets: [
+  //     {
+  //       label: "Number of Appointments",
+  //       data: appDateData.map((entry) => entry.count),
+  //       fill: false,
+  //       borderColor: "rgb(75, 192, 192)",
+  //       backgroundColor: "transparent",
+  //       tension: 0.1,
+  //       borderWidth: 3,
+  //     }
+  //   ],
+  // }
 
   // const options = {
   //   plugins: {
@@ -430,65 +555,65 @@ export const Analytics = () => {
   //   }
   // };
 
-  const options = {
-    plugins: {
-      legend: {
-        labels: {
-          font: {
-            size: 20, // Increase font size
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: 'Date',
-          font: {
-            size: 20, // Increase font size
-          },
-        },
-        ticks: {
-          stepSize: 4, // Set x-axis step size
-          autoSkip: true, // Enable auto-skipping of ticks
-          // maxRotation: 0, // Rotate x-axis labels if needed
-          padding: -10, // Adjust the padding between ticks
-          font: {
-            size: 18, // Increase tick font size
-          },
-        },
-        grid: {
-          display: false, // Hide x-axis grid lines
-          offset: true, // Adds spacing between the grid lines and the data
-        },
-      },
-      y: {
-        min: 0,
-        ticks: {
-          font: {
-            size: 20, // Increase tick font size
-          },
-        },
-        // grid: {
-        //   offset: true, // Adds spacing between the grid lines and the data
-        // },
-        title: {
-          display: true,
-          text: 'Number of Appointments',
-          font: {
-            size: 18, // Increase font size
-          },
-        },
-      },
-    },
-    layout: {
-      padding: {
-        left: -1000, // Increase left padding to stretch x-axis
-        right: -100, // Increase right padding to stretch x-axis
-      },
-    },
-  };
+  // const options = {
+  //   plugins: {
+  //     legend: {
+  //       labels: {
+  //         font: {
+  //           size: 20, // Increase font size
+  //         },
+  //       },
+  //     },
+  //   },
+  //   scales: {
+  //     x: {
+  //       title: {
+  //         display: true,
+  //         text: 'Date',
+  //         font: {
+  //           size: 20, // Increase font size
+  //         },
+  //       },
+  //       ticks: {
+  //         stepSize: 4, // Set x-axis step size
+  //         autoSkip: true, // Enable auto-skipping of ticks
+  //         // maxRotation: 0, // Rotate x-axis labels if needed
+  //         padding: -10, // Adjust the padding between ticks
+  //         font: {
+  //           size: 18, // Increase tick font size
+  //         },
+  //       },
+  //       grid: {
+  //         display: false, // Hide x-axis grid lines
+  //         offset: true, // Adds spacing between the grid lines and the data
+  //       },
+  //     },
+  //     y: {
+  //       min: 0,
+  //       ticks: {
+  //         font: {
+  //           size: 20, // Increase tick font size
+  //         },
+  //       },
+  //       // grid: {
+  //       //   offset: true, // Adds spacing between the grid lines and the data
+  //       // },
+  //       title: {
+  //         display: true,
+  //         text: 'Number of Appointments',
+  //         font: {
+  //           size: 18, // Increase font size
+  //         },
+  //       },
+  //     },
+  //   },
+  //   layout: {
+  //     padding: {
+  //       left: -1000, // Increase left padding to stretch x-axis
+  //       right: -100, // Increase right padding to stretch x-axis
+  //     },
+  //   },
+  // };
 
 
 

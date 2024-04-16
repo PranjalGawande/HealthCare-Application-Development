@@ -39,7 +39,7 @@ export const ExistingPatientDetails = () => {
                     <img src={patientImage} className="admin-image" alt='patientImage' />
                     <div className="dashboard-name-patient">PATIENT DETAILS</div>
                 </div>
-                <div className="container glass-background mt-5">
+                <div className="container doctor-details mt-5">
                     <form onSubmit={handleSubmit}>
                         <label className="text-login fw-bold text-center" style={{ marginTop: '1px' }}>
                             Patient Details
