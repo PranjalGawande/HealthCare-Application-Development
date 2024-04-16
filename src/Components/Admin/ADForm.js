@@ -161,9 +161,9 @@ export const ADForm = ({ email }) => {
               style={{ width: "100%" }}
               onChange={handleChangeGender}
             >
-              <MenuItem value="male">Male</MenuItem>
-              <MenuItem value="female">Female</MenuItem>
-              <MenuItem value="other">Other</MenuItem>
+              <MenuItem value="M">Male</MenuItem>
+              <MenuItem value="F">Female</MenuItem>
+              <MenuItem value="O">Other</MenuItem>
             </Select>
           </FormControl>
         </div>
