@@ -28,7 +28,7 @@ export const AddAppointment = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       setDoctors(response.data);
     } catch (error) {
       console.error("Error fetching doctors:", error);
@@ -57,7 +57,7 @@ export const AddAppointment = () => {
         abhaId: abhaId,
         doctorId: selectedDoctor,
       };
-      console.log("Appointment Data:", appointmentData);
+      // console.log("Appointment Data:", appointmentData);
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         "http://localhost:9191/receptionist/addAppointment",
@@ -66,13 +66,13 @@ export const AddAppointment = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       toast.success("Appointment Added Successfully");
       setTimeout(() => {
         navigate("/receptionist");
       }, 2000);
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       toast.error("Error in Adding Appointment");
     }
   };

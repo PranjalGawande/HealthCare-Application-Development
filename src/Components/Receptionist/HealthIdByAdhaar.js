@@ -22,7 +22,7 @@ export const HealthIdByAdhaar = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log('Response:', response.data);
+      // console.log('Response:', response.data);
       navigate('/receptionist/abdm-otp-credentials', { state: response.data });
     } catch (error) {
       console.error('Error:', error);

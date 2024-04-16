@@ -12,7 +12,7 @@ export const AdhaarAbhaIdCreation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(aadhaarNo);
+    // console.log(aadhaarNo);
     try {
       const token = localStorage.getItem("token");
       const formData = {
@@ -26,7 +26,7 @@ export const AdhaarAbhaIdCreation = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       navigate("/receptionist/adhaar-otp-verification");
     } catch (error) {
       console.error("Error:", error);

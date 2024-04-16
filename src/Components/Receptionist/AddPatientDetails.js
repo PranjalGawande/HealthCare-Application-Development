@@ -21,11 +21,9 @@ export const AddPatientDetails = () => {
   });
 
   useEffect(() => {
-    // Check if patientInfo is available in location state
     if (location.state && location.state.patientInfo) {
       const { name, mobileNo, dob, gender, abhaId } =
         location.state.patientInfo;
-      // Update patientInfo state with the received data
       setPatientInfo({
         name,
         mobileNo,
@@ -36,7 +34,6 @@ export const AddPatientDetails = () => {
         abhaId,
       });
     } else {
-      // Handle case where patientInfo is not provided
       console.error("Patient info not provided in location state");
     }
   }, [location.state]);
@@ -64,14 +61,14 @@ export const AddPatientDetails = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       toast.success("Patient Added Successfully");
       setTimeout(() => {
         navigate("/receptionist/add-appointment");
       }, 2000);
     } catch (error) {
       toast.error("Error in Adding Patient");
-      console.error("Error:", error);
+      // console.error("Error:", error);
     } finally {
       setLoading(false);
     }

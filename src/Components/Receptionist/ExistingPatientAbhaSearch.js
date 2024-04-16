@@ -24,7 +24,7 @@ export const ExistingPatientAbhaSearch = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       const patientDetails = {
         abhaId: response.data.abhaId,
         address: response.data.address,
@@ -38,7 +38,7 @@ export const ExistingPatientAbhaSearch = () => {
         state: { patientDetails },
       });
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       toast.error("Error searching for patient");
     } finally {
       setLoading(false);

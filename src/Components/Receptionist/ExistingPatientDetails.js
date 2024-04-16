@@ -15,14 +15,14 @@ export const ExistingPatientDetails = () => {
         setLoading(true);
         try {
             // Simulate API call to add patient
-            console.log('Adding patient:', patientInfo);
+            // console.log('Adding patient:', patientInfo);
             toast.success('Patient Added Successfully');
             setTimeout(() => {
                 navigate('/receptionist/add-appointment');
             }, 2000);
         } catch (error) {
             toast.error('Error in Adding Patient');
-            console.error('Error:', error);
+            // console.error('Error:', error);
         } finally {
             setLoading(false);
         }

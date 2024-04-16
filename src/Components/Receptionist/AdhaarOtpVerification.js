@@ -12,13 +12,13 @@ export const AdhaarOtpVerification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(aadhaarOtp);
+    // console.log(aadhaarOtp);
     try {
       const token = localStorage.getItem("token");
       const formData = {
         otp: aadhaarOtp
       };
-      console.log('FormData:', formData);
+      // console.log('FormData:', formData);
 
       axios.defaults.withCredentials = true;
       const response = await axios.post("http://localhost:9191/receptionist/verifyAadhaarOtp",
@@ -27,7 +27,7 @@ export const AdhaarOtpVerification = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log('Response:', response.data);
+      // console.log('Response:', response.data);
       navigate('/receptionist/abha-mobile-no');
     } catch (error) {
       console.error('Error:', error);

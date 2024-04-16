@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   let navigate = useNavigate();
@@ -81,7 +82,8 @@ export default function Navbar() {
         });
       }
     } catch (error) {
-      console.error("Error fetching admin details:", error);
+      toast.error("Error fetching details");
+      // console.error("Error fetching admin details:", error);
     }
   };
 

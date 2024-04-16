@@ -41,7 +41,7 @@ export const PasswordChange = () => {
 
       if (!newPassword || newPassword.length < 6) {
         toast.error("Password must be at least 6 characters long");
-        console.error("Password must be at least 6 characters long");
+        // console.error("Password must be at least 6 characters long");
         return;
       }
 

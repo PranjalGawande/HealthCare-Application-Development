@@ -86,7 +86,7 @@ const LoginForm = () => {
         navigate("/admin");
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      // console.error("Login failed:", error);
       toast.error("Incorrect credentials.", {
         duration: 3000,
       });

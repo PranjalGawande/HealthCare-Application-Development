@@ -12,7 +12,7 @@ export const NewAbhaNoOtpVerification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(abhaOtp);
+    // console.log(abhaOtp);
     try {
       const token = localStorage.getItem("token");
       const formData = {
@@ -24,7 +24,7 @@ export const NewAbhaNoOtpVerification = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log('Response:', response.data);
+      // console.log('Response:', response.data);
       navigate('/receptionist/health-id-adhaar');
     } catch (error) {
       console.error('Error:', error);

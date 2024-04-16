@@ -18,7 +18,7 @@ export const AbdmOtpCredentials = () => {
       const formData = {
         otp: abdmOtp
       };
-      console.log('FormData:', formData);
+      // console.log('FormData:', formData);
 
       axios.defaults.withCredentials = true;
       const response = await axios.post("http://localhost:9191/receptionist/confirmAbdmCredentials",
@@ -27,10 +27,10 @@ export const AbdmOtpCredentials = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log('Response:', response.data);
+      // console.log('Response:', response.data);
       navigate('/receptionist/suggest-abha-address');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error Submitting:', error);
     } finally {
       setLoading(false);
     }

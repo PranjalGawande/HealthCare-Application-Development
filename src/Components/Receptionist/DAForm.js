@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
+import toast from 'react-hot-toast';
 
 const DAForm = ({ patientId, doctorId }) => {
 
@@ -30,10 +31,11 @@ const DAForm = ({ patientId, doctorId }) => {
         throw new Error('Failed to create appointment');
       }
 
-      // Handle success
-      console.log('Appointment created successfully');
+      toast.success('Appointment created successfully');
+      // console.log('Appointment created successfully');
     } catch (error) {
-      console.error('Error creating appointment:', error.message);
+      toast.error('Error creating appointment');
+      // console.error('Error creating appointment:', error.message);
     }
   };
 

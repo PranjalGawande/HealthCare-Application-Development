@@ -26,7 +26,7 @@ export const AbhaIdVerification = () => {
         }
       );
       localStorage.setItem("abhaAddress", abhaAdd);
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       navigate("/receptionist/abha-otp-verification");
     } catch (error) {
       console.error("Error:", error);

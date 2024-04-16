@@ -29,7 +29,7 @@ export const AbhaIdOtpVerification = () => {
       );
       // Extract transaction ID from the response
       const { transactionId } = response.data;
-      console.log("Transaction ID:", transactionId);
+      // console.log("Transaction ID:", transactionId);
       return transactionId; // Return the transaction ID
     } catch (error) {
       console.error("Error fetching transaction ID:", error);
@@ -45,7 +45,7 @@ export const AbhaIdOtpVerification = () => {
         abhaId: abhaAdd,
       };
       // let patientData = "";
-      console.log("Form Data in add Patient form:", formData);
+      // console.log("Form Data in add Patient form:", formData);
       axios.defaults.withCredentials = true;
       // setTimeout(async () => {
       const response = await axios.post(
@@ -56,14 +56,14 @@ export const AbhaIdOtpVerification = () => {
         }
       );
       const patientData = response.data;
-      console.log("Patient Data:", patientData);
+      // console.log("Patient Data:", patientData);
 
       return patientData;
       // console.log(patientData);
     } catch (error) {
       console.error("Error fetching patient data:", error);
     } finally {
-      console.log("Patient Info:", patientInfo);
+      // console.log("Patient Info:", patientInfo);
       // setLoading(false);
     }
   };
@@ -103,7 +103,7 @@ export const AbhaIdOtpVerification = () => {
         txnId: transactionId,
         otp: abdmOtp,
       };
-      console.log("FormData:", formData);
+      // console.log("FormData:", formData);
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         "http://localhost:9191/receptionist/verificationAbhaAddressOtp",
@@ -112,7 +112,7 @@ export const AbhaIdOtpVerification = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
       // navigate('/receptionist/add-patient');
     } catch (error) {
       console.error("Error:", error);
@@ -124,19 +124,15 @@ export const AbhaIdOtpVerification = () => {
       let fetchPatientAttempt = 0;
       let response = "";
 
-      // Retry logic to fetch transaction ID
       while (response === "" && fetchPatientAttempt < 5) {
-        // You can adjust the number of attempts as needed
         try {
           // Attempt to fetch transaction ID
           response = await fetchPatientData();
-          console.log("Response:", response);
+          // console.log("Response:", response);
         } catch (error) {
           console.error("Error fetching patient details:", error);
         }
-        // Increase attempt count
         fetchPatientAttempt++;
-        // Delay before next attempt (5000 milliseconds = 5 seconds)
         await new Promise((resolve) => setTimeout(resolve, 3000));
       }
 
@@ -152,7 +148,7 @@ export const AbhaIdOtpVerification = () => {
         });
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error Submitting:", error);
     }
   };
 

@@ -12,7 +12,7 @@ export const AbhaMobileNo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(abhaMobNo);
+    // console.log(abhaMobNo);
     try {
       const token = localStorage.getItem("token");
       const formData = {
@@ -24,8 +24,8 @@ export const AbhaMobileNo = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log('Response:', response.data);
-      console.log('Mobile Linked:', response.data.mobileLinked);
+      // console.log('Response:', response.data);
+      // console.log('Mobile Linked:', response.data.mobileLinked);
       if (response.data.mobileLinked === true) {
         navigate('/receptionist/health-id-adhaar');
       } else {
