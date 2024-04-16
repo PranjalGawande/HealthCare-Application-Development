@@ -24,6 +24,7 @@ export const ViewDoctorDetails = () => {
   const handleActivateDoctor = async (email) => {
     try {
       if (!doctorDetails || !doctorDetails.email) {
+        toast.error("Doctor details or email not available.");
         // console.error("Doctor details or email not available.");
         return;
       }
@@ -45,6 +46,7 @@ export const ViewDoctorDetails = () => {
       }));
       toast.success("Doctor activated successfully");
     } catch (error) {
+      toast.error("Error activating doctor");
       // console.error("Error activating doctor:", error);
     }
   };
@@ -52,6 +54,7 @@ export const ViewDoctorDetails = () => {
   const handleDeactivateDoctor = async (email) => {
     try {
       if (!doctorDetails || !doctorDetails.email) {
+        toast.error("Doctor details or email not available.");
         // console.error("Doctor details or email not available.");
         return;
       }
@@ -74,6 +77,7 @@ export const ViewDoctorDetails = () => {
       }));
       toast.success("Doctor deactivated successfully");
     } catch (error) {
+      toast.error("Error deactivating doctor");
       // console.error("Error deactivating doctor:", error);
     }
   };

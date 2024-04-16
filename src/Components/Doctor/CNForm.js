@@ -4,6 +4,9 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PatientHistoryPopup } from "./PatientHistoryPopup";
 import doctorImage from "../../assets/DoctorPage.png";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import toast from "react-hot-toast";
 
 const CNForm = ({ patientId, doctorId }) => {
   const navigate = useNavigate();
@@ -11,8 +14,14 @@ const CNForm = ({ patientId, doctorId }) => {
   const [appToken, setAppToken] = useState(null);
   const [patientHistory, setPatientHistory] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [modalShow, setModalShow] = React.useState(false);
+  const [medicine, setMedicine] = useState("");
+  const [dosage, setDosage] = useState("");
+  const [frequency, setFrequency] = useState("");
+  const [duration, setDuration] = useState("");
 
-  console.log("Apptoken: ", appToken);
+
+  // console.log("Apptoken: ", appToken);
 
   const [formData, setFormData] = useState({
     symptoms: "",
@@ -28,15 +37,15 @@ const CNForm = ({ patientId, doctorId }) => {
       ...formData,
       [e.target.id]: e.target.value,
     });
-    console.log("formdata: ", formData);
-    console.log("appToken: ", appToken);
+    // console.log("formdata: ", formData);
+    // console.log("appToken: ", appToken);
   };
 
   useEffect(() => {
     if (location.state && location.state.appToken) {
       setAppToken(location.state.appToken);
     } else {
-      console.log("No token found");
+      // console.log("No token found");
     }
   }, [location.state, navigate]);
 
@@ -56,10 +65,10 @@ const CNForm = ({ patientId, doctorId }) => {
         `http://localhost:9191/doctor/history/${appToken}`,
         { headers: headers }
       );
-      console.log(response);
+      // console.log(response);
       setPatientHistory(response.data);
     } catch (error) {
-      console.error("Error fetching patient history:", error.message);
+      // console.error("Error fetching patient history:", error.message);
     }
   };
 
@@ -69,27 +78,15 @@ const CNForm = ({ patientId, doctorId }) => {
     setFormData({ ...formData, medicine: updatedMedicine });
   };
 
-  const addMedicine = () => {
-    setFormData({
-      ...formData,
-      medicine: [...formData.medicine, ""],
-    });
-  };
-
-  const removeMedicine = (index) => {
-    const updatedMedicine = [...formData.medicine];
-    updatedMedicine.splice(index, 1);
-    setFormData({ ...formData, medicine: updatedMedicine });
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       if (!appToken) {
-        console.error("Appointment token not found");
+        toast.error("Appointment token not found");
+        // console.error("Appointment token not found");
         return;
       }
-      console.log("formdata: ", formData);
+      // console.log("formdata: ", formData);
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -102,15 +99,20 @@ const CNForm = ({ patientId, doctorId }) => {
       );
 
       if (response.status !== 200) {
+        toast.error("Failed to submit consultation form");
         throw new Error("Failed to submit consultation form");
       } else {
-        console.log("response: ", response);
+        toast.success("Consultation form submitted successfully");
+        setTimeout(() => {
+          navigate("/doctor/view-appointments");
+        }, 2000);
+        // console.log("response: ", response);
       }
 
-      // Handle success
-      console.log("Consultation form submitted successfully");
+      // console.log("Consultation form submitted successfully");
     } catch (error) {
-      console.error("Error submitting consultation form:", error.message);
+      toast.error("Error submitting consultation form");
+      // console.error("Error submitting consultation form:", error.message);
     }
   };
 
@@ -120,6 +122,24 @@ const CNForm = ({ patientId, doctorId }) => {
 
   // const handleRequestConsent = () => {
   // };
+const handleprescriptionSubmit = () => {
+    const prescriptions = {
+      medicine,
+      dosage,
+      frequency,
+      duration: parseInt(duration)
+    };
+
+    // console.log("Prescriptions:", prescriptions);
+    setFormData({
+      ...formData,
+      prescriptions: [...formData.prescriptions, prescriptions],
+    });
+
+    toast.success("Prescription added successfully");
+    
+
+  };
 
   return (
     <div className="">
@@ -197,57 +217,91 @@ const CNForm = ({ patientId, doctorId }) => {
                     onChange={handleChange}
                   />
                 </div>
-
                 <div>
-                  <div className="mb-2">
+                  <TextField
+                    id="diagnosis"
+                    label="Diagnosis"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "100%" }}
+                    value={formData.diagnosis}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <Button
+                  className="button "
+                  style={{
+                    marginTop: "2rem",
+                    width: "100%",
+                    height: "10%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingTop: "10px", paddingBottom: "10px"
+                  }}
+                  onClick={() => {
+                    setModalShow(true);
+                  }}
+                >
+                  {"Add Prescription"}
+                </Button>
+
+                <Modal
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                  size="lg"
+                  aria-labelledby="contained-modal-title-vcenter"
+                  centered
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                      Add Prescription
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
                     <TextField
                       type="text"
-                      value={formData.medicine[0]}
-                      onChange={(e) => handleMedicineChange(0, e.target.value)}
-                      style={{ marginBottom: "1rem", width: "100%" }}
-                      placeholder="Medicine Name"
+                      label="Medicine"
+                      value={medicine}
+                      onChange={(e) => setMedicine(e.target.value)}
+                      fullWidth
+                      margin="normal"
+                      variant="outlined"
                     />
-                  </div>
-                  {formData.medicine.slice(1).map((medicineName, index) => (
-                    <div key={index} className="mb-2">
-                      <TextField
-                        type="text"
-                        value={medicineName}
-                        onChange={(e) => handleMedicineChange(index + 1, e.target.value)}
-                        style={{ marginBottom: "1rem", width: "100%", marginRight: "10px" }}
-                        placeholder="Medicine Name"
-                      />
-                      <button
-                        type="button"
-                        className="button"
-                        onClick={() => removeMedicine(index + 1)}
-                        style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
-                      >
-                        Remove
-                      </button>
-                    </div>
+                    <TextField
+                      type="text"
+                      label="Dosage"
+                      value={dosage}
+                      onChange={(e) => setDosage(e.target.value)}
+                      fullWidth
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      type="text"
+                      label="Frequency"
+                      value={frequency}
+                      onChange={(e) => setFrequency(e.target.value)}
+                      fullWidth
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      type="number"
+                      label="Duration (in days)"
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      fullWidth
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <button className="btn btn-primary" onClick={handleprescriptionSubmit}>
+                      Add Prescription
+                    </button>
+                  </Modal.Body>
 
-                  ))}
-                  <button
-                    onClick={addMedicine}
-                    type="button"
-                    className="button"
-                    style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
-                  >
-                    Add Prescriptions
-                  </button>
-                </div>
-                {/* <div style={{ marginTop: "1rem" }}>
-                <button
-                  type="button"
-                  className="button"
-                  style={{ marginTop: "2rem", width: "100%" }}
-                  onClick={handleRequestConsent}
-                >
-                  Request Consent
-                </button>
-              </div> */}
-
+                </Modal>
 
                 <div style={{ marginTop: "1rem" }}>
                   <button

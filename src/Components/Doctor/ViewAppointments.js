@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export const ViewAppointments = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
@@ -24,7 +25,8 @@ export const ViewAppointments = () => {
 
       setDoctorDetails(response.data);
     } catch (error) {
-      console.error("Error fetching doctor details:", error);
+      // toast.error("Error fetching doctor details");
+      // console.error("Error fetching doctor details:", error);
     }
   };
 
@@ -45,14 +47,15 @@ export const ViewAppointments = () => {
         { headers: headers }
       );
 
-      console.log("response", response);
+      // console.log("response", response);
       if (response.status === 200) {
+        toast.success("Patient marked as absent successfully");
         fetchDoctorDetails();
       } else {
-        console.error("Error marking patient absent:", response.data);
+        // console.error("Error marking patient absent:", response.data);
       }
     } catch (error) {
-      console.error("Error marking patient absent:", error);
+      // console.error("Error marking patient absent:", error);
     }
   };
 
