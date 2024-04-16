@@ -46,7 +46,7 @@ export default function DoctorDashboard() {
       {/* <Toaster /> */}
       <div className=" background h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
-          <div className="image-container" >
+          <div className="image-container md:block hidden pl-2" >
             <img src={doctorImage} className="admin-image" alt='doctorImage'/>
             <div className="dashboard-name-doctor" style={{ fontSize: determineFontSize() }}>{doctorName}</div>
           </div>

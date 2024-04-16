@@ -115,7 +115,7 @@ export const ViewReceptionistDetails = () => {
               {staffDetails.name}
             </div>
           </div>
-          <div className="container glass-background mt-5">
+          <div className="container doctor-details mt-5">
             <label className="text-login profile-details fw-bold text-center mt-5 mb-1">
               Profile Details
             </label>

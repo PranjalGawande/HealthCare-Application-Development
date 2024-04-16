@@ -36,18 +36,29 @@ const AdminDashboard = () => {
   };
   return (
     <div>
-      <div className="h-full flex justify-center items-center ">
-        <div className="container flex flex-wrap admin-dashboard justify-between items-center  border-amber-300 border-solid ">
-          <div className="image-container pl-2">
+      <div className="h-full flex flex-row justify-center items-center">
+        <div className="container flex flex-nowrap admin-dashboard justify-between items-center  border-amber-300 border-solid ">
+          <div className="image-container md:block hidden pl-2">
             <img src={admin} className="admin-image" alt="adminImage" />
-            <div
+            {/* <div
               className="dashboard-name"
               style={{ fontSize: determineFontSize() }}
             >
               {adminName}
-            </div>
+            </div> */}
+
+            <div
+  className="dashboard-name"
+  style={{
+    fontSize: `calc(30px + 1vw)`, // Adjust the formula as needed
+  }}
+>
+  {adminName}
+</div>
+
           </div>
-          <div className="flex flex-col gap-5 pr-20">
+          <div className="flex">
+          <div className="flex flex-col ml-5 gap-5 pr-20">
             <NavLink
               to="/admin/add-doctor"
               // className="button text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
@@ -181,6 +192,7 @@ const AdminDashboard = () => {
               VIEW ADMIN LIST
             </NavLink>
           </div>
+        </div>
         </div>
       </div>
     </div>

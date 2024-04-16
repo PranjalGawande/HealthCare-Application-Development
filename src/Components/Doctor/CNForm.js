@@ -124,7 +124,7 @@ const CNForm = ({ patientId, doctorId }) => {
     <div className="">
       <div className="background-appointment flex flex-wrap justify-center items-center">
         <div className="flex justify-center items-center">
-          <div className="image-container">
+          <div className="image-container md:block hidden pl-2">
             <img src={doctorImage} className="admin-image" alt="doctorImage"/>
             <div
               className="dashboard-name-doctor"
@@ -220,7 +220,7 @@ const CNForm = ({ patientId, doctorId }) => {
                         type="button"
                         className="button"
                         onClick={() => removeMedicine(index + 1)}
-                        style={{ height: "fit-content" }}
+                        style={{ marginTop: "2rem", width: "100%", paddingTop:"10px", paddingBottom:"10px" }}
                       >
                         Remove
                       </button>
@@ -231,13 +231,12 @@ const CNForm = ({ patientId, doctorId }) => {
                     onClick={addMedicine}
                     type="button"
                     className="button"
-                    style={{ marginTop: "2rem", width: "100%" }}
+                    style={{ marginTop: "2rem", width: "100%", paddingTop:"10px", paddingBottom:"10px"  }}
                   >
                     Add Medicine
                   </button>
                 </div>
-              </form>
-              <div style={{ marginTop: "1rem" }}>
+                {/* <div style={{ marginTop: "1rem" }}>
                 <button
                   type="button"
                   className="button"
@@ -246,24 +245,30 @@ const CNForm = ({ patientId, doctorId }) => {
                 >
                   Request Consent
                 </button>
-              </div>
+              </div> */}
               {
                 <PatientHistoryPopup
+                  type="button"
+                  className="button"
                   title="Patient History"
                   onClose={() => setShowPopup(false)}
                   patientHistory={patientHistory}
+                  style={{ marginTop: "2rem", width: "100%", paddingTop:"10px", paddingBottom:"10px"  }}
                 />
               }
-              <div style={{ marginTop: "1rem" }}>
+              <div style={{ marginTop: "1rem", marginBottom:"2rem" }}>
                 <button
                   type="button"
                   className="button"
-                  style={{ marginTop: "2rem", width: "100%" }}
+                  style={{ marginTop: "2rem", width: "100%", paddingTop:"10px", paddingBottom:"10px"  }}
                   onClick={handleRequestConsent}
                 >
                   Submit
                 </button>
               </div>
+              </form>
+              
+              
             </div>
           </div>
         </div>
