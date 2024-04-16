@@ -38,7 +38,7 @@ export const AdminUpdateDoctorDetails = () => {
         mobileNo: newMobileNo,
         experience: newExperience,
       };
-      console.log("Form data:", formData);
+      // console.log("Form data:", formData);
       const response = await axios.post(
         "http://localhost:9191/doctor/updateDoctor",
         formData,
@@ -53,7 +53,7 @@ export const AdminUpdateDoctorDetails = () => {
         navigate("/admin/view-doctor-info");
       }, 2000);
     } catch (error) {
-      console.error("Error updating doctor details:", error);
+      // console.error("Error updating doctor details:", error);
       toast.error("Error updating doctor details!", { duration: 3000 });
       // setError(error.response.data.message);
     }

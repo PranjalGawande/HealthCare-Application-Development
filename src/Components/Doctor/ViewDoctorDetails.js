@@ -24,7 +24,7 @@ export const ViewDoctorDetails = () => {
   const handleActivateDoctor = async (email) => {
     try {
       if (!doctorDetails || !doctorDetails.email) {
-        console.error("Doctor details or email not available.");
+        // console.error("Doctor details or email not available.");
         return;
       }
       const token = localStorage.getItem("token");
@@ -45,14 +45,14 @@ export const ViewDoctorDetails = () => {
       }));
       toast.success("Doctor activated successfully");
     } catch (error) {
-      console.error("Error activating doctor:", error);
+      // console.error("Error activating doctor:", error);
     }
   };
 
   const handleDeactivateDoctor = async (email) => {
     try {
       if (!doctorDetails || !doctorDetails.email) {
-        console.error("Doctor details or email not available.");
+        // console.error("Doctor details or email not available.");
         return;
       }
 
@@ -74,7 +74,7 @@ export const ViewDoctorDetails = () => {
       }));
       toast.success("Doctor deactivated successfully");
     } catch (error) {
-      console.error("Error deactivating doctor:", error);
+      // console.error("Error deactivating doctor:", error);
     }
   };
 
@@ -96,7 +96,7 @@ export const ViewDoctorDetails = () => {
     }
     // console.log("doctorDetails",doctorDetails);
   }, [location.state, navigate]);
-  console.log("doctorDetails", doctorDetails);
+  // console.log("doctorDetails", doctorDetails);
 
   const determineFontSize = () => {
     if (doctorDetails.name && doctorDetails.name.length > 14) {

@@ -35,7 +35,7 @@ const ViewDoctors = () => {
         setDoctors(response.data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching doctors:", error);
+        // console.error("Error fetching doctors:", error);
         setLoading(false);
       }
     };
@@ -62,7 +62,7 @@ const ViewDoctors = () => {
         state: { doctor: doctorDetails },
       });
     } catch (error) {
-      console.error("Error fetching doctor details:", error);
+      // console.error("Error fetching doctor details:", error);
     }
   };
 

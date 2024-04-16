@@ -21,13 +21,13 @@ const AddLoginCredAdmin = ({ onSuccess }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email)) {
       toast.error("Invalid email format");
-      console.error("Invalid email format");
+      // console.error("Invalid email format");
       return;
     }
 
     if (!formData.password || formData.password.length < 6) {
       toast.error("Password must be at least 6 characters long");
-      console.error("Password must be at least 6 characters long");
+      // console.error("Password must be at least 6 characters long");
       return;
     }
 
@@ -37,19 +37,19 @@ const AddLoginCredAdmin = ({ onSuccess }) => {
     };
 
     try {
-      console.log("Form Data:", formData);
+      // console.log("Form Data:", formData);
 
       const response = await axios.post(
         "http://localhost:9191/admin/addLogin",
         formData,
         { headers: headers }
       );
-      console.log("Response from addLogin backend:", response.data);
+      // console.log("Response from addLogin backend:", response.data);
 
       onSuccess(formData.email);
     } catch (error) {
       toast.error("Email already exist");
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
 

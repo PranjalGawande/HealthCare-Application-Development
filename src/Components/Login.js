@@ -32,7 +32,7 @@ const LoginForm = () => {
       );
       const responseData = response.data;
       const token = responseData.token;
-      console.log("User Logged In:", responseData);
+      // console.log("User Logged In:", responseData);
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
@@ -74,7 +74,7 @@ const LoginForm = () => {
         );
       }
       const Name = DetailsResponse.data.name;
-      console.log("Name:", Name);
+      // console.log("Name:", Name);
 
       localStorage.setItem("Name", Name);
 

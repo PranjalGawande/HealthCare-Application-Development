@@ -29,7 +29,7 @@ export const AdminUpdateReceptionistDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newMobileNo || newMobileNo.length < 10) {
-      console.error("Mobile number must be at least 10 characters long");
+      // console.error("Mobile number must be at least 10 characters long");
       toast.error("Mobile number must be at least 10 characters long");
       return;
     }
@@ -39,7 +39,7 @@ export const AdminUpdateReceptionistDetails = () => {
         email: email,
         mobileNo: newMobileNo,
       };
-      console.log("Form data:", formData);
+      // console.log("Form data:", formData);
       const response = await axios.post(
         "http://localhost:9191/receptionist/updateReceptionist",
         formData,
@@ -55,7 +55,7 @@ export const AdminUpdateReceptionistDetails = () => {
         navigate("/admin/view-receptionist-info");
       }, 2000);
     } catch (error) {
-      console.error("Error updating doctor details:", error);
+      // console.error("Error updating doctor details:", error);
       toast.error("Error updating receptionist details!", { duration: 3000 });
       // setError(error.response.data.message);
     }

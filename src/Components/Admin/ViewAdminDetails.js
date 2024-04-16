@@ -12,14 +12,14 @@ export const ViewAdminDetails = () => {
     try {
       navigate("/password-change");
     } catch (error) {
-      console.error("Error changing password:", error);
+      // console.error("Error changing password:", error);
     }
   };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
-    console.log("token: ", token);
+    // console.log("token: ", token);
     if (!token) {
       navigate("/");
     }
@@ -28,7 +28,7 @@ export const ViewAdminDetails = () => {
       localStorage.clear();
     }
 
-    console.log("location.state: ", location.state);
+    // console.log("location.state: ", location.state);
     if (location.state && location.state.adminDetails) {
       setAdminDetails(location.state.adminDetails);
     } else {

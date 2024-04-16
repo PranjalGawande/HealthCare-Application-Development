@@ -38,7 +38,7 @@ const ViewStaff = () => {
         setStaff(receptionists);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching staff:", error);
+        // console.error("Error fetching staff:", error);
         setLoading(false);
       }
     };
@@ -59,12 +59,12 @@ const ViewStaff = () => {
         { headers: headers }
       );
       const staffDetails = response.data;
-      console.log("viewform: ", staffDetails);
+      // console.log("viewform: ", staffDetails);
       navigate("/admin/view-receptionist-details", {
         state: { staff: staffDetails },
       });
     } catch (error) {
-      console.error("Error viewing staff details:", error);
+      // console.error("Error viewing staff details:", error);
     }
   };
 

@@ -25,7 +25,7 @@ export const ViewReceptionistDetails = () => {
   const handleActivateDoctor = async (email) => {
     try {
       if (!staffDetails || !staffDetails.email) {
-        console.error("Receptionist details or email not available.");
+        // console.error("Receptionist details or email not available.");
         return;
       }
       const token = localStorage.getItem("token");
@@ -45,14 +45,14 @@ export const ViewReceptionistDetails = () => {
       }));
       toast.success("Receptionist activated successfully");
     } catch (error) {
-      console.error("Error activating doctor:", error);
+      // console.error("Error activating doctor:", error);
     }
   };
 
   const handleDeactivateDoctor = async (email) => {
     try {
       if (!staffDetails || !staffDetails.email) {
-        console.error("Receptionist details or email not available.");
+        // console.error("Receptionist details or email not available.");
         return;
       }
 
@@ -73,7 +73,7 @@ export const ViewReceptionistDetails = () => {
       }));
       toast.success("Receptionist deactivated successfully");
     } catch (error) {
-      console.error("Error deactivating doctor:", error);
+      // console.error("Error deactivating doctor:", error);
     }
   };
 
@@ -87,7 +87,7 @@ export const ViewReceptionistDetails = () => {
       navigate("/");
       localStorage.clear();
     }
-    console.log(location.state.staff);
+    // console.log(location.state.staff);
     if (location.state && location.state.staff) {
       setStaffDetails(location.state.staff);
     } else {

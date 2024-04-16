@@ -30,7 +30,7 @@ export const AdminChangeDoctorPassword = () => {
   const handleChangePassword = async (e) => {
     e.preventDefault();
     if (!newPassword || newPassword.length < 6) {
-      console.error("Password must be at least 6 characters long");
+      // console.error("Password must be at least 6 characters long");
       toast.error("Password must be at least 6 characters long");
       return;
     }

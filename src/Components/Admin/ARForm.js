@@ -66,21 +66,21 @@ export const ASForm = ({ email }) => {
     }
 
     try {
-      console.log("Form Data:", formData);
+      // console.log("Form Data:", formData);
 
       const response = await axios.post(
         "http://localhost:9191/admin/addReceptionist",
         formData,
         { headers: headers }
       );
-      console.log("Response from backend:", response.data);
+      // console.log("Response from backend:", response.data);
       toast.success("Receptionist added successfully");
 
       setTimeout(() => {
         navigate("/admin");
       }, 3000);
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
       toast.error("Failed to add Receptionist!");
     }
   };

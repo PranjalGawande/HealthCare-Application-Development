@@ -29,7 +29,7 @@ export const AdminChangeReceptionistPassword = () => {
   const handleChangePassword = async (e) => {
     e.preventDefault();
     if (!newPassword || newPassword.length < 6) {
-      console.error("Password must be at least 6 characters long");
+      // console.error("Password must be at least 6 characters long");
       toast.error("Password must be at least 6 characters long");
       return;
     }
@@ -39,7 +39,7 @@ export const AdminChangeReceptionistPassword = () => {
         email: email,
         newPassword: newPassword,
       };
-      console.log("formdata", formData);
+      // console.log("formdata", formData);
       const response = await axios.post(
         "http://localhost:9191/receptionist/changePassword",
         formData,
