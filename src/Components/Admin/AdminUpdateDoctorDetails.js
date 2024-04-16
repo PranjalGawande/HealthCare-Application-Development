@@ -94,6 +94,7 @@ export const AdminUpdateDoctorDetails = () => {
                     id="email"
                     value={doctorDetails.email}
                     readOnly
+                    disabled
                     style={{ marginBottom: "2rem", width: "100%" }}
                   />
                 </div>

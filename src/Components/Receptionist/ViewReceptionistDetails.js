@@ -19,7 +19,12 @@ export const ViewReceptionistDetails = () => {
   };
 
   const handleChangePassword = () => {
-    navigate("/password-change");
+    if (role === "Receptionist") {
+      navigate("/password-change");
+    }
+    else {
+      navigate("/admin/admin-receptionist-password-change")
+    }
   };
 
   const handleActivateDoctor = async (email) => {

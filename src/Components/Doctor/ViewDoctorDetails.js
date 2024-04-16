@@ -18,7 +18,12 @@ export const ViewDoctorDetails = () => {
   };
 
   const handleChangePassword = () => {
-    navigate("/password-change", { state: { doctor: doctorDetails } });
+    if (role === "DOCTOR") {
+      navigate("/password-change", { state: { doctor: doctorDetails } });
+    }
+    else {
+      navigate("/admin/admin-doctor-password-change", { state: { doctor: doctorDetails } });
+    }
   };
 
   const handleActivateDoctor = async (email) => {

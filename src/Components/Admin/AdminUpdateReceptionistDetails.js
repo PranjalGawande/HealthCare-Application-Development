@@ -105,6 +105,7 @@ export const AdminUpdateReceptionistDetails = () => {
                     style={{ width: "100%", marginBottom: "2rem" }}
                     value={staffDetails.email}
                     readOnly
+                    disabled
                   />
                 </div>
                 <div>
