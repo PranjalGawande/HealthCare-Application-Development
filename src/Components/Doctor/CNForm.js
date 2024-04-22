@@ -7,6 +7,9 @@ import doctorImage from "../../assets/DoctorPage.png";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import toast from "react-hot-toast";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Typography from "@mui/material/Typography";
 
 const CNForm = ({ patientId, doctorId }) => {
   const navigate = useNavigate();
@@ -20,7 +23,6 @@ const CNForm = ({ patientId, doctorId }) => {
   const [frequency, setFrequency] = useState("");
   const [duration, setDuration] = useState("");
 
-
   // console.log("Apptoken: ", appToken);
 
   const [formData, setFormData] = useState({
@@ -29,6 +31,7 @@ const CNForm = ({ patientId, doctorId }) => {
     oxygenLevel: "",
     pulse: "",
     diagnosis: "",
+    weight: "",
     prescriptions: [],
   });
 
@@ -122,12 +125,12 @@ const CNForm = ({ patientId, doctorId }) => {
 
   // const handleRequestConsent = () => {
   // };
-const handleprescriptionSubmit = () => {
+  const handleprescriptionSubmit = () => {
     const prescriptions = {
       medicine,
       dosage,
       frequency,
-      duration: parseInt(duration)
+      duration: parseInt(duration),
     };
 
     // console.log("Prescriptions:", prescriptions);
@@ -137,98 +140,311 @@ const handleprescriptionSubmit = () => {
     });
 
     toast.success("Prescription added successfully");
-    
+  };
 
+  const [checked, setChecked] = useState(false);
+
+  const handleCheck = (event) => {
+    setChecked(event.target.checked);
   };
 
   return (
-    <div className="">
-      <div className="background-appointment flex flex-wrap justify-center items-center">
-        <div className="flex justify-center items-center">
-          <div className="image-container md:block hidden pl-2">
-            <img src={doctorImage} className="admin-image" alt="doctorImage" />
-            <div
-              className="dashboard-name-doctor"
-              style={{ fontSize: "40px" }}
-            >
-              CONSULTATION FORM
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-center items-center mt-20 pt-10">
-          <div className="container glass-background login-cred" style={{ height: "auto", marginBottom: "2rem" }}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                paddingTop: "2rem",
-                width: "100%",
-                overflowY: "auto",
-              }}
-            >
-              <div className="flex">
-                <label className="fw-bold text-center mb-4">
-                  Consultation Form
-                </label>
-              </div>
-              <form onSubmit={handleSubmit}>
-                <div>
-                  <TextField
-                    id="symptoms"
-                    label="Symptoms"
-                    variant="outlined"
-                    size="medium"
-                    style={{ marginBottom: "1rem", width: "100%" }}
-                    value={formData.symptoms}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    id="bloodPressure"
-                    label="Blood Pressure"
-                    variant="outlined"
-                    size="medium"
-                    style={{ marginBottom: "1rem", width: "100%" }}
-                    value={formData.bloodPressure}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    id="oxygenLevel"
-                    label="Oxygen Level"
-                    variant="outlined"
-                    size="medium"
-                    style={{ marginBottom: "1rem", width: "100%" }}
-                    value={formData.oxygenLevel}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    id="pulse"
-                    label="Pulse"
-                    variant="outlined"
-                    size="medium"
-                    style={{ marginBottom: "1rem", width: "100%" }}
-                    value={formData.pulse}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    id="diagnosis"
-                    label="Diagnosis"
-                    variant="outlined"
-                    size="medium"
-                    style={{ marginBottom: "1rem", width: "100%" }}
-                    value={formData.diagnosis}
-                    onChange={handleChange}
-                  />
-                </div>
+    // <div className="">
+    //   <div className="background-appointment flex flex-wrap justify-center items-center">
+    //     <div className="flex justify-center items-center">
+    //       <div className="image-container md:block hidden pl-2">
+    //         <img src={doctorImage} className="admin-image" alt="doctorImage" />
+    //         <div
+    //           className="dashboard-name-doctor"
+    //           style={{ fontSize: "40px" }}
+    //         >
+    //           CONSULTATION FORM
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <div className="flex justify-center items-center mt-20 pt-10">
+    //       <div className="container glass-background login-cred" style={{ height: "auto", marginBottom: "2rem" }}>
+    //         <div
+    //           style={{
+    //             display: "flex",
+    //             flexDirection: "column",
+    //             alignItems: "center",
+    //             paddingTop: "2rem",
+    //             width: "100%",
+    //             overflowY: "auto",
+    //           }}
+    //         >
+    //           <div className="flex">
+    //             <label className="fw-bold text-center mb-4">
+    //               Consultation Form
+    //             </label>
+    //           </div>
+    //           <form onSubmit={handleSubmit}>
+    //             <div>
+    //               <TextField
+    //                 id="symptoms"
+    //                 label="Symptoms"
+    //                 variant="outlined"
+    //                 size="medium"
+    //                 style={{ marginBottom: "1rem", width: "100%" }}
+    //                 value={formData.symptoms}
+    //                 onChange={handleChange}
+    //               />
+    //             </div>
+    //             <div>
+    //               <TextField
+    //                 id="bloodPressure"
+    //                 label="Blood Pressure"
+    //                 variant="outlined"
+    //                 size="medium"
+    //                 style={{ marginBottom: "1rem", width: "100%" }}
+    //                 value={formData.bloodPressure}
+    //                 onChange={handleChange}
+    //               />
+    //             </div>
+    //             <div>
+    //               <TextField
+    //                 id="oxygenLevel"
+    //                 label="Oxygen Level"
+    //                 variant="outlined"
+    //                 size="medium"
+    //                 style={{ marginBottom: "1rem", width: "100%" }}
+    //                 value={formData.oxygenLevel}
+    //                 onChange={handleChange}
+    //               />
+    //             </div>
+    //             <div>
+    //               <TextField
+    //                 id="pulse"
+    //                 label="Pulse"
+    //                 variant="outlined"
+    //                 size="medium"
+    //                 style={{ marginBottom: "1rem", width: "100%" }}
+    //                 value={formData.pulse}
+    //                 onChange={handleChange}
+    //               />
+    //             </div>
+    //             <div>
+    //               <TextField
+    //                 id="diagnosis"
+    //                 label="Diagnosis"
+    //                 variant="outlined"
+    //                 size="medium"
+    //                 style={{ marginBottom: "1rem", width: "100%" }}
+    //                 value={formData.diagnosis}
+    //                 onChange={handleChange}
+    //               />
+    //             </div>
 
+    //             <Button
+    //               className="button "
+    //               style={{
+    //                 marginTop: "2rem",
+    //                 width: "100%",
+    //                 height: "10%",
+    //                 display: "flex",
+    //                 justifyContent: "center",
+    //                 alignItems: "center",
+    //                 paddingTop: "10px", paddingBottom: "10px"
+    //               }}
+    //               onClick={() => {
+    //                 setModalShow(true);
+    //               }}
+    //             >
+    //               {"Add Prescription"}
+    //             </Button>
+
+    //             <Modal
+    //               show={modalShow}
+    //               onHide={() => setModalShow(false)}
+    //               size="lg"
+    //               aria-labelledby="contained-modal-title-vcenter"
+    //               centered
+    //             >
+    //               <Modal.Header closeButton>
+    //                 <Modal.Title id="contained-modal-title-vcenter">
+    //                   Add Prescription
+    //                 </Modal.Title>
+    //               </Modal.Header>
+    //               <Modal.Body>
+    //                 <TextField
+    //                   type="text"
+    //                   label="Medicine"
+    //                   value={medicine}
+    //                   onChange={(e) => setMedicine(e.target.value)}
+    //                   fullWidth
+    //                   margin="normal"
+    //                   variant="outlined"
+    //                 />
+    //                 <TextField
+    //                   type="text"
+    //                   label="Dosage"
+    //                   value={dosage}
+    //                   onChange={(e) => setDosage(e.target.value)}
+    //                   fullWidth
+    //                   margin="normal"
+    //                   variant="outlined"
+    //                 />
+    //                 <TextField
+    //                   type="text"
+    //                   label="Frequency"
+    //                   value={frequency}
+    //                   onChange={(e) => setFrequency(e.target.value)}
+    //                   fullWidth
+    //                   margin="normal"
+    //                   variant="outlined"
+    //                 />
+    //                 <TextField
+    //                   type="number"
+    //                   label="Duration (in days)"
+    //                   value={duration}
+    //                   onChange={(e) => setDuration(e.target.value)}
+    //                   fullWidth
+    //                   margin="normal"
+    //                   variant="outlined"
+    //                 />
+    //                 <button className="btn btn-primary" onClick={handleprescriptionSubmit}>
+    //                   Add Prescription
+    //                 </button>
+    //               </Modal.Body>
+
+    //             </Modal>
+
+    //             <div style={{ marginTop: "1rem" }}>
+    //               <button
+    //                 type="submit"
+    //                 className="button"
+    //                 style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
+    //               // onClick={handleRequestConsent}
+    //               >
+    //                 Submit
+    //               </button>
+    //             </div>
+    //           </form>
+
+    //           <div>
+    //             {
+    //               <PatientHistoryPopup
+    //                 type="button"
+    //                 className="button"
+    //                 title="Patient History"
+    //                 onClose={() => setShowPopup(false)}
+    //                 patientHistory={patientHistory}
+    //                 style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
+    //               />
+    //             }
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+
+    <div>
+      <div className="mt-5 text-5xl">PATIENT CONSULTATION FORM</div>
+      <div className="flex justify-center items-center mt-20 pt-10">
+        <div
+          className="glass-background cnform"
+          style={{ height: "auto", marginBottom: "2rem" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              paddingTop: "2rem",
+              width: "100%",
+              overflowY: "auto",
+            }}
+          >
+            <div className="flex pl-20 pr-20" style={{ width: "100%" }}>
+              <label
+                className="fw-bold text-center mb-4"
+                style={{ width: "100%" }}
+              >
+                <div className="flex justify-between" style={{ width: "100%" }}>
+                  <div>Patient Name:</div>
+                  <div>Age:</div>
+                </div>
+              </label>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="flex pl-20 pr-20">
+                <TextField
+                  id="symptoms"
+                  label="Symptoms"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                  value={formData.symptoms}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex gap-5 pl-20  pr-20">
+                <TextField
+                  id="bloodPressure"
+                  label="Blood Pressure"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                  value={formData.bloodPressure}
+                  onChange={handleChange}
+                />
+                <TextField
+                  id="oxygenLevel"
+                  label="Oxygen Level"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                  value={formData.oxygenLevel}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex gap-5 pl-20 pr-20">
+                <TextField
+                  id="pulse"
+                  label="Pulse"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                  value={formData.pulse}
+                  onChange={handleChange}
+                />
+                <TextField
+                  id="weight"
+                  label="Weight"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                  value={formData.weight}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="flex pl-20 gap-5 pr-20">
+                <TextField
+                  id="diagnosis"
+                  label="Diagnosis"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                  value={formData.diagnosis}
+                  onChange={handleChange}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={checked} onChange={handleCheck} />
+                  }
+                  label={
+                    <Typography style={{ fontSize: "22px" }}>
+                      Push Care Context
+                    </Typography>
+                  }
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                />
+              </div>
+
+              <div className="mt-2 flex justify-end pl-20 gap-5 pr-20">
                 <Button
                   className="button "
                   style={{
@@ -238,7 +454,8 @@ const handleprescriptionSubmit = () => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    paddingTop: "10px", paddingBottom: "10px"
+                    paddingTop: "20px",
+                    paddingBottom: "20px",
                   }}
                   onClick={() => {
                     setModalShow(true);
@@ -296,37 +513,58 @@ const handleprescriptionSubmit = () => {
                       margin="normal"
                       variant="outlined"
                     />
-                    <button className="btn btn-primary" onClick={handleprescriptionSubmit}>
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleprescriptionSubmit}
+                    >
                       Add Prescription
                     </button>
                   </Modal.Body>
-
                 </Modal>
 
-                <div style={{ marginTop: "1rem" }}>
-                  <button
-                    type="submit"
-                    className="button"
-                    style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
+                <button
+                  type="submit"
+                  className="button"
+                  style={{
+                    marginTop: "2rem",
+                    width: "100%",
+                    paddingTop: "20px",
+                    paddingBottom: "20px",
+                  }}
                   // onClick={handleRequestConsent}
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
-
-              <div>
-                {
-                  <PatientHistoryPopup
-                    type="button"
-                    className="button"
-                    title="Patient History"
-                    onClose={() => setShowPopup(false)}
-                    patientHistory={patientHistory}
-                    style={{ marginTop: "2rem", width: "100%", paddingTop: "10px", paddingBottom: "10px" }}
-                  />
-                }
+                >
+                  Submit
+                </button>
               </div>
+            </form>
+
+            <div className="mt-2 flex justify-end pl-20 gap-5 pr-20 mb-8">
+              <PatientHistoryPopup
+                type="button"
+                className="button"
+                title="Patient History"
+                onClose={() => setShowPopup(false)}
+                patientHistory={patientHistory}
+                style={{
+                  marginTop: "1rem",
+                  width: "100%",
+                  paddingTop: "30px",
+                  paddingBottom: "30px",
+                }}
+              />
+              <PatientHistoryPopup
+                type="button"
+                className="button"
+                title="Request Consent"
+                onClose={() => setShowPopup(false)}
+                patientHistory={patientHistory}
+                style={{
+                  marginTop: "1rem",
+                  width: "100%",
+                  paddingTop: "30px",
+                  paddingBottom: "30px",
+                }}
+              />
             </div>
           </div>
         </div>
