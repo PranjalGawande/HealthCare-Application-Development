@@ -478,6 +478,7 @@ public class ReceptionistController {
 
         try {
             String otp = otpData.get("otp");
+            System.out.println("Recieved otp: "+ otp);
             String txnId = otpData.get("txnId");
 //            Instant now = Instant.now();
 //            Instant start = now.minusSeconds(30);
@@ -614,7 +615,7 @@ public class ReceptionistController {
         return ResponseEntity.ok("Password changed Successfully");
     }
 
-    @GetMapping("/resetAppointment")
+    @PostMapping("/resetAppointment")
     @PreAuthorize("hasAuthority('receptionist:get')")
     public ResponseEntity<String> resetAppointment() {
         List<DoctorListDTO> doctors = doctorService.getDoctorList();
