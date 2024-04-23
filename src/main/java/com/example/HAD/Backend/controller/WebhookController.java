@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.FileWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -64,6 +65,9 @@ public class WebhookController {
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private DataService dataService;
+
     @Value("${callback.url}")
     private String callbackUrl;
 
@@ -95,7 +99,10 @@ public class WebhookController {
                 if (auth != null) {
                     String transactionId = auth.getString("transactionId");
                     System.out.println("TransactionId as received by authOnInit callback api: " + transactionId);
-
+//                    String timeStampStr = jsonObject.optString("timestamp");
+//                    dataService.putData("transactionId", Map.of(
+//                            timeStampStr, transactionId
+//                    ));
                     resultJson.put("transactionId", transactionId);
                     resultJson.put("error", JSONObject.NULL);
                 } else {
@@ -352,6 +359,139 @@ public class WebhookController {
         }
         return 200;
     }
+
+//    -------M3 starts-------
+
+    @PostMapping("/v0.5/consent-requests/on-init")
+    public void consentRequestsOnInit(@RequestBody String response) {
+        try {
+            resultJson = new JSONObject();
+            if (response == null) {
+                System.err.println("ABDM Server did not send any response...");
+
+                resultJson.put("consentRequestId", JSONObject.NULL);
+                JSONObject errorObject = new JSONObject();
+                errorObject.put("code", 911);
+                errorObject.put("message", "ABDM Server did not send any response...");
+                resultJson.put("error", errorObject);
+            } else {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONObject consentRequest = jsonObject.optJSONObject("consentRequest");
+                if (consentRequest != null) {
+                    String consentRequestId = consentRequest.getString("id");
+                    System.out.println("consentRequestId as received by <WebhookController.consentRequestsOnInit>: " + consentRequestId);
+                    resultJson.put("consentRequestId", consentRequestId);
+                    resultJson.put("error", JSONObject.NULL);
+                } else {
+                    JSONObject error = jsonObject.getJSONObject("error");
+                    System.err.println("Error Code: " + error.getString("code") + " received with message " + error.getString("message"));
+
+                    resultJson.put("consentRequestId", JSONObject.NULL);
+                    resultJson.put("error", error);
+                }
+                System.out.println("Printed from <WebhookController.consentRequestsOnInit>: " + resultJson.toString());
+            }
+        } catch (JSONException je) {
+            System.err.println("Something went wrong in <WebhookController.consentRequestsOnInit>: " + je.getMessage());
+        }
+    }
+    @GetMapping("/getConsentRequestId")
+    public ResponseEntity<?> getConsentRequestId() {
+        try {
+            System.out.println("Printed from <WebhookController.getConsentRequestId>: " + (resultJson != null ? resultJson.toString() : "null"));
+
+            if (resultJson == null) {
+                JSONObject errorResponse = new JSONObject();
+                errorResponse.put("error", "Webhooks.site is not receiving callbacks!!!");
+                errorResponse.put("consentRequestId", JSONObject.NULL);
+                return ResponseEntity.internalServerError().body(errorResponse.toString());
+            }
+            return ResponseEntity.ok(resultJson.toString());
+        } catch (JSONException je) {
+            System.err.println(je.getMessage());
+            return ResponseEntity.internalServerError().body("{\"error\": \"Critical JSON processing error...\"}");
+        }
+    }
+    @PostMapping("/v0.5/consent-requests/on-status")
+    public void consentRequestOnStatus(@RequestBody String response) {
+        try {
+            if (response == null) {
+                System.err.println("ABDM Server did not send any response...");
+
+                JSONObject errorObject = new JSONObject();
+                errorObject.put("code", 911);
+                errorObject.put("message", "ABDM Server did not send any response...");
+                dataService.putData("consentRequestError", errorObject.toString());
+            } else {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONObject consentRequest = jsonObject.optJSONObject("consentRequest");
+                if (consentRequest != null) {
+                    String consentRequestId = consentRequest.getString("id");
+                    String consentRequestStatus = consentRequest.getString("status");
+                    System.out.println("consentRequestId as received by <WebhookController.consentRequestOnStatus>: " + consentRequestId);
+                    JSONObject payload = new JSONObject();
+                    payload.put("consentRequestId", consentRequestId);
+                    payload.put("consentRequestStatus", consentRequestStatus);
+                    dataService.putData(consentRequestId, payload.toString()); // Store using the consentRequestId as key
+                } else {
+                    JSONObject error = jsonObject.getJSONObject("error");
+                    String errorCode = error.getString("code");
+                    String errorMessage = error.getString("message");
+                    System.err.println("Error Code: " + errorCode + " received with message " + errorMessage);
+                    JSONObject errorPayload = new JSONObject();
+                    errorPayload.put("errorCode", errorCode);
+                    errorPayload.put("errorMessage", errorMessage);
+                    dataService.putData("error", errorPayload.toString());
+                }
+                System.out.println("Printed from <WebhookController.consentRequestsOnInit>: " + jsonObject.toString());
+            }
+        } catch (JSONException je) {
+            System.err.println("Something went wrong in <WebhookController.consentRequestsOnInit>: " + je.getMessage());
+        }
+    }
+
+    @PostMapping("/v0.5/consents/hiu/notify")
+    public void consentsHiuNotify(@RequestBody String responseStr) {
+        try {
+            JSONObject response = new JSONObject(responseStr);
+            String requestId = response.optString("requestId", null);
+            String consentRequestId = response.getJSONObject("notification").optString("consentRequestId", null);
+            System.out.println("Printed from <WebhookController.consentRequestsOnInit>:");
+            System.out.println(">> requestId: " + requestId);
+            System.out.println(">> consentRequestId: " + consentRequestId);
+
+            String token = abdmSessionService.getToken();
+
+            String responseFromHiuOnNotify = abdmService.consentsHiuOnNotify(requestId, consentRequestId, token);
+
+            if (responseFromHiuOnNotify.equalsIgnoreCase("true")) {
+                System.out.println("Acknowledgment sent back for hiu notification on consent request...");
+            } else {
+                System.err.println(responseStr);
+                System.err.println("Acknowledgment not sent back for hiu notification on consent request, due to some error...");
+            }
+
+            String status = response.getString("status");
+            if (status.equals("GRANTED")) {
+                dataService.putData(consentRequestId + "Artefacts", response.getJSONArray("consentArtefacts").toString());
+            }
+        } catch (Exception e) {
+            System.err.println("Something went wrong in <WebhookController.consentsHiuNotify>: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/v0.5/consents/on-fetch")
+    public void consentRequestOnFetch(@RequestBody String responseStr) {
+        try {
+            JSONObject response = new JSONObject(responseStr);
+            String consentRequestArtefactId = response.getJSONObject("consent").getJSONObject("consentDetail").getString("consentId");
+            dataService.putData(consentRequestArtefactId + "fetchedArtefact", responseStr);
+        } catch (Exception e) {
+            System.err.println("Something went wrong in <WebhookController.consentRequestOnFetch>: " + e.getMessage());
+        }
+    }
+
+//    -------M3 ends-------
 
     private Bundle convertMedicalRecordToBundle(Integer appointmentId) {
         try {

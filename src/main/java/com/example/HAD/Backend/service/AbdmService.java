@@ -1,9 +1,11 @@
 package com.example.HAD.Backend.service;
 
+import com.example.HAD.Backend.entities.Doctor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -26,8 +28,17 @@ import java.util.UUID;
 @Service
 public class AbdmService {
 
+    @Value("${hiu.id}")
+    private String hiuId;
+
+    @Value("${hiu.name}")
+    private String hiuName;
+
     @Autowired
     private AbdmSessionService abdmSessionService;
+
+    @Autowired
+    private DoctorService doctorService;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -404,6 +415,178 @@ public class AbdmService {
             System.out.println(acknowledgment);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private JSONObject prepareConsentRequest(JSONObject requestData) throws JSONException {
+        String requestId = UUID.randomUUID().toString();
+        String timestamp = Instant.now().toString();
+        JSONObject requestDataForABDM = new JSONObject();
+        requestDataForABDM.put("requestId", requestId);
+        requestDataForABDM.put("timestamp", timestamp);
+
+        JSONObject purpose = requestData.getJSONObject("purpose");
+        JSONObject consent = new JSONObject();
+        consent.put("purpose", purpose);
+
+        String patientAbhaAddress = requestData.getString("patientAbhaAddress");
+        JSONObject patient = new JSONObject();
+        patient.put("id", patientAbhaAddress);
+        consent.put("patient", patient);
+
+        JSONObject hiu = new JSONObject();
+        hiu.put("id", hiuId);
+        hiu.put("name", hiuName);
+        consent.put("hiu", hiu);
+
+        String hipId = requestData.getString("hipId");
+        JSONObject hip = new JSONObject();
+        hip.put("id", hipId);
+        consent.put("hip", hip);
+
+        JSONObject requester = new JSONObject();
+        String doctorEmail = requestData.getString("doctorEmail");
+        Doctor doctor = doctorService.getDoctorDetailsByEmail(doctorEmail);
+        requester.put("name", doctor.getName());
+        JSONObject identifier = new JSONObject();
+        identifier.put("type", "REGNO");
+        identifier.put("value", doctor.getDoctorLicenseNo());
+        identifier.put("system", "https://www.mciindia.org");
+        requester.put("identifier", identifier);
+        consent.put("requester", requester);
+
+        consent.put("hiTypes", requestData.getJSONArray("hiTypes"));
+        consent.put("permission", requestData.getJSONObject("permission"));
+
+        requestDataForABDM.put("consent", consent);
+
+        return requestDataForABDM;
+    }
+    public boolean sendConsentRequest(JSONObject requestData, String bearerToken) throws JSONException {
+        System.out.println("AbdmService: " + requestData.toString());
+        JSONObject requestBody = prepareConsentRequest(requestData);
+        String url = "https://dev.abdm.gov.in/gateway/v0.5/consent-requests/init";
+
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.ALL)); // Set Accept header to */*
+        headers.set("X-CM-ID", "sbx"); // Set custom header
+        headers.setBearerAuth(bearerToken); // Include the Bearer token in the Authorization header
+
+        HttpEntity<?> entity = new HttpEntity<>(requestBody.toString(), headers);
+        // Perform the POST request and capture the response
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    String.class
+            );
+            return response.getStatusCode() == HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+    public String checkConsentRequestStatus(String consentRequestId, String bearerToken) throws JSONException {
+        System.out.println("consentRequestId as received in <AbdmService.checkConsentRequestStatus>: " + consentRequestId);
+        String url = "https://dev.abdm.gov.in/gateway/v0.5/consent-requests/status";
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("requestId", UUID.randomUUID().toString());
+        requestBody.put("timestamp", Instant.now().toString());
+        requestBody.put("consentRequestId", consentRequestId);
+
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.ALL)); // Set Accept header to */*
+        headers.set("X-CM-ID", "sbx"); // Set custom header
+        headers.setBearerAuth(bearerToken); // Include the Bearer token in the Authorization header
+
+        HttpEntity<?> entity = new HttpEntity<>(requestBody.toString(), headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    String.class
+            );
+            return String.valueOf(response.getStatusCode() == HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            System.err.println("Some issue occurred while sending request to ABDM server from <AbdmService.checkConsentRequestStatus>: " + e.getMessage());
+            return "Some issue occurred while sending request to ABDM server";
+        }
+    }
+
+    public String consentsHiuOnNotify(String requestId, String consentRequestId, String bearerToken) throws JSONException {
+        String url = "https://dev.abdm.gov.in/gateway/v0.5/consents/hiu/on-notify";
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("requestId", UUID.randomUUID().toString());
+        requestBody.put("timestamp", Instant.now().toString());
+
+        JSONArray acknowledgementArray = new JSONArray();
+        JSONObject acknowledgementObject = new JSONObject();
+        acknowledgementObject.put("status", "OK");
+        acknowledgementObject.put("consentId", consentRequestId);
+        acknowledgementArray.put(acknowledgementObject);
+        requestBody.put("acknowledgement", acknowledgementArray);
+
+        JSONObject respObject = new JSONObject();
+        respObject.put("requestId", requestId);
+        requestBody.put("resp", respObject);
+
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.ALL)); // Set Accept header to */*
+        headers.set("X-CM-ID", "sbx"); // Set custom header
+        headers.setBearerAuth(bearerToken); // Include the Bearer token in the Authorization header
+
+        HttpEntity<?> entity = new HttpEntity<>(requestBody.toString(), headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    String.class
+            );
+            return String.valueOf(response.getStatusCode() == HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            System.err.println("Some issue occurred while sending request to ABDM server from <AbdmService.consentsHiuOnNotify>: " + e.getMessage());
+            return "Some issue occurred while sending request to ABDM server";
+        }
+    }
+
+    public String getArtefacts(String consentRequestArtefactId, String bearerToken) throws JSONException {
+        String url = "https://dev.abdm.gov.in/gateway/v0.5/consents/fetch";
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("requestId", UUID.randomUUID().toString());
+        requestBody.put("timestamp", Instant.now().toString());
+        requestBody.put("consentId", consentRequestArtefactId);
+
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.ALL)); // Set Accept header to */*
+        headers.set("X-CM-ID", "sbx"); // Set custom header
+        headers.setBearerAuth(bearerToken); // Include the Bearer token in the Authorization header
+
+        HttpEntity<?> entity = new HttpEntity<>(requestBody.toString(), headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    String.class
+            );
+            return String.valueOf(response.getStatusCode() == HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            System.err.println("Some issue occurred while sending request to ABDM server from <AbdmService.consentsHiuOnNotify>: " + e.getMessage());
+            return "Some issue occurred while sending request to ABDM server";
         }
     }
 }

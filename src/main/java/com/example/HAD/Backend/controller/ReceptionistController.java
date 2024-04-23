@@ -8,6 +8,7 @@ import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.time.LocalDate;
@@ -56,6 +58,9 @@ public class ReceptionistController {
 
     @Autowired
     private AbdmAbhaAddressCreationService abdmAbhaAddressCreationService;
+
+    @Autowired
+    private DataService dataService;
 
     @PostMapping("/receptionistDetails")
     @PreAuthorize("hasAuthority('receptionist:post')")
@@ -442,7 +447,7 @@ public class ReceptionistController {
 
         try {
             String abhaAddress = abhaAddressData.get("abhaAddress");
-            String token = abdmSessionService.getToken(); // Assume getToken() method exists to fetch or create a new session token.
+            String token = abdmSessionService.getToken();
 
 //            boolean fetchAuthResponse = abdmService.initiateAbhaVerification(abhaAddress, token);
 //            if (!fetchAuthResponse) {
@@ -468,12 +473,23 @@ public class ReceptionistController {
     @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<String> verificationAbhaAddressOtp(@RequestBody Map<String, String> otpData) {
         if(otpData == null) {
-            return ResponseEntity.badRequest().body("Invalid or missing Abha address.");
+            return ResponseEntity.badRequest().body("Invalid or missing data in request");
         }
 
         try {
             String otp = otpData.get("otp");
             String txnId = otpData.get("txnId");
+//            Instant now = Instant.now();
+//            Instant start = now.minusSeconds(30);
+//            Instant end = now.plusSeconds(30);
+//            Map<String, String> transactionIds = (Map<String, String>) dataService.getData("transactionId");
+//            for (String timeStamp : transactionIds.keySet()) {
+//                Instant ts = Instant.parse(timeStamp);
+//                if (ts.isAfter(start) && !ts.isAfter(end)) {
+//                    System.err.println("transactionId: " + transactionIds.get(timeStamp));
+//                }
+//            }
+//            System.out.println("TransactionId from DataService:" + dataService.getData("transactionId"));
             String token = abdmSessionService.getToken();
             boolean result = abdmService.initiateAbhaOtpVerification(otp, token, txnId);
             if (!result) {
