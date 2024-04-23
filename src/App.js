@@ -28,6 +28,7 @@ import { AdminUpdateReceptionistDetails } from "./Components/Admin/AdminUpdateRe
 import { ViewReceptionistDetails } from "./Components/Receptionist/ViewReceptionistDetails";
 import { ViewAppointments } from "./Components/Doctor/ViewAppointments";
 import { AdhaarAbhaIdCreation } from "./Components/Receptionist/AdhaarAbhaIdCreation";
+import { Progressbar} from "./Components/Receptionist/Progressbar";
 import { AbhaIdVerification } from "./Components/Receptionist/AbhaIdVerification";
 // import { AbhaIdDisplay, AbhaIdDisplayAndAdd } from "./Components/Receptionist/AddPatient";
 import { AbhaIdOtpVerification } from "./Components/Receptionist/AbhaIdOtpVerification";
@@ -135,7 +136,7 @@ function App() {
           {/* <Route path="/receptionist/add-patient-details" element={<AbhaIdDisplayAndAdd />} /> */}
           {/* <Route path="/receptionist/add-patient" element={<AddPatient />} /> */}
           <Route path="/receptionist/add-patient" element={<AddPatientDetails />} />
-
+          <Route path="/receptionist/progressbar" element={<Progressbar />} />
 
 
         </Routes>

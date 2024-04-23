@@ -457,3 +457,29 @@ td {
 .modal-backdrop {
   zoom: 140%;
 }
+
+.step {
+  color: black;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  background-color: white;
+  border: 2px solid #0dafd7;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.step.completed {
+  color: white;
+  background-color: #0dafd7;
+}
+
+.progress-bar {
+  zoom: 140%;
+}
+
+.progPageMargin {
+  margin-top: -70px;
+}

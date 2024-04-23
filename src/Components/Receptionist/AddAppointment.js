@@ -6,6 +6,7 @@ import patientImage from "../../assets/PatientPage.png";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-hot-toast";
+import { Progressbar } from "./Progressbar";
 
 export const AddAppointment = () => {
   // const [time, setTime] = useState("");
@@ -78,7 +79,10 @@ export const AddAppointment = () => {
   };
 
   return (
-    <div className="h-full flex justify-center items-center ">
+    <div>
+      <Progressbar step={4} />
+    
+    <div className="h-full flex justify-center items-center progPageMargin">
       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
         <div className="image-container">
           <img src={patientImage} className="admin-image" alt="patientImage" />
@@ -199,6 +203,7 @@ export const AddAppointment = () => {
             Add Appointment
           </button>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import toast from "react-hot-toast";
 import MenuItem from "@mui/material/MenuItem";
+import { Progressbar } from "./Progressbar";
 
 export const AddPatientDetails = () => {
   const location = useLocation();
@@ -75,7 +76,9 @@ export const AddPatientDetails = () => {
   };
 
   return (
-    <div className="h-full flex justify-center items-center ">
+    <div>
+      <Progressbar step={3} />
+    <div className="h-full flex justify-center items-center progPageMargin pt-2">
       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
         <div className="image-container">
           <img src={patientImage} className="admin-image" alt="patientImage" />
@@ -198,6 +201,7 @@ export const AddPatientDetails = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };
