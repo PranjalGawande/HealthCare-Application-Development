@@ -8,6 +8,7 @@ import com.example.HAD.Backend.dto.DoctorListDTO;
 import com.example.HAD.Backend.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -398,9 +399,15 @@ public class ReceptionistController {
             String token = (String) session.getAttribute("token");
             List<String> abhaAddresses = abdmAbhaAddressCreationService.suggestPhrAddresses(txnId, token);
             if (abhaAddresses != null && !abhaAddresses.isEmpty()) {
-                return ResponseEntity.ok().body(abhaAddresses);
+                JSONObject response = new JSONObject();
+                JSONArray choices = new JSONArray();
+                for (String abhaAddress : abhaAddresses) {
+                    choices.put(abhaAddress);
+                }
+                response.put("choices", choices);
+                return ResponseEntity.ok().body(response.toString());
             } else {
-                return ResponseEntity.ok().body(Collections.emptyList());
+                return ResponseEntity.internalServerError().body("ABDM Failed to send the suggested ABHA Addresses...");
             }
         } catch (Exception e) {
             // Log the exception with a logger (e.g., SLF4J) instead of e.printStackTrace() for production code
