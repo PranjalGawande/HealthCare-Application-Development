@@ -876,8 +876,8 @@ const CNForm = ({ patientId, doctorId }) => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    paddingTop: "20px",
-                    paddingBottom: "20px",
+                    paddingTop: "10px",
+                    paddingBottom: "10px",
                   }}
                   onClick={() => {
                     setModalShow(true);
@@ -950,8 +950,8 @@ const CNForm = ({ patientId, doctorId }) => {
                   style={{
                     marginTop: "2rem",
                     width: "100%",
-                    paddingTop: "20px",
-                    paddingBottom: "20px",
+                    paddingTop: "10px",
+                    paddingBottom: "10px",
                   }}
                   // onClick={handleRequestConsent}
                 >
