@@ -18,6 +18,7 @@ import java.util.List;
 @Setter
 @Getter
 public class PatientDto {
+    private Integer patientId;
     private String name;
     private String mobileNo;
     private LocalDate dob;
@@ -27,6 +28,7 @@ public class PatientDto {
     private String abhaId;
 
     public PatientDto(Patient patient) {
+        this.patientId = patient.getPatientId();
         this.name = patient.getName();
         this.mobileNo = patient.getMobileNo();
         this.dob = patient.getDob();

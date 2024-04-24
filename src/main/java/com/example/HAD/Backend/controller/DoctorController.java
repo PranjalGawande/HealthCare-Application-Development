@@ -2,6 +2,7 @@ package com.example.HAD.Backend.controller;
 
 import com.example.HAD.Backend.dto.DoctorDTO;
 import com.example.HAD.Backend.dto.ExtraDTO;
+import com.example.HAD.Backend.dto.PatientDto;
 import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.MedicalRecordsDTO;
 import com.example.HAD.Backend.service.*;
@@ -101,6 +102,31 @@ public class DoctorController {
         else {
             return ResponseEntity.ok().body(medicalRecordsDTO);
         }
+    }
+
+    @PostMapping("/patientDetailByAppointmentNo")
+    @PreAuthorize("hasAuthority('doctor:get')")
+    public ResponseEntity<PatientDto> PatientDetails(
+            @RequestBody ExtraDTO extraDTO,
+            @RequestHeader("Authorization") String token,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if(isAdmin) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+
+        Doctor doctor = doctorService.getDoctorDetailsByEmail(email);
+
+        Optional<Appointment> appointmentValue = appointmentService.getAppointmentBytokenNo(doctor.getDoctorId(), extraDTO.getTokenNo());
+        Appointment appointment = appointmentValue.orElseThrow(()-> new RuntimeException("Appointment with given Id cannot be found"));
+
+        Patient patient = patientService.getPatientById(appointment.getPatient().getPatientId());
+        PatientDto patientDto = new PatientDto(patient);
+
+        return ResponseEntity.ok().body(patientDto);
     }
 
     @PostMapping("/addPatientRecord/{tokenNo}")

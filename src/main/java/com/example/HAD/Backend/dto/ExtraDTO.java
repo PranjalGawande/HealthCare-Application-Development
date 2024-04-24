@@ -19,6 +19,9 @@ public class ExtraDTO {
     //To search by abha Id
     String abhaId;
 
+    //For Doctor to get Patient Details with Appointment Id
+    Integer tokenNo;
+
     //To create a new appointment
     LocalDate date;
     LocalTime time;
