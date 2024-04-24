@@ -7,6 +7,7 @@ import com.example.HAD.Backend.entities.*;
 import com.example.HAD.Backend.dto.MedicalRecordsDTO;
 import com.example.HAD.Backend.service.*;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -18,12 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import static java.util.UUID.randomUUID;
 
 @RestController
 @CrossOrigin("http://localhost:9191")
@@ -51,6 +50,12 @@ public class DoctorController {
 
     @Autowired
     private AbdmSessionService abdmSessionService;
+
+    @Autowired
+    private AbdmService abdmService;
+
+    @Autowired
+    private DataService dataService;
 
     @PostMapping("/doctorDetails")
     @PreAuthorize("hasAnyAuthority('doctor:post')")
@@ -309,5 +314,170 @@ public class DoctorController {
 
         System.out.println(response);
         return ResponseEntity.ok().body("Successfully pushed care context details to PHR App");
+    }
+
+    @PostMapping("/consentRequestInit")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> consentRequestInit(@RequestBody String requestDataStr) {
+        if (requestDataStr == null) {
+            return ResponseEntity.badRequest().body("Invalid request raised...");
+        }
+
+        try {
+            JSONObject requestData = new JSONObject(requestDataStr);
+            String token = abdmSessionService.getToken();
+            System.out.println("DoctorController: " + requestData.toString());
+            boolean isRequestSent = abdmService.sendConsentRequest(requestData, token);
+            if (!isRequestSent) {
+                System.err.println("Failed to send request for consent to ABDM!");
+                return ResponseEntity.internalServerError().body("Either duplicate consent request raised or there is invalid to-from date in request...");
+            }
+//            String patientAbhaAddress = requestData.getString("patientAbhaAddress");
+//            dataService.putData(Instant.now().toString(), patientAbhaAddress);
+            return ResponseEntity.ok("Request for consent sent successfully");
+        }  catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return ResponseEntity.internalServerError().body("Some error occurred while raising request please try again.");
+    }
+
+    @PostMapping("/consentRequestStatus")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> consentRequestStatus(@RequestBody String requestDataStr) {
+        if (requestDataStr == null) {
+            return ResponseEntity.badRequest().body("Invalid or missing data in request");
+        }
+
+        try {
+            JSONObject requestData = new JSONObject(requestDataStr);
+            String consentRequestId = requestData.optString("consentRequestId", null);
+            if (consentRequestId == null) {
+                return ResponseEntity.badRequest().body("Request is Invalid: It is missing Consent Request Id");
+            }
+            String token = abdmSessionService.getToken();
+            if (token == null) {
+                ResponseEntity.internalServerError().body("Abdm Server did not sent token...");
+            }
+            String abdmServerResponse = abdmService.checkConsentRequestStatus(consentRequestId, token);
+            if (!abdmServerResponse.equalsIgnoreCase("true")) {
+                return ResponseEntity.internalServerError().body("Failed to send request to ABDM...");
+            }
+            return ResponseEntity.ok("Status request successfully sent...");
+        } catch (Exception e) {
+            System.err.println("Some exception occurred in <DoctorController.consentRequestStatus> method: " + e.getMessage());
+        }
+        return ResponseEntity.internalServerError().body("Something went wrong...");
+    }
+
+    @PostMapping("/getConsentRequestStatus")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> getConsentRequestStatus(@RequestBody String requestDataStr) {
+        try {
+            JSONObject requestData = new JSONObject(requestDataStr);
+            String consentRequestId = requestData.optString("consentRequestId", null);
+            if (consentRequestId == null) {
+                return ResponseEntity.badRequest().body("Request is Invalid: It is missing Consent Request Id");
+            }
+
+            String consentRequestData = dataService.getData(consentRequestId);
+            if (consentRequestData == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(consentRequestData);
+        } catch (JSONException e) {
+            System.err.println("Some exception occurred in <DoctorController.getConsentRequestStatus> method: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Something went wrong...");
+        }
+    }
+
+    @PostMapping("/getArtefactIds")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> getArtefactIds(@RequestBody String requestDataStr) {
+        try {
+            JSONObject requestData = new JSONObject(requestDataStr);
+            String consentRequestId = requestData.optString("consentRequestId", null);
+            if (consentRequestId == null) {
+                return ResponseEntity.badRequest().body("Request is Invalid: It is missing Consent Request Id");
+            }
+            String consentRequestArtefacts = dataService.getData(consentRequestId + "Artefacts");
+            if (consentRequestArtefacts == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(consentRequestArtefacts);
+        } catch (Exception e) {
+            System.err.println("Some exception occurred in <DoctorController.getArtefactIds> method: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Something went wrong...");
+        }
+    }
+
+    @PostMapping("/fetchArtefacts")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> fetchArtefact(@RequestBody String requestDataStr) {
+        try {
+            JSONObject requestData = new JSONObject(requestDataStr);
+            String consentRequestArtefactId = requestData.optString("consentRequestArtefactId", null);
+            if (consentRequestArtefactId == null) {
+                return ResponseEntity.badRequest().body("Request is Invalid: It is missing Consent Request Artefact Id");
+            }
+            String token = abdmSessionService.getToken();
+            if (token == null) {
+                ResponseEntity.internalServerError().body("Abdm Server did not sent token...");
+            }
+            String abdmServerResponse = abdmService.getArtefacts(consentRequestArtefactId, token);
+            if (!abdmServerResponse.equalsIgnoreCase("true")) {
+                return ResponseEntity.internalServerError().body("Failed to send request to ABDM...");
+            }
+            return ResponseEntity.ok("Status request successfully sent...");
+        } catch (Exception e) {
+            System.err.println("Some exception occurred in <DoctorController.fecthArtefact> method: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Something went wrong...");
+        }
+    }
+
+    @PostMapping("/getFetchedArtefact")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> getFetchedArtefact(@RequestBody String requestDataStr) {
+        try {
+            JSONObject requestData = new JSONObject(requestDataStr);
+            String consentRequestArtefactId = requestData.optString("consentRequestArtefactId", null);
+            if (consentRequestArtefactId == null) {
+                return ResponseEntity.badRequest().body("Request is Invalid: It is missing Consent Request Artefact Id");
+            }
+            String fetchedArtefact = dataService.getData(consentRequestArtefactId + "fetchedArtefact");
+            if (fetchedArtefact == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(fetchedArtefact);
+        }  catch (Exception e) {
+            System.err.println("Some exception occurred in <DoctorController.getFetchedArtefact> method: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Something went wrong...");
+        }
+    }
+
+    @PostMapping("/healthInformationHiuRequest")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> healthInformationHiuRequest(@RequestBody String requestDataStr) {
+        try {
+            JSONObject response = new JSONObject(requestDataStr);
+            String consentId = response.optString("consentId", null);
+            String startDate = response.optString("startDate", null);
+            String endDate = response.optString("endDate", null);
+            String expiryDate = response.optString("expiryDate", null);
+            if (consentId == null || startDate == null || endDate == null || expiryDate == null) {
+                return ResponseEntity.badRequest().body("Request is Invalid: It is missing required data...");
+            }
+            String token = abdmSessionService.getToken();
+            if (token == null) {
+                ResponseEntity.internalServerError().body("Abdm Server did not sent token...");
+            }
+            String abdmServerResponse = abdmService.sendHealthInformationRequest(consentId, startDate, endDate, expiryDate, token);
+            if (!abdmServerResponse.equalsIgnoreCase("true")) {
+                return ResponseEntity.internalServerError().body("Failed to send health information request to ABDM...");
+            }
+            return ResponseEntity.ok("Status request successfully sent...");
+        } catch (Exception e) {
+            System.err.println("Some exception occurred in <DoctorController.healthInformationCmRequest> method: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Something went wrong...");
+        }
     }
 }

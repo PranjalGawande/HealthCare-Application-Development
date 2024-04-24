@@ -42,7 +42,7 @@ public class Doctor {
     private String gender;
 
     @OneToOne
-    @JoinColumn(name = "email", referencedColumnName = "email")
+    @JoinColumn(name = "email", referencedColumnName = "email", unique = true)
     private Login login;
 
     @Column(name = "speciality")
