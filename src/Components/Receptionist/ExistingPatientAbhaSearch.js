@@ -13,6 +13,18 @@ export const ExistingPatientAbhaSearch = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (!abhaId.trim()) {
+      toast.error("Abha Address field is empty");
+      setLoading(false);
+      return;
+    }
+
+    if (!abhaId.trim().endsWith("@sbx")) {
+      toast.error("Invalid Abha Address");
+      setLoading(false);
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const formData = { abhaId };
@@ -24,7 +36,12 @@ export const ExistingPatientAbhaSearch = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      // console.log("Response:", response.data);
+      if (response.data === '') {
+        toast.error("Patient not found");
+        setLoading(false);
+        return;
+      }
+      console.log("Response:", response);
       const patientDetails = {
         abhaId: response.data.abhaId,
         address: response.data.address,
@@ -34,6 +51,7 @@ export const ExistingPatientAbhaSearch = () => {
         mobileNo: response.data.mobileNo,
         name: response.data.name,
       };
+      localStorage.setItem("abhaAddress", abhaId);
       navigate("/receptionist/existing-patient-details", {
         state: { patientDetails },
       });

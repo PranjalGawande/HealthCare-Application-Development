@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
+import { toast } from "react-hot-toast";
 
 export const AbhaIdOtpVerification = () => {
   const [abdmOtp, setAbdmOtp] = useState("");
@@ -20,6 +21,7 @@ export const AbhaIdOtpVerification = () => {
     abhaId: "", //patientData.abhaNumber
   });
 
+ 
   const fetchTransactionId = async () => {
     try {
       // Implement the logic to fetch the transaction ID here
@@ -72,6 +74,11 @@ export const AbhaIdOtpVerification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (!abdmOtp.trim()) {
+      toast.error("Abha Address field is empty");
+      setLoading(false);
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
       let transactionIdAttempt = 0;
@@ -93,11 +100,13 @@ export const AbhaIdOtpVerification = () => {
       }
 
       // If transaction ID is still empty after retries, display error
-      if (!transactionId) {
-        throw new Error(
-          "Unable to fetch transaction ID after multiple attempts."
-        );
-      }
+      // if (!transactionId) {
+      //   setLoading(false);
+      //   toast.error("Unable to fetch transaction ID after multiple attempts.");
+      //   throw new Error(
+      //     "Unable to fetch transaction ID after multiple attempts."
+      //   );
+      // }
 
       // Proceed with form submission
       const formData = {
@@ -113,10 +122,12 @@ export const AbhaIdOtpVerification = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      // console.log("Response:", response.data);
+      console.log("Response:", response.data);
       // navigate('/receptionist/add-patient');
     } catch (error) {
+      toast.error("Invalid OTP, Please try again!");
       console.error("Error:", error);
+      return;
     }
 
     // fetchPatientData();
@@ -140,10 +151,19 @@ export const AbhaIdOtpVerification = () => {
       // If transaction ID is still empty after retries, display error
       if (response === "") {
         setLoading(false);
+        toast.error("Unable to fetch patient data after multiple attempts.");
         throw new Error(
           "Unable to fetch patient data after multiple attempts."
         );
-      } else {
+      } 
+      else if(!transactionId) {
+        setLoading(false);
+        toast.error("Unable to fetch transaction ID after multiple attempts.");
+        throw new Error(
+          "Unable to fetch transaction ID after multiple attempts."
+        );
+      }
+      else {
         navigate("/receptionist/add-patient", {
           state: { patientInfo: response },
         });
@@ -164,7 +184,7 @@ export const AbhaIdOtpVerification = () => {
           </div>
           <div className="container glass-background mt-5">
             <label className="text-login fw-bold text-center">
-              Enter <br /> Abdm OTP
+              Enter <br /> OTP
             </label>
             <TextField
               id="abdmOtp"

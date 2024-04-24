@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import Button from "react-bootstrap/Button";
@@ -10,6 +10,7 @@ import { Progressbar } from "./Progressbar";
 
 export const AddAppointment = () => {
   // const [time, setTime] = useState("");
+  const loaction = useLocation();
   const [reason, setReason] = useState("");
   const [doctors, setDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState("");
@@ -17,6 +18,13 @@ export const AddAppointment = () => {
   const navigate = useNavigate();
   const [modalShow, setModalShow] = React.useState(false);
   const [selectedDoctorDetails, setSelectedDoctorDetails] = useState(null); // Store selected doctor's details
+  const fromExistingPatient = loaction.state?.fromExistingPatient;
+
+
+  useEffect(() => {
+    const abhaId = localStorage.getItem("abhaAddress");
+    setAbhaId(abhaId);
+  }, []);
 
   // useEffect(() => {
   // Fetch doctors list from API
@@ -44,6 +52,10 @@ export const AddAppointment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!abhaId.trim() || !reason.trim() || !selectedDoctor) {
+      toast.error("Please fill all fields");
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
       const currentDate = new Date().toISOString().split("T")[0]; // Get current date in 'YYYY-MM-DD' format
@@ -69,6 +81,7 @@ export const AddAppointment = () => {
       );
       // console.log("Response:", response.data);
       toast.success("Appointment Added Successfully");
+      localStorage.removeItem("abhaAddress");
       setTimeout(() => {
         navigate("/receptionist");
       }, 2000);
@@ -80,9 +93,11 @@ export const AddAppointment = () => {
 
   return (
     <div>
-      <Progressbar step={4} />
+      {!fromExistingPatient && (
+            <Progressbar step={4} />
+        )}
     
-    <div className="h-full flex justify-center items-center progPageMargin">
+    <div className={`h-full flex justify-center items-center ${fromExistingPatient ? "" : "progPageMargin"} `}>
       <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
         <div className="image-container">
           <img src={patientImage} className="admin-image" alt="patientImage" />

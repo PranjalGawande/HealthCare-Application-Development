@@ -29,7 +29,7 @@ export const ExistingPatientDetails = () => {
     };
 
     const handleAddAppointment = () => {
-        navigate('/receptionist/add-appointment');
+        navigate('/receptionist/add-appointment', { state: { fromExistingPatient: true } });
     };
 
     return (

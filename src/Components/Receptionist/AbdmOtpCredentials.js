@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import patientImage from '../../assets/PatientPage.png';
 import { Progressbar } from "./Progressbar";
+import toast from 'react-hot-toast';
 
 export const AbdmOtpCredentials = () => {
   const [abdmOtp, setAbdmOtp] = useState("");
@@ -13,6 +14,11 @@ export const AbdmOtpCredentials = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (!abdmOtp.trim()) {
+      toast.error('Abdm OTP field is empty');
+      setLoading(false);
+      return;
+    }
     // console.log(abdmOtp);
     try {
       const token = localStorage.getItem("token");
@@ -31,6 +37,7 @@ export const AbdmOtpCredentials = () => {
       // console.log('Response:', response.data);
       navigate('/receptionist/suggest-abha-address');
     } catch (error) {
+      toast.error('Invalid OTP, Please try again!');
       console.error('Error Submitting:', error);
     } finally {
       setLoading(false);

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import patientImage from '../../assets/PatientPage.png';
 import { Progressbar } from "./Progressbar";
+import toast from 'react-hot-toast';
 
 export const AbhaMobileNo = () => {
   const [abhaMobNo, setAbhaMobNo] = useState("");
@@ -13,6 +14,11 @@ export const AbhaMobileNo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (!abhaMobNo.trim()) {
+      toast.error('Abha Mobile Number field is empty');
+      setLoading(false);
+      return;
+    }
     // console.log(abhaMobNo);
     try {
       const token = localStorage.getItem("token");

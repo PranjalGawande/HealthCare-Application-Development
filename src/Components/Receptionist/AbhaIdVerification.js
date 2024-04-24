@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
+import { toast } from "react-hot-toast";
 
 export const AbhaIdVerification = () => {
   const [abhaAdd, setAbhaAdd] = useState("");
@@ -12,6 +13,10 @@ export const AbhaIdVerification = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!abhaAdd.trim()) {
+      toast.error("Abha Address field is empty");
+      return;
+    }
     setLoading(true);
     try {
       const token = localStorage.getItem("token");

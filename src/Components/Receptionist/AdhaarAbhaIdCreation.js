@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
+import { toast } from "react-hot-toast";
 
 export const AdhaarAbhaIdCreation = () => {
   const [aadhaarNo, setAadhaarNo] = useState("");
@@ -13,6 +14,11 @@ export const AdhaarAbhaIdCreation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (!aadhaarNo.trim()) {
+      toast.error("Aadhaar Number field is empty");
+      setLoading(false);
+      return;
+    }
     // console.log(aadhaarNo);
     try {
       const token = localStorage.getItem("token");

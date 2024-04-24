@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import TextField from "@mui/material/TextField";
 import patientImage from '../../assets/PatientPage.png';
 import { Progressbar } from "./Progressbar";
+import toast from 'react-hot-toast';
 
 export const NewAbhaNoOtpVerification = () => {
   const [abhaOtp, setAbhaOtp] = useState("");
@@ -13,6 +14,11 @@ export const NewAbhaNoOtpVerification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    if (!abhaOtp.trim()) {
+      toast.error('Abha OTP field is empty');
+      setLoading(false);
+      return;
+    }
     // console.log(abhaOtp);
     try {
       const token = localStorage.getItem("token");
@@ -28,6 +34,7 @@ export const NewAbhaNoOtpVerification = () => {
       // console.log('Response:', response.data);
       navigate('/receptionist/health-id-adhaar');
     } catch (error) {
+      toast.error('Invalid OTP, Please try again!');
       console.error('Error:', error);
     } finally {
       setLoading(false);
