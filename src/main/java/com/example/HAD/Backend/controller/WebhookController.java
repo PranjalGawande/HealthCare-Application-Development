@@ -455,25 +455,34 @@ public class WebhookController {
         try {
             JSONObject response = new JSONObject(responseStr);
             String requestId = response.optString("requestId", null);
-            String consentRequestId = response.getJSONObject("notification").optString("consentRequestId", null);
             System.out.println("Printed from <WebhookController.consentRequestsOnInit>:");
             System.out.println(">> requestId: " + requestId);
-            System.out.println(">> consentRequestId: " + consentRequestId);
+            JSONArray consentArtefacts = response.getJSONObject("notification").getJSONArray("consentArtefacts");
+//            for (int i = 0; i < consentArtefacts.length(); i++) {
+//                JSONObject artefact = consentArtefacts.getJSONObject(i);
+//                String id = artefact.getString("id");
+//                System.out.println("ID: " + id);
+//            }
+            JSONObject artefact = consentArtefacts.getJSONObject(0);
+            String consentArtefactId = artefact.getString("id");
+            System.out.println(">> consentArtefactId: " + consentArtefactId);
 
             String token = abdmSessionService.getToken();
 
-            String responseFromHiuOnNotify = abdmService.consentsHiuOnNotify(requestId, consentRequestId, token);
+            String responseFromHiuOnNotify = abdmService.consentsHiuOnNotify(requestId, consentArtefactId, token);
 
             if (responseFromHiuOnNotify.equalsIgnoreCase("true")) {
-                System.out.println("Acknowledgment sent back for hiu notification on consent request...");
+                System.out.println("Acknowledgment sent back for hiu notification on consent request grant...");
             } else {
                 System.err.println(responseStr);
                 System.err.println("Acknowledgment not sent back for hiu notification on consent request, due to some error...");
             }
 
-            String status = response.getString("status");
+            String status = response.getJSONObject("notification").optString("status", "no status found!!!");
+            System.out.println(status);
             if (status.equals("GRANTED")) {
-                dataService.putData(consentRequestId + "Artefacts", response.getJSONArray("consentArtefacts").toString());
+                String consentRequestId = response.getJSONObject("notification").optString("consentRequestId", null);
+                dataService.putData(consentRequestId + "Artefacts", response.getJSONObject("notification").getJSONArray("consentArtefacts").toString());
             }
         } catch (Exception e) {
             System.err.println("Something went wrong in <WebhookController.consentsHiuNotify>: " + e.getMessage());
@@ -488,6 +497,30 @@ public class WebhookController {
             dataService.putData(consentRequestArtefactId + "fetchedArtefact", responseStr);
         } catch (Exception e) {
             System.err.println("Something went wrong in <WebhookController.consentRequestOnFetch>: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/v0.5/health-information/hiu/on-request")
+    public void healthInformationHiuOnRequest(@RequestBody String responseStr) {
+        try {
+            JSONObject response = new JSONObject(responseStr);
+            String healthInformationRequestTransactionId = response.getJSONObject("hiRequest").optString("transactionId", null);
+            String healthInformationRequestSessionStatus = response.getJSONObject("hiRequest").optString("sessionStatus", null);
+            dataService.putData("healthInformationRequestTransactionId", healthInformationRequestTransactionId);
+            dataService.putData("healthInformationRequestSessionStatus", healthInformationRequestSessionStatus);
+        } catch (Exception e) {
+            System.err.println("Something went wrong in <WebhookController.healthInformationHiuOnRequest>: " + e.getMessage());
+        }
+    }
+
+    // below will receive data from another webhook configured for data push url
+    @PostMapping("/data/push")
+    public void healthInformationReceiver(@RequestBody String responseStr) {
+        try {
+            JSONObject response = new JSONObject(responseStr);
+            // TODO: Complete this method
+        }  catch (Exception e) {
+            System.err.println("Something went wrong in <WebhookController.healthInformationReceiver>: " + e.getMessage());
         }
     }
 

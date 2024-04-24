@@ -34,6 +34,9 @@ public class AbdmService {
     @Value("${hiu.name}")
     private String hiuName;
 
+    @Value("${hiu.dataPushUrl}")
+    private String dataPushUrl;
+
     @Autowired
     private AbdmSessionService abdmSessionService;
 
@@ -439,10 +442,10 @@ public class AbdmService {
         hiu.put("name", hiuName);
         consent.put("hiu", hiu);
 
-        String hipId = requestData.getString("hipId");
-        JSONObject hip = new JSONObject();
-        hip.put("id", hipId);
-        consent.put("hip", hip);
+//        String hipId = requestData.getString("hipId");
+//        JSONObject hip = new JSONObject();
+//        hip.put("id", hipId);
+//        consent.put("hip", hip);
 
         JSONObject requester = new JSONObject();
         String doctorEmail = requestData.getString("doctorEmail");
@@ -520,7 +523,7 @@ public class AbdmService {
         }
     }
 
-    public String consentsHiuOnNotify(String requestId, String consentRequestId, String bearerToken) throws JSONException {
+    public String consentsHiuOnNotify(String requestId, String consentArtefactId, String bearerToken) throws JSONException {
         String url = "https://dev.abdm.gov.in/gateway/v0.5/consents/hiu/on-notify";
         JSONObject requestBody = new JSONObject();
         requestBody.put("requestId", UUID.randomUUID().toString());
@@ -529,7 +532,7 @@ public class AbdmService {
         JSONArray acknowledgementArray = new JSONArray();
         JSONObject acknowledgementObject = new JSONObject();
         acknowledgementObject.put("status", "OK");
-        acknowledgementObject.put("consentId", consentRequestId);
+        acknowledgementObject.put("consentId", consentArtefactId);
         acknowledgementArray.put(acknowledgementObject);
         requestBody.put("acknowledgement", acknowledgementArray);
 
@@ -555,8 +558,8 @@ public class AbdmService {
             );
             return String.valueOf(response.getStatusCode() == HttpStatus.ACCEPTED);
         } catch (Exception e) {
-            System.err.println("Some issue occurred while sending request to ABDM server from <AbdmService.consentsHiuOnNotify>: " + e.getMessage());
-            return "Some issue occurred while sending request to ABDM server";
+            System.err.println("Some issue occurred while sending acknowledgement request to ABDM server from <AbdmService.consentsHiuOnNotify>: " + e.getMessage());
+            return "Some issue occurred while sending acknowledgement request to ABDM server";
         }
     }
 
@@ -586,6 +589,62 @@ public class AbdmService {
             return String.valueOf(response.getStatusCode() == HttpStatus.ACCEPTED);
         } catch (Exception e) {
             System.err.println("Some issue occurred while sending request to ABDM server from <AbdmService.consentsHiuOnNotify>: " + e.getMessage());
+            return "Some issue occurred while sending request to ABDM server";
+        }
+    }
+
+    public String sendHealthInformationRequest(String consentId, String startDate, String endDate, String expiryDate, String bearerToken) throws JSONException {
+        String url = "https://dev.abdm.gov.in/gateway/v0.5/health-information/cm/request";
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("requestId", UUID.randomUUID().toString());
+        requestBody.put("timestamp", Instant.now().toString());
+
+        JSONObject hiRequestJson = new JSONObject();
+        JSONObject consentJson = new JSONObject();
+        consentJson.put("id", consentId);
+
+        JSONObject dateRangeJson = new JSONObject();
+        dateRangeJson.put("from", startDate);
+        dateRangeJson.put("to", endDate);
+
+        hiRequestJson.put("consent", consentJson);
+        hiRequestJson.put("dateRange", dateRangeJson);
+        hiRequestJson.put("dataPushUrl", dataPushUrl + "/data/push");
+
+        JSONObject keyMaterialJson = new JSONObject();
+        keyMaterialJson.put("cryptoAlg", "ECDH");
+        keyMaterialJson.put("curve", "Curve25519");
+
+        JSONObject dhPublicKeyJson = new JSONObject();
+        dhPublicKeyJson.put("expiry", expiryDate);
+        dhPublicKeyJson.put("parameters", "Curve25519/32byte random key");
+        dhPublicKeyJson.put("keyValue", "YOUR_KEY_VALUE_HERE");
+
+        keyMaterialJson.put("dhPublicKey", dhPublicKeyJson);
+        keyMaterialJson.put("nonce", "YOUR_NONCE_HERE");
+
+        hiRequestJson.put("keyMaterial", keyMaterialJson);
+
+        requestBody.put("hiRequest", hiRequestJson);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.ALL)); // Set Accept header to */*
+        headers.set("X-CM-ID", "sbx"); // Set custom header
+        headers.setBearerAuth(bearerToken); // Include the Bearer token in the Authorization header
+
+        HttpEntity<?> entity = new HttpEntity<>(requestBody.toString(), headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    String.class
+            );
+            return String.valueOf(response.getStatusCode() == HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            System.err.println("Some issue occurred while sending request to ABDM server from <AbdmService.sendHealthInformationRequest>: " + e.getMessage());
             return "Some issue occurred while sending request to ABDM server";
         }
     }

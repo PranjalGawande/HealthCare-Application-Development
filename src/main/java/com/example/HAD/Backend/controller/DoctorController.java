@@ -402,7 +402,7 @@ public class DoctorController {
                 return ResponseEntity.internalServerError().body("Failed to send request to ABDM...");
             }
             return ResponseEntity.ok("Status request successfully sent...");
-        }  catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Some exception occurred in <DoctorController.fecthArtefact> method: " + e.getMessage());
             return ResponseEntity.internalServerError().body("Something went wrong...");
         }
@@ -424,6 +424,33 @@ public class DoctorController {
             return ResponseEntity.ok(fetchedArtefact);
         }  catch (Exception e) {
             System.err.println("Some exception occurred in <DoctorController.getFetchedArtefact> method: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Something went wrong...");
+        }
+    }
+
+    @PostMapping("/healthInformationHiuRequest")
+    @PreAuthorize("hasAuthority('doctor:post')")
+    public ResponseEntity<String> healthInformationHiuRequest(@RequestBody String requestDataStr) {
+        try {
+            JSONObject response = new JSONObject(requestDataStr);
+            String consentId = response.optString("consentId", null);
+            String startDate = response.optString("startDate", null);
+            String endDate = response.optString("endDate", null);
+            String expiryDate = response.optString("expiryDate", null);
+            if (consentId == null || startDate == null || endDate == null || expiryDate == null) {
+                return ResponseEntity.badRequest().body("Request is Invalid: It is missing required data...");
+            }
+            String token = abdmSessionService.getToken();
+            if (token == null) {
+                ResponseEntity.internalServerError().body("Abdm Server did not sent token...");
+            }
+            String abdmServerResponse = abdmService.sendHealthInformationRequest(consentId, startDate, endDate, expiryDate, token);
+            if (!abdmServerResponse.equalsIgnoreCase("true")) {
+                return ResponseEntity.internalServerError().body("Failed to send health information request to ABDM...");
+            }
+            return ResponseEntity.ok("Status request successfully sent...");
+        } catch (Exception e) {
+            System.err.println("Some exception occurred in <DoctorController.healthInformationCmRequest> method: " + e.getMessage());
             return ResponseEntity.internalServerError().body("Something went wrong...");
         }
     }
