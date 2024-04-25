@@ -326,7 +326,7 @@ public class DoctorController {
         try {
             JSONObject requestData = new JSONObject(requestDataStr);
             String token = abdmSessionService.getToken();
-            System.out.println("DoctorController: " + requestData.toString());
+            System.out.println("DoctorController: " + requestData);
             boolean isRequestSent = abdmService.sendConsentRequest(requestData, token);
             if (!isRequestSent) {
                 System.err.println("Failed to send request for consent to ABDM!");
@@ -334,7 +334,29 @@ public class DoctorController {
             }
 //            String patientAbhaAddress = requestData.getString("patientAbhaAddress");
 //            dataService.putData(Instant.now().toString(), patientAbhaAddress);
-            return ResponseEntity.ok("Request for consent sent successfully");
+//            return ResponseEntity.ok("Request for consent sent successfully");
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                System.err.println("Some exception occurred in <DoctorController.consentRequestInit> method: " + e.getMessage());
+                return ResponseEntity.internalServerError().body("Something went wrong...");
+            }
+
+            try {
+                JSONObject resultJson = new JSONObject(dataService.getData("consentRequestOnInit"));
+                System.out.println("Printed from <WebhookController.getConsentRequestId>: " + (resultJson != null ? resultJson.toString() : "null"));
+                if (resultJson == null) {
+                    JSONObject errorResponse = new JSONObject();
+                    errorResponse.put("error", "Webhooks.site is not receiving callbacks!!!");
+                    errorResponse.put("consentRequestId", JSONObject.NULL);
+                    return ResponseEntity.internalServerError().body(errorResponse.toString());
+                }
+                return ResponseEntity.ok(resultJson.toString());
+            } catch (JSONException je) {
+                System.err.println(je.getMessage());
+                return ResponseEntity.internalServerError().body("{\"error\": \"Critical JSON processing error...\"}");
+            }
         }  catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -347,10 +369,10 @@ public class DoctorController {
         if (requestDataStr == null) {
             return ResponseEntity.badRequest().body("Invalid or missing data in request");
         }
-
+        String consentRequestId = null;
         try {
             JSONObject requestData = new JSONObject(requestDataStr);
-            String consentRequestId = requestData.optString("consentRequestId", null);
+            consentRequestId = requestData.optString("consentRequestId", null);
             if (consentRequestId == null) {
                 return ResponseEntity.badRequest().body("Request is Invalid: It is missing Consent Request Id");
             }
@@ -362,33 +384,48 @@ public class DoctorController {
             if (!abdmServerResponse.equalsIgnoreCase("true")) {
                 return ResponseEntity.internalServerError().body("Failed to send request to ABDM...");
             }
-            return ResponseEntity.ok("Status request successfully sent...");
         } catch (Exception e) {
-            System.err.println("Some exception occurred in <DoctorController.consentRequestStatus> method: " + e.getMessage());
+            System.err.println("Some exception occurred in <DoctorController.consentRequestStatus1> method: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Something went wrong...");
         }
-        return ResponseEntity.internalServerError().body("Something went wrong...");
-    }
-
-    @PostMapping("/getConsentRequestStatus")
-    @PreAuthorize("hasAuthority('doctor:post')")
-    public ResponseEntity<String> getConsentRequestStatus(@RequestBody String requestDataStr) {
         try {
-            JSONObject requestData = new JSONObject(requestDataStr);
-            String consentRequestId = requestData.optString("consentRequestId", null);
-            if (consentRequestId == null) {
-                return ResponseEntity.badRequest().body("Request is Invalid: It is missing Consent Request Id");
-            }
-
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            System.err.println("Some exception occurred in <DoctorController.consentRequestStatus2> method: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Something went wrong...");
+        }
+        try {
             String consentRequestData = dataService.getData(consentRequestId);
             if (consentRequestData == null) {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok(consentRequestData);
-        } catch (JSONException e) {
-            System.err.println("Some exception occurred in <DoctorController.getConsentRequestStatus> method: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Some exception occurred in <DoctorController.consentRequestStatus3> method: " + e.getMessage());
             return ResponseEntity.internalServerError().body("Something went wrong...");
         }
     }
+
+//    @PostMapping("/getConsentRequestStatus")
+//    @PreAuthorize("hasAuthority('doctor:post')")
+//    public ResponseEntity<String> getConsentRequestStatus(@RequestBody String requestDataStr) {
+//        try {
+//            JSONObject requestData = new JSONObject(requestDataStr);
+//            String consentRequestId = requestData.optString("consentRequestId", null);
+//            if (consentRequestId == null) {
+//                return ResponseEntity.badRequest().body("Request is Invalid: It is missing Consent Request Id");
+//            }
+//
+//            String consentRequestData = dataService.getData(consentRequestId);
+//            if (consentRequestData == null) {
+//                return ResponseEntity.notFound().build();
+//            }
+//            return ResponseEntity.ok(consentRequestData);
+//        } catch (JSONException e) {
+//            System.err.println("Some exception occurred in <DoctorController.getConsentRequestStatus> method: " + e.getMessage());
+//            return ResponseEntity.internalServerError().body("Something went wrong...");
+//        }
+//    }
 
     @PostMapping("/getArtefactIds")
     @PreAuthorize("hasAuthority('doctor:post')")

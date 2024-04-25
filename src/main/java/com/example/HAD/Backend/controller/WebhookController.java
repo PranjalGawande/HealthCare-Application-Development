@@ -389,8 +389,9 @@ public class WebhookController {
                     resultJson.put("consentRequestId", JSONObject.NULL);
                     resultJson.put("error", error);
                 }
-                System.out.println("Printed from <WebhookController.consentRequestsOnInit>: " + resultJson.toString());
             }
+            dataService.putData("consentRequestOnInit", resultJson.toString());
+            System.out.println("Printed from <WebhookController.consentRequestsOnInit>: " + resultJson.toString());
         } catch (JSONException je) {
             System.err.println("Something went wrong in <WebhookController.consentRequestsOnInit>: " + je.getMessage());
         }
