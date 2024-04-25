@@ -9,10 +9,7 @@ import toast from "react-hot-toast";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
-
-
-
-import { Button, Modal, TextField, Select, MenuItem } from "@material-ui/core";
+import MenuItem from "@mui/material/MenuItem";
 
 const purposes = [
   { code: "CAREMGT", display: "Care Management" },
@@ -30,10 +27,13 @@ const CNForm = ({ patientId, doctorId }) => {
   const [patientHistory, setPatientHistory] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow1, setModalShow1] = React.useState(false);
   const [medicine, setMedicine] = useState("");
   const [dosage, setDosage] = useState("");
   const [frequency, setFrequency] = useState("");
   const [duration, setDuration] = useState("");
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
@@ -62,6 +62,20 @@ const CNForm = ({ patientId, doctorId }) => {
       setAppToken(location.state.appToken);
     }
   }, [location.state, navigate]);
+
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+
+    // Add leading zero if month or day is less than 10
+    month = month < 10 ? `0${month}` : month;
+    day = day < 10 ? `0${day}` : day;
+
+    return `${year}-${month}-${day}`;
+  };
 
   useEffect(() => {
     if (appToken) {
@@ -188,64 +202,7 @@ const CNForm = ({ patientId, doctorId }) => {
 
   };
 
-
-
-
-  //   const handleSubmit = async (event) => {
-  //     event.preventDefault();
-  //     try {
-  //       if (!appToken) {
-  //         toast.error("Appointment token not found");
-  //         return;
-  //       }
-
-  //       const token = localStorage.getItem("token");
-  //       const headers = {
-  //         Authorization: `Bearer ${token}`,
-  //       };
-  //       console.log("abha id:", patientDetails.abhaId);
-  //       console.log("Form data:", formData);
-  //       const response = await axios.post(
-  //         `http://localhost:9191/doctor/addPatientRecord/${appToken}`,
-  //         formData,
-  //         { headers: headers }
-  //       );
-
-  //       if (response.status !== 200) {
-  //         toast.error("Failed to submit consultation form");
-  //         throw new Error("Failed to submit consultation form");
-  //       } else {
-  //         toast.success("Consultation form submitted successfully");
-  //       }
-  //     }
-  //     catch (error) {
-  //       toast.error("Error submitting consultation form due to care context failure!!");
-  //     }
-  //     try {
-  //       // If the checkbox is checked, hit the pushCareContext API
-  //       if (checked) {
-  //         const pushCareContextResponse = await axios.post(
-  //           "http://localhost:9191/doctor/pushCareContext",
-  //           { abhaId: patientDetails.abhaId },
-  //           { headers: headers }
-  //         );
-  //         console.log("abha id:", patientDetails.abhaId);
-  //         // Handle success response if needed
-  //         console.log("Push Care Context API response:", pushCareContextResponse.data);
-  //       }
-
-  //       setTimeout(() => {
-  //         navigate("/doctor/view-appointments");
-  //       }, 2000);
-  //     }
-  //     } catch (error) {
-  //     toast.error("Error submitting consultation form due to care context failure!!");
-  //   }
-  // };
-
-
-
-  const handleprescriptionSubmit = () => {
+ const handleprescriptionSubmit = () => {
     const prescriptions = {
       medicine,
       dosage,
@@ -415,15 +372,15 @@ const CNForm = ({ patientId, doctorId }) => {
                     paddingBottom: "10px",
                   }}
                   onClick={() => {
-                    setModalShow(true);
+                    setModalShow1(true);
                   }}
                 >
                   {"Add Prescription"}
                 </Button>
 
                 <Modal
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
+                  show={modalShow1}
+                  onHide={() => setModalShow1(false)}
                   size="lg"
                   aria-labelledby="contained-modal-title-vcenter"
                   centered
@@ -524,249 +481,127 @@ const CNForm = ({ patientId, doctorId }) => {
                   padding: "15px 20px", // Adjust the values as needed
                 }}
               />
-{/* 
-                <Button
-                  className="button "
-                  style={{
-                    marginTop: "2rem",
-                    width: "100%",
-                    height: "10%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                  }}
-                  onClick={() => {
-                    setModalShow(true);
-                  }}
-                >
-                  {"Request Consent"}
-                </Button>
+              <Button
+                className="button "
+                style={{
+                  marginTop: "2rem",
+                  width: "100%",
+                  height: "10%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingTop: "10px",
+                  paddingBottom: "10px",
+                }}
+                onClick={() => {
+                  setModalShow(true);
+                }}
+              >
+                {"Request Consent"}
+              </Button>
 
-                <Modal
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
-                  size="lg"
-                  aria-labelledby="contained-modal-title-vcenter"
-                  centered
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
+              <Modal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="contained-modal-title-vcenter">
                     Request Consent
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <TextField
-                      type="text"
-                      label="Purpose"
-                      value={medicine}
-                      onChange={(e) => setMedicine(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                    <TextField
-                      type="text"
-                      label="Patient Abha ID"
-                      value={dosage}
-                      onChange={(e) => setDosage(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                    <TextField
-                      type="text"
-                      label="HI Types"
-                      value={frequency}
-                      onChange={(e) => setFrequency(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                    <TextField
-                      type="date"
-                      label="From"
-                      value={duration}
-                      onChange={(e) => setDuration(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                      InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              max: "2000-12-31",
-              min: "1900-01-01",
-            }}
-                    />
-                    <TextField
-                      type="date"
-                      label="To"
-                      value={duration}
-                      onChange={(e) => setDuration(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                      InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              max: "2000-12-31",
-              min: "1900-01-01",
-            }}
-                    />
-                    <TextField
-                      type="date"
-                      label="Data Erase At"
-                      value={duration}
-                      onChange={(e) => setDuration(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                      InputLabelProps={{
-              shrink: true,
-            }}
-                      inputProps={{
-              max: "2000-12-31",
-              min: "1900-01-01",
-            }}
-                    />
-                    <button
-                      className="btn btn-primary"
-                      onClick={handleprescriptionSubmit}
-                    >
-                      Request Consent
-                    </button>
-                  </Modal.Body>
-                </Modal> */}
-
-
-                <Button
-        className="button "
-        style={{
-          marginTop: "2rem",
-          width: "100%",
-          height: "10%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "10px",
-          paddingBottom: "10px",
-        }}
-        onClick={() => {
-          setModalShow(true);
-        }}
-      >
-        {"Request Consent"}
-      </Button>
-
-      <Modal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Request Consent
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Select
-            value={selectedPurpose}
-            onChange={handlePurposeChange}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            displayEmpty
-          >
-            <MenuItem value="" disabled>
-              Select Purpose
-            </MenuItem>
-            {purposes.map((purpose) => (
-              <MenuItem key={purpose.code} value={purpose.code}>
-                {purpose.display}
-              </MenuItem>
-            ))}
-          </Select>
-          <TextField
-            type="text"
-            label="Patient Abha ID"
-            value={dosage}
-            onChange={(e) => setDosage(e.target.value)}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            type="text"
-            label="HI Types"
-            value={frequency}
-            onChange={(e) => setFrequency(e.target.value)}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            type="date"
-            label="From"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              max: "2000-12-31",
-              min: "1900-01-01",
-            }}
-          />
-          <TextField
-            type="date"
-            label="To"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              max: "2000-12-31",
-              min: "1900-01-01",
-            }}
-          />
-          <TextField
-            type="date"
-            label="Data Erase At"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              max: "2000-12-31",
-              min: "1900-01-01",
-            }}
-          />
-          <button
-            className="btn btn-primary"
-            onClick={handleprescriptionSubmit}
-          >
-            Request Consent
-          </button>
-        </Modal.Body>
-      </Modal>
-
-
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <TextField
+                    value={selectedPurpose}
+                    label="Purpose"
+                    onChange={handlePurposeChange}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    select
+                  >
+                    {purposes.map((purpose) => (
+                      <MenuItem key={purpose.code} value={purpose.code}>
+                        {purpose.display}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField
+                    type="text"
+                    label="Patient Abha ID"
+                    value= {patientDetails.abhaId}
+                    onChange={(e) => setDosage(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                  />
+                  <TextField
+                    type="text"
+                    label="HI Types"
+                    value={frequency}
+                    onChange={(e) => setFrequency(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                  />
+                  <TextField
+                    type="date"
+                    label="From"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{
+                      max: getCurrentDate(),
+                      min: "1900-01-01",
+                    }}
+                  />
+                  <TextField
+                    type="date"
+                    label="To"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{
+                      max: getCurrentDate(),
+                      min: "1900-01-01",
+                    }}
+                  />
+                  <TextField
+                    type="date"
+                    label="Data Erase At"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{
+                      max: getCurrentDate(),
+                      min: getCurrentDate(),
+                    }}
+                  />
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleprescriptionSubmit}
+                  >
+                    Request Consent
+                  </button>
+                </Modal.Body>
+              </Modal>
             </div>
           </div>
         </div>
