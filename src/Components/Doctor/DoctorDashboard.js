@@ -31,11 +31,11 @@ export default function DoctorDashboard() {
       toast.success(`Welcome, ${doctorName}`);
       localStorage.removeItem("loggedIn");
     }
-  }, []);
+  }, [navigate, doctorName]);
 
-  const handleConsultationForm = () => {
-    navigate("/consultationForm");
-  };
+  // const handleConsultationForm = () => {
+  //   navigate("/consultationForm");
+  // };
 
   return (
     <div className="main-background-doctor">

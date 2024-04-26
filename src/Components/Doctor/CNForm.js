@@ -956,6 +956,10 @@ const CNForm = ({ patientId, doctorId }) => {
         return;
       }
   
+      const formattedFromDate = new Date(fromDate).toISOString();
+      const formattedToDate = new Date(toDate).toISOString();
+      const formattedEraseDate = new Date(eraseDate).toISOString();
+
       const consentRequestData = {
         purpose: {
           text: selectedPurpose.display,
@@ -970,10 +974,10 @@ const CNForm = ({ patientId, doctorId }) => {
         permission: {
           accessMode: "VIEW",
           dateRange: {
-            from: fromDate,
-            to: toDate
+            from: formattedFromDate,
+            to: formattedToDate
           },
-          dataEraseAt: eraseDate,
+          dataEraseAt: formattedEraseDate,
           frequency: {
             unit: "MONTH",
             value: 12,
