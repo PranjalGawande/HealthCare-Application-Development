@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 export const ViewAppointments = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
+  const [doctordtl, setDoctorDtl] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -61,10 +62,14 @@ export const ViewAppointments = () => {
 
   const handleStartConsultation = async (appointment) => {
     navigate("/doctor/consultation-form", {
-      state: { appToken: appointment.tokenNo },
+      state: { 
+        appToken: appointment.tokenNo,
+        doctorDetails: doctorDetails.email // Pass the doctor's email to the CNForm component
+      },
     });
   };
-
+  
+  // console.log("doctorDetails", doctorDetails);
   if (!doctorDetails) {
     return <div>Loading...</div>;
   }
