@@ -43,6 +43,7 @@ const CNForm = ({ patientId, doctorId }) => {
   const [frequency, setFrequency] = useState("");
   const [duration, setDuration] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
+  const [consentId, setConsentId] = useState("");
 
   const [selectedPurpose, setSelectedPurpose] = useState({
     code: "",
@@ -186,12 +187,13 @@ const CNForm = ({ patientId, doctorId }) => {
         );
         console.log("Push Care Context API response:", pushCareContextResponse.data);
       }
-    } catch (error) {
-      toast.error("Error submitting consultation form");
-    } finally {
       setTimeout(() => {
         navigate("/doctor/view-appointments");
       }, 2000);
+    } catch (error) {
+      toast.error("Error submitting consultation form");
+    } finally {
+      
     }
   };
 
@@ -231,9 +233,35 @@ const CNForm = ({ patientId, doctorId }) => {
     const selectedPurposeObject = purposes.find((purpose) => purpose.code === selectedPurposeCode);
   
     setSelectedPurpose(selectedPurposeObject ? selectedPurposeObject.display : "");
-    console.log("Selected purpose:", selectedPurposeObject);
+    // console.log("Selected purpose:", selectedPurposeObject);
   };
   
+  const handleconsentStatus = async () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const formdata = {
+        consentRequestId: consentId
+      };
+      const response = await axios.post(
+        "http://localhost:9191/doctor/consentRequestStatus",
+        formdata,
+        { headers: headers }
+      );
+      console.log("Consent status API response:", response);
+      if (response.status === 200) {
+        toast.success("Consent status checked successfully");
+      } else {
+        toast.error("Failed to check consent status");
+      }
+    } catch (error) {
+      console.error("Error checking consent status:", error.message);
+      toast.error("Error checking consent status");
+    }
+  };
+
 
   const handleconsentSubmit = async () => {
     const token = localStorage.getItem("token");
@@ -246,11 +274,24 @@ const CNForm = ({ patientId, doctorId }) => {
         toast.error("From date must be less than or equal to To date");
         return;
       }
-  
-      const formattedFromDate = new Date(fromDate).toISOString();
-      const formattedToDate = new Date(toDate).toISOString();
-      const formattedEraseDate = new Date(eraseDate).toISOString();
 
+      const currentDate = new Date();
+    
+      // Parse fromDate, toDate, and eraseDate to Date objects
+      const fromDateObj = new Date(fromDate);
+      const toDateObj = new Date(toDate);
+      const eraseDateObj = new Date(eraseDate);
+  
+      // Set the time for fromDate, toDate, and eraseDate to the current time
+      fromDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
+      toDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
+      eraseDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
+  
+      // Format the dates to ISO string
+      const formattedFromDate = fromDateObj.toISOString();
+      const formattedToDate = toDateObj.toISOString();
+      const formattedEraseDate = eraseDateObj.toISOString();
+  
       const consentRequestData = {
         purpose: {
           text: selectedPurpose.display,
@@ -283,7 +324,8 @@ const CNForm = ({ patientId, doctorId }) => {
         consentRequestData,
         { headers: headers }
       );
-  
+      console.log("Consent request API response:", response);
+      setConsentId(response.data.consentRequestId);
       if (response.status === 200) {
         toast.success("Consent request initiated successfully");
       } else {
@@ -624,6 +666,12 @@ const CNForm = ({ patientId, doctorId }) => {
                     onClick={handleconsentSubmit}
                   >
                     Request Consent
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleconsentStatus}
+                  >
+                    Check Consent Status
                   </button>
                 </Modal.Body>
               </Modal>
