@@ -17,7 +17,7 @@ const ViewAdmin = () => {
       navigate("/");
       localStorage.clear();
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -63,9 +63,9 @@ const ViewAdmin = () => {
           <table className="table table-hover">
             <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">E-mail</th>
-                <th scope="col">Role</th>
+                <th scope="col" style={{width: "33%"}}>Name</th>
+                <th scope="col" style={{width: "33%"}}>E-mail</th>
+                <th scope="col" style={{width: "33%"}}>Role</th>
               </tr>
             </thead>
             <tbody>
