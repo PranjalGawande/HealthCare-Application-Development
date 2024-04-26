@@ -236,33 +236,6 @@ const CNForm = ({ patientId, doctorId }) => {
     // console.log("Selected purpose:", selectedPurposeObject);
   };
   
-  // const handleconsentStatus = async () => {
-  //   const token = localStorage.getItem("token");
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //   };
-  //   try {
-  //     const formdata = {
-  //       consentRequestId: consentId
-  //     };
-  //     const response = await axios.post(
-  //       "http://localhost:9191/doctor/consentRequestStatus",
-  //       formdata,
-  //       { headers: headers }
-  //     );
-  //     console.log("Consent status API response:", response);
-  //     if (response.status === 200) {
-  //       toast.success("Consent status checked successfully");
-  //     } else {
-  //       toast.error("Failed to check consent status");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error checking consent status:", error.message);
-  //     toast.error("Error checking consent status");
-  //   }
-  // };
-
-
 
   const handleconsentStatus = async () => {
     const token = localStorage.getItem("token");
