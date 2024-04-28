@@ -20,9 +20,9 @@ export const PatientHistoryPopup = ({ title, onClose, patientHistory }) => {
         View Patient History
       </Button>
 
-      <Offcanvas show={show} onHide={handleClose} backdropClassName='offcanvas-zoom-backdrop'>
+      <Offcanvas show={show} onHide={handleClose} backdropClassName='offcanvas-zoom-backdrop' style={{ width: '30%' }}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Patient History</Offcanvas.Title>
+          <Offcanvas.Title className='text-bold fs-2'>Patient History</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <div className="history">
@@ -35,13 +35,13 @@ export const PatientHistoryPopup = ({ title, onClose, patientHistory }) => {
                 <p className="mb-1"><strong>Symptoms:</strong> {record.symptoms}</p>
                 <p className="mb-1"><strong>Diagnosis:</strong> {record.diagnosis}</p>
                 <p className="mb-1"><strong>Prescriptions:</strong></p>
-                <ul>
-                  {record.prescriptions.map(prescription => (
+                <ol>
+                  {record.prescriptions.map((prescription, index) => (
                     <li key={prescription.prescriptionId}>
-                      <strong>Medicine:</strong> {prescription.medicine}, <strong>Dosage:</strong> {prescription.dosage}, <strong>Frequency:</strong> {prescription.frequency}, <strong>Duration:</strong> {prescription.duration}
+                      <strong>{index + 1}. Medicine:</strong> {prescription.medicine}, <strong>Dosage:</strong> {prescription.dosage}, <strong>Frequency:</strong> {prescription.frequency}, <strong>Duration:</strong> {prescription.duration}
                     </li>
                   ))}
-                </ul>
+                </ol>
               </div>
             ))}
           </div>

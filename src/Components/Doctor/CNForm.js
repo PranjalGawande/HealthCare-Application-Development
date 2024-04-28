@@ -212,12 +212,12 @@ const CNForm = ({ patientId, doctorId }) => {
     updatedPrescriptions[index][key] = value;
     setFormData({ ...formData, prescriptions: updatedPrescriptions });
   };
-  
+
   const handleAddPrescription = () => {
     const newPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
     setFormData({ ...formData, prescriptions: [...formData.prescriptions, newPrescription] });
   };
-  
+
   const handlePrescriptionSubmit = () => {
     // Handle prescription submission here
     console.log('Prescription data:', formData.prescriptions);
@@ -229,7 +229,7 @@ const CNForm = ({ patientId, doctorId }) => {
     toast.success("Prescription added successfully");
   };
 
-  
+
   // const handlePrescriptionChange = (index, key, value) => {
   //   const updatedPrescriptions = [...formData.prescriptions];
   //   updatedPrescriptions[index][key] = value;
@@ -636,12 +636,15 @@ const CNForm = ({ patientId, doctorId }) => {
                         />
                       </div>
                     ))}
-                    <button className="btn btn-primary" onClick={handleAddPrescription}>
-                      Add Another Prescription
-                    </button>
-                    <button className="btn btn-primary" onClick={handlePrescriptionSubmit}>
-                    Submit Prescription
-                    </button>
+                    <div className="d-flex justify-content-between mt-4">
+                      <button className="btn btn-success btn-lg" onClick={handleAddPrescription}>
+                        Add Another Prescription
+                      </button>
+                      <button className="btn btn-primary btn-lg" onClick={handlePrescriptionSubmit}>
+                        Submit Prescription
+                      </button>
+                    </div>
+
                   </Modal.Body>
                 </Modal>
 
@@ -797,18 +800,22 @@ const CNForm = ({ patientId, doctorId }) => {
                       min: getCurrentDate(),
                     }}
                   />
-                  <button
-                    className="btn btn-primary"
-                    onClick={handleconsentSubmit}
-                  >
-                    Request Consent
-                  </button>
-                  <button
-                    className="btn btn-primary"
-                    onClick={handleconsentStatus}
-                  >
-                    Check Consent Status
-                  </button>
+                  <div className="d-flex justify-content-between mt-4">
+                    <button
+                      className="btn btn-warning btn-lg"
+                      onClick={handleconsentStatus}
+                    >
+                      Check Consent Status
+                    </button>
+                    <button
+                      className="btn btn-primary btn-lg"
+                      onClick={handleconsentSubmit}
+                    >
+                      Request Consent
+                    </button>
+
+                  </div>
+
                 </Modal.Body>
               </Modal>
             </div>
