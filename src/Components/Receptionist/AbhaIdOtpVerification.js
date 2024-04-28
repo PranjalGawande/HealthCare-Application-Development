@@ -31,7 +31,7 @@ export const AbhaIdOtpVerification = () => {
         "http://localhost:9191/getTransactionId"
       );
       // Extract transaction ID from the response
-      const { transactionId } = response.data;
+      const { transactionId } = response.data.transactionId;
       // console.log("Transaction ID:", transactionId);
       return transactionId; // Return the transaction ID
     } catch (error) {
