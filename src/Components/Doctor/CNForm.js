@@ -67,6 +67,15 @@ const CNForm = ({ patientId, doctorId }) => {
     prescriptions: []
   });
 
+  useEffect(() => {
+    // Initialize with one prescription
+    const initialPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
+    setFormData({
+      ...formData,
+      prescriptions: [initialPrescription]
+    });
+  }, []);
+
   const [checked, setChecked] = useState(false);
 
   const handleChange = (e) => {
@@ -193,25 +202,78 @@ const CNForm = ({ patientId, doctorId }) => {
     } catch (error) {
       toast.error("Error submitting consultation form");
     } finally {
-      
+
     }
   };
 
-  const handleprescriptionSubmit = () => {
-    const prescriptions = {
-      medicine,
-      dosage,
-      frequency,
-      duration: parseInt(duration),
-    };
 
-    setFormData({
-      ...formData,
-      prescriptions: [...formData.prescriptions, prescriptions],
-    });
+  const handlePrescriptionChange = (index, key, value) => {
+    const updatedPrescriptions = [...formData.prescriptions];
+    updatedPrescriptions[index][key] = value;
+    setFormData({ ...formData, prescriptions: updatedPrescriptions });
+  };
+  
+  const handleAddPrescription = () => {
+    const newPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
+    setFormData({ ...formData, prescriptions: [...formData.prescriptions, newPrescription] });
+  };
+  
+  const handlePrescriptionSubmit = () => {
+    // Handle prescription submission here
+    console.log('Prescription data:', formData.prescriptions);
+    // setFormData({
+    //   ...formData,
+    //   prescriptions: [...formData.prescriptions, formData.prescriptions],
+    // });
 
     toast.success("Prescription added successfully");
   };
+
+  
+  // const handlePrescriptionChange = (index, key, value) => {
+  //   const updatedPrescriptions = [...formData.prescriptions];
+  //   updatedPrescriptions[index][key] = value;
+  //   setFormData({ ...formData, prescriptions: updatedPrescriptions });
+  // };
+
+  // const handleAddPrescription = () => {
+  //   const newPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
+  //   setFormData({ ...formData, prescriptions: [...formData.prescriptions, newPrescription] });
+  // };
+
+  // const handlePrescriptionSubmit = () => {
+  //   // Handle prescription submission here
+  //   console.log('Prescription data:', formData.prescriptions);
+  //   // Reset the modal or close it
+  //   setModalShow1(false);
+  // };
+
+  // const handlePrescriptionChange = (index, key, value) => {
+  //   const updatedPrescriptions = [...formData.prescriptions];
+  //   updatedPrescriptions[index][key] = value;
+  //   setFormData({ ...formData, prescriptions: updatedPrescriptions });
+  // };
+
+  // const handlePrescriptionSubmit = () => {
+  //   const prescriptions = {
+  //     medicine,
+  //     dosage,
+  //     frequency,
+  //     duration: parseInt(duration),
+  //   };
+
+  //   setFormData({
+  //     ...formData,
+  //     prescriptions: [...formData.prescriptions, prescriptions],
+  //   });
+
+  //   toast.success("Prescription added successfully");
+  // };
+
+  // const handleAddPrescription = () => {
+  //   const newPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
+  //   setFormData({ ...formData, prescriptions: [...formData.prescriptions, newPrescription] });
+  // };
 
   const handleCheck = (event) => {
     setChecked(event.target.checked);
@@ -220,7 +282,7 @@ const CNForm = ({ patientId, doctorId }) => {
   // const handlePurposeChange = (event) => {
   //   const selectedPurposeCode = event.target.value;
   //   const selectedPurposeObject = purposes.find((purpose) => purpose.code === selectedPurposeCode);
-  
+
   //   setSelectedPurpose({
   //     code: selectedPurposeCode,
   //     display: selectedPurposeObject ? selectedPurposeObject.display : ""
@@ -230,12 +292,13 @@ const CNForm = ({ patientId, doctorId }) => {
 
   const handlePurposeChange = (event) => {
     const selectedPurposeCode = event.target.value;
-    const selectedPurposeObject = purposes.find((purpose) => purpose.code === selectedPurposeCode);
-  
-    setSelectedPurpose(selectedPurposeObject ? selectedPurposeObject.display : "");
+    const selectedPurposeObject = purposes.find((purpose) => purpose.code === selectedPurposeCode).display;
+
+    setSelectedPurpose({ code: selectedPurposeCode, display: selectedPurposeObject });
+    // setSelectedPurpose(selectedPurposeObject ? selectedPurposeObject.display : "");
     // console.log("Selected purpose:", selectedPurposeObject);
   };
-  
+
 
   const handleconsentStatus = async () => {
     const token = localStorage.getItem("token");
@@ -270,7 +333,7 @@ const CNForm = ({ patientId, doctorId }) => {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-  
+
     try {
       if (new Date(fromDate) > new Date(toDate)) {
         toast.error("From date must be less than or equal to To date");
@@ -278,22 +341,22 @@ const CNForm = ({ patientId, doctorId }) => {
       }
 
       const currentDate = new Date();
-    
+
       // Parse fromDate, toDate, and eraseDate to Date objects
       const fromDateObj = new Date(fromDate);
       const toDateObj = new Date(toDate);
       const eraseDateObj = new Date(eraseDate);
-  
+
       // Set the time for fromDate, toDate, and eraseDate to the current time
       fromDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
       toDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
       eraseDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
-  
+
       // Format the dates to ISO string
       const formattedFromDate = fromDateObj.toISOString();
       const formattedToDate = toDateObj.toISOString();
       const formattedEraseDate = eraseDateObj.toISOString();
-  
+
       const consentRequestData = {
         purpose: {
           text: selectedPurpose.display,
@@ -320,7 +383,7 @@ const CNForm = ({ patientId, doctorId }) => {
         }
       };
       console.log("Consent request data:", consentRequestData);
-  
+
       const response = await axios.post(
         "http://localhost:9191/doctor/consentRequestInit",
         consentRequestData,
@@ -338,7 +401,7 @@ const CNForm = ({ patientId, doctorId }) => {
       toast.error("Error submitting consent request");
     }
   };
-  
+
   return (
     <div>
       <div className="mt-5 text-5xl">PATIENT CONSULTATION FORM</div>
@@ -453,6 +516,73 @@ const CNForm = ({ patientId, doctorId }) => {
                   {"Add Prescription"}
                 </Button>
 
+                {/* <Modal
+                  show={modalShow1}
+                  onHide={() => setModalShow1(false)}
+                  size="lg"
+                  aria-labelledby="contained-modal-title-vcenter"
+                  centered
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                      Add Prescription
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <div className="d-flex gap-2">
+                      <TextField
+                        type="text"
+                        label="Medicine"
+                        value={medicine}
+                        onChange={(e) => setMedicine(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                      />
+                      <TextField
+                        type="text"
+                        label="Dosage"
+                        value={dosage}
+                        onChange={(e) => setDosage(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                      />
+                      <TextField
+                        type="text"
+                        label="Frequency"
+                        value={frequency}
+                        onChange={(e) => setFrequency(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                      />
+                      <TextField
+                        type="number"
+                        label="Duration (in days)"
+                        value={duration}
+                        onChange={(e) => setDuration(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                      />
+
+                    </div>
+                    <button
+                      className="btn btn-primary"
+                    // onClick={handleprescriptionSubmit}
+                    >
+                      Add Another Prescription
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleprescriptionSubmit}
+                    >
+                      Add Prescription
+                    </button>
+                  </Modal.Body>
+                </Modal> */}
+
                 <Modal
                   show={modalShow1}
                   onHide={() => setModalShow1(false)}
@@ -466,47 +596,51 @@ const CNForm = ({ patientId, doctorId }) => {
                     </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <TextField
-                      type="text"
-                      label="Medicine"
-                      value={medicine}
-                      onChange={(e) => setMedicine(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                    <TextField
-                      type="text"
-                      label="Dosage"
-                      value={dosage}
-                      onChange={(e) => setDosage(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                    <TextField
-                      type="text"
-                      label="Frequency"
-                      value={frequency}
-                      onChange={(e) => setFrequency(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                    <TextField
-                      type="number"
-                      label="Duration (in days)"
-                      value={duration}
-                      onChange={(e) => setDuration(e.target.value)}
-                      fullWidth
-                      margin="normal"
-                      variant="outlined"
-                    />
-                    <button
-                      className="btn btn-primary"
-                      onClick={handleprescriptionSubmit}
-                    >
-                      Add Prescription
+                    {formData.prescriptions.map((prescription, index) => (
+                      <div key={index} className="d-flex gap-2">
+                        <TextField
+                          type="text"
+                          label="Medicine"
+                          value={prescription.medicine}
+                          onChange={(e) => handlePrescriptionChange(index, 'medicine', e.target.value)}
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <TextField
+                          type="text"
+                          label="Dosage"
+                          value={prescription.dosage}
+                          onChange={(e) => handlePrescriptionChange(index, 'dosage', e.target.value)}
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <TextField
+                          type="text"
+                          label="Frequency"
+                          value={prescription.frequency}
+                          onChange={(e) => handlePrescriptionChange(index, 'frequency', e.target.value)}
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <TextField
+                          type="number"
+                          label="Duration (in days)"
+                          value={prescription.duration}
+                          onChange={(e) => handlePrescriptionChange(index, 'duration', e.target.value)}
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                        />
+                      </div>
+                    ))}
+                    <button className="btn btn-primary" onClick={handleAddPrescription}>
+                      Add Another Prescription
+                    </button>
+                    <button className="btn btn-primary" onClick={handlePrescriptionSubmit}>
+                    Submit Prescription
                     </button>
                   </Modal.Body>
                 </Modal>
@@ -591,7 +725,7 @@ const CNForm = ({ patientId, doctorId }) => {
                   <TextField
                     type="text"
                     label="Patient Abha ID"
-                    value= {patientDetails.abhaId}
+                    value={patientDetails.abhaId}
                     onChange={(e) => setDosage(e.target.value)}
                     fullWidth
                     margin="normal"
