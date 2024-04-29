@@ -485,7 +485,7 @@ public class ReceptionistController {
 
         try {
             String otp = otpData.get("otp");
-            System.out.println("Recieved otp: "+ otp);
+            System.out.println("Received otp: "+ otp);
             String txnId = otpData.get("txnId");
 //            Instant now = Instant.now();
 //            Instant start = now.minusSeconds(30);
