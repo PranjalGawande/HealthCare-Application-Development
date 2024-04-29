@@ -11,25 +11,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 
-const purposes = [
-  { code: "CAREMGT", display: "Care Management" },
-  { code: "BTG", display: "Break the Glass" },
-  { code: "PUBHLTH", display: "Public Health" },
-  { code: "HPAYMT", display: "Healthcare Payment" },
-  { code: "DSRCH", display: "Disease Specific Healthcare Research" },
-  { code: "PATRQT", display: "Self Requested" }
-];
-
-const hiTypes = [
-  { code: "Prescription", display: "Prescription" },
-  { code: "DiagnosticReport", display: "Diagnostic Report" },
-  { code: "OPConsultation", display: "OP Consultation" },
-  { code: "DischargeSummary", display: "Discharge Summary" },
-  { code: "ImmunizationRecord", display: "Immunization Record" },
-  { code: "HealthDocumentRecord", display: "Record artifact" },
-  { code: "WellnessRecord", display: "Wellness Record" }
-];
-
 const CNForm = ({ patientId, doctorId }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,18 +25,38 @@ const CNForm = ({ patientId, doctorId }) => {
   const [duration, setDuration] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
   const [consentId, setConsentId] = useState("");
+  const [checkboxData, setCheckboxData] = useState({});
+
+  const purposes = [
+    { code: "CAREMGT", display: "Care Management" },
+    { code: "BTG", display: "Break the Glass" },
+    { code: "PUBHLTH", display: "Public Health" },
+    { code: "HPAYMT", display: "Healthcare Payment" },
+    { code: "DSRCH", display: "Disease Specific Healthcare Research" },
+    { code: "PATRQT", display: "Self Requested" },
+  ];
+
+  const hiTypes = [
+    { code: "DiagnosticReport", display: "Diagnostic Report" },
+    { code: "Prescription", display: "Prescription" },
+    { code: "DischargeSummary", display: "Discharge Summary" },
+    { code: "OPConsultation", display: "OP Consultation" },
+    { code: "ImmunizationRecord", display: "Immunization Record" },
+    { code: "WellnessRecord", display: "Wellness Record" },
+    { code: "HealthDocumentRecord", display: "Record artifact" },
+  ];
 
   const [selectedPurpose, setSelectedPurpose] = useState({
     code: "",
-    display: ""
+    display: "",
   });
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
-  const [eraseDate, setEraseDate] = useState('');
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [eraseDate, setEraseDate] = useState("");
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
-    abhaId: ""
+    abhaId: "",
   });
 
   const [formData, setFormData] = useState({
@@ -64,15 +65,20 @@ const CNForm = ({ patientId, doctorId }) => {
     pulse: "",
     symptoms: "",
     diagnosis: "",
-    prescriptions: []
+    prescriptions: [],
   });
 
   useEffect(() => {
     // Initialize with one prescription
-    const initialPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
+    const initialPrescription = {
+      medicine: "",
+      dosage: "",
+      frequency: "",
+      duration: "",
+    };
     setFormData({
       ...formData,
-      prescriptions: [initialPrescription]
+      prescriptions: [initialPrescription],
     });
   }, []);
 
@@ -194,7 +200,10 @@ const CNForm = ({ patientId, doctorId }) => {
           { abhaId: patientDetails.abhaId },
           { headers: headers }
         );
-        console.log("Push Care Context API response:", pushCareContextResponse.data);
+        console.log(
+          "Push Care Context API response:",
+          pushCareContextResponse.data
+        );
       }
       setTimeout(() => {
         navigate("/doctor/view-appointments");
@@ -202,10 +211,8 @@ const CNForm = ({ patientId, doctorId }) => {
     } catch (error) {
       toast.error("Error submitting consultation form");
     } finally {
-
     }
   };
-
 
   const handlePrescriptionChange = (index, key, value) => {
     const updatedPrescriptions = [...formData.prescriptions];
@@ -214,91 +221,49 @@ const CNForm = ({ patientId, doctorId }) => {
   };
 
   const handleAddPrescription = () => {
-    const newPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
-    setFormData({ ...formData, prescriptions: [...formData.prescriptions, newPrescription] });
+    const newPrescription = {
+      medicine: "",
+      dosage: "",
+      frequency: "",
+      duration: "",
+    };
+    setFormData({
+      ...formData,
+      prescriptions: [...formData.prescriptions, newPrescription],
+    });
   };
 
   const handlePrescriptionSubmit = () => {
     // Handle prescription submission here
-    console.log('Prescription data:', formData.prescriptions);
-    // setFormData({
-    //   ...formData,
-    //   prescriptions: [...formData.prescriptions, formData.prescriptions],
-    // });
+    console.log("Prescription data:", formData.prescriptions);
 
     toast.success("Prescription added successfully");
   };
-
-
-  // const handlePrescriptionChange = (index, key, value) => {
-  //   const updatedPrescriptions = [...formData.prescriptions];
-  //   updatedPrescriptions[index][key] = value;
-  //   setFormData({ ...formData, prescriptions: updatedPrescriptions });
-  // };
-
-  // const handleAddPrescription = () => {
-  //   const newPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
-  //   setFormData({ ...formData, prescriptions: [...formData.prescriptions, newPrescription] });
-  // };
-
-  // const handlePrescriptionSubmit = () => {
-  //   // Handle prescription submission here
-  //   console.log('Prescription data:', formData.prescriptions);
-  //   // Reset the modal or close it
-  //   setModalShow1(false);
-  // };
-
-  // const handlePrescriptionChange = (index, key, value) => {
-  //   const updatedPrescriptions = [...formData.prescriptions];
-  //   updatedPrescriptions[index][key] = value;
-  //   setFormData({ ...formData, prescriptions: updatedPrescriptions });
-  // };
-
-  // const handlePrescriptionSubmit = () => {
-  //   const prescriptions = {
-  //     medicine,
-  //     dosage,
-  //     frequency,
-  //     duration: parseInt(duration),
-  //   };
-
-  //   setFormData({
-  //     ...formData,
-  //     prescriptions: [...formData.prescriptions, prescriptions],
-  //   });
-
-  //   toast.success("Prescription added successfully");
-  // };
-
-  // const handleAddPrescription = () => {
-  //   const newPrescription = { medicine: '', dosage: '', frequency: '', duration: '' };
-  //   setFormData({ ...formData, prescriptions: [...formData.prescriptions, newPrescription] });
-  // };
 
   const handleCheck = (event) => {
     setChecked(event.target.checked);
   };
 
-  // const handlePurposeChange = (event) => {
-  //   const selectedPurposeCode = event.target.value;
-  //   const selectedPurposeObject = purposes.find((purpose) => purpose.code === selectedPurposeCode);
-
-  //   setSelectedPurpose({
-  //     code: selectedPurposeCode,
-  //     display: selectedPurposeObject ? selectedPurposeObject.display : ""
-  //   });
-  // };
-
-
   const handlePurposeChange = (event) => {
     const selectedPurposeCode = event.target.value;
-    const selectedPurposeObject = purposes.find((purpose) => purpose.code === selectedPurposeCode).display;
+    console.log("Selected purpose code:", selectedPurposeCode); // Check if selectedPurposeCode is correctly logged
+    const selectedPurposeObject = purposes.find(
+      (purpose) => purpose.code === selectedPurposeCode
+    );
+    console.log("Selected purpose object:", selectedPurposeObject); // Check if selectedPurposeObject is correctly logged
 
-    setSelectedPurpose({ code: selectedPurposeCode, display: selectedPurposeObject });
-    // setSelectedPurpose(selectedPurposeObject ? selectedPurposeObject.display : "");
-    // console.log("Selected purpose:", selectedPurposeObject);
+    if (selectedPurposeObject) {
+      setSelectedPurpose({
+        code: selectedPurposeCode,
+        display: selectedPurposeObject.display,
+      });
+    } else {
+      console.error(`Purpose with code ${selectedPurposeCode} not found`);
+    }
+
+    console.log("Selected purpose:", selectedPurposeObject); // Check if selectedPurposeObject is correctly logged
+    console.log("Selected purpose display:", selectedPurposeObject?.display); // Check if display property is correctly logged
   };
-
 
   const handleconsentStatus = async () => {
     const token = localStorage.getItem("token");
@@ -307,7 +272,7 @@ const CNForm = ({ patientId, doctorId }) => {
     };
     try {
       const formdata = {
-        consentRequestId: consentId
+        consentRequestId: consentId,
       };
       const response = await axios.post(
         "http://localhost:9191/doctor/consentRequestStatus",
@@ -326,7 +291,13 @@ const CNForm = ({ patientId, doctorId }) => {
     }
   };
 
-
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    setCheckboxData((prevData) => ({
+      ...prevData,
+      [name]: checked,
+    }));
+  };
 
   const handleconsentSubmit = async () => {
     const token = localStorage.getItem("token");
@@ -348,9 +319,21 @@ const CNForm = ({ patientId, doctorId }) => {
       const eraseDateObj = new Date(eraseDate);
 
       // Set the time for fromDate, toDate, and eraseDate to the current time
-      fromDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
-      toDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
-      eraseDateObj.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
+      fromDateObj.setHours(
+        currentDate.getHours(),
+        currentDate.getMinutes(),
+        currentDate.getSeconds()
+      );
+      toDateObj.setHours(
+        currentDate.getHours(),
+        currentDate.getMinutes(),
+        currentDate.getSeconds()
+      );
+      eraseDateObj.setHours(
+        currentDate.getHours(),
+        currentDate.getMinutes(),
+        currentDate.getSeconds()
+      );
 
       // Format the dates to ISO string
       const formattedFromDate = fromDateObj.toISOString();
@@ -361,7 +344,7 @@ const CNForm = ({ patientId, doctorId }) => {
         purpose: {
           text: selectedPurpose.display,
           code: selectedPurpose.code,
-          refUri: "string"
+          refUri: "string",
         },
         patientAbhaAddress: patientDetails.abhaId,
         doctorEmail: doctorEmail,
@@ -372,15 +355,15 @@ const CNForm = ({ patientId, doctorId }) => {
           accessMode: "VIEW",
           dateRange: {
             from: formattedFromDate,
-            to: formattedToDate
+            to: formattedToDate,
           },
           dataEraseAt: formattedEraseDate,
           frequency: {
             unit: "MONTH",
             value: 12,
-            repeats: 12
-          }
-        }
+            repeats: 12,
+          },
+        },
       };
       console.log("Consent request data:", consentRequestData);
 
@@ -425,8 +408,12 @@ const CNForm = ({ patientId, doctorId }) => {
                 style={{ width: "100%" }}
               >
                 <div className="flex justify-between" style={{ width: "100%" }}>
-                  <div className="font-sans font-thin">Patient Name: {patientDetails.name}</div>
-                  <div className="font-sans font-thin">Age: {patientDetails.age}</div>
+                  <div className="font-sans font-thin">
+                    Patient Name: {patientDetails.name}
+                  </div>
+                  <div className="font-sans font-thin">
+                    Age: {patientDetails.age}
+                  </div>
                 </div>
               </label>
             </div>
@@ -602,7 +589,13 @@ const CNForm = ({ patientId, doctorId }) => {
                           type="text"
                           label="Medicine"
                           value={prescription.medicine}
-                          onChange={(e) => handlePrescriptionChange(index, 'medicine', e.target.value)}
+                          onChange={(e) =>
+                            handlePrescriptionChange(
+                              index,
+                              "medicine",
+                              e.target.value
+                            )
+                          }
                           fullWidth
                           margin="normal"
                           variant="outlined"
@@ -611,7 +604,13 @@ const CNForm = ({ patientId, doctorId }) => {
                           type="text"
                           label="Dosage"
                           value={prescription.dosage}
-                          onChange={(e) => handlePrescriptionChange(index, 'dosage', e.target.value)}
+                          onChange={(e) =>
+                            handlePrescriptionChange(
+                              index,
+                              "dosage",
+                              e.target.value
+                            )
+                          }
                           fullWidth
                           margin="normal"
                           variant="outlined"
@@ -620,7 +619,13 @@ const CNForm = ({ patientId, doctorId }) => {
                           type="text"
                           label="Frequency"
                           value={prescription.frequency}
-                          onChange={(e) => handlePrescriptionChange(index, 'frequency', e.target.value)}
+                          onChange={(e) =>
+                            handlePrescriptionChange(
+                              index,
+                              "frequency",
+                              e.target.value
+                            )
+                          }
                           fullWidth
                           margin="normal"
                           variant="outlined"
@@ -629,7 +634,13 @@ const CNForm = ({ patientId, doctorId }) => {
                           type="number"
                           label="Duration (in days)"
                           value={prescription.duration}
-                          onChange={(e) => handlePrescriptionChange(index, 'duration', e.target.value)}
+                          onChange={(e) =>
+                            handlePrescriptionChange(
+                              index,
+                              "duration",
+                              e.target.value
+                            )
+                          }
                           fullWidth
                           margin="normal"
                           variant="outlined"
@@ -637,14 +648,19 @@ const CNForm = ({ patientId, doctorId }) => {
                       </div>
                     ))}
                     <div className="d-flex justify-content-between mt-4">
-                      <button className="btn btn-success btn-lg" onClick={handleAddPrescription}>
+                      <button
+                        className="btn btn-success btn-lg"
+                        onClick={handleAddPrescription}
+                      >
                         Add Another Prescription
                       </button>
-                      <button className="btn btn-primary btn-lg" onClick={handlePrescriptionSubmit}>
+                      <button
+                        className="btn btn-primary btn-lg"
+                        onClick={handlePrescriptionSubmit}
+                      >
                         Submit Prescription
                       </button>
                     </div>
-
                   </Modal.Body>
                 </Modal>
 
@@ -711,7 +727,7 @@ const CNForm = ({ patientId, doctorId }) => {
                 </Modal.Header>
                 <Modal.Body>
                   <TextField
-                    value={selectedPurpose.display}
+                    value={selectedPurpose.code}
                     label="Purpose"
                     onChange={handlePurposeChange}
                     fullWidth
@@ -725,6 +741,23 @@ const CNForm = ({ patientId, doctorId }) => {
                       </MenuItem>
                     ))}
                   </TextField>
+
+                  {/* <TextField
+        value={selectedPurpose}
+        label="Purpose"
+        onChange={handlePurposeChange}
+        fullWidth
+        margin="normal"
+        variant="outlined"
+        select
+      >
+        {purposes.map((purpose) => (
+          <MenuItem key={purpose.code} value={purpose.display}>
+            {purpose.display}
+          </MenuItem>
+        ))}
+      </TextField> */}
+
                   <TextField
                     type="text"
                     label="Patient Abha ID"
@@ -740,7 +773,7 @@ const CNForm = ({ patientId, doctorId }) => {
                       key={type.code}
                       control={
                         <Checkbox
-                          checked={formData[type.code]}
+                          checked={formData[type.code] || false}
                           onChange={(e) =>
                             setFormData({
                               ...formData,
@@ -752,6 +785,22 @@ const CNForm = ({ patientId, doctorId }) => {
                       label={type.display}
                     />
                   ))}
+                  {/* <Typography variant="subtitle1">
+                    Health Information Types
+                  </Typography>
+                  {hiTypes.map((type) => (
+                    <FormControlLabel
+                      key={type.code}
+                      control={
+                        <Checkbox
+                          checked={formData[type.code]} // Ensure checked is explicitly set to true or false
+                          onChange={handleCheckboxChange}
+                          name={type.code}
+                        />
+                      }
+                      label={type.display}
+                    />
+                  ))} */}
                   <TextField
                     type="date"
                     label="From"
@@ -813,9 +862,7 @@ const CNForm = ({ patientId, doctorId }) => {
                     >
                       Request Consent
                     </button>
-
                   </div>
-
                 </Modal.Body>
               </Modal>
             </div>
