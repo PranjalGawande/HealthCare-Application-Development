@@ -2,6 +2,7 @@ import "./App.css";
 import * as React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
 import Login from "./Components/Login";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
 import DoctorDashboard from "./Components/Doctor/DoctorDashboard";
@@ -140,6 +141,7 @@ function App() {
 
 
         </Routes>
+        <Footer />
       </Router>
     </div>
   );
