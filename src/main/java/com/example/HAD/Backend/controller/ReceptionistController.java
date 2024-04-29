@@ -542,6 +542,7 @@ public class ReceptionistController {
         appointment.setTime(extraDTO.getTime());
         appointment.setReasonForVisit(extraDTO.getReasonForVisit());
         appointment.setStatus(extraDTO.getStatus());
+        appointment.setPushCareContextStatus(false);
 
         Doctor doctor = doctorService.findDoctorById(extraDTO.getDoctorId());
         appointment.setDoctor(doctor);
