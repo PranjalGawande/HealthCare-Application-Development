@@ -33,8 +33,11 @@ public class Appointment {
     @Column(nullable = false)
     private String reasonForVisit;
 
-    @Column(columnDefinition = "VARCHAR(255) NOT NULL DEFAULT 'pending'")
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'pending'")
     private String status;
+
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean pushCareContextStatus;
 
     @ManyToOne
     @JsonIgnore

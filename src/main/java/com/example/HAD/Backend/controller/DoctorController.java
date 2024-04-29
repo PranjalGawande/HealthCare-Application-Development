@@ -291,6 +291,11 @@ public class DoctorController {
 
         JSONArray careContexts = new JSONArray();
         List<Appointment> appointments = appointmentService.getAppointmentList(patient.getPatientId());
+        if(appointments.isEmpty()) {
+            return ResponseEntity.ok().body("No new CareContext found to push.");
+        }
+
+        appointmentService.updatePushCareContextStatus(patient.getPatientId());
 
         for (Appointment appointment : appointments) {
             JSONObject careContext = new JSONObject();

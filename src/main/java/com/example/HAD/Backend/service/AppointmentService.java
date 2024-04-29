@@ -30,10 +30,14 @@ public class AppointmentService {
     }
 
     public List<Appointment> getAppointmentList(Integer patientId) {
-        return appointmentRepository.findAppointmentListByPatientAbhaId(patientId);
+        return appointmentRepository.findAppointmentListByPatientAbhaId(patientId, false);
     }
 
     public Optional<Appointment> findAppointmentById(Integer appointmentId) {
         return appointmentRepository.findById(appointmentId);
+    }
+
+    public void updatePushCareContextStatus(Integer patientId) {
+        appointmentRepository.updatePushCareContextStatus(patientId, true);
     }
 }
