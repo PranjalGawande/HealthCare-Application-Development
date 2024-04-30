@@ -387,9 +387,9 @@ const CNForm = ({ patientId, doctorId }) => {
   };
 
   return (
-    <div>
-      <div className="mt-5 text-5xl">PATIENT CONSULTATION FORM</div>
-      <div className="flex justify-center items-center mt-20 pt-10">
+    <div className="main-background-doctor">
+      <div className=" text-5xl">PATIENT CONSULTATION FORM</div>
+      <div className="flex justify-center items-center mt-20 pt-10 mb-20">
         <div
           className="glass-background cnform"
           style={{ height: "auto", marginBottom: "2rem" }}
@@ -432,92 +432,93 @@ const CNForm = ({ patientId, doctorId }) => {
                 />
               </div>
               <div className="flex gap-5 pl-20  pr-20">
-                <div className="d-flex gap-5">
-                <TextField
-                  id="bloodPressureHigh"
-                  label="Blood Pressure High"
-                  variant="outlined"
-                  size="medium"
-                  style={{ marginBottom: "1rem", width: "200%" }}
-                  value={formData.bloodPressureHigh}
-                  onChange={handleChange}
-                />
-                <TextField
-                  id="bloodPressureLow"
-                  label="Blood Pressure Low"
-                  variant="outlined"
-                  size="medium"
-                  style={{ marginBottom: "1rem", width: "200%" }}
-                  value={formData.bloodPressureLow}
-                  onChange={handleChange}
-                />
-                </div>
-                <div className="d-flex gap-5">
-                <TextField
-                  id="oxygenLevel"
-                  label="Oxygen Level"
-                  variant="outlined"
-                  size="medium"
-                  style={{ marginBottom: "1rem", width: "100%", paddingLeft: "2"}}
-                  value={formData.oxygenLevel}
-                  onChange={handleChange}
-                />
-                </div>
-              </div>
-              <div className="flex gap-5 pl-20 pr-20">
-                <TextField
-                  id="pulse"
-                  label="Pulse"
-                  variant="outlined"
-                  size="medium"
-                  style={{ marginBottom: "1rem", width: "100%" }}
-                  value={formData.pulse}
-                  onChange={handleChange}
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={checked} onChange={handleCheck} />
-                  }
-                  label={
-                    <Typography style={{ fontSize: "22px" }}>
-                      Push Care Context
-                    </Typography>
-                  }
-                  style={{ marginBottom: "1rem", width: "100%" }}
-                />
-              </div>
-              <div className="flex pl-20 gap-5 pr-20">
-                <TextField
-                  id="diagnosis"
-                  label="Diagnosis"
-                  variant="outlined"
-                  size="medium"
-                  style={{ marginBottom: "1rem", width: "100%" }}
-                  value={formData.diagnosis}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mt-2 flex justify-end pl-20 gap-5 pr-20">
-                <Button
-                  className="button "
-                  style={{
-                    marginTop: "2rem",
-                    width: "100%",
-                    height: "10%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                  }}
-                  onClick={() => {
-                    setModalShow1(true);
-                  }}
-                >
-                  {"Add Prescription"}
-                </Button>
+                {/* <div className="flex flex-row"> */}
+                  <div className="d-flex gap-3 w-100">
+                    <TextField
+                      id="bloodPressureHigh"
+                      label="Blood Pressure High"
+                      variant="outlined"
+                      size="medium"
+                      style={{ marginBottom: "1rem", width: "200%" }}
+                      value={formData.bloodPressureHigh}
+                      onChange={handleChange}
+                    />
+                    <TextField
+                      id="bloodPressureLow"
+                      label="Blood Pressure Low"
+                      variant="outlined"
+                      size="medium"
+                      style={{ marginBottom: "1rem", width: "200%" }}
+                      value={formData.bloodPressureLow}
+                      onChange={handleChange}
+                    />
+                  </div>
 
-                {/* <Modal
+                  <TextField
+                    id="oxygenLevel"
+                    label="Oxygen Level"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "100%", paddingLeft: "2" }}
+                    value={formData.oxygenLevel}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="flex gap-5 pl-20 pr-20">
+                  <TextField
+                    id="pulse"
+                    label="Pulse"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "100%" }}
+                    value={formData.pulse}
+                    onChange={handleChange}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={checked} onChange={handleCheck} />
+                    }
+                    label={
+                      <Typography style={{ fontSize: "22px" }}>
+                        Push Care Context
+                      </Typography>
+                    }
+                    style={{ marginBottom: "1rem", width: "100%" }}
+                  />
+                </div>
+                <div className="flex pl-20 gap-5 pr-20">
+                  <TextField
+                    id="diagnosis"
+                    label="Diagnosis"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "100%" }}
+                    value={formData.diagnosis}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mt-2 flex justify-end pl-20 gap-5 pr-20">
+                  <Button
+                    className="button "
+                    style={{
+                      marginTop: "2rem",
+                      width: "100%",
+                      height: "10%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
+                    }}
+                    onClick={() => {
+                      setModalShow1(true);
+                    }}
+                  >
+                    {"Add Prescription"}
+                  </Button>
+
+                  {/* <Modal
                   show={modalShow1}
                   onHide={() => setModalShow1(false)}
                   size="lg"
@@ -584,113 +585,113 @@ const CNForm = ({ patientId, doctorId }) => {
                   </Modal.Body>
                 </Modal> */}
 
-                <Modal
-                  show={modalShow1}
-                  onHide={() => setModalShow1(false)}
-                  size="lg"
-                  aria-labelledby="contained-modal-title-vcenter"
-                  centered
-                >
-                  <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                      Add Prescription
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    {formData.prescriptions.map((prescription, index) => (
-                      <div key={index} className="d-flex gap-2">
-                        <TextField
-                          type="text"
-                          label="Medicine"
-                          value={prescription.medicine}
-                          onChange={(e) =>
-                            handlePrescriptionChange(
-                              index,
-                              "medicine",
-                              e.target.value
-                            )
-                          }
-                          fullWidth
-                          margin="normal"
-                          variant="outlined"
-                        />
-                        <TextField
-                          type="text"
-                          label="Dosage"
-                          value={prescription.dosage}
-                          onChange={(e) =>
-                            handlePrescriptionChange(
-                              index,
-                              "dosage",
-                              e.target.value
-                            )
-                          }
-                          fullWidth
-                          margin="normal"
-                          variant="outlined"
-                        />
-                        <TextField
-                          type="text"
-                          label="Frequency"
-                          value={prescription.frequency}
-                          onChange={(e) =>
-                            handlePrescriptionChange(
-                              index,
-                              "frequency",
-                              e.target.value
-                            )
-                          }
-                          fullWidth
-                          margin="normal"
-                          variant="outlined"
-                        />
-                        <TextField
-                          type="number"
-                          label="Duration (in days)"
-                          value={prescription.duration}
-                          onChange={(e) =>
-                            handlePrescriptionChange(
-                              index,
-                              "duration",
-                              e.target.value
-                            )
-                          }
-                          fullWidth
-                          margin="normal"
-                          variant="outlined"
-                        />
+                  <Modal
+                    show={modalShow1}
+                    onHide={() => setModalShow1(false)}
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title id="contained-modal-title-vcenter">
+                        Add Prescription
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      {formData.prescriptions.map((prescription, index) => (
+                        <div key={index} className="d-flex gap-2">
+                          <TextField
+                            type="text"
+                            label="Medicine"
+                            value={prescription.medicine}
+                            onChange={(e) =>
+                              handlePrescriptionChange(
+                                index,
+                                "medicine",
+                                e.target.value
+                              )
+                            }
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                          />
+                          <TextField
+                            type="text"
+                            label="Dosage"
+                            value={prescription.dosage}
+                            onChange={(e) =>
+                              handlePrescriptionChange(
+                                index,
+                                "dosage",
+                                e.target.value
+                              )
+                            }
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                          />
+                          <TextField
+                            type="text"
+                            label="Frequency"
+                            value={prescription.frequency}
+                            onChange={(e) =>
+                              handlePrescriptionChange(
+                                index,
+                                "frequency",
+                                e.target.value
+                              )
+                            }
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                          />
+                          <TextField
+                            type="number"
+                            label="Duration (in days)"
+                            value={prescription.duration}
+                            onChange={(e) =>
+                              handlePrescriptionChange(
+                                index,
+                                "duration",
+                                e.target.value
+                              )
+                            }
+                            fullWidth
+                            margin="normal"
+                            variant="outlined"
+                          />
+                        </div>
+                      ))}
+                      <div className="d-flex justify-content-between mt-4">
+                        <button
+                          className="btn btn-success btn-lg"
+                          onClick={handleAddPrescription}
+                        >
+                          Add Another Prescription
+                        </button>
+                        <button
+                          className="btn btn-primary btn-lg"
+                          onClick={handlePrescriptionSubmit}
+                        >
+                          Submit Prescription
+                        </button>
                       </div>
-                    ))}
-                    <div className="d-flex justify-content-between mt-4">
-                      <button
-                        className="btn btn-success btn-lg"
-                        onClick={handleAddPrescription}
-                      >
-                        Add Another Prescription
-                      </button>
-                      <button
-                        className="btn btn-primary btn-lg"
-                        onClick={handlePrescriptionSubmit}
-                      >
-                        Submit Prescription
-                      </button>
-                    </div>
-                  </Modal.Body>
-                </Modal>
+                    </Modal.Body>
+                  </Modal>
 
-                <button
-                  type="submit"
-                  className="button"
-                  style={{
-                    marginTop: "2rem",
-                    width: "100%",
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                  }}
-                >
-                  Submit
-                </button>
-              </div>{" "}
+                  <button
+                    type="submit"
+                    className="button"
+                    style={{
+                      marginTop: "2rem",
+                      width: "100%",
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
+                    }}
+                  >
+                    Submit
+                  </button>
+                </div>{" "}
             </form>
 
             <div className="mt-2 flex justify-end pl-20 gap-5 pr-20 mb-8">
@@ -781,7 +782,9 @@ const CNForm = ({ patientId, doctorId }) => {
                     margin="normal"
                     variant="outlined"
                   />
-                  <Typography variant="subtitle1">Health Information Types</Typography>
+                  <Typography variant="subtitle1">
+                    Health Information Types
+                  </Typography>
                   {hiTypes.map((type) => (
                     <FormControlLabel
                       key={type.code}
