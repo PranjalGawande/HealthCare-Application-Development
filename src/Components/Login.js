@@ -9,6 +9,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/loginPage.jpg";
 import toast from "react-hot-toast";
+import API_URL from "../Config/config";
 
 const LoginForm = () => {
   let navigate = useNavigate();
@@ -18,33 +19,42 @@ const LoginForm = () => {
   const [loading, setLoading] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  // headers.set("ngrok-skip-browser-warning", true);
+  // make header changes
+  // const headers: { "ngrok-skip-browser-warning": `true` }
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const lowercaseRole = role.toLowerCase();
       const response = await axios.post(
-        `http://localhost:9191/login/${lowercaseRole}`,
+        `${API_URL}/login/${lowercaseRole}`,
         {
           email: email,
           password: password,
+        },
+        {
+          headers: { "ngrok-skip-browser-warning": `true` },
         }
       );
       const responseData = response.data;
       const token = responseData.token;
       // console.log("User Logged In:", responseData);
 
-      localStorage.setItem("token", token);
+      sessionStorage.setItem("token", token);
       localStorage.setItem("role", role);
       localStorage.setItem("loggedIn", "true");
 
       let DetailsResponse;
       if (role === "ADMIN") {
         DetailsResponse = await axios.get(
-          "http://localhost:9191/admin/adminDetails",
+          `${API_URL}/admin/adminDetails`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true',
             },
           }
         );
@@ -52,11 +62,12 @@ const LoginForm = () => {
         const formData = {};
 
         DetailsResponse = await axios.post(
-          "http://localhost:9191/doctor/doctorDetails",
+          `${API_URL}/doctor/doctorDetails`,
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true',
             },
           }
         );
@@ -64,16 +75,18 @@ const LoginForm = () => {
         const formData = {};
 
         DetailsResponse = await axios.post(
-          "http://localhost:9191/receptionist/receptionistDetails",
+          `${API_URL}/receptionist/receptionistDetails`,
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true',
             },
           }
         );
       }
       const Name = DetailsResponse.data.name;
+      // console.log("Data:", DetailsResponse.data);
       // console.log("Name:", Name);
 
       localStorage.setItem("Name", Name);
