@@ -60,7 +60,8 @@ const CNForm = ({ patientId, doctorId }) => {
   });
 
   const [formData, setFormData] = useState({
-    bloodPressure: "",
+    bloodPressureHigh: "",
+    bloodPressureLow: "",
     oxygenLevel: "",
     pulse: "",
     symptoms: "",
@@ -431,24 +432,37 @@ const CNForm = ({ patientId, doctorId }) => {
                 />
               </div>
               <div className="flex gap-5 pl-20  pr-20">
+                <div className="d-flex gap-5">
                 <TextField
-                  id="bloodPressure"
-                  label="Blood Pressure"
+                  id="bloodPressureHigh"
+                  label="Blood Pressure High"
                   variant="outlined"
                   size="medium"
-                  style={{ marginBottom: "1rem", width: "100%" }}
-                  value={formData.bloodPressure}
+                  style={{ marginBottom: "1rem", width: "200%" }}
+                  value={formData.bloodPressureHigh}
                   onChange={handleChange}
                 />
+                <TextField
+                  id="bloodPressureLow"
+                  label="Blood Pressure Low"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "200%" }}
+                  value={formData.bloodPressureLow}
+                  onChange={handleChange}
+                />
+                </div>
+                <div className="d-flex gap-5">
                 <TextField
                   id="oxygenLevel"
                   label="Oxygen Level"
                   variant="outlined"
                   size="medium"
-                  style={{ marginBottom: "1rem", width: "100%" }}
+                  style={{ marginBottom: "1rem", width: "100%", paddingLeft: "2"}}
                   value={formData.oxygenLevel}
                   onChange={handleChange}
                 />
+                </div>
               </div>
               <div className="flex gap-5 pl-20 pr-20">
                 <TextField
