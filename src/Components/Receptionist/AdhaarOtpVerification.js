@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
 import { toast } from "react-hot-toast";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const AdhaarOtpVerification = () => {
   const [aadhaarOtp, setAadhaarOtp] = useState("");
@@ -25,7 +25,6 @@ export const AdhaarOtpVerification = () => {
       const formData = {
         otp: aadhaarOtp,
       };
-      // console.log('FormData:', formData);
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `${API_URL}/receptionist/verifyAadhaarOtp`,
@@ -37,7 +36,6 @@ export const AdhaarOtpVerification = () => {
           },
         }
       );
-      // console.log('Response:', response.data);
       navigate("/receptionist/abha-mobile-no");
     } catch (error) {
       toast.error("Invalid OTP, Please try again!");

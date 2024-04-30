@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const HealthIdByAdhaar = () => {
   const navigate = useNavigate();
@@ -28,7 +28,6 @@ export const HealthIdByAdhaar = () => {
           },
         }
       );
-      // console.log('Response:', response.data);
       navigate("/receptionist/abdm-otp-credentials", { state: response.data });
     } catch (error) {
       console.error("Error:", error);

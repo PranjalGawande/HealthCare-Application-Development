@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { toast } from "react-hot-toast";
 import { Progressbar } from "./Progressbar";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const AddAppointment = () => {
   const loaction = useLocation();
@@ -34,7 +34,6 @@ export const AddAppointment = () => {
           "ngrok-skip-browser-warning": "true",
         },
       });
-      // console.log("Response:", response.data);
       setDoctors(response.data);
     } catch (error) {
       console.error("Error fetching doctors:", error);
@@ -65,7 +64,6 @@ export const AddAppointment = () => {
         abhaId: abhaId,
         doctorId: selectedDoctor,
       };
-      // console.log("Appointment Data:", appointmentData);
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `${API_URL}/receptionist/addAppointment`,
@@ -77,7 +75,6 @@ export const AddAppointment = () => {
           },
         }
       );
-      // console.log("Response:", response.data);
       toast.success("Appointment Added Successfully");
       sessionStorage.removeItem("abhaAddress");
       setTimeout(() => {

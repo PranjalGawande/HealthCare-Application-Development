@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import toast from "react-hot-toast";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const ExistingPatientAbhaSearch = () => {
   const [abhaId, setAbhaId] = useState("");

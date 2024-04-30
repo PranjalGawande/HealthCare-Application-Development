@@ -4,14 +4,13 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import recepImage from "../../assets/ReceptionistPage.png";
 import toast from "react-hot-toast";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const ViewReceptionistDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [staffDetails, setStaffDetails] = useState("");
   const role = sessionStorage.getItem("role");
-  const [loading, setLoading] = useState(false);
 
   const handleUpdateDetails = () => {
     navigate("/admin/admin-receptionist-details-update", {

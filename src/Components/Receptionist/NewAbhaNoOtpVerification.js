@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
 import toast from "react-hot-toast";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const NewAbhaNoOtpVerification = () => {
   const [abhaOtp, setAbhaOtp] = useState("");

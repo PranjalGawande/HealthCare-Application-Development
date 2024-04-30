@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
 import toast from "react-hot-toast";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const AbdmOtpCredentials = () => {
   const [abdmOtp, setAbdmOtp] = useState("");
@@ -20,13 +20,11 @@ export const AbdmOtpCredentials = () => {
       setLoading(false);
       return;
     }
-    // console.log(abdmOtp);
     try {
       const token = sessionStorage.getItem("token");
       const formData = {
         otp: abdmOtp,
       };
-      // console.log('FormData:', formData);
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `${API_URL}/receptionist/confirmAbdmCredentials`,
@@ -38,7 +36,6 @@ export const AbdmOtpCredentials = () => {
           },
         }
       );
-      // console.log('Response:', response.data);
       navigate("/receptionist/suggest-abha-address");
     } catch (error) {
       toast.error("Invalid OTP, Please try again!");

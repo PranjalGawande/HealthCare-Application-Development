@@ -6,7 +6,7 @@ import patientImage from "../../assets/PatientPage.png";
 import toast from "react-hot-toast";
 import MenuItem from "@mui/material/MenuItem";
 import { Progressbar } from "./Progressbar";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const AddPatientDetails = () => {
   const location = useLocation();
@@ -65,7 +65,6 @@ export const AddPatientDetails = () => {
           },
         }
       );
-      // console.log("Response:", response.data);
       toast.success("Patient Added Successfully");
       setTimeout(() => {
         navigate("/receptionist/add-appointment");

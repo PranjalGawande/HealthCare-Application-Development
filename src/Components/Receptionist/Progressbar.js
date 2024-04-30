@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar, Step } from "react-step-progress-bar";
-import { AdhaarAbhaIdCreation } from "./AdhaarAbhaIdCreation";
-import { AdhaarOtpVerification } from "./AdhaarOtpVerification";
 
 export const Progressbar = (props) => {
     return (

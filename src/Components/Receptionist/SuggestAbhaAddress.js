@@ -5,7 +5,7 @@ import patientImage from "../../assets/PatientPage.png";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Progressbar } from "./Progressbar";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const SuggestAbhaAddress = () => {
   const [suggestions, setSuggestions] = useState([]);

@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
 import { toast } from "react-hot-toast";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const AdhaarAbhaIdCreation = () => {
   const [aadhaarNo, setAadhaarNo] = useState("");
@@ -36,7 +36,6 @@ export const AdhaarAbhaIdCreation = () => {
           },
         }
       );
-      // console.log("Response:", response.data);
       navigate("/receptionist/adhaar-otp-verification");
     } catch (error) {
       console.error("Error:", error);

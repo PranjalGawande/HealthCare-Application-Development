@@ -14,7 +14,6 @@ export const ExistingPatientDetails = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      // console.log('Adding patient:', patientInfo);
       toast.success("Patient Added Successfully");
       setTimeout(() => {
         navigate("/receptionist/add-appointment");

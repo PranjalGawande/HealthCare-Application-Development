@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
 import { toast } from "react-hot-toast";
-import API_URL from "../Config/config";
+import API_URL from "../../Config/config";
 
 export const AbhaIdVerification = () => {
   const [abhaAdd, setAbhaAdd] = useState("");
@@ -34,7 +34,6 @@ export const AbhaIdVerification = () => {
         }
       );
       sessionStorage.setItem("abhaAddress", abhaAdd);
-      // console.log("Response:", response.data);
       navigate("/receptionist/abha-otp-verification");
     } catch (error) {
       console.error("Error:", error);
