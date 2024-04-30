@@ -6,29 +6,25 @@ export const ViewAdminDetails = () => {
   const [adminDetails, setAdminDetails] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const [newPassword, setNewPassword] = useState("");
 
   const handleChangePassword = async () => {
     try {
       navigate("/password-change");
     } catch (error) {
-      // console.error("Error changing password:", error);
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-    // console.log("token: ", token);
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
     if (role !== "ADMIN") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
 
-    // console.log("location.state: ", location.state);
     if (location.state && location.state.adminDetails) {
       setAdminDetails(location.state.adminDetails);
     } else {

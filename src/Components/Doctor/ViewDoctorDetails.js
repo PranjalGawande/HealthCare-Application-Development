@@ -4,6 +4,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import doctorImage from "../../assets/DoctorPage.png";
 import toast from "react-hot-toast";
+import API_URL from "../../Config/config";
 
 export const ViewDoctorDetails = () => {
   const location = useLocation();
@@ -30,17 +31,17 @@ export const ViewDoctorDetails = () => {
     try {
       if (!doctorDetails || !doctorDetails.email) {
         toast.error("Doctor details or email not available.");
-        // console.error("Doctor details or email not available.");
         return;
       }
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true',
       };
 
       const formData = { email: email };
       const response = await axios.post(
-        `http://localhost:9191/admin/activateStaff`,
+        `${API_URL}/admin/activateStaff`,
         formData,
         { headers: headers }
       );
@@ -52,7 +53,6 @@ export const ViewDoctorDetails = () => {
       toast.success("Doctor activated successfully");
     } catch (error) {
       toast.error("Error activating doctor");
-      // console.error("Error activating doctor:", error);
     }
   };
 
@@ -60,18 +60,18 @@ export const ViewDoctorDetails = () => {
     try {
       if (!doctorDetails || !doctorDetails.email) {
         toast.error("Doctor details or email not available.");
-        // console.error("Doctor details or email not available.");
         return;
       }
 
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true',
       };
 
       const formData = { email: email };
       const response = await axios.post(
-        `http://localhost:9191/admin/deActivateStaff`,
+        `${API_URL}/admin/deActivateStaff`,
         formData,
         { headers: headers }
       );
@@ -83,19 +83,18 @@ export const ViewDoctorDetails = () => {
       toast.success("Doctor deactivated successfully");
     } catch (error) {
       toast.error("Error deactivating doctor");
-      // console.error("Error deactivating doctor:", error);
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setRole(localStorage.getItem("role"));
+    const token = sessionStorage.getItem("token");
+    setRole(sessionStorage.getItem("role"));
     if (!token) {
       navigate("/");
     }
     if (role === "Receptionist") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
 
     if (location.state && location.state.doctor) {
@@ -103,9 +102,7 @@ export const ViewDoctorDetails = () => {
     } else {
       navigate("/error");
     }
-    // console.log("doctorDetails",doctorDetails);
   }, [location.state, navigate]);
-  // console.log("doctorDetails", doctorDetails);
 
   const determineFontSize = () => {
     if (doctorDetails.name && doctorDetails.name.length > 14) {

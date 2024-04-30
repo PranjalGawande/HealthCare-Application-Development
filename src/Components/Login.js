@@ -19,11 +19,6 @@ const LoginForm = () => {
   const [loading, setLoading] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // headers.set("ngrok-skip-browser-warning", true);
-  // make header changes
-  // const headers: { "ngrok-skip-browser-warning": `true` }
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -41,11 +36,10 @@ const LoginForm = () => {
       );
       const responseData = response.data;
       const token = responseData.token;
-      // console.log("User Logged In:", responseData);
 
       sessionStorage.setItem("token", token);
-      localStorage.setItem("role", role);
-      localStorage.setItem("loggedIn", "true");
+      sessionStorage.setItem("role", role);
+      sessionStorage.setItem("loggedIn", "true");
 
       let DetailsResponse;
       if (role === "ADMIN") {
@@ -86,10 +80,7 @@ const LoginForm = () => {
         );
       }
       const Name = DetailsResponse.data.name;
-      // console.log("Data:", DetailsResponse.data);
-      // console.log("Name:", Name);
-
-      localStorage.setItem("Name", Name);
+      sessionStorage.setItem("Name", Name);
 
       if (role === "DOCTOR") {
         navigate("/doctor");
@@ -99,7 +90,6 @@ const LoginForm = () => {
         navigate("/admin");
       }
     } catch (error) {
-      // console.error("Login failed:", error);
       toast.error("Incorrect credentials.", {
         duration: 3000,
       });
@@ -174,7 +164,6 @@ const LoginForm = () => {
               <br></br>
               <div className="flex justify-center">
                 {" "}
-                {/* Add flex properties to center the button */}
                 {loading ? (
                   <div
                     style={{
@@ -193,14 +182,14 @@ const LoginForm = () => {
                     style={{
                       height: "fit-content",
                       padding: "20px",
-                      color: "white", // Set default font color to white
+                      color: "white",
                     }}
                     onMouseEnter={(e) => {
                       e.target.style.color = "black";
-                    }} // Change font color to black on hover
+                    }}
                     onMouseLeave={(e) => {
                       e.target.style.color = "white";
-                    }} // Change font color back to white when not hovered
+                    }}
                   >
                     Login
                   </button>

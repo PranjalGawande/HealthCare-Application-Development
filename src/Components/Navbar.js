@@ -6,17 +6,17 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Logo from "../assets/HADLogo.png";
+import API_URL from "../Config/config";
 
 export default function Navbar() {
   let navigate = useNavigate();
-  const role = localStorage.getItem("role");
+  const role = sessionStorage.getItem("role");
   const handleLogout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate("/");
   };
 
   const handleHome = () => {
-    const role = localStorage.getItem("role");
     if (role === "ADMIN") {
       navigate("/admin");
     } else if (role === "DOCTOR") {
@@ -27,7 +27,6 @@ export default function Navbar() {
   };
 
   const handleAnalytics = () => {
-    const role = localStorage.getItem("role");
     if (role === "ADMIN") {
       navigate("/admin/analytics");
     }
@@ -36,15 +35,16 @@ export default function Navbar() {
   let DetailsResponse;
   const handleViewDetails = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const role = localStorage.getItem("role");
+      const token = sessionStorage.getItem("token");
+      const role = sessionStorage.getItem("role");
 
       if (role === "ADMIN") {
         DetailsResponse = await axios.get(
-          "http://localhost:9191/admin/adminDetails",
+          `${API_URL}/admin/adminDetails`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true',
             },
           }
         );
@@ -55,11 +55,12 @@ export default function Navbar() {
         const formData = {};
 
         DetailsResponse = await axios.post(
-          "http://localhost:9191/doctor/doctorDetails",
+          `${API_URL}/doctor/doctorDetails`,
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true',
             },
           }
         );
@@ -70,11 +71,12 @@ export default function Navbar() {
         const formData = {};
 
         DetailsResponse = await axios.post(
-          "http://localhost:9191/receptionist/receptionistDetails",
+          `${API_URL}/receptionist/receptionistDetails`,
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true',
             },
           }
         );
@@ -84,23 +86,23 @@ export default function Navbar() {
       }
     } catch (error) {
       toast.error("Error fetching details");
-      // console.error("Error fetching admin details:", error);
     }
   };
 
   const handleResetAppointments = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const role = localStorage.getItem("role");
+      const token = sessionStorage.getItem("token");
+      const role = sessionStorage.getItem("role");
       const formData = {};
 
       if (role === "Receptionist") {
         await axios.post(
-          "http://localhost:9191/receptionist/resetAppointment",
+          `${API_URL}/receptionist/resetAppointment`,
           formData,
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true',
             },
           }
         );
@@ -108,7 +110,6 @@ export default function Navbar() {
       }
     } catch (error) {
       toast.error("Error resetting appointments");
-      // console.error("Error resetting appointments:", error);
     }
   };
 
@@ -118,11 +119,8 @@ export default function Navbar() {
   } else if (role === "DOCTOR") {
     paddingleft = "10rem";
   }
-
-  // const paddingleft =
-  //   role === "Receptionist" ? "2rem" : "0" || role === "DOCTOR" ? "0" : "0";
-
-  const token = localStorage.getItem("token");
+  
+  const token = sessionStorage.getItem("token");
 
   return (
     <div className="flex ">
@@ -161,9 +159,9 @@ export default function Navbar() {
             </button>
           )}
 
-          <div className="container d-flex justify-content-center align-items-center" style={{paddingLeft: paddingleft}}>
-            <img src={Logo} alt="logo" width={"70px"} className="mr-3" 
-              
+          <div className="container d-flex justify-content-center align-items-center" style={{ paddingLeft: paddingleft }}>
+            <img src={Logo} alt="logo" width={"70px"} className="mr-3"
+
             />
             <p
               className="navbar-brand text-white playfair-display fw-bold"

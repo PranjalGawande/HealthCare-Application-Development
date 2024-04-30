@@ -10,8 +10,9 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
+import API_URL from "../../Config/config";
 
-const CNForm = ({ patientId, doctorId }) => {
+const CNForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [appToken, setAppToken] = useState(null);
@@ -19,13 +20,9 @@ const CNForm = ({ patientId, doctorId }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [modalShow, setModalShow] = React.useState(false);
   const [modalShow1, setModalShow1] = React.useState(false);
-  const [medicine, setMedicine] = useState("");
   const [dosage, setDosage] = useState("");
-  const [frequency, setFrequency] = useState("");
-  const [duration, setDuration] = useState("");
   const [doctorEmail, setDoctorEmail] = useState("");
   const [consentId, setConsentId] = useState("");
-  const [checkboxData, setCheckboxData] = useState({});
 
   const purposes = [
     { code: "CAREMGT", display: "Care Management" },
@@ -70,7 +67,6 @@ const CNForm = ({ patientId, doctorId }) => {
   });
 
   useEffect(() => {
-    // Initialize with one prescription
     const initialPrescription = {
       medicine: "",
       dosage: "",
@@ -120,28 +116,30 @@ const CNForm = ({ patientId, doctorId }) => {
 
   const fetchPatientHistory = async (appToken) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true',
       };
       const response = await axios.get(
-        `http://localhost:9191/doctor/history/${appToken}`,
+        `${API_URL}/doctor/history/${appToken}`,
         { headers: headers }
       );
       setPatientHistory(response.data);
     } catch (error) {
-      console.error("Error fetching patient history:", error.message);
+      toast.error("Error fetching patient history");
     }
   };
 
   const fetchPatientDetails = async (appToken) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true',
       };
       const response = await axios.post(
-        `http://localhost:9191/doctor/patientDetailByAppointmentNo`,
+        `${API_URL}/doctor/patientDetailByAppointmentNo`,
         { tokenNo: appToken },
         { headers: headers }
       );
@@ -165,15 +163,16 @@ const CNForm = ({ patientId, doctorId }) => {
         abhaId: response.data.abhaId,
       });
     } catch (error) {
-      console.error("Error fetching patient details:", error.message);
+      toast.error("Error fetching patient details");
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'true',
     };
 
     try {
@@ -183,7 +182,7 @@ const CNForm = ({ patientId, doctorId }) => {
       }
 
       const response = await axios.post(
-        `http://localhost:9191/doctor/addPatientRecord/${appToken}`,
+        `${API_URL}/doctor/addPatientRecord/${appToken}`,
         formData,
         { headers: headers }
       );
@@ -197,13 +196,9 @@ const CNForm = ({ patientId, doctorId }) => {
 
       if (checked) {
         const pushCareContextResponse = await axios.post(
-          "http://localhost:9191/doctor/pushCareContext",
+          `${API_URL}/doctor/pushCareContext`,
           { abhaId: patientDetails.abhaId },
           { headers: headers }
-        );
-        console.log(
-          "Push Care Context API response:",
-          pushCareContextResponse.data
         );
       }
       setTimeout(() => {
@@ -235,9 +230,6 @@ const CNForm = ({ patientId, doctorId }) => {
   };
 
   const handlePrescriptionSubmit = () => {
-    // Handle prescription submission here
-    console.log("Prescription data:", formData.prescriptions);
-
     toast.success("Prescription added successfully");
   };
 
@@ -247,63 +239,49 @@ const CNForm = ({ patientId, doctorId }) => {
 
   const handlePurposeChange = (event) => {
     const selectedPurposeCode = event.target.value;
-    console.log("Selected purpose code:", selectedPurposeCode); // Check if selectedPurposeCode is correctly logged
     const selectedPurposeObject = purposes.find(
       (purpose) => purpose.code === selectedPurposeCode
     );
-    console.log("Selected purpose object:", selectedPurposeObject); // Check if selectedPurposeObject is correctly logged
-
     if (selectedPurposeObject) {
       setSelectedPurpose({
         code: selectedPurposeCode,
         display: selectedPurposeObject.display,
       });
     } else {
-      console.error(`Purpose with code ${selectedPurposeCode} not found`);
+      toast.error(`Purpose with code ${selectedPurposeCode} not found`);
     }
-
-    console.log("Selected purpose:", selectedPurposeObject); // Check if selectedPurposeObject is correctly logged
-    console.log("Selected purpose display:", selectedPurposeObject?.display); // Check if display property is correctly logged
   };
 
   const handleconsentStatus = async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'true',
     };
     try {
       const formdata = {
         consentRequestId: consentId,
       };
       const response = await axios.post(
-        "http://localhost:9191/doctor/consentRequestStatus",
+        `${API_URL}/doctor/consentRequestStatus`,
         formdata,
         { headers: headers }
       );
-      console.log("Consent status API response:", response);
       if (response.status === 200) {
         toast.success(`Consent status: ${response.data.consentRequestStatus}`);
       } else {
         toast.error("Failed to check consent status");
       }
     } catch (error) {
-      console.error("Error checking consent status:", error.message);
       toast.error("Error checking consent status");
     }
   };
 
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    setCheckboxData((prevData) => ({
-      ...prevData,
-      [name]: checked,
-    }));
-  };
-
   const handleconsentSubmit = async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'true',
     };
 
     try {
@@ -314,12 +292,10 @@ const CNForm = ({ patientId, doctorId }) => {
 
       const currentDate = new Date();
 
-      // Parse fromDate, toDate, and eraseDate to Date objects
       const fromDateObj = new Date(fromDate);
       const toDateObj = new Date(toDate);
       const eraseDateObj = new Date(eraseDate);
 
-      // Set the time for fromDate, toDate, and eraseDate to the current time
       fromDateObj.setHours(
         currentDate.getHours(),
         currentDate.getMinutes(),
@@ -336,7 +312,6 @@ const CNForm = ({ patientId, doctorId }) => {
         currentDate.getSeconds()
       );
 
-      // Format the dates to ISO string
       const formattedFromDate = fromDateObj.toISOString();
       const formattedToDate = toDateObj.toISOString();
       const formattedEraseDate = eraseDateObj.toISOString();
@@ -366,14 +341,11 @@ const CNForm = ({ patientId, doctorId }) => {
           },
         },
       };
-      console.log("Consent request data:", consentRequestData);
-
       const response = await axios.post(
-        "http://localhost:9191/doctor/consentRequestInit",
+        `${API_URL}/doctor/consentRequestInit`,
         consentRequestData,
         { headers: headers }
       );
-      console.log("Consent request API response:", response);
       setConsentId(response.data.consentRequestId);
       if (response.status === 200) {
         toast.success("Consent request initiated successfully");
@@ -381,7 +353,6 @@ const CNForm = ({ patientId, doctorId }) => {
         toast.error("Failed to initiate consent request");
       }
     } catch (error) {
-      console.error("Error submitting consent request:", error.message);
       toast.error("Error submitting consent request");
     }
   };
@@ -432,93 +403,92 @@ const CNForm = ({ patientId, doctorId }) => {
                 />
               </div>
               <div className="flex gap-5 pl-20  pr-20">
-                {/* <div className="flex flex-row"> */}
-                  <div className="d-flex gap-3 w-100">
-                    <TextField
-                      id="bloodPressureHigh"
-                      label="Blood Pressure High"
-                      variant="outlined"
-                      size="medium"
-                      style={{ marginBottom: "1rem", width: "200%" }}
-                      value={formData.bloodPressureHigh}
-                      onChange={handleChange}
-                    />
-                    <TextField
-                      id="bloodPressureLow"
-                      label="Blood Pressure Low"
-                      variant="outlined"
-                      size="medium"
-                      style={{ marginBottom: "1rem", width: "200%" }}
-                      value={formData.bloodPressureLow}
-                      onChange={handleChange}
-                    />
-                  </div>
-
+                <div className="d-flex gap-3 w-100">
                   <TextField
-                    id="oxygenLevel"
-                    label="Oxygen Level"
+                    id="bloodPressureHigh"
+                    label="Blood Pressure High"
                     variant="outlined"
                     size="medium"
-                    style={{ marginBottom: "1rem", width: "100%", paddingLeft: "2" }}
-                    value={formData.oxygenLevel}
+                    style={{ marginBottom: "1rem", width: "200%" }}
+                    value={formData.bloodPressureHigh}
+                    onChange={handleChange}
+                  />
+                  <TextField
+                    id="bloodPressureLow"
+                    label="Blood Pressure Low"
+                    variant="outlined"
+                    size="medium"
+                    style={{ marginBottom: "1rem", width: "200%" }}
+                    value={formData.bloodPressureLow}
                     onChange={handleChange}
                   />
                 </div>
 
-                <div className="flex gap-5 pl-20 pr-20">
-                  <TextField
-                    id="pulse"
-                    label="Pulse"
-                    variant="outlined"
-                    size="medium"
-                    style={{ marginBottom: "1rem", width: "100%" }}
-                    value={formData.pulse}
-                    onChange={handleChange}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={checked} onChange={handleCheck} />
-                    }
-                    label={
-                      <Typography style={{ fontSize: "22px" }}>
-                        Push Care Context
-                      </Typography>
-                    }
-                    style={{ marginBottom: "1rem", width: "100%" }}
-                  />
-                </div>
-                <div className="flex pl-20 gap-5 pr-20">
-                  <TextField
-                    id="diagnosis"
-                    label="Diagnosis"
-                    variant="outlined"
-                    size="medium"
-                    style={{ marginBottom: "1rem", width: "100%" }}
-                    value={formData.diagnosis}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mt-2 flex justify-end pl-20 gap-5 pr-20">
-                  <Button
-                    className="button "
-                    style={{
-                      marginTop: "2rem",
-                      width: "100%",
-                      height: "10%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                    }}
-                    onClick={() => {
-                      setModalShow1(true);
-                    }}
-                  >
-                    {"Add Prescription"}
-                  </Button>
+                <TextField
+                  id="oxygenLevel"
+                  label="Oxygen Level"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%", paddingLeft: "2" }}
+                  value={formData.oxygenLevel}
+                  onChange={handleChange}
+                />
+              </div>
 
-                  {/* <Modal
+              <div className="flex gap-5 pl-20 pr-20">
+                <TextField
+                  id="pulse"
+                  label="Pulse"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                  value={formData.pulse}
+                  onChange={handleChange}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={checked} onChange={handleCheck} />
+                  }
+                  label={
+                    <Typography style={{ fontSize: "22px" }}>
+                      Push Care Context
+                    </Typography>
+                  }
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                />
+              </div>
+              <div className="flex pl-20 gap-5 pr-20">
+                <TextField
+                  id="diagnosis"
+                  label="Diagnosis"
+                  variant="outlined"
+                  size="medium"
+                  style={{ marginBottom: "1rem", width: "100%" }}
+                  value={formData.diagnosis}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mt-2 flex justify-end pl-20 gap-5 pr-20">
+                <Button
+                  className="button "
+                  style={{
+                    marginTop: "2rem",
+                    width: "100%",
+                    height: "10%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingTop: "10px",
+                    paddingBottom: "10px",
+                  }}
+                  onClick={() => {
+                    setModalShow1(true);
+                  }}
+                >
+                  {"Add Prescription"}
+                </Button>
+
+                <Modal
                   show={modalShow1}
                   onHide={() => setModalShow1(false)}
                   size="lg"
@@ -531,167 +501,100 @@ const CNForm = ({ patientId, doctorId }) => {
                     </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-                    <div className="d-flex gap-2">
-                      <TextField
-                        type="text"
-                        label="Medicine"
-                        value={medicine}
-                        onChange={(e) => setMedicine(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                      />
-                      <TextField
-                        type="text"
-                        label="Dosage"
-                        value={dosage}
-                        onChange={(e) => setDosage(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                      />
-                      <TextField
-                        type="text"
-                        label="Frequency"
-                        value={frequency}
-                        onChange={(e) => setFrequency(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                      />
-                      <TextField
-                        type="number"
-                        label="Duration (in days)"
-                        value={duration}
-                        onChange={(e) => setDuration(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                      />
-
-                    </div>
-                    <button
-                      className="btn btn-primary"
-                    // onClick={handleprescriptionSubmit}
-                    >
-                      Add Another Prescription
-                    </button>
-                    <button
-                      className="btn btn-primary"
-                      onClick={handleprescriptionSubmit}
-                    >
-                      Add Prescription
-                    </button>
-                  </Modal.Body>
-                </Modal> */}
-
-                  <Modal
-                    show={modalShow1}
-                    onHide={() => setModalShow1(false)}
-                    size="lg"
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title id="contained-modal-title-vcenter">
-                        Add Prescription
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      {formData.prescriptions.map((prescription, index) => (
-                        <div key={index} className="d-flex gap-2">
-                          <TextField
-                            type="text"
-                            label="Medicine"
-                            value={prescription.medicine}
-                            onChange={(e) =>
-                              handlePrescriptionChange(
-                                index,
-                                "medicine",
-                                e.target.value
-                              )
-                            }
-                            fullWidth
-                            margin="normal"
-                            variant="outlined"
-                          />
-                          <TextField
-                            type="text"
-                            label="Dosage"
-                            value={prescription.dosage}
-                            onChange={(e) =>
-                              handlePrescriptionChange(
-                                index,
-                                "dosage",
-                                e.target.value
-                              )
-                            }
-                            fullWidth
-                            margin="normal"
-                            variant="outlined"
-                          />
-                          <TextField
-                            type="text"
-                            label="Frequency"
-                            value={prescription.frequency}
-                            onChange={(e) =>
-                              handlePrescriptionChange(
-                                index,
-                                "frequency",
-                                e.target.value
-                              )
-                            }
-                            fullWidth
-                            margin="normal"
-                            variant="outlined"
-                          />
-                          <TextField
-                            type="number"
-                            label="Duration (in days)"
-                            value={prescription.duration}
-                            onChange={(e) =>
-                              handlePrescriptionChange(
-                                index,
-                                "duration",
-                                e.target.value
-                              )
-                            }
-                            fullWidth
-                            margin="normal"
-                            variant="outlined"
-                          />
-                        </div>
-                      ))}
-                      <div className="d-flex justify-content-between mt-4">
-                        <button
-                          className="btn btn-success btn-lg"
-                          onClick={handleAddPrescription}
-                        >
-                          Add Another Prescription
-                        </button>
-                        <button
-                          className="btn btn-primary btn-lg"
-                          onClick={handlePrescriptionSubmit}
-                        >
-                          Submit Prescription
-                        </button>
+                    {formData.prescriptions.map((prescription, index) => (
+                      <div key={index} className="d-flex gap-2">
+                        <TextField
+                          type="text"
+                          label="Medicine"
+                          value={prescription.medicine}
+                          onChange={(e) =>
+                            handlePrescriptionChange(
+                              index,
+                              "medicine",
+                              e.target.value
+                            )
+                          }
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <TextField
+                          type="text"
+                          label="Dosage"
+                          value={prescription.dosage}
+                          onChange={(e) =>
+                            handlePrescriptionChange(
+                              index,
+                              "dosage",
+                              e.target.value
+                            )
+                          }
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <TextField
+                          type="text"
+                          label="Frequency"
+                          value={prescription.frequency}
+                          onChange={(e) =>
+                            handlePrescriptionChange(
+                              index,
+                              "frequency",
+                              e.target.value
+                            )
+                          }
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <TextField
+                          type="number"
+                          label="Duration (in days)"
+                          value={prescription.duration}
+                          onChange={(e) =>
+                            handlePrescriptionChange(
+                              index,
+                              "duration",
+                              e.target.value
+                            )
+                          }
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                        />
                       </div>
-                    </Modal.Body>
-                  </Modal>
+                    ))}
+                    <div className="d-flex justify-content-between mt-4">
+                      <button
+                        className="btn btn-success btn-lg"
+                        onClick={handleAddPrescription}
+                      >
+                        Add Another Prescription
+                      </button>
+                      <button
+                        className="btn btn-primary btn-lg"
+                        onClick={handlePrescriptionSubmit}
+                      >
+                        Submit Prescription
+                      </button>
+                    </div>
+                  </Modal.Body>
+                </Modal>
 
-                  <button
-                    type="submit"
-                    className="button"
-                    style={{
-                      marginTop: "2rem",
-                      width: "100%",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                    }}
-                  >
-                    Submit
-                  </button>
-                </div>{" "}
+                <button
+                  type="submit"
+                  className="button"
+                  style={{
+                    marginTop: "2rem",
+                    width: "100%",
+                    paddingTop: "10px",
+                    paddingBottom: "10px",
+                  }}
+                >
+                  Submit
+                </button>
+              </div>{" "}
             </form>
 
             <div className="mt-2 flex justify-end pl-20 gap-5 pr-20 mb-8">
@@ -756,23 +659,6 @@ const CNForm = ({ patientId, doctorId }) => {
                       </MenuItem>
                     ))}
                   </TextField>
-
-                  {/* <TextField
-        value={selectedPurpose}
-        label="Purpose"
-        onChange={handlePurposeChange}
-        fullWidth
-        margin="normal"
-        variant="outlined"
-        select
-      >
-        {purposes.map((purpose) => (
-          <MenuItem key={purpose.code} value={purpose.display}>
-            {purpose.display}
-          </MenuItem>
-        ))}
-      </TextField> */}
-
                   <TextField
                     type="text"
                     label="Patient Abha ID"
@@ -802,22 +688,6 @@ const CNForm = ({ patientId, doctorId }) => {
                       label={type.display}
                     />
                   ))}
-                  {/* <Typography variant="subtitle1">
-                    Health Information Types
-                  </Typography>
-                  {hiTypes.map((type) => (
-                    <FormControlLabel
-                      key={type.code}
-                      control={
-                        <Checkbox
-                          checked={formData[type.code]} // Ensure checked is explicitly set to true or false
-                          onChange={handleCheckboxChange}
-                          name={type.code}
-                        />
-                      }
-                      label={type.display}
-                    />
-                  ))} */}
                   <TextField
                     type="date"
                     label="From"

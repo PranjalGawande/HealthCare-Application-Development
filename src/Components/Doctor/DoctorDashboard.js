@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import doctorImage from "../../assets/DoctorPage.png";
 import { NavLink } from "react-router-dom";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 export default function DoctorDashboard() {
-  const doctorName = localStorage.getItem("Name");
+  const doctorName = sessionStorage.getItem("Name");
   const navigate = useNavigate();
 
   const determineFontSize = () => {
@@ -16,30 +16,25 @@ export default function DoctorDashboard() {
     return "3rem";
   };
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
     if (role !== "DOCTOR") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
 
-    const loggedIn = localStorage.getItem("loggedIn");
+    const loggedIn = sessionStorage.getItem("loggedIn");
     if (loggedIn === "true") {
       toast.success(`Welcome, ${doctorName}`);
-      localStorage.removeItem("loggedIn");
+      sessionStorage.removeItem("loggedIn");
     }
   }, [navigate, doctorName]);
 
-  // const handleConsultationForm = () => {
-  //   navigate("/consultationForm");
-  // };
-
   return (
     <div className="main-background-doctor">
-      {/* <Toaster /> */}
       <div className=" background h-full flex justify-center items-center ">
         <div className="flex admin-dashboard justify-evenly items-center gap-40 border-amber-300 border-solid ">
           <div className="image-container md:block hidden pl-2">
@@ -60,16 +55,16 @@ export default function DoctorDashboard() {
                 height: "fit-content",
                 fontSize: "25px",
                 fontWeight: "bold",
-                color: "white", // Set default font color to white
-                textDecoration: "none", // Remove default underline
+                color: "white",
+                textDecoration: "none",
                 padding: "30px",
               }}
               onMouseEnter={(e) => {
                 e.target.style.color = "black";
-              }} // Change font color to black on hover
+              }}
               onMouseLeave={(e) => {
                 e.target.style.color = "white";
-              }} // Change font color back to white when not hovered
+              }}
             >
               VIEW APPOINTMENTS
             </NavLink>

@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import doctorImage from "../../assets/DoctorPage.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import API_URL from "../../Config/config";
 
 export const AdminUpdateDoctorDetails = () => {
   const location = useLocation();
@@ -14,25 +15,23 @@ export const AdminUpdateDoctorDetails = () => {
   const [newMobileNo, setNewMobileNo] = useState(doctorDetails?.mobileNo);
   const [newExperience, setNewExperience] = useState(doctorDetails?.experience);
   const [newTokenMax, setNewTokenMax] = useState(doctorDetails?.tokenMax);
-  // const [error, setError] = useState(null);
-  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
     if (role === "Receptionist") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const formData = {
         email: email,
         speciality: newSpeciality,
@@ -40,24 +39,22 @@ export const AdminUpdateDoctorDetails = () => {
         experience: newExperience,
         tokenMax: newTokenMax,
       };
-      // console.log("Form data:", formData);
-      const response = await axios.post(
-        "http://localhost:9191/doctor/updateDoctor",
+       const response = await axios.post(
+        `${API_URL}/doctor/updateDoctor`,
         formData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
         }
       );
-      // setSuccess(true);
       toast.success("Doctor details updated successfully!", { duration: 3000 });
-      // toast.success("Doctor details updated successfully!");
       setTimeout(() => {
         navigate("/admin/view-doctor-info");
       }, 2000);
     } catch (error) {
-      // console.error("Error updating doctor details:", error);
       toast.error("Error updating doctor details!", { duration: 3000 });
-      // setError(error.response.data.message);
     }
   };
 

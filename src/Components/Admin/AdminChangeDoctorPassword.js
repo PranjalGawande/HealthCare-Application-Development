@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import doctorImage from "../../assets/DoctorPage.png";
 import toast from "react-hot-toast";
+import API_URL from "../../Config/config";
 
 export const AdminChangeDoctorPassword = () => {
   const navigate = useNavigate();
@@ -12,29 +13,26 @@ export const AdminChangeDoctorPassword = () => {
   const doctor = location.state?.doctor;
   const email = doctor?.email;
   const [newPassword, setNewPassword] = useState("");
-  // const [error, setError] = useState(null);
-  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
-    if (role === "Reciptionist") {
+    if (role === "Receptionist") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
-  });
+  }, [navigate]);
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
     if (!newPassword || newPassword.length < 6) {
-      // console.error("Password must be at least 6 characters long");
       toast.error("Password must be at least 6 characters long");
       return;
     }
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const formData = {
       email: email,
       newPassword: newPassword,
@@ -42,19 +40,20 @@ export const AdminChangeDoctorPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:9191/doctor/changePassword",
+        `${API_URL}/doctor/changePassword`,
         formData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true",
+          },
         }
       );
-      // setSuccess(true);
       toast.success("Doctor Password updated successfully!", {
         duration: 3000,
       });
     } catch (error) {
       toast.error("Doctor Password updation failed!", { duration: 3000 });
-      // setError(error.response.data.message);
     }
   };
 

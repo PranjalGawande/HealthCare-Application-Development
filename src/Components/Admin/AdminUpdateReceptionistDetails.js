@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import receptionistImage from "../../assets/ReceptionistPage.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import API_URL from "../../Config/config";
 
 export const AdminUpdateReceptionistDetails = () => {
   const location = useLocation();
@@ -11,43 +12,41 @@ export const AdminUpdateReceptionistDetails = () => {
   const staffDetails = location.state?.staff;
   const email = staffDetails?.email;
   const [newMobileNo, setNewMobileNo] = useState(staffDetails?.mobileNo);
-  // const [error, setError] = useState(null);
-  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
     if (role === "DOCTOR") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newMobileNo || newMobileNo.length < 10) {
-      // console.error("Mobile number must be at least 10 characters long");
       toast.error("Mobile number must be at least 10 characters long");
       return;
     }
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const formData = {
         email: email,
         mobileNo: newMobileNo,
       };
-      // console.log("Form data:", formData);
       const response = await axios.post(
-        "http://localhost:9191/receptionist/updateReceptionist",
+        `${API_URL}/receptionist/updateReceptionist`,
         formData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
         }
       );
-      // setSuccess(true);
       toast.success("Receptionist details updated successfully!", {
         duration: 3000,
       });
@@ -55,9 +54,7 @@ export const AdminUpdateReceptionistDetails = () => {
         navigate("/admin/view-receptionist-info");
       }, 2000);
     } catch (error) {
-      // console.error("Error updating doctor details:", error);
       toast.error("Error updating receptionist details!", { duration: 3000 });
-      // setError(error.response.data.message);
     }
   };
 

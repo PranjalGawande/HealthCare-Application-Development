@@ -1,18 +1,13 @@
 import React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { LineChart } from "@mui/x-charts/LineChart";
-import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
-import CardActions from "@mui/joy/CardActions";
 import CircularProgress from "@mui/joy/CircularProgress";
 import Typography from "@mui/joy/Typography";
 import SvgIcon from "@mui/joy/SvgIcon";
 import { useState, useEffect } from "react";
-import axios from "axios"; // Import axios for making HTTP requests
-import { FiberPin } from "@mui/icons-material";
-
+import axios from "axios";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -20,9 +15,9 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
-  plugins,
 } from "chart.js";
-import { Step } from "@mui/material";
+import API_URL from "../../Config/config";
+
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
@@ -59,179 +54,114 @@ const patientChartSetting = {
 const valueFormatter = (value) => `${value}`;
 
 export const Analytics = () => {
-  const [analyticsData, setAnalyticsData] = useState(""); // State to store analytics data
-  const [docSpecData, setDocSpecData] = useState(""); // State to store doctor speciality data
-  const [appSpecData, setAppSpecData] = useState(""); // State to store appointment speciality data
-  const [patientAgeData, setPatientAgeData] = useState(""); // State to store patient age data
-  const [patientGenderData, setPatientGenderData] = useState(""); // State to store
-  // const [appDateData, setAppDateData] = useState(""); // State to store
+  const [analyticsData, setAnalyticsData] = useState("");
+  const [docSpecData, setDocSpecData] = useState("");
+  const [appSpecData, setAppSpecData] = useState("");
+  const [patientAgeData, setPatientAgeData] = useState("");
+  const [patientGenderData, setPatientGenderData] = useState("");
   const [appDateData, setAppDateData] = useState([]);
 
-  // const [loading, setLoading] = useState(true); // State to manage loading state
-
   useEffect(() => {
-    // Function to fetch analytics data from the backend API
     const fetchAnalyticsData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
-        const response = await axios.get(
-          "http://localhost:9191/admin/analytics",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
-            },
-          }
-        );
-        setAnalyticsData(response.data); // Set the analytics data in state
-        // console.log("Analytics data fetched successfully:", response.data);
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(`${API_URL}/admin/analytics`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
+        });
+        setAnalyticsData(response.data);
       } catch (error) {
-        // console.error("Error fetching analytics data:", error);
-        // setLoading(false); // Update loading state in case of error
+        console.error("Error fetching analytics data:", error);
       }
     };
-    // console.log("Analytics data fetched successfully:", analyticsData);
 
-    fetchAnalyticsData(); // Call the function to fetch analytics data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
+    fetchAnalyticsData();
+  }, []);
 
   useEffect(() => {
-    // Function to fetch analytics data from the backend API
     const fetchDocSpecData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
-        const response = await axios.get(
-          "http://localhost:9191/admin/doctorCountBySpeciality",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
-            },
-          }
-        );
-        setDocSpecData(response.data); // Set the analytics data in state
-        // console.log("Analytics data fetched successfully:", response.data);
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(`${API_URL}/admin/doctorCountBySpeciality`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
+        });
+        setDocSpecData(response.data);
       } catch (error) {
-        // console.error("Error fetching analytics data:", error);
-        // setLoading(false); // Update loading state in case of error
+        console.error("Error fetching analytics data:", error);
       }
     };
-    // console.log("Analytics data fetched successfully:", analyticsData);
-
-    fetchDocSpecData(); // Call the function to fetch analytics data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
+    fetchDocSpecData();
+  }, []);
 
   useEffect(() => {
-    // Function to fetch analytics data from the backend API
     const fetchAppSpecData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
-        const response = await axios.get(
-          "http://localhost:9191/admin/patient-count-by-appointment-speciality",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
-            },
-          }
-        );
-        setAppSpecData(response.data); // Set the analytics data in state
-        // console.log("Analytics data fetched successfully:", response.data);
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(`${API_URL}/admin/patient-count-by-appointment-speciality`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
+        });
+        setAppSpecData(response.data);
       } catch (error) {
-        // console.error("Error fetching analytics data:", error);
-        // setLoading(false); // Update loading state in case of error
+        console.error("Error fetching analytics data:", error);
       }
     };
-    // console.log("Analytics data fetched successfully:", analyticsData);
-
-    fetchAppSpecData(); // Call the function to fetch analytics data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
+    fetchAppSpecData();
+  }, []);
 
   useEffect(() => {
-    // Function to fetch analytics data from the backend API
     const fetchPatientAgeData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
-        const response = await axios.get(
-          "http://localhost:9191/admin/patient-count-by-age-group",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
-            },
-          }
-        );
-        setPatientAgeData(response.data); // Set the analytics data in state
-        // console.log("Analytics data fetched successfully:", response.data);
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(`${API_URL}/admin/patient-count-by-age-group`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
+        });
+        setPatientAgeData(response.data);
       } catch (error) {
-        // console.error("Error fetching analytics data:", error);
-        // setLoading(false); // Update loading state in case of error
+        console.error("Error fetching analytics data:", error);
       }
     };
-    // console.log("Analytics data fetched successfully:", analyticsData);
-
-    fetchPatientAgeData(); // Call the function to fetch analytics data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
+    fetchPatientAgeData();
+  }, []);
 
   useEffect(() => {
-    // Function to fetch analytics data from the backend API
     const fetchPatientGenderData = async () => {
       try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
-        const response = await axios.get(
-          "http://localhost:9191/admin/patient-count-by-gender",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
-            },
-          }
-        );
-        setPatientGenderData(response.data); // Set the analytics data in state
-        // console.log("Analytics data fetched successfully:", response.data);
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(`${API_URL}/admin/patient-count-by-gender`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
+        });
+        setPatientGenderData(response.data);
       } catch (error) {
-        // console.error("Error fetching analytics data:", error);
-        // setLoading(false); // Update loading state in case of error
+        console.error("Error fetching analytics data:", error);
       }
     };
-    // console.log("Analytics data fetched successfully:", analyticsData);
-
-    fetchPatientGenderData(); // Call the function to fetch analytics data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
-
-  useEffect(() => {
-    // Function to fetch analytics data from the backend API
-    const fetchPatientGenderData = async () => {
-      try {
-        const token = localStorage.getItem("token"); // Retrieve the token from local storage
-        const response = await axios.get(
-          "http://localhost:9191/admin/patient-count-by-gender",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
-            },
-          }
-        );
-        setPatientGenderData(response.data); // Set the analytics data in state
-        // console.log("Analytics data fetched successfully:", response.data);
-      } catch (error) {
-        // console.error("Error fetching analytics data:", error);
-        // setLoading(false); // Update loading state in case of error
-      }
-    };
-    // console.log("Analytics data fetched successfully:", analyticsData);
-
-    fetchPatientGenderData(); // Call the function to fetch analytics data when the component mounts
-  }, []); // Empty dependency array ensures the effect runs only once after the component mounts
+    fetchPatientGenderData();
+  }, []);
 
   useEffect(() => {
     const fetchAppDateData = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          "http://localhost:9191/admin/appointment-count-by-day",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const token = sessionStorage.getItem("token");
+        const response = await axios.get(`${API_URL}/admin/appointment-count-by-day`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true',
+          },
+        });
         const formattedData = Object.entries(response.data).map(
           ([date, count]) => ({
             date,
@@ -239,14 +169,10 @@ export const Analytics = () => {
           })
         );
 
-        // Sort the formatted data by date
         formattedData.sort((a, b) => new Date(a.date) - new Date(b.date));
-
         setAppDateData(formattedData);
-        // console.log("Analytics data fetched successfully:", formattedData);
       } catch (error) {
-        // console.error("Error fetching analytics data:", error);
-        // Optionally, set an error state and display an error message to the user
+        console.error("Error fetching analytics data:", error);
       }
     };
 
@@ -273,7 +199,7 @@ export const Analytics = () => {
       legend: {
         labels: {
           font: {
-            size: 20, // Increase font size
+            size: 20,
           },
         },
       },
@@ -284,47 +210,46 @@ export const Analytics = () => {
           display: true,
           text: "Date",
           font: {
-            size: 20, // Increase font size
+            size: 20,
           },
         },
         ticks: {
-          stepSize: 4, // Set x-axis step size
-          autoSkip: true, // Enable auto-skipping of ticks
-          padding: 10, // Adjust the padding between ticks
+          stepSize: 4,
+          autoSkip: true,
+          padding: 10,
           font: {
-            size: 18, // Increase tick font size
+            size: 18,
           },
         },
         grid: {
-          display: false, // Hide x-axis grid lines
-          offset: true, // Adds spacing between the grid lines and the data
+          display: false,
+          offset: true,
         },
       },
       y: {
         min: 0,
         ticks: {
           font: {
-            size: 20, // Increase tick font size
+            size: 20,
           },
         },
         title: {
           display: true,
           text: "Number of Appointments",
           font: {
-            size: 18, // Increase font size
+            size: 18,
           },
         },
       },
     },
     layout: {
       padding: {
-        left: 20, // Adjust left padding
-        right: 20, // Adjust right padding
+        left: 20,
+        right: 20,
       },
     },
   };
 
-  // Optionally, display a loading state while fetching data
   if (!appDateData) {
     return <div>Loading...</div>;
   }
@@ -352,19 +277,6 @@ export const Analytics = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-people-fill" viewBox="0 0 16 16">
                     <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
                   </svg>
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-                    />
-                  </svg> */}
                 </SvgIcon>
               </CircularProgress>
               <CardContent style={{ textAlign: "center" }}>
@@ -419,19 +331,6 @@ export const Analytics = () => {
                       </g>
                     </g>
                   </svg>
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-                    />
-                  </svg> */}
                 </SvgIcon>
               </CircularProgress>
               <CardContent style={{ textAlign: "center" }}>
@@ -467,19 +366,6 @@ export const Analytics = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path fill="#ffffff" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zM104 424c0 13.3 10.7 24 24 24s24-10.7 24-24-10.7-24-24-24-24 10.7-24 24zm216-135.4v49c36.5 7.4 64 39.8 64 78.4v41.7c0 7.6-5.4 14.2-12.9 15.7l-32.2 6.4c-4.3 .9-8.5-1.9-9.4-6.3l-3.1-15.7c-.9-4.3 1.9-8.6 6.3-9.4l19.3-3.9V416c0-62.8-96-65.1-96 1.9v26.7l19.3 3.9c4.3 .9 7.1 5.1 6.3 9.4l-3.1 15.7c-.9 4.3-5.1 7.1-9.4 6.3l-31.2-4.2c-7.9-1.1-13.8-7.8-13.8-15.9V416c0-38.6 27.5-70.9 64-78.4v-45.2c-2.2 .7-4.4 1.1-6.6 1.9-18 6.3-37.3 9.8-57.4 9.8s-39.4-3.5-57.4-9.8c-7.4-2.6-14.9-4.2-22.6-5.2v81.6c23.1 6.9 40 28.1 40 53.4 0 30.9-25.1 56-56 56s-56-25.1-56-56c0-25.3 16.9-46.5 40-53.4v-80.4C48.5 301 0 355.8 0 422.4v44.8C0 491.9 20.1 512 44.8 512h358.4c24.7 0 44.8-20.1 44.8-44.8v-44.8c0-72-56.8-130.3-128-133.8z" />
                   </svg>
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-                    />
-                  </svg> */}
                 </SvgIcon>
               </CircularProgress>
               <CardContent style={{ textAlign: "center" }}>
@@ -500,9 +386,7 @@ export const Analytics = () => {
         <div className="flex">
           <div style={{ width: "180%" }}>
             <div className="flex flex-col">
-              {/* <p>Appointments By Day</p> */}
               <h2>Appointments Line Chart</h2>
-
               <div
                 className="d-flex justify-content-center"
                 style={{ width: "100%", height: "280px", marginLeft: "20px" }}

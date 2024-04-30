@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../../Config/config";
 
 const ViewAdmin = () => {
   const [staff, setStaff] = useState([]);
@@ -8,26 +9,27 @@ const ViewAdmin = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
     if (role !== "ADMIN") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
   }, [navigate]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
+      "ngrok-skip-browser-warning": "true",
     };
     const fetchStaff = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:9191/admin/staffList",
+          `${API_URL}/admin/staffList`,
           {
             headers: headers,
           }

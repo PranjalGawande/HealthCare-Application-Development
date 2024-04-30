@@ -37,15 +37,7 @@ const Footer = () => {
                             </ul>
                         </div>
                     </li>
-
-
                 </ul>
-
-                {/* <div className="footer-info">
-            <p className="footer-text text-xl font-light">
-            For any inquiries or further assistance, please do not hesitate to contact us via email at healthsync@support.com or call us at +91 1234567890
-            </p>
-        </div> */}
             </div>
         </footer>
 

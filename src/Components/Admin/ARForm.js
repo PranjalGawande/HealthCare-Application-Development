@@ -7,6 +7,7 @@ import InputLabel from "@mui/material/InputLabel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import API_URL from "../../Config/config";
 
 export const ASForm = ({ email }) => {
   let navigate = useNavigate();
@@ -32,9 +33,10 @@ export const ASForm = ({ email }) => {
   };
 
   const handleSubmit = async (event) => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
+      "ngrok-skip-browser-warning": "true",
     };
     event.preventDefault();
 
@@ -66,21 +68,17 @@ export const ASForm = ({ email }) => {
     }
 
     try {
-      // console.log("Form Data:", formData);
-
       const response = await axios.post(
-        "http://localhost:9191/admin/addReceptionist",
+        `${API_URL}/admin/addReceptionist`,
         formData,
         { headers: headers }
       );
-      // console.log("Response from backend:", response.data);
       toast.success("Receptionist added successfully");
 
       setTimeout(() => {
         navigate("/admin");
       }, 3000);
     } catch (error) {
-      // console.error("Error:", error);
       toast.error("Failed to add Receptionist!");
     }
   };

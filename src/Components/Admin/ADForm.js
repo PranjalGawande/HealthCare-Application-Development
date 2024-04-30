@@ -7,6 +7,7 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import API_URL from "../../Config/config";
 
 export const ADForm = ({ email }) => {
   let navigate = useNavigate();
@@ -73,26 +74,23 @@ export const ADForm = ({ email }) => {
     }
 
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       };
 
-      // console.log("Form Data:", formData);
-
       const response = await axios.post(
-        "http://localhost:9191/admin/addDoctor",
+        `${API_URL}/admin/addDoctor`,
         formData,
         { headers: headers }
       );
-      // console.log("Response from backend:", response.data);
       toast.success("Doctor added successfully");
 
       setTimeout(() => {
         navigate("/admin");
       }, 3000);
     } catch (error) {
-      // console.error("Error:", error);
       toast.error("Failed to add doctor!");
     }
   };

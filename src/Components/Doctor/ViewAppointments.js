@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import API_URL from "../../Config/config";
 
 export const ViewAppointments = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
@@ -12,22 +13,22 @@ export const ViewAppointments = () => {
 
   const fetchDoctorDetails = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true',
       };
       const formData = {};
 
       const response = await axios.post(
-        "http://localhost:9191/doctor/doctorDetails",
+        `${API_URL}/doctor/doctorDetails`,
         formData,
         { headers: headers }
       );
 
       setDoctorDetails(response.data);
     } catch (error) {
-      // toast.error("Error fetching doctor details");
-      // console.error("Error fetching doctor details:", error);
+      console.error("Error fetching doctor details:", error);
     }
   };
 
@@ -37,39 +38,38 @@ export const ViewAppointments = () => {
 
   const handlePatientAbsent = async (appointment) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true',
       };
       const AppformData = {};
       const response = await axios.post(
-        `http://localhost:9191/doctor/addPatientRecord/${appointment.tokenNo}`,
+        `${API_URL}/doctor/addPatientRecord/${appointment.tokenNo}`,
         AppformData,
         { headers: headers }
       );
 
-      // console.log("response", response);
       if (response.status === 200) {
         toast.success("Patient marked as absent successfully");
         fetchDoctorDetails();
       } else {
-        // console.error("Error marking patient absent:", response.data);
+        toast.error("Error marking patient absent");
       }
     } catch (error) {
-      // console.error("Error marking patient absent:", error);
+      toast.error("Error marking patient absent");
     }
   };
 
   const handleStartConsultation = async (appointment) => {
     navigate("/doctor/consultation-form", {
-      state: { 
+      state: {
         appToken: appointment.tokenNo,
-        doctorDetails: doctorDetails.email // Pass the doctor's email to the CNForm component
+        doctorDetails: doctorDetails.email 
       },
     });
   };
-  
-  // console.log("doctorDetails", doctorDetails);
+
   if (!doctorDetails) {
     return <div>Loading...</div>;
   }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../../Config/config";
+import toast from "react-hot-toast";
 
 const ViewStaff = () => {
   const [staff, setStaff] = useState([]);
@@ -8,26 +10,27 @@ const ViewStaff = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
     if (role !== "ADMIN") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
+      "ngrok-skip-browser-warning": "true",
     };
     const fetchStaff = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:9191/admin/staffList",
+          `${API_URL}/admin/staffList`,
           {
             headers: headers,
           }
@@ -38,7 +41,7 @@ const ViewStaff = () => {
         setStaff(receptionists);
         setLoading(false);
       } catch (error) {
-        // console.error("Error fetching staff:", error);
+        toast.error("Error fetching Receptionists:");
         setLoading(false);
       }
     };
@@ -48,23 +51,23 @@ const ViewStaff = () => {
 
   const handleViewStaffDetails = async (email) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       };
       const formData = { email: email };
       const response = await axios.post(
-        "http://localhost:9191/receptionist/receptionistDetails",
+        `${API_URL}/receptionist/receptionistDetails`,
         formData,
         { headers: headers }
       );
       const staffDetails = response.data;
-      // console.log("viewform: ", staffDetails);
       navigate("/admin/view-receptionist-details", {
         state: { staff: staffDetails },
       });
     } catch (error) {
-      // console.error("Error viewing staff details:", error);
+      console.error("Error viewing staff details:", error);
     }
   };
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../../Config/config";
 
 const ViewDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -8,26 +9,27 @@ const ViewDoctors = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
     if (role !== "ADMIN") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'true',
     };
     const fetchDoctors = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:9191/receptionist/doctorList",
+          `${API_URL}/receptionist/doctorList`,
           {
             headers: headers,
           }
@@ -35,7 +37,6 @@ const ViewDoctors = () => {
         setDoctors(response.data);
         setLoading(false);
       } catch (error) {
-        // console.error("Error fetching doctors:", error);
         setLoading(false);
       }
     };
@@ -45,14 +46,15 @@ const ViewDoctors = () => {
 
   const handleViewDoctorDetails = async (email) => {
     try {
-      const token2 = localStorage.getItem("token");
+      const token2 = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token2}`,
+        'ngrok-skip-browser-warning': 'true',
       };
       const formData = { email: email };
 
       const response = await axios.post(
-        "http://localhost:9191/doctor/doctorDetails",
+        `${API_URL}/doctor/doctorDetails`, 
         formData,
         { headers: headers }
       );
@@ -62,7 +64,6 @@ const ViewDoctors = () => {
         state: { doctor: doctorDetails },
       });
     } catch (error) {
-      // console.error("Error fetching doctor details:", error);
     }
   };
 
