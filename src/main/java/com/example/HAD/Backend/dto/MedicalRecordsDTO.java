@@ -15,7 +15,8 @@ import java.util.List;
 @Getter
 public class MedicalRecordsDTO {
     private Integer recordId;
-    private Integer bloodPressure;
+    private Integer bloodPressureLow;
+    private Integer bloodPressureHigh;
     private Integer oxygenLevel;
     private Integer pulse;
     private String symptoms;
@@ -27,7 +28,8 @@ public class MedicalRecordsDTO {
 
     public MedicalRecordsDTO(MedicalRecords medicalRecords) {
         this.recordId = medicalRecords.getRecordId();
-        this.bloodPressure = medicalRecords.getBloodPressure();
+        this.bloodPressureLow = medicalRecords.getBloodPressureLow();
+        this.bloodPressureHigh = medicalRecords.getBloodPressureHigh();
         this.oxygenLevel = medicalRecords.getOxygenLevel();
         this.pulse = medicalRecords.getPulse();
         this.symptoms = medicalRecords.getSymptoms();

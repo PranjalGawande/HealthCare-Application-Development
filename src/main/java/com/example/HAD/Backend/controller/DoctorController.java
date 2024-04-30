@@ -159,7 +159,8 @@ public class DoctorController {
         Field[] fields = MedicalRecords.class.getDeclaredFields();
 
         Set<String> variables = new HashSet<>();
-        variables.add("bloodPressure");
+        variables.add("bloodPressureLow");
+        variables.add("bloodPressureHigh");
         variables.add("oxygenLevel");
         variables.add("pulse");
         variables.add("symptoms");
@@ -204,7 +205,8 @@ public class DoctorController {
         medicalRecords.setPrescriptions(prescriptions);
 
         medicalRecords.setPulse(request.getPulse());
-        medicalRecords.setBloodPressure(request.getBloodPressure());
+        medicalRecords.setBloodPressureLow(request.getBloodPressureLow());
+        medicalRecords.setBloodPressureHigh(request.getBloodPressureHigh());
         medicalRecords.setOxygenLevel(request.getOxygenLevel());
         medicalRecords.setSymptoms(request.getSymptoms());
         medicalRecords.setDiagnosis(request.getDiagnosis());

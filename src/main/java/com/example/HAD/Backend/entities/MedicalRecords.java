@@ -23,7 +23,10 @@ public class MedicalRecords {
     private Integer recordId;
 
     @Column
-    private Integer bloodPressure;
+    private Integer bloodPressureLow;
+
+    @Column
+    private Integer bloodPressureHigh;
 
     @Column
     private Integer oxygenLevel;
