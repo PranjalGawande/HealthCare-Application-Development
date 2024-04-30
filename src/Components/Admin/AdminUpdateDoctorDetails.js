@@ -13,6 +13,7 @@ export const AdminUpdateDoctorDetails = () => {
   const [newSpeciality, setNewSpeciality] = useState(doctorDetails?.speciality);
   const [newMobileNo, setNewMobileNo] = useState(doctorDetails?.mobileNo);
   const [newExperience, setNewExperience] = useState(doctorDetails?.experience);
+  const [newTokenMax, setNewTokenMax] = useState(doctorDetails?.tokenMax);
   // const [error, setError] = useState(null);
   // const [success, setSuccess] = useState(false);
 
@@ -37,6 +38,7 @@ export const AdminUpdateDoctorDetails = () => {
         speciality: newSpeciality,
         mobileNo: newMobileNo,
         experience: newExperience,
+        tokenMax: newTokenMax,
       };
       // console.log("Form data:", formData);
       const response = await axios.post(
@@ -125,6 +127,16 @@ export const AdminUpdateDoctorDetails = () => {
                     id="newExperience"
                     value={newExperience}
                     onChange={(e) => setNewExperience(e.target.value)}
+                    style={{ marginBottom: "2rem", width: "100%" }}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    type="text"
+                    label="New Token Max"
+                    id="newTokenMax"
+                    value={newTokenMax}
+                    onChange={(e) => setNewTokenMax(e.target.value)}
                     style={{ marginBottom: "2rem", width: "100%" }}
                   />
                 </div>
