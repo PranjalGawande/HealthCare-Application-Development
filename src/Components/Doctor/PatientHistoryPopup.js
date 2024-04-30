@@ -29,7 +29,7 @@ export const PatientHistoryPopup = ({ title, onClose, patientHistory }) => {
             {patientHistory.map(record => (
               <div key={record.recordId} className="record bg-white p-4 rounded-md shadow-md mb-4">
                 <h3 className="text-lg font-semibold mb-2">Record ID: {record.recordId}</h3>
-                <p className="mb-1"><strong>Blood Pressure:</strong> {record.bloodPressure}</p>
+                <p className="mb-1"><strong>Blood Pressure:</strong> {record.bloodPressureHigh}-{record.bloodPressureLow}</p>
                 <p className="mb-1"><strong>Oxygen Level:</strong> {record.oxygenLevel}</p>
                 <p className="mb-1"><strong>Pulse:</strong> {record.pulse}</p>
                 <p className="mb-1"><strong>Symptoms:</strong> {record.symptoms}</p>
