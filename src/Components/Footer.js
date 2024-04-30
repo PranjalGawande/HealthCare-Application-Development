@@ -8,7 +8,7 @@ const Footer = () => {
                 </div>
                 <ul className="menuItems">
                     <li className="menuItem text-left">
-                        <div className="text-4xl">Health Sync</div>
+                        <p className="text-4xl text-decoration-underline mb-3">Health Sync</p>
                         <div>
                             <ul>
                                 <li>26/C, Opposite of Infosys gate 1</li>
@@ -18,7 +18,7 @@ const Footer = () => {
                         </div>
                     </li>
                     <li className="menuItem text-left">
-                        <div className="text-4xl">Ayushman Bharat Health Mission</div>
+                        <p className="text-4xl text-decoration-underline mb-3">Ayushman Bharat Health Mission</p>
                         <div>
                             <ul>
                                 <li>National Health Authority 9th Floor, Tower-l,</li>
@@ -28,7 +28,7 @@ const Footer = () => {
                         </div>
                     </li>
                     <li className="menuItem text-left">
-                        <div className="text-4xl">Support</div>
+                        <p className="text-4xl text-decoration-underline mb-3">Support</p>
                         <div>
                             <ul>
                                 <li>For any inquiries or further assistance,</li>
