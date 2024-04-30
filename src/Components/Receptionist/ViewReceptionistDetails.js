@@ -4,12 +4,13 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import recepImage from "../../assets/ReceptionistPage.png";
 import toast from "react-hot-toast";
+import API_URL from "../Config/config";
 
 export const ViewReceptionistDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [staffDetails, setStaffDetails] = useState("");
-  const role = localStorage.getItem("role");
+  const role = sessionStorage.getItem("role");
   const [loading, setLoading] = useState(false);
 
   const handleUpdateDetails = () => {
@@ -21,54 +22,51 @@ export const ViewReceptionistDetails = () => {
   const handleChangePassword = () => {
     if (role === "Receptionist") {
       navigate("/password-change");
-    }
-    else {
-      navigate("/admin/admin-receptionist-password-change")
+    } else {
+      navigate("/admin/admin-receptionist-password-change");
     }
   };
 
   const handleActivateDoctor = async (email) => {
     try {
       if (!staffDetails || !staffDetails.email) {
-        // console.error("Receptionist details or email not available.");
         return;
       }
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       };
 
       const formData = { email: email };
       const response = await axios.post(
-        `http://localhost:9191/admin/activateStaff`,
+        `${API_URL}/admin/activateStaff`,
         formData,
         { headers: headers }
       );
       setStaffDetails((prevStaffDetails) => ({
         ...prevStaffDetails,
-        status: true, // Assuming response.data.status contains the updated status
+        status: true,
       }));
       toast.success("Receptionist activated successfully");
-    } catch (error) {
-      // console.error("Error activating doctor:", error);
-    }
+    } catch (error) {}
   };
 
   const handleDeactivateDoctor = async (email) => {
     try {
       if (!staffDetails || !staffDetails.email) {
-        // console.error("Receptionist details or email not available.");
         return;
       }
 
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       };
 
       const formData = { email: email };
       const response = await axios.post(
-        `http://localhost:9191/admin/deActivateStaff`,
+        `${API_URL}/admin/deActivateStaff`,
         formData,
         { headers: headers }
       );
@@ -77,22 +75,19 @@ export const ViewReceptionistDetails = () => {
         status: false,
       }));
       toast.success("Receptionist deactivated successfully");
-    } catch (error) {
-      // console.error("Error deactivating doctor:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
     if (!token) {
       navigate("/");
     }
     if (role === "DOCTOR") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
-    // console.log(location.state.staff);
     if (location.state && location.state.staff) {
       setStaffDetails(location.state.staff);
     } else {

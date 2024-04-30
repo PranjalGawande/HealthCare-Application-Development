@@ -5,6 +5,7 @@ import patientImage from "../../assets/PatientPage.png";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Progressbar } from "./Progressbar";
+import API_URL from "../Config/config";
 
 export const SuggestAbhaAddress = () => {
   const [suggestions, setSuggestions] = useState([]);
@@ -16,12 +17,15 @@ export const SuggestAbhaAddress = () => {
     const fetchSuggestions = async () => {
       setLoading(true);
       try {
-        const token = localStorage.getItem("token");
+        const token = sessionStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:9191/receptionist/suggestAbhaAddress",
+          `${API_URL}/receptionist/suggestAbhaAddress`,
           null,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "true",
+            },
           }
         );
         const suggestedAddresses = response.data.choices;
@@ -37,7 +41,6 @@ export const SuggestAbhaAddress = () => {
     fetchSuggestions();
   }, []);
 
-
   const handleUserChoiceChange = (e) => {
     setUserChoice(e.target.value);
   };
@@ -48,15 +51,13 @@ export const SuggestAbhaAddress = () => {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const formData = { abhaAddress: userChoice, password: "" };
 
       axios.defaults.withCredentials = true;
-      await axios.post(
-        "http://localhost:9191/receptionist/createAbhaAddress",
-        formData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await axios.post(`${API_URL}/receptionist/createAbhaAddress`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       toast.success("Abha Address submitted successfully");
       navigate("/receptionist/new-patient");
     } catch (error) {
@@ -71,7 +72,11 @@ export const SuggestAbhaAddress = () => {
       <div className="h-full flex justify-center items-center progPageMargin">
         <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
           <div className="image-container">
-            <img src={patientImage} className="admin-image" alt="patientImage" />
+            <img
+              src={patientImage}
+              className="admin-image"
+              alt="patientImage"
+            />
             <div className="dashboard-name-patient">ABHA CREATION</div>
           </div>
           <div className="container glass-background mt-5">
@@ -95,14 +100,23 @@ export const SuggestAbhaAddress = () => {
             ) : (
               <ul>
                 {suggestions.map((suggestion, index) => (
-                  <li key={index}
-                    style={{ cursor: "pointer", padding: "0.5rem", margin: "0.5rem", border: "5px solid #ccc", borderRadius: "20px", fontWeight: "bold" }}
+                  <li
+                    key={index}
+                    style={{
+                      cursor: "pointer",
+                      padding: "0.5rem",
+                      margin: "0.5rem",
+                      border: "5px solid #ccc",
+                      borderRadius: "20px",
+                      fontWeight: "bold",
+                    }}
                     onClick={() => handleSuggestionClick(suggestion)}
-                  >{suggestion}</li>
+                  >
+                    {suggestion}
+                  </li>
                 ))}
               </ul>
             )}
-
 
             <TextField
               id="userChoice"

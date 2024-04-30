@@ -7,24 +7,24 @@ import { NavLink } from "react-router-dom";
 
 export default function ReceptionistDashboard() {
   const navigate = useNavigate();
-  const recpName = localStorage.getItem("Name");
+  const recpName = sessionStorage.getItem("Name");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-    const recpName = localStorage.getItem("Name");
+    const token = sessionStorage.getItem("token");
+    const role = sessionStorage.getItem("role");
+    const recpName = sessionStorage.getItem("Name");
     if (!token) {
       navigate("/");
     }
     if (role === "DOCTOR" || role === "ADMIN") {
       navigate("/");
-      localStorage.clear();
+      sessionStorage.clear();
     }
 
-    const loggedIn = localStorage.getItem("loggedIn");
+    const loggedIn = sessionStorage.getItem("loggedIn");
     if (loggedIn === "true") {
       toast.success(`Welcome, ${recpName}`);
-      localStorage.removeItem("loggedIn");
+      sessionStorage.removeItem("loggedIn");
     }
   });
 
@@ -61,15 +61,15 @@ export default function ReceptionistDashboard() {
                 height: "fit-content",
                 fontSize: "25px",
                 fontWeight: "bold",
-                color: "white", // Set default font color to white
-                textDecoration: "none", // Remove default underline
+                color: "white",
+                textDecoration: "none",
               }}
               onMouseEnter={(e) => {
                 e.target.style.color = "black";
-              }} // Change font color to black on hover
+              }}
               onMouseLeave={(e) => {
                 e.target.style.color = "white";
-              }} // Change font color back to white when not hovered
+              }}
             >
               NEW PATIENT
             </NavLink>
@@ -82,15 +82,15 @@ export default function ReceptionistDashboard() {
                 height: "fit-content",
                 fontSize: "25px",
                 fontWeight: "bold",
-                color: "white", // Set default font color to white
-                textDecoration: "none", // Remove default underline
+                color: "white",
+                textDecoration: "none",
               }}
               onMouseEnter={(e) => {
                 e.target.style.color = "black";
-              }} // Change font color to black on hover
+              }}
               onMouseLeave={(e) => {
                 e.target.style.color = "white";
-              }} // Change font color back to white when not hovered
+              }}
             >
               EXISTING PATIENT
             </NavLink>

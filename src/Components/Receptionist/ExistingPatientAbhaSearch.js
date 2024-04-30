@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import toast from "react-hot-toast";
+import API_URL from "../Config/config";
 
 export const ExistingPatientAbhaSearch = () => {
   const [abhaId, setAbhaId] = useState("");
@@ -26,17 +27,20 @@ export const ExistingPatientAbhaSearch = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const formData = { abhaId };
       axios.defaults.withCredentials = true;
       const response = await axios.post(
-        "http://localhost:9191/receptionist/patientDetails",
+        `${API_URL}/receptionist/patientDetails`,
         formData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true",
+          },
         }
       );
-      if (response.data === '') {
+      if (response.data === "") {
         toast.error("Patient not found");
         setLoading(false);
         return;
@@ -51,12 +55,11 @@ export const ExistingPatientAbhaSearch = () => {
         mobileNo: response.data.mobileNo,
         name: response.data.name,
       };
-      localStorage.setItem("abhaAddress", abhaId);
+      sessionStorage.setItem("abhaAddress", abhaId);
       navigate("/receptionist/existing-patient-details", {
         state: { patientDetails },
       });
     } catch (error) {
-      // console.error("Error:", error);
       toast.error("Error searching for patient");
     } finally {
       setLoading(false);

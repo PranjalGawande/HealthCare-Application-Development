@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
 import { toast } from "react-hot-toast";
+import API_URL from "../Config/config";
 
 export const AdhaarAbhaIdCreation = () => {
   const [aadhaarNo, setAadhaarNo] = useState("");
@@ -19,22 +20,23 @@ export const AdhaarAbhaIdCreation = () => {
       setLoading(false);
       return;
     }
-    // console.log(aadhaarNo);
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const formData = {
         aadhaarNumber: aadhaarNo,
       };
       axios.defaults.withCredentials = true;
       const response = await axios.post(
-        "http://localhost:9191/receptionist/generateAadhaarOtp",
+        `${API_URL}/receptionist/generateAadhaarOtp`,
         formData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true",
+          },
         }
       );
       // console.log("Response:", response.data);
-      // onNextStep();
       navigate("/receptionist/adhaar-otp-verification");
     } catch (error) {
       console.error("Error:", error);
@@ -45,12 +47,15 @@ export const AdhaarAbhaIdCreation = () => {
 
   return (
     <div>
-      <Progressbar  step={1}/>
+      <Progressbar step={1} />
       <div className="h-full flex justify-center items-center progPageMargin">
-
         <div className="flex admin-dashboard justify-evenly items-center  border-amber-300 border-solid ">
           <div className="image-container">
-            <img src={patientImage} className="admin-image" alt="patientImage" />
+            <img
+              src={patientImage}
+              className="admin-image"
+              alt="patientImage"
+            />
             <div className="dashboard-name-patient">ABHA CREATION</div>
           </div>
           <div className="container glass-background mt-5">

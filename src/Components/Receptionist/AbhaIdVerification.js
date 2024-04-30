@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import patientImage from "../../assets/PatientPage.png";
 import { Progressbar } from "./Progressbar";
 import { toast } from "react-hot-toast";
+import API_URL from "../Config/config";
 
 export const AbhaIdVerification = () => {
   const [abhaAdd, setAbhaAdd] = useState("");
@@ -19,19 +20,20 @@ export const AbhaIdVerification = () => {
     }
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const formData = {
         abhaAddress: abhaAdd,
       };
       axios.defaults.withCredentials = true;
       const response = await axios.post(
-        "http://localhost:9191/receptionist/generateAbhaAddressVerificationOtp",
+        `${API_URL}/receptionist/generateAbhaAddressVerificationOtp`,
         formData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true', },
         }
       );
-      localStorage.setItem("abhaAddress", abhaAdd);
+      sessionStorage.setItem("abhaAddress", abhaAdd);
       // console.log("Response:", response.data);
       navigate("/receptionist/abha-otp-verification");
     } catch (error) {
