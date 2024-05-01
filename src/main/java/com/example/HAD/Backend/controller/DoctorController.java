@@ -290,19 +290,26 @@ public class DoctorController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Doctor found with given Email");
             }
 
-            loginService.updateLogin(extraDTO.getEmail(), extraDTO.getNewPassword());
-        }
-        else {
             if(token.startsWith("Bearer ")) {
                 token = token.substring(7);
             }
 
-            String userName = jwtService.extractEmail(token);
+            String email = jwtService.extractEmail(token);
+            Admin admin = adminService.getAdminDetails(email);
+
+            loginService.updateLogin(extraDTO.getEmail(), extraDTO.getNewPassword());
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), admin.getLogin().getEmail(),"Login Record", login.getUserId(), login.getEmail(),"Update Record(Change Password)");
+        }
+        else {
+            String userName = userDetails.getUsername();
             if(!loginService.verifyCurrentPassword(userName, extraDTO.getOldPassword())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Current password is incorrect");
             }
 
             loginService.updateLogin(userName, extraDTO.getNewPassword());
+
+            Doctor doctor = doctorService.getDoctorDetailsByEmail(userName);
+            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Login Record", doctor.getLogin().getUserId(), doctor.getLogin().getEmail(),"Update Record(Change Password)");
         }
 
         return ResponseEntity.ok("Password changed Successfully");
@@ -310,7 +317,7 @@ public class DoctorController {
 
     @PostMapping("/pushCareContext")
     @PreAuthorize("hasAuthority('doctor:post')")
-    public ResponseEntity<String> addCareContext(@RequestBody ExtraDTO extraDTO) throws Exception {
+    public ResponseEntity<String> addCareContext(@RequestBody ExtraDTO extraDTO, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 
         Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
         String authToken = abdmSessionService.getToken();
@@ -359,6 +366,9 @@ public class DoctorController {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
         ResponseEntity<String> response = restTemplate.exchange("https://dev.abdm.gov.in/gateway/v0.5/links/link/add-contexts", HttpMethod.POST, entity, String.class);
+
+        Doctor doctor = doctorService.getDoctorDetailsByEmail(userDetails.getUsername());
+        accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Pushing CareContext", null, null,"Read Only");
 
         System.out.println(response);
         return ResponseEntity.ok().body("Successfully pushed care context details to PHR App");

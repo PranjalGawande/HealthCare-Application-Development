@@ -61,19 +61,34 @@ public class ReceptionistController {
     private AbdmAbhaAddressCreationService abdmAbhaAddressCreationService;
 
     @Autowired
-    private DataService dataService;
+    private AccessLogsService accessLogsService;
+
+    @Autowired
+    private AdminService adminService;
 
     @PostMapping("/receptionistDetails")
     @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<StaffDTO> getReceptionistDetail(
             @RequestBody ExtraDTO extraDTO,
+            @RequestHeader("Authorization") String token,
             @AuthenticationPrincipal UserDetails userDetails) {
         Receptionist receptionist;
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
             receptionist = receptionistService.getReceptionistDetails(extraDTO.getEmail());
+
+            if(token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+            String email = jwtService.extractEmail(token);
+
+            Admin admin = adminService.getAdminDetails(email);
+
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), admin.getLogin().getEmail(), "Receptionist Record", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(),"Read Only");
         } else {
             receptionist = receptionistService.getReceptionistDetails(userDetails.getUsername());
+
+            accessLogsService.accessLogs("Receptionist", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(), "Receptionist Record", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(),"Read Only");
         }
 
         StaffDTO staffDTO = new StaffDTO(receptionist);
@@ -82,12 +97,29 @@ public class ReceptionistController {
 
     @PostMapping("/addPatient")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> addPatientDetails(@RequestBody Map<String, String> patientData) {
+    public ResponseEntity<String> addPatientDetails(@RequestBody Map<String, String> patientData, @RequestHeader("Authorization") String token, @AuthenticationPrincipal UserDetails userDetails) {
+        boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
         Patient patient = new Patient();
         patient.setAbhaId(patientData.get("abhaAddress"));
         patient.setBloodGroup(patientData.get("bloodGroup"));
         patient.setAddress(patientData.get("address"));
         patientService.addPatient(patient);
+
+        if(isAdmin) {
+            if(token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+            String email = jwtService.extractEmail(token);
+
+            Admin admin = adminService.getAdminDetails(email);
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), admin.getLogin().getEmail(), "Patient Record", null, patient.getAbhaId(),"Insert Record");
+
+        } else {
+            Receptionist receptionist = receptionistService.getReceptionistDetails(userDetails.getUsername());
+            accessLogsService.accessLogs("Receptionist", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(), "Patient Record", null, patient.getAbhaId(),"Insert Record");
+        }
+
         return ResponseEntity.ok().body("Successfully added New Patient Record");
     }
 
@@ -513,14 +545,37 @@ public class ReceptionistController {
 
     @PostMapping("/patientDetails")
     @PreAuthorize("hasAuthority('receptionist:get')")
-    public ResponseEntity<Patient> getPatientRecord(@RequestBody ExtraDTO extraDTO) {
+    public ResponseEntity<Patient> getPatientRecord(@RequestBody ExtraDTO extraDTO,
+                                                    @RequestHeader("Authorization") String token,
+                                                    @AuthenticationPrincipal UserDetails userDetails) {
         Patient patient = patientService.getPatientByAbhaId(extraDTO.getAbhaId());
+
+        boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if(isAdmin) {
+
+            if(token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+            String email = jwtService.extractEmail(token);
+
+            Admin admin = adminService.getAdminDetails(email);
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), admin.getLogin().getEmail(), "Patient Record", patient.getPatientId(), patient.getAbhaId(),"Read Only");
+        } else {
+            Receptionist receptionist = receptionistService.getReceptionistDetails(userDetails.getUsername());
+            accessLogsService.accessLogs("Receptionist", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(), "Patient Record", patient.getPatientId(), patient.getAbhaId(),"Read Only");
+        }
+
         return ResponseEntity.ok().body(patient);
     }
 
     @PostMapping("/addAppointment")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> addAppointment(@RequestBody ExtraDTO extraDTO) {
+    public ResponseEntity<String> addAppointment(@RequestBody ExtraDTO extraDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (isAdmin) {
+            return ResponseEntity.ok().body("Admin is not allowed to create appointment.");
+        }
+
         Appointment appointment = new Appointment();
         appointment.setDate(extraDTO.getDate());
         appointment.setTime(extraDTO.getTime());
@@ -544,13 +599,33 @@ public class ReceptionistController {
         appointment.setPatient(patient);
 
         appointmentService.addAppointment(appointment);
+
+        Receptionist receptionist = receptionistService.getReceptionistDetails(userDetails.getUsername());
+        accessLogsService.accessLogs("Receptionist", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(), "Appointment Record", patient.getPatientId(), patient.getAbhaId(),"Insert Record");
         return ResponseEntity.ok().body("Successfully created a new Appointment. Appointment No: "+ appointment.getTokenNo());
     }
 
     @GetMapping("/doctorList")
     @PreAuthorize("hasAnyAuthority('receptionist:get', 'admin:get')")
-    public ResponseEntity<List<DoctorListDTO>> doctorList() {
+    public ResponseEntity<List<DoctorListDTO>> doctorList(@RequestHeader("Authorization") String token,
+                                                          @AuthenticationPrincipal UserDetails userDetails) {
         List<DoctorListDTO> doctorListDTOS = doctorService.getDoctorList();
+
+        boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if(isAdmin) {
+
+            if(token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+            String email = jwtService.extractEmail(token);
+
+            Admin admin = adminService.getAdminDetails(email);
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), admin.getLogin().getEmail(), "Doctor Records", null, null,"Read Only(List of Doctors)");
+        } else {
+            Receptionist receptionist = receptionistService.getReceptionistDetails(userDetails.getUsername());
+            accessLogsService.accessLogs("Receptionist", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(), "Doctor Record", null, null,"Read Only(List of Doctors)");
+        }
+
         return ResponseEntity.ok().body(doctorListDTOS);
     }
 
@@ -565,13 +640,17 @@ public class ReceptionistController {
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
             receptionist = receptionistService.getReceptionistDetails(staffDTO.getEmail());
-        }else {
+
             if(token.startsWith("Bearer ")) {
                 token = token.substring(7);
             }
-
             String email = jwtService.extractEmail(token);
-            receptionist = receptionistService.getReceptionistDetails(email);
+
+            Admin admin = adminService.getAdminDetails(email);
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), admin.getLogin().getEmail(), "Receptionist Records", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(),"Update Record(Alter Receptionist record)");
+        }else {
+            receptionist = receptionistService.getReceptionistDetails(userDetails.getUsername());
+            accessLogsService.accessLogs("Admin", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(), "Receptionist Records", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(),"Update Record(Alter Receptionist record)");
         }
 
         receptionist.setMobileNo(staffDTO.getMobileNo());
@@ -581,7 +660,9 @@ public class ReceptionistController {
 
     @PostMapping("/changePassword")
     @PreAuthorize("hasAuthority('receptionist:post')")
-    public ResponseEntity<String> changePassword(@RequestHeader("Authorization" )String token, @RequestBody ExtraDTO extraDTO, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<String> changePassword(@RequestHeader("Authorization" )String token,
+                                                 @RequestBody ExtraDTO extraDTO,
+                                                 @AuthenticationPrincipal UserDetails userDetails) {
 
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
@@ -590,6 +671,14 @@ public class ReceptionistController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Receptionist found with given Email");
             }
             loginService.updateLogin(extraDTO.getEmail(), extraDTO.getNewPassword());
+
+            if(token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+            String email = jwtService.extractEmail(token);
+
+            Admin admin = adminService.getAdminDetails(email);
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), admin.getLogin().getEmail(), "Login Record", login.getUserId(), login.getEmail(),"Update Record(Change Password)");
         }
         else {
             if(token.startsWith("Bearer ")) {
@@ -602,6 +691,9 @@ public class ReceptionistController {
             }
 
             loginService.updateLogin(userName, extraDTO.getNewPassword());
+
+            Receptionist receptionist = receptionistService.getReceptionistDetails(userDetails.getUsername());
+            accessLogsService.accessLogs("Receptionist", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(), "Receptionist Record", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(),"Update Record(Change Password)");
         }
 
         return ResponseEntity.ok("Password changed Successfully");
@@ -609,11 +701,22 @@ public class ReceptionistController {
 
     @PostMapping("/resetAppointment")
     @PreAuthorize("hasAuthority('receptionist:get')")
-    public ResponseEntity<String> resetAppointment() {
+    public ResponseEntity<String> resetAppointment(@AuthenticationPrincipal UserDetails userDetails) {
         List<DoctorListDTO> doctors = doctorService.getDoctorList();
         for (DoctorListDTO doctorListDTO : doctors) {
             doctorService.updateDoctorAppointment(doctorListDTO.getDoctorId(), 1);
         }
+
+        boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if(isAdmin) {
+            Admin admin = adminService.getAdminDetails(userDetails.getUsername());
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), admin.getLogin().getEmail(), "Doctor Records", null, null,"Update Record(Reset Appointment)");
+        }
+        else {
+            Receptionist receptionist = receptionistService.getReceptionistDetails(userDetails.getUsername());
+            accessLogsService.accessLogs("Receptionist", receptionist.getReceptionistId(), receptionist.getLogin().getEmail(), "Doctor Records", null, null,"Update Record(Reset Appointment)");
+        }
+
         return ResponseEntity.ok().body("Successfully reset the Token Number for all Doctor.");
     }
 }

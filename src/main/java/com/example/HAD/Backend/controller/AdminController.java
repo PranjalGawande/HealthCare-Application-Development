@@ -187,7 +187,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Admin and Receptionist Records", null, null,"Read Only");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Admins and Receptionists List", null, null,"Read Only");
 
         return ResponseEntity.ok().body(staffListDTOS);
     }
@@ -215,19 +215,20 @@ public class AdminController {
     @PreAuthorize("hasAuthority('admin:get')")
     public ResponseEntity<List<AccessLogs>> accessLogs(@RequestHeader("Authorization" )String token) {
         List<AccessLogs> accessLogs = accessLogsService.getAccessLogList();
-
-        if(token.startsWith("Bearer ")) token = token.substring(7);
-        String email = jwtService.extractEmail(token);
-        Admin admin = adminService.getAdminDetails(email);
-
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Access Log Records", null, null,"Read Only");
         return ResponseEntity.ok().body(accessLogs);
     }
 
     @GetMapping("/analytics")
     @PreAuthorize("hasAuthority('admin:get')")
-    public ResponseEntity<AnalyticsDTO> getAnalyticsData() {
+    public ResponseEntity<AnalyticsDTO> getAnalyticsData(@RequestHeader("Authorization" )String token) {
         AnalyticsDTO analyticsData = analyticsService.generateAnalyticsData();
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Analytics Data", null, null,"Read Only");
+
         return ResponseEntity.ok().body(analyticsData);
     }
 
