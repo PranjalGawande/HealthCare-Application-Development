@@ -109,7 +109,7 @@ const CNForm = () => {
 
   useEffect(() => {
     if (appToken) {
-      fetchPatientHistory(appToken);
+      // fetchPatientHistory(appToken);
       fetchPatientDetails(appToken);
     }
   }, [appToken]);
@@ -602,6 +602,7 @@ const CNForm = () => {
                 type="button"
                 className="button"
                 title="Patient History"
+                onClick={() => fetchPatientHistory(appToken)}
                 onClose={() => setShowPopup(false)}
                 patientHistory={patientHistory}
                 style={{

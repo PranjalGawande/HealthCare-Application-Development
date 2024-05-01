@@ -184,7 +184,7 @@ const AccessLogs = () => {
                     Modified Entity
                   </th>
                   <th scope="col" style={{ width: "15%" }}>
-                    Email
+                    Accessed By
                   </th>
                   <th scope="col" style={{ width: "13%" }}>
                     Role
