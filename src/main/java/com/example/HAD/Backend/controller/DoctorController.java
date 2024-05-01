@@ -57,18 +57,34 @@ public class DoctorController {
     @Autowired
     private DataService dataService;
 
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private AccessLogsService accessLogsService;
+
     @PostMapping("/doctorDetails")
     @PreAuthorize("hasAnyAuthority('doctor:post')")
     public ResponseEntity<DoctorDTO> getDoctorDetails(@RequestBody ExtraDTO extraDTO,
+                                                      @RequestHeader("Authorization") String token,
                                                       @AuthenticationPrincipal UserDetails userDetails) {
         Doctor doctor;
+
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
             doctor = doctorService.getDoctorDetailsByEmail(extraDTO.getEmail());
+
+            if(token.startsWith("Bearer ")) token = token.substring(7);
+            String email = jwtService.extractEmail(token);
+            Admin admin = adminService.getAdminDetails(email);
+
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Doctor Record", doctor.getDoctorId(), "Read Only");
         }
         else {
             String email = userDetails.getUsername();
             doctor = doctorService.getDoctorDetailsByEmail(email);
+
+            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), email,"Doctor Record", doctor.getDoctorId(), "Read Only");
         }
 
         DoctorDTO doctorDTO = new DoctorDTO(doctor);
@@ -86,6 +102,12 @@ public class DoctorController {
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
            medicalRecords = medicalRecordsService.getPatientHistory(patientId);
+
+            if(token.startsWith("Bearer ")) token = token.substring(7);
+            String email = jwtService.extractEmail(token);
+            Admin admin = adminService.getAdminDetails(email);
+
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Medical Record List", null, "Read Only");
         }
         else {
             Doctor doctor = doctorService.getDoctorDetailsByEmail(userDetails.getUsername());
@@ -94,6 +116,8 @@ public class DoctorController {
             Appointment appointment = appointmentValue.orElseThrow(()-> new RuntimeException("Unable to find the given Token Number"));
 
             medicalRecords = medicalRecordsService.getPatientMedicalHistory(doctor.getDoctorId(), appointment.getPatient().getPatientId());
+
+            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Medical Record List", null, "Read Only");
         }
 
         List<MedicalRecordsDTO> medicalRecordsDTO = new ArrayList<>();
@@ -131,6 +155,7 @@ public class DoctorController {
         Patient patient = patientService.getPatientById(appointment.getPatient().getPatientId());
         PatientDto patientDto = new PatientDto(patient);
 
+        accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), email,"Appointment Record", appointment.getAppointmentId(), "Read Only");
         return ResponseEntity.ok().body(patientDto);
     }
 

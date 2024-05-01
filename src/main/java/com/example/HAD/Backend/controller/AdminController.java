@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,9 @@ public class AdminController {
     @Autowired
     private AnalyticsService analyticsService;
 
+    @Autowired
+    private AccessLogsService accessLogsService;
+
     @GetMapping("/adminDetails")
     @PreAuthorize("hasAuthority('admin:get')")
     public ResponseEntity<StaffDTO> getAdminDetails(@RequestHeader("Authorization") String token) {
@@ -50,19 +54,27 @@ public class AdminController {
 
         Admin admin = adminService.getAdminDetails(email);
         StaffDTO staffDTO = new StaffDTO(admin);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Admin Record", admin.getAdminId(), "Read Only");
         return ResponseEntity.ok().body(staffDTO);
     }
 
     @PostMapping("/addLogin")
     @PreAuthorize("hasAuthority('admin:post')")
-    public ResponseEntity<String> addLoginDetails(@RequestBody Login login) {
+    public ResponseEntity<String> addLoginDetails(@RequestBody Login login, @RequestHeader("Authorization") String token) {
         loginService.addLogin(login);
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", null, "Insert Record");
         return ResponseEntity.ok().body("Login Details added Successfully");
     }
 
     @PostMapping("/addDoctor")
     @PreAuthorize("hasAuthority('admin:post')")
-    public ResponseEntity<String> addDoctorDetails(@RequestBody DoctorDTO doctorDTO) {
+    public ResponseEntity<String> addDoctorDetails(@RequestBody DoctorDTO doctorDTO, @RequestHeader("Authorization") String token) {
         Login login = loginService.getLoginByEmail(doctorDTO.getEmail());
         if (login == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login details not found for the provided email.");
@@ -72,12 +84,18 @@ public class AdminController {
         doctor.setLogin(login);
 
         doctorService.addDoctor(doctor);
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Doctor Record", null, "Insert Record");
         return ResponseEntity.ok().body("Doctor Record Added Successfully");
     }
 
     @PostMapping("/addAdmin")
     @PreAuthorize("hasAuthority('admin:post')")
-    public ResponseEntity<String> addAdminDetails(@RequestBody StaffDTO staffDTO) {
+    public ResponseEntity<String> addAdminDetails(@RequestBody StaffDTO staffDTO, @RequestHeader("Authorization") String token) {
         Login login = loginService.getLoginByEmail(staffDTO.getEmail());
         if (login == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login details not found for the provided email.");
@@ -87,12 +105,18 @@ public class AdminController {
         admin.setLogin(login);
 
         adminService.addAdmin(admin);
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin1 = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin1.getAdminId(), email,"Admin Record", null, "Insert Record");
         return ResponseEntity.ok().body("Admin Record Added Successfully");
     }
 
     @PostMapping("/addReceptionist")
     @PreAuthorize("hasAuthority('admin:post')")
-    public ResponseEntity<String> addReceptionistDetails(@RequestBody StaffDTO staffDTO) {
+    public ResponseEntity<String> addReceptionistDetails(@RequestBody StaffDTO staffDTO, @RequestHeader("Authorization") String token) {
         Login login = loginService.getLoginByEmail(staffDTO.getEmail());
         if (login == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login details not found for the provided email.");
@@ -102,12 +126,18 @@ public class AdminController {
         receptionist.setLogin(login);
 
         receptionistService.addReceptionist(receptionist);
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Receptionist Record", null, "Insert Record");
         return ResponseEntity.ok().body("Receptionist Record Added Successfully");
     }
 
     @PostMapping("/deActivateStaff")
     @PreAuthorize("hasAuthority('admin:post')")
-    public ResponseEntity<String> deactivateStaff(@RequestBody ExtraDTO extraDTO) {
+    public ResponseEntity<String> deactivateStaff(@RequestBody ExtraDTO extraDTO, @RequestHeader("Authorization") String token) {
         Login login = loginService.getLoginByEmail(extraDTO.getEmail());
         if (login == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not found for provided email.");
@@ -115,12 +145,18 @@ public class AdminController {
         login.setStatus(false);
 
         loginService.setLogin(login);
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", login.getUserId(), "Deactivate User");
         return ResponseEntity.ok().body("Successfully Deactivated Staff Account");
     }
 
     @PostMapping("/activateStaff")
     @PreAuthorize("hasAuthority('admin:post')")
-    public ResponseEntity<String> activateStaff(@RequestBody ExtraDTO extraDTO) {
+    public ResponseEntity<String> activateStaff(@RequestBody ExtraDTO extraDTO, @RequestHeader("Authorization") String token) {
         Login login = loginService.getLoginByEmail(extraDTO.getEmail());
         if (login == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not found for provided email.");
@@ -128,12 +164,18 @@ public class AdminController {
         login.setStatus(true);
 
         loginService.setLogin(login);
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", login.getUserId(), "Activate User");
         return ResponseEntity.ok().body("Successfully Activated Staff Account");
     }
 
     @GetMapping("/staffList")
     @PreAuthorize("hasAuthority('admin:get')")
-    public ResponseEntity<List<StaffListDTO>> staffList() {
+    public ResponseEntity<List<StaffListDTO>> staffList(@RequestHeader("Authorization") String token) {
         List<StaffListDTO> adminListDTOS = adminService.getAdminList();
         List<StaffListDTO> receptionistListDTOS = receptionistService.getRecetionistList();
 
@@ -141,11 +183,17 @@ public class AdminController {
         staffListDTOS.addAll(adminListDTOS);
         staffListDTOS.addAll(receptionistListDTOS);
 
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Admin and Receptionist Records", null, "Read Only");
+
         return ResponseEntity.ok().body(staffListDTOS);
     }
 
     @PostMapping("/changePassword")
-    @PreAuthorize("hasAuthority('doctor:post')")
+    @PreAuthorize("hasAuthority('admin:post')")
     public ResponseEntity<String> changePassword(@RequestHeader("Authorization" )String token, @RequestBody ExtraDTO extraDTO) {
         if(token.startsWith("Bearer ")) {
             token = token.substring(7);
@@ -157,7 +205,23 @@ public class AdminController {
         }
 
         loginService.updateLogin(userName, extraDTO.getNewPassword());
+
+        Admin admin = adminService.getAdminDetails(userName);
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), userName,"Admin Record", admin.getAdminId(), "Change Password");
         return ResponseEntity.ok("Password changed Successfully");
+    }
+
+    @GetMapping("/accessLogs")
+    @PreAuthorize("hasAuthority('admin:get')")
+    public ResponseEntity<List<AccessLogs>> accessLogs(@RequestHeader("Authorization" )String token) {
+        List<AccessLogs> accessLogs = accessLogsService.getAccessLogList();
+
+        if(token.startsWith("Bearer ")) token = token.substring(7);
+        String email = jwtService.extractEmail(token);
+        Admin admin = adminService.getAdminDetails(email);
+
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Access Log Records", null, "Read Only");
+        return ResponseEntity.ok().body(accessLogs);
     }
 
     @GetMapping("/analytics")
