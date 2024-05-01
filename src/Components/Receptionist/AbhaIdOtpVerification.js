@@ -22,9 +22,17 @@ export const AbhaIdOtpVerification = () => {
   });
 
   const fetchTransactionId = async () => {
+    const token = sessionStorage.getItem("token");
     try {
       axios.defaults.withCredentials = true;
-      const response = await axios.get(`${API_URL}/getTransactionId`);
+      const response = await axios.get(`${API_URL}/getTransactionId`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+    );
       const transId = response.data.transactionId;
       return transId;
     } catch (error) {
@@ -40,6 +48,7 @@ export const AbhaIdOtpVerification = () => {
       const formData = {
         abhaId: abhaAdd,
       };
+      console.log("FormData:", formData);
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `${API_URL}/receptionist/patientDetails`,
@@ -52,7 +61,7 @@ export const AbhaIdOtpVerification = () => {
         }
       );
       const patientData = response.data;
-      // console.log("Patient Data:", patientData);
+      console.log("Patient Data:", patientData);
 
       return patientData;
     } catch (error) {
@@ -74,7 +83,7 @@ export const AbhaIdOtpVerification = () => {
       let transactionIdAttempt = 0;
       let transactionId = "";
 
-      while (transactionId === "" && transactionIdAttempt < 5) {
+      while (!transactionId && transactionIdAttempt < 5) {
         try {
           transactionId = await fetchTransactionId();
         } catch (error) {
@@ -84,7 +93,7 @@ export const AbhaIdOtpVerification = () => {
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
 
-      if (transactionId === "") {
+      if (!transactionId) {
         setLoading(false);
         toast.error("Unable to fetch transaction ID after multiple attempts.");
         throw new Error(
@@ -114,24 +123,24 @@ export const AbhaIdOtpVerification = () => {
       console.error("Error:", error);
       return;
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
 
     try {
       let fetchPatientAttempt = 0;
       let response = "";
 
-      while (response === "" && fetchPatientAttempt < 5) {
+      while (!response && fetchPatientAttempt < 5) {
         try {
           response = await fetchPatientData();
         } catch (error) {
           console.error("Error fetching patient details:", error);
         }
         fetchPatientAttempt++;
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 6000));
       }
 
-      if (response === "") {
+      if (!response) {
         setLoading(false);
         toast.error("Unable to fetch patient data after multiple attempts.");
         throw new Error(
