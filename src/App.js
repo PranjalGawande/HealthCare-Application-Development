@@ -49,6 +49,7 @@ import { ExistingPatientDetails } from "./Components/Receptionist/ExistingPatien
 import { AbdmOtpCredentials } from "./Components/Receptionist/AbdmOtpCredentials";
 import { SuggestAbhaAddress } from "./Components/Receptionist/SuggestAbhaAddress";
 import { AddPatientDetails } from "./Components/Receptionist/AddPatientDetails";
+import AccessLogs from "./Components/Admin/AccessLogs";
 
 
 function App() {
@@ -76,6 +77,7 @@ function App() {
           <Route path="/admin/admin-details" element={<ViewAdminDetails />} />
           <Route path="/admin/add-admin" element={<AddAdminForm />} />
           <Route path="/admin/analytics" element= {<Analytics/>} />
+          <Route path="/admin/access-logs" element={<AccessLogs />} />
           <Route
             path="/admin/view-doctor-details"
             element={<ViewDoctorDetails />}

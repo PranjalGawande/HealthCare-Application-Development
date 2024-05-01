@@ -32,6 +32,12 @@ export default function Navbar() {
     }
   };
 
+  const handleLogs = () => {
+    if (role === "ADMIN") {
+      navigate("/admin/access-logs");
+    }
+  };
+
   let DetailsResponse;
   const handleViewDetails = async () => {
     try {
@@ -156,6 +162,16 @@ export default function Navbar() {
               onClick={handleAnalytics}
             >
               ANALYTICS
+            </button>
+          )}
+
+          {token && role === "ADMIN" && (
+            <button
+              type="button"
+              className="flex navbtn btn btn-info bg-dark btn-outline-secondary bg-gradient-to-r from-gray-500 hover:bg-gradient-to-br transition-colors duration-900 btn-lg text-white ml-4"
+              onClick={handleLogs}
+            >
+              LOGS
             </button>
           )}
 
