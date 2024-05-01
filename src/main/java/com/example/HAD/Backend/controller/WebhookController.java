@@ -396,23 +396,24 @@ public class WebhookController {
             System.err.println("Something went wrong in <WebhookController.consentRequestsOnInit>: " + je.getMessage());
         }
     }
-    @GetMapping("/getConsentRequestId")
-    public ResponseEntity<?> getConsentRequestId() {
-        try {
-            System.out.println("Printed from <WebhookController.getConsentRequestId>: " + (resultJson != null ? resultJson.toString() : "null"));
+//    @GetMapping("/getConsentRequestId")
+//    public ResponseEntity<?> getConsentRequestId() {
+//        try {
+//            System.out.println("Printed from <WebhookController.getConsentRequestId>: " + (resultJson != null ? resultJson.toString() : "null"));
+//
+//            if (resultJson == null) {
+//                JSONObject errorResponse = new JSONObject();
+//                errorResponse.put("error", "Webhooks.site is not receiving callbacks!!!");
+//                errorResponse.put("consentRequestId", JSONObject.NULL);
+//                return ResponseEntity.internalServerError().body(errorResponse.toString());
+//            }
+//            return ResponseEntity.ok(resultJson.toString());
+//        } catch (JSONException je) {
+//            System.err.println(je.getMessage());
+//            return ResponseEntity.internalServerError().body("{\"error\": \"Critical JSON processing error...\"}");
+//        }
+//    }
 
-            if (resultJson == null) {
-                JSONObject errorResponse = new JSONObject();
-                errorResponse.put("error", "Webhooks.site is not receiving callbacks!!!");
-                errorResponse.put("consentRequestId", JSONObject.NULL);
-                return ResponseEntity.internalServerError().body(errorResponse.toString());
-            }
-            return ResponseEntity.ok(resultJson.toString());
-        } catch (JSONException je) {
-            System.err.println(je.getMessage());
-            return ResponseEntity.internalServerError().body("{\"error\": \"Critical JSON processing error...\"}");
-        }
-    }
     @PostMapping("/v0.5/consent-requests/on-status")
     public void consentRequestOnStatus(@RequestBody String response) {
         try {

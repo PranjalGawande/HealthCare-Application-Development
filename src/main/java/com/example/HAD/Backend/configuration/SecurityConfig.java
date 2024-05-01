@@ -32,7 +32,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("/login/**","/v0.5/**", "/getTransactionId", "/getConsentRequestId", "/getPatientInfo", "/events")
+                        req -> req.requestMatchers("/login/**","/v0.5/**", "/getTransactionId", "/getConsentRequestId", "/receptionist/getPatientDetails", "/events")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

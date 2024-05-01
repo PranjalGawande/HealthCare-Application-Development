@@ -66,6 +66,9 @@ public class ReceptionistController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private DataService dataService;
+
     @PostMapping("/receptionistDetails")
     @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<StaffDTO> getReceptionistDetail(
@@ -154,6 +157,10 @@ public class ReceptionistController {
             session.setAttribute("token", token);
             session.setAttribute("publicKeyStr", publicKeyStr);
 
+            dataService.putData("txnId", txnID);
+            dataService.putData("token", token);
+            dataService.putData("publicKeyStr", publicKeyStr);
+
             // Print the values to the console
             System.out.println("Session object: " + session);
             System.out.println("txnId: " + session.getAttribute("txnId"));
@@ -175,6 +182,9 @@ public class ReceptionistController {
         String txnId = (String) request.getSession().getAttribute("txnId");
         String token = (String) request.getSession().getAttribute("token");
         String publicKeyStr = (String) request.getSession().getAttribute("publicKeyStr");
+        txnId = dataService.getData("txnId");
+        token =  dataService.getData("token");
+        publicKeyStr =  dataService.getData("publicKeyStr");
 
         // Print the values to the console
         System.out.println("Session object: " + request.getSession());
@@ -202,7 +212,7 @@ public class ReceptionistController {
                 String newTxnID = (String) verificationResult.get("txnId");
 
                 session.setAttribute("txnId", newTxnID); // Update the session with the new txnId
-
+                dataService.putData("txnId", newTxnID);
                 // Simplified response to indicate the next step
                 return ResponseEntity.ok("Aadhaar is verified now move on to next step");
             }
@@ -217,6 +227,8 @@ public class ReceptionistController {
     public ResponseEntity<?> setAbdmMobileNumber(@RequestBody Map<String, String> mobileData, HttpSession session) {
         String txnId = (String) session.getAttribute("txnId");
         String token = (String) session.getAttribute("token");
+        txnId = dataService.getData("txnId");
+        token =  dataService.getData("token");
         String mobileNo = mobileData.get("mobileNo");
 
         if (txnId == null || token == null) {
@@ -233,6 +245,7 @@ public class ReceptionistController {
                 String newTxnID = (String) verificationResult.get("txnId");
 
                 session.setAttribute("txnId", newTxnID);
+                dataService.putData("txnId", newTxnID);
                 return ResponseEntity.ok().body(verificationResult);
             }
         } catch (Exception e) {
@@ -254,7 +267,9 @@ public class ReceptionistController {
             String txnId = (String) session.getAttribute("txnId");
             String token = (String) session.getAttribute("token");
             String publicKeyStr = (String) session.getAttribute("publicKeyStr");
-
+            txnId = dataService.getData("txnId");
+            token =  dataService.getData("token");
+            publicKeyStr = dataService.getData("publicKeyStr");
             if (token == null || publicKeyStr == null) {
                 return ResponseEntity.badRequest().body("Session expired or invalid. Please login again.");
             }
@@ -272,7 +287,7 @@ public class ReceptionistController {
                 String newTxnId = (String) verificationResult.get("txnId");
 
                 session.setAttribute("txnId", newTxnId); // Update the session with the new txnId
-
+                dataService.putData("txnId", newTxnId);
                 return ResponseEntity.ok().body(verificationResult);
             }
         } catch (Exception e) {
@@ -293,6 +308,8 @@ public class ReceptionistController {
             String consentVersion = consentData.get("consentVersion");
             String txnId = (String) session.getAttribute("txnId");
             String token = (String) session.getAttribute("token");
+            txnId = dataService.getData("txnId");
+            token =  dataService.getData("token");
 
             if (token == null || txnId == null) {
                 return ResponseEntity.badRequest().body("Session expired or invalid. Please login again.");
@@ -314,9 +331,11 @@ public class ReceptionistController {
             }
 
             txnId = (String) initOtpResponse.get("transactionId");
+            System.out.println(txnId);
             session.setAttribute("txnId", txnId);
             session.setAttribute("token", token);
-            System.out.println(txnId);
+            dataService.putData("txnId", txnId);
+            dataService.putData("token", token);
             return ResponseEntity.ok().body(response);
         } catch (Exception e) {
             // Log the exception with a logger (e.g., SLF4J) instead of e.printStackTrace() for production code
@@ -329,11 +348,13 @@ public class ReceptionistController {
     @PreAuthorize("hasAuthority('receptionist:post')")
     public ResponseEntity<String> resendOtp(HttpSession session) {
         String txnId = (String) session.getAttribute("txnId");
+        txnId = dataService.getData("txnId");
         if (txnId == null || txnId.isEmpty()) {
             return ResponseEntity.badRequest().body("Transaction ID is required but was not found in session.");
         }
 
         String token = (String) session.getAttribute("token");
+        token =  dataService.getData("token");
         if (token == null) {
             return ResponseEntity.badRequest().body("Session expired or invalid. Please login again.");
         }
@@ -363,6 +384,8 @@ public class ReceptionistController {
             String otp = otpData.get("otp");
             String txnId = (String) session.getAttribute("txnId");
             String token = (String) session.getAttribute("token");
+            txnId = dataService.getData("txnId");
+            token =  dataService.getData("token");
             String publicKeyPhr = abdmSessionService.fetchPublicKeyV1Phr();
 
             if (token == null) {
@@ -385,7 +408,8 @@ public class ReceptionistController {
                 String newTxnId = (String) response.get("transactionId");
                 session.setAttribute("txnId", newTxnId); // Update the session with the new txnId
                 session.setAttribute("publicKeyPhr", publicKeyPhr);
-
+                dataService.putData("txnId", newTxnId);
+                dataService.putData("publicKeyPhr", publicKeyPhr);
                 Map<String, Object> minimalResponse = new LinkedHashMap<>();
 
                 // Extracting and formatting the date of birth using LocalDate and DateTimeFormatter
@@ -429,6 +453,8 @@ public class ReceptionistController {
         try {
             String txnId = (String) session.getAttribute("txnId");
             String token = (String) session.getAttribute("token");
+            txnId = dataService.getData("txnId");
+            token = dataService.getData("token");
             List<String> abhaAddresses = abdmAbhaAddressCreationService.suggestPhrAddresses(txnId, token);
             if (abhaAddresses != null && !abhaAddresses.isEmpty()) {
                 JSONObject response = new JSONObject();
@@ -443,7 +469,7 @@ public class ReceptionistController {
             }
         } catch (Exception e) {
             // Log the exception with a logger (e.g., SLF4J) instead of e.printStackTrace() for production code
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             return ResponseEntity.internalServerError().body("An error occurred while processing the Aadhaar OTP verify request.");
         }
     }
@@ -459,6 +485,8 @@ public class ReceptionistController {
             String abhaAddress = abhaCreateData.get("abhaAddress");
             String token = (String) session.getAttribute("token");
             String txnId = (String) session.getAttribute("txnId");
+            token = dataService.getData("token");
+            txnId = dataService.getData("txnId");
             if (!abdmAbhaAddressCreationService.checkAbhaAddressValidity(abhaAddress, token)) {
                 return ResponseEntity.badRequest().body("Invalid Abha address. Please provide a different Abha Address.");
             }
@@ -476,6 +504,7 @@ public class ReceptionistController {
         }
         return ResponseEntity.internalServerError().body("An error occurred while adding Abha address.");
     }
+
 
     @PostMapping("/generateAbhaAddressVerificationOtp")
     @PreAuthorize("hasAuthority('receptionist:post')")

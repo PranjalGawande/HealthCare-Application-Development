@@ -1,5 +1,7 @@
 package com.example.HAD.Backend.service;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -76,6 +78,40 @@ public class AbdmAbhaAddressCreationService {
             return Collections.emptyList();
         }
     }
+
+//    public List<String> suggestPhrAddresses(String lastTxnId, String bearerToken) throws Exception {
+//
+//        JSONObject requestBody = new JSONObject();
+//        requestBody.put("transactionId", lastTxnId);
+//
+//        JSONObject headers = new JSONObject();
+//        headers.put("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+//        headers.put("Authorization", "Bearer " + bearerToken);
+//
+//        String url = "https://phrsbx.abdm.gov.in/api/v1/phr/registration/phr/suggestion";
+//
+//        JSONObject data = new JSONObject();
+//        data.put("url", url);
+//        data.put("method", "POST");
+//        data.put("headers", headers);
+//        data.put("body", requestBody);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        ResponseEntity<String> response = restTemplate.postForEntity(url, data.toString(), String.class);
+//
+//        if (response.getStatusCode().is2xxSuccessful()) {
+//            // Parse the JSON response assuming it's a list of strings
+//            JSONArray suggestions = new JSONArray(response.getBody());
+//            List<String> phrAddresses = new ArrayList<>();
+//            for (int i = 0; i < suggestions.length(); i++) {
+//                phrAddresses.add(suggestions.getString(i));
+//            }
+//            return phrAddresses;
+//        } else {
+//            return Collections.emptyList();
+//        }
+//    }
+
 
     // should be done on front end
     public Boolean checkAbhaAddressValidity(String abhaAddress, String bearerToken) {

@@ -403,7 +403,7 @@ public class DoctorController {
 
             try {
                 JSONObject resultJson = new JSONObject(dataService.getData("consentRequestOnInit"));
-                System.out.println("Printed from <WebhookController.getConsentRequestId>: " + (resultJson != null ? resultJson.toString() : "null"));
+                System.out.println("Printed from <DoctorController.consentRequestInit>: " + (resultJson != null ? resultJson.toString() : "null"));
                 if (resultJson == null) {
                     JSONObject errorResponse = new JSONObject();
                     errorResponse.put("error", "Webhooks.site is not receiving callbacks!!!");
@@ -416,7 +416,7 @@ public class DoctorController {
                 return ResponseEntity.internalServerError().body("{\"error\": \"Critical JSON processing error...\"}");
             }
         }  catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println("ERROR: DoctorController>>consentRequestInit" + e.getMessage());
         }
         return ResponseEntity.internalServerError().body("Some error occurred while raising request please try again.");
     }
