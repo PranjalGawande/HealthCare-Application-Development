@@ -10,7 +10,7 @@ public class CrosConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "https://5526-2406-7400-51-9348-b0a4-4d34-f864-9200.ngrok-free.app","https://webhook.site")// All endpoints
+                .allowedOrigins("http://localhost:3000", "https://5111-2406-7400-51-deec-3d45-b748-d6d2-adcd.ngrok-free.app","https://webhook.site")// All endpoints
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Specify allowed methods
                 .allowedHeaders("*") // Specify allowed headers
                 .allowCredentials(true);

@@ -117,7 +117,7 @@ public class DoctorController {
             Appointment appointment = appointmentValue.orElseThrow(()-> new RuntimeException("Unable to find the given Token Number"));
 
             medicalRecords = medicalRecordsService.getPatientMedicalHistory(doctor.getDoctorId(), appointment.getPatient().getPatientId());
-            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Medical Record List", null, patient.getAbhaId(), "Read Only");
+            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Medical Record List", null, appointment.getPatient().getAbhaId(), "Read Only");
         }
 
         List<MedicalRecordsDTO> medicalRecordsDTO = new ArrayList<>();

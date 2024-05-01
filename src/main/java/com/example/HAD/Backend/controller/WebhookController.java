@@ -227,7 +227,7 @@ public class WebhookController {
     }
 
     @PostMapping("/v0.5/users/auth/on-confirm")
-    public void confirmAuthInit(@RequestBody Map<String, Object> body) {
+    public void confirmAuthInit(@RequestBody String body) {
 
         try {
             if (body == null) {
@@ -282,20 +282,7 @@ public class WebhookController {
                         System.err.println("Date of birth components are missing...");
                     }
                     LocalDate dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    String dob = dateOfBirth.format(formatter);
 
-//                        JSONObject patientData = new JSONObject();
-//                        patientData.put("accessToken", accessToken);
-//                        patientData.put("abhaNumber", abhaNumber);
-//                        patientData.put("abhaAddress", abhaAddress);
-//                        patientData.put("name", name);
-//                        patientData.put("gender", gender);
-//                        patientData.put("dateOfBirth", dob);
-//                        patientData.put("mobileNumber", mobileNumber);
-
-
-                    // Assuming Patient is a model managed by patientService
                     Patient patient = new Patient();
                     patient.setName(name);
                     patient.setAbhaId(abhaAddress);
