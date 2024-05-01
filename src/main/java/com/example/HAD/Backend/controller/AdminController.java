@@ -55,7 +55,7 @@ public class AdminController {
         Admin admin = adminService.getAdminDetails(email);
         StaffDTO staffDTO = new StaffDTO(admin);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Admin Record", admin.getAdminId(), "Read Only");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Admin Record", admin.getAdminId(),admin.getLogin().getEmail(), "Read Only");
         return ResponseEntity.ok().body(staffDTO);
     }
 
@@ -68,7 +68,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", null, "Insert Record");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", null, login.getEmail(), "Insert Record");
         return ResponseEntity.ok().body("Login Details added Successfully");
     }
 
@@ -89,7 +89,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Doctor Record", null, "Insert Record");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Doctor Record", null, doctor.getLogin().getEmail(),"Insert Record");
         return ResponseEntity.ok().body("Doctor Record Added Successfully");
     }
 
@@ -110,7 +110,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin1 = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin1.getAdminId(), email,"Admin Record", null, "Insert Record");
+        accessLogsService.accessLogs("Admin", admin1.getAdminId(), email,"Admin Record", null, admin.getLogin().getEmail(), "Insert Record");
         return ResponseEntity.ok().body("Admin Record Added Successfully");
     }
 
@@ -131,7 +131,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Receptionist Record", null, "Insert Record");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Receptionist Record", null, receptionist.getLogin().getEmail(),"Insert Record");
         return ResponseEntity.ok().body("Receptionist Record Added Successfully");
     }
 
@@ -150,7 +150,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", login.getUserId(), "Deactivate User");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", login.getUserId(), extraDTO.getEmail(), "Deactivate User");
         return ResponseEntity.ok().body("Successfully Deactivated Staff Account");
     }
 
@@ -169,7 +169,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", login.getUserId(), "Activate User");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Login Record", login.getUserId(), extraDTO.getEmail(), "Activate User");
         return ResponseEntity.ok().body("Successfully Activated Staff Account");
     }
 
@@ -187,7 +187,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Admin and Receptionist Records", null, "Read Only");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Admin and Receptionist Records", null, null,"Read Only");
 
         return ResponseEntity.ok().body(staffListDTOS);
     }
@@ -207,7 +207,7 @@ public class AdminController {
         loginService.updateLogin(userName, extraDTO.getNewPassword());
 
         Admin admin = adminService.getAdminDetails(userName);
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), userName,"Admin Record", admin.getAdminId(), "Change Password");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), userName,"Admin Record", admin.getAdminId(), admin.getLogin().getEmail(),"Change Password");
         return ResponseEntity.ok("Password changed Successfully");
     }
 
@@ -220,7 +220,7 @@ public class AdminController {
         String email = jwtService.extractEmail(token);
         Admin admin = adminService.getAdminDetails(email);
 
-        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Access Log Records", null, "Read Only");
+        accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Access Log Records", null, null,"Read Only");
         return ResponseEntity.ok().body(accessLogs);
     }
 

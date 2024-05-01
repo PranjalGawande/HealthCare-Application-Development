@@ -39,6 +39,9 @@ public class AccessLogs {
     private Integer accessedRecordId;
 
     @Column
+    private String accessedEmailId;
+
+    @Column
     private String action;
 
     @Column

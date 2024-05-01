@@ -15,7 +15,7 @@ public class AccessLogsService {
     @Autowired
     private AccessLogsRepository accessLogsRepository;
 
-    public void accessLogs(String roleType, Integer userId, String email, String modifiedEntityType, Integer accessedRecordId, String action) {
+    public void accessLogs(String roleType, Integer userId, String email, String modifiedEntityType, Integer accessedRecordId, String accessedEmailId, String action) {
 
         AccessLogs accessLogs = new AccessLogs();
         accessLogs.setRoleType(roleType);
@@ -23,6 +23,7 @@ public class AccessLogsService {
         accessLogs.setEmail(email);
         accessLogs.setModifiedEntityType(modifiedEntityType);
         accessLogs.setAccessedRecordId(accessedRecordId);
+        accessLogs.setAccessedEmailId(accessedEmailId);
         accessLogs.setAction(action);
         accessLogs.setTimeStamp(LocalTime.now());
         accessLogs.setDate(LocalDate.now());

@@ -78,13 +78,13 @@ public class DoctorController {
             String email = jwtService.extractEmail(token);
             Admin admin = adminService.getAdminDetails(email);
 
-            accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Doctor Record", doctor.getDoctorId(), "Read Only");
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Doctor Record", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Read Only");
         }
         else {
             String email = userDetails.getUsername();
             doctor = doctorService.getDoctorDetailsByEmail(email);
 
-            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), email,"Doctor Record", doctor.getDoctorId(), "Read Only");
+            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), email,"Doctor Record", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Read Only");
         }
 
         DoctorDTO doctorDTO = new DoctorDTO(doctor);
@@ -98,6 +98,7 @@ public class DoctorController {
             @RequestHeader("Authorization") String token,
             @AuthenticationPrincipal UserDetails userDetails) {
         List<MedicalRecords> medicalRecords;
+        Patient patient = patientService.getPatientById(patientId);
 
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
@@ -107,7 +108,7 @@ public class DoctorController {
             String email = jwtService.extractEmail(token);
             Admin admin = adminService.getAdminDetails(email);
 
-            accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Medical Record List", null, "Read Only");
+            accessLogsService.accessLogs("Admin", admin.getAdminId(), email,"Medical Record List", null, patient.getAbhaId(), "Read Only");
         }
         else {
             Doctor doctor = doctorService.getDoctorDetailsByEmail(userDetails.getUsername());
@@ -116,8 +117,7 @@ public class DoctorController {
             Appointment appointment = appointmentValue.orElseThrow(()-> new RuntimeException("Unable to find the given Token Number"));
 
             medicalRecords = medicalRecordsService.getPatientMedicalHistory(doctor.getDoctorId(), appointment.getPatient().getPatientId());
-
-            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Medical Record List", null, "Read Only");
+            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Medical Record List", null, patient.getAbhaId(), "Read Only");
         }
 
         List<MedicalRecordsDTO> medicalRecordsDTO = new ArrayList<>();
@@ -155,7 +155,7 @@ public class DoctorController {
         Patient patient = patientService.getPatientById(appointment.getPatient().getPatientId());
         PatientDto patientDto = new PatientDto(patient);
 
-        accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), email,"Appointment Record", appointment.getAppointmentId(), "Read Only");
+        accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), email,"Appointment Record", appointment.getAppointmentId(), patient.getAbhaId(), "Read Only");
         return ResponseEntity.ok().body(patientDto);
     }
 
@@ -206,9 +206,13 @@ public class DoctorController {
 
             appointmentService.updateAppointment(appointment.getAppointmentId(), "done");
             medicalRecordsService.addPatientConsultation(medicalRecords);
+
+            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), email,"Medical Record", null, medicalRecords.getAppointment().getPatient().getAbhaId(),"Insert Record");
             return ResponseEntity.ok().body("Medical Records added successfully");
         } else {
             appointmentService.updateAppointment(appointment.getAppointmentId(), "absent");
+
+            accessLogsService.accessLogs("Doctor", doctor.getDoctorId(), email,"Appointment Record", appointment.getAppointmentId(), appointment.getPatient().getAbhaId(),"Update Record");
             return ResponseEntity.ok().body("Patient was absent");
         }
     }
@@ -245,21 +249,33 @@ public class DoctorController {
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestHeader("Authorization") String token) {
         Doctor doctor;
+        String roleType;
+        Integer userId;
+        String email;
         boolean isAdmin = userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if(isAdmin) {
             doctor = doctorService.getDoctorDetailsByEmail(doctorDTO.getEmail());
+
+            if(token.startsWith("Bearer ")) token = token.substring(7);
+            email = jwtService.extractEmail(token);
+            Admin admin = adminService.getAdminDetails(email);
+            roleType = "Admin";
+            userId = admin.getAdminId();
         }
         else {
-            String email = userDetails.getUsername();
+            email = userDetails.getUsername();
             doctor = doctorService.getDoctorDetailsByEmail(email);
+            roleType = "Doctor";
+            userId = doctor.getDoctorId();
         }
 
         if(doctor.getSpeciality() != null) doctor.setSpeciality(doctorDTO.getSpeciality());
         if(doctor.getExperience() != null) doctor.setExperience(doctorDTO.getExperience());
         if(doctor.getMobileNo() != null)   doctor.setMobileNo(doctorDTO.getMobileNo());
         if(doctor.getTokenMax() != null) doctor.setTokenMax(doctorDTO.getTokenMax());
-
         doctorService.updateDoctor(doctor);
+
+        accessLogsService.accessLogs(roleType, userId, email,"Doctor Record", doctor.getDoctorId(), doctor.getLogin().getEmail(),"Update Record");
         return ResponseEntity.ok().body("Successfully updated Doctor Details");
     }
 

@@ -40,7 +40,8 @@ public class LoginController {
             accessedRecordId = admin.getAdminId();
         }
 
-        accessLogsService.accessLogs("Admin", null, request.getEmail(), "Login Record", accessedRecordId, "Login Attempt");
+        assert admin != null;
+        accessLogsService.accessLogs("Admin", null, request.getEmail(), "Login Record", accessedRecordId, admin.getLogin().getEmail(),"Login Attempt");
         return ResponseEntity.ok().body(token);
     }
 
@@ -56,7 +57,8 @@ public class LoginController {
             accessedRecordId = receptionist.getReceptionistId();
         }
 
-        accessLogsService.accessLogs("Receptionist", null, request.getEmail(), "Login Record", accessedRecordId, "Login Attempt");
+        assert receptionist != null;
+        accessLogsService.accessLogs("Receptionist", null, request.getEmail(), "Login Record", accessedRecordId, receptionist.getLogin().getEmail(),"Login Attempt");
         return ResponseEntity.ok().body(token);
     }
 
@@ -72,7 +74,8 @@ public class LoginController {
             accessedRecordId = doctor.getDoctorId();
         }
 
-        accessLogsService.accessLogs("Doctor", null, request.getEmail(), "Login Record", accessedRecordId, "Login Attempt");
+        assert doctor != null;
+        accessLogsService.accessLogs("Doctor", null, request.getEmail(), "Login Record", accessedRecordId, doctor.getLogin().getEmail(),"Login Attempt");
         return ResponseEntity.ok().body(token);
     }
 }
