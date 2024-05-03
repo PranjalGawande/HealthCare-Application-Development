@@ -127,7 +127,7 @@ const CNForm = () => {
       );
       setPatientHistory(response.data);
     } catch (error) {
-      toast.error("Error fetching patient history");
+      // toast.error("Error fetching patient history");
     }
   };
 
