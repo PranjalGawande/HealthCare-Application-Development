@@ -39,7 +39,7 @@ export const AdhaarOtpVerification = () => {
       navigate("/receptionist/abha-mobile-no");
     } catch (error) {
       toast.error("Invalid OTP, Please try again!");
-      console.error("Error:", error);
+      // console.error("Error:", error);
     } finally {
       setLoading(false);
     }

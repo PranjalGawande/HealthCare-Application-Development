@@ -45,7 +45,7 @@ export const ExistingPatientAbhaSearch = () => {
         setLoading(false);
         return;
       }
-      console.log("Response:", response);
+      // console.log("Response:", response);
       const patientDetails = {
         abhaId: response.data.abhaId,
         address: response.data.address,

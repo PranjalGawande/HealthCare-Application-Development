@@ -48,7 +48,7 @@ export const AbhaIdOtpVerification = () => {
       const formData = {
         abhaId: abhaAdd,
       };
-      console.log("FormData:", formData);
+      // console.log("FormData:", formData);
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `${API_URL}/receptionist/patientDetails`,
@@ -61,7 +61,7 @@ export const AbhaIdOtpVerification = () => {
         }
       );
       const patientData = response.data;
-      console.log("Patient Data:", patientData);
+      // console.log("Patient Data:", patientData);
 
       return patientData;
     } catch (error) {
@@ -105,7 +105,7 @@ export const AbhaIdOtpVerification = () => {
         txnId: transactionId,
         otp: abdmOtp,
       };
-      console.log("FormData:", formData);
+      // console.log("FormData:", formData);
       axios.defaults.withCredentials = true;
       const response = await axios.post(
         `${API_URL}/receptionist/verificationAbhaAddressOtp`,
@@ -117,7 +117,7 @@ export const AbhaIdOtpVerification = () => {
           },
         }
       );
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
     } catch (error) {
       toast.error("Invalid OTP, Please try again!");
       console.error("Error:", error);
